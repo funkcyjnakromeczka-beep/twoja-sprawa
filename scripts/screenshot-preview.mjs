@@ -32,6 +32,18 @@ try{
   if(!measurements.heading||!measurements.form)throw Error("Missing hero or contact form on "+name);
   await page.close();
  }
+ const routes=[["szkody-gornicze","/uslugi/szkody-gornicze.html"],["swiadczenie-wspierajace","/uslugi/swiadczenie-wspierajace.html"],["skd","/uslugi/kredyty-pln.html"]];
+ for(const [name,route] of routes){
+  const page=await browser.newPage({viewport:{width:390,height:844}});
+  const response=await page.goto("http://127.0.0.1:4173"+route,{waitUntil:"networkidle"});
+  if(!response?.ok())throw Error("Missing service page: "+route);
+  const state=await page.evaluate(()=>({form:!!document.querySelector(".contact-form"),service:document.querySelector(".contact-form select")?.value,scrollWidth:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth}));
+  if(!state.form||!state.service)throw Error("Missing configured form on "+route);
+  if(state.scrollWidth>state.viewport+2)throw Error("Horizontal overflow on "+route);
+  await page.screenshot({path:"screenshots/usluga-"+name+"-telefon.png",fullPage:true});
+  console.log(route,JSON.stringify(state));
+  await page.close();
+ }
 }finally{
  if(browser)await browser.close();
  server.kill("SIGTERM");

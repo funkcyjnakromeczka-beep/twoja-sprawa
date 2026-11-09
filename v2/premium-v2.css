@@ -421,3 +421,9 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 #uslugi .services-assist a:hover{background:#efe0c5;border-color:#b7955d}
 .premium-v2 #uslugi .services-assist a:focus-visible{outline:3px solid #ba8a48;outline-offset:3px}
 @media(max-width:650px){.premium-v2 #uslugi .services-assist{padding:13px;gap:8px}.premium-v2 #uslugi .services-assist>span{width:100%}.premium-v2 #uslugi .services-assist a{flex:1 1 160px;justify-content:center;text-align:center}}
+
+/* First-contact steps: short, legible and unobtrusive. */
+.premium-v2 #kontakt .contact-steps{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px auto 22px;max-width:1000px}
+.premium-v2 #kontakt .contact-steps span{display:flex;align-items:center;gap:9px;flex:1 1 230px;max-width:315px;min-height:54px;padding:11px 15px;border-radius:12px;background:rgba(255,255,255,.86);border:1px solid #d9e3df;color:#254452;font-size:.89rem;line-height:1.4;text-align:left}
+.premium-v2 #kontakt .contact-steps strong{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#153344;color:#f2d6a7;font-weight:800}
+@media(max-width:650px){.premium-v2 #kontakt .contact-steps{gap:7px;margin:16px auto}.premium-v2 #kontakt .contact-steps span{flex:1 1 100%;max-width:none;min-height:48px;padding:9px 12px}}

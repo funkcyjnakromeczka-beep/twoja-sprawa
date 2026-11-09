@@ -427,3 +427,68 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 #kontakt .contact-steps span{display:flex;align-items:center;gap:9px;flex:1 1 230px;max-width:315px;min-height:54px;padding:11px 15px;border-radius:12px;background:rgba(255,255,255,.86);border:1px solid #d9e3df;color:#254452;font-size:.89rem;line-height:1.4;text-align:left}
 .premium-v2 #kontakt .contact-steps strong{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#153344;color:#f2d6a7;font-weight:800}
 @media(max-width:650px){.premium-v2 #kontakt .contact-steps{gap:7px;margin:16px auto}.premium-v2 #kontakt .contact-steps span{flex:1 1 100%;max-width:none;min-height:48px;padding:9px 12px}}
+
+
+/* 2026-11-09: restrained editorial watermark and readability improvements */
+.premium-v2 #uslugi,
+.premium-v2 #poradniki,
+.premium-v2 #zespol,
+.premium-v2 .faq-home{
+  background-image:
+    linear-gradient(100deg,rgba(250,249,246,.99) 0%,rgba(250,249,246,.97) 58%,rgba(250,249,246,.79) 100%),
+    url("/v2/assets/temida-watermark.svg");
+  background-size:cover,clamp(225px,29vw,410px) auto;
+  background-position:center,right 3% center;
+  background-repeat:no-repeat;
+}
+.premium-v2 #poradniki{
+  background-color:#f6f5f1;
+  border-top:1px solid rgba(164,144,112,.13);
+  border-bottom:1px solid rgba(164,144,112,.13);
+}
+.premium-v2 #zespol{background-position:center,right 2% 24%}
+.premium-v2 #uslugi .primary-card,
+.premium-v2 .quick-path-links>a,
+.premium-v2 .team-person{
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.premium-v2 .quick-path-links>a:hover,
+.premium-v2 .team-person:hover{
+  transform:translateY(-3px);
+  box-shadow:0 16px 36px rgba(14,40,52,.12);
+}
+.premium-v2 #zespol .team-person{
+  background:rgba(255,255,255,.96);
+  border:1px solid #dfdbd2;
+  box-shadow:0 12px 34px rgba(22,42,52,.07);
+}
+.premium-v2 .section-lead,
+.premium-v2 #uslugi>.section-lead{
+  color:#37515c;
+  max-width:76ch;
+}
+.premium-v2 #uslugi a:focus-visible,
+.premium-v2 #poradniki a:focus-visible,
+.premium-v2 #zespol a:focus-visible{
+  outline:3px solid #be9150;
+  outline-offset:4px;
+}
+@media(max-width:700px){
+  .premium-v2 #uslugi,
+  .premium-v2 #poradniki,
+  .premium-v2 #zespol,
+  .premium-v2 .faq-home{
+    background-size:cover,190px auto;
+    background-position:center,right -45px top 20px;
+    background-image:linear-gradient(100deg,rgba(250,249,246,.99),rgba(250,249,246,.9)),url("/v2/assets/temida-watermark.svg");
+  }
+  .premium-v2 #uslugi .primary-card,
+  .premium-v2 .team-person{box-shadow:0 8px 22px rgba(14,40,52,.07)}
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 #uslugi .primary-card,
+  .premium-v2 .quick-path-links>a,
+  .premium-v2 .team-person{transition:none}
+  .premium-v2 .quick-path-links>a:hover,
+  .premium-v2 .team-person:hover{transform:none}
+}

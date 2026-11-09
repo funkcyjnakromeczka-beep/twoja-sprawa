@@ -1,12 +1,11 @@
-/* Formularz wspólny: automatyczna wysyłka po konfiguracji Turnstile + Resend; bezpieczny tryb mailto w przeciwnym razie. */
+/* Formularz: Web3Forms po aktywacji klucza i polityki prywatności; wcześniej mailto. */
 (() => {
  "use strict";
  const services = ["Szkody górnicze","Świadczenie wspierające","Renty powypadkowe","Kredyt w PLN / SKD","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
  const current = document.currentScript?.getAttribute("data-service") || "";
  const hosts = document.querySelectorAll("[data-contact-form]");
- const siteKey = document.querySelector('meta[name="turnstile-site-key"]')?.content?.trim() || "";
- const automatic = /^[A-Za-z0-9_-]{10,}$/.test(siteKey);
- if(automatic && !document.querySelector('script[data-turnstile-sdk]')){const sdk=document.createElement("script");sdk.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";sdk.async=true;sdk.defer=true;sdk.dataset.turnstileSdk="";document.head.append(sdk);}
+ const accessKey=document.querySelector('meta[name="web3forms-access-key"]')?.content?.trim()||"";
+ const automatic=/^[a-f0-9-]{30,40}$/i.test(accessKey);
 
  for (const host of hosts) {
   const form = document.createElement("form"); form.className = "contact-form";
@@ -33,14 +32,14 @@
   const privacy=document.createElement("a");privacy.href="/v2/polityka-prywatnosci.html";privacy.textContent="Informacje o prywatności";form.append(privacy);
   const button=document.createElement("button");button.className="btn";button.type="submit";button.textContent=automatic?"Wyślij zgłoszenie":"Przygotuj wiadomość e-mail";form.append(button);
   const status=document.createElement("p");status.setAttribute("role","status");status.setAttribute("aria-live","polite");form.append(status);
-  let turnstileId=null;const challenge=document.createElement("div");if(automatic){challenge.className="turnstile-container";form.insertBefore(challenge,button);let attempts=0;const mount=()=>{if(window.turnstile&&typeof window.turnstile.render==="function"){turnstileId=window.turnstile.render(challenge,{sitekey:siteKey,theme:"light"});}else if(++attempts<40) window.setTimeout(mount,300);else status.textContent="Weryfikacja antyspamowa nie załadowała się. Odśwież stronę lub skontaktuj się telefonicznie.";};mount();}
+  const honeypot=document.createElement("input");honeypot.type="text";honeypot.name="botcheck";honeypot.tabIndex=-1;honeypot.autocomplete="off";honeypot.setAttribute("aria-hidden","true");honeypot.style.cssText="position:absolute;left:-10000px;width:1px;height:1px;opacity:0";form.append(honeypot);
   form.addEventListener("submit",async event=>{
    event.preventDefault();if(!form.reportValidity())return;
    if(automatic){
-    const token=turnstileId!==null&&window.turnstile?window.turnstile.getResponse(turnstileId):"";
-    if(!token){status.textContent="Potwierdź weryfikację antyspamową przed wysłaniem.";return;}
+    if(honeypot.value){status.textContent="Nie udało się zweryfikować formularza.";return;}
     button.disabled=true;button.textContent="Wysyłanie…";status.textContent="Przesyłam zgłoszenie…";
-    try{const response=await fetch("/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({service:select.value,name:name.value.trim(),location:city.value.trim(),phone:phone.value.trim(),email:email.value.trim(),message:msg.value.trim(),privacyAcknowledged:ack.checked,turnstileToken:token,website:""})});const result=await response.json();if(!response.ok||result.ok!==true)throw Error("delivery");status.textContent="Zgłoszenie zostało przekazane. Skontaktujemy się z Tobą po zapoznaniu się ze sprawą.";form.reset();updateAdvisor();}catch{status.textContent="Nie udało się potwierdzić wysyłki. Spróbuj ponownie albo zadzwoń do nas. Dane formularza pozostały na stronie.";}finally{button.disabled=false;button.textContent="Wyślij zgłoszenie";if(turnstileId!==null&&window.turnstile)window.turnstile.reset(turnstileId);}return;
+    const payload={access_key:accessKey,subject:"Twoja Sprawa: "+select.value,from_name:"Formularz Twoja Sprawa",name:name.value.trim(),email:email.value.trim(),phone:phone.value.trim(),location:city.value.trim(),service:select.value,message:msg.value.trim()||"Prośba o kontakt.",replyto:email.value.trim(),botcheck:""};
+    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");status.textContent="Zgłoszenie zostało przyjęte do wysyłki. Dziękujemy, skontaktujemy się z Tobą.";form.reset();updateAdvisor();}catch{status.textContent="Nie udało się potwierdzić przyjęcia zgłoszenia. Spróbuj ponownie lub zadzwoń. Wpisane dane pozostały w formularzu.";}finally{button.disabled=false;button.textContent="Wyślij zgłoszenie";}return;
    }
    const subject="Zapytanie Twoja Sprawa: "+select.value;
    const body=["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"","Opis sprawy:",""+(msg.value.trim()||"Proszę o kontakt."),"","Proszę o odpowiedź na wskazany adres e-mail lub telefon."].join("\n");

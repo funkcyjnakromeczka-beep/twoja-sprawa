@@ -430,7 +430,6 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 
 
 /* 2026-11-09: restrained editorial watermark and readability improvements */
-.premium-v2 #uslugi,
 .premium-v2 #poradniki,
 .premium-v2 #zespol,
 .premium-v2 .faq-home{
@@ -474,7 +473,6 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
   outline-offset:4px;
 }
 @media(max-width:700px){
-  .premium-v2 #uslugi,
   .premium-v2 #poradniki,
   .premium-v2 #zespol,
   .premium-v2 .faq-home{
@@ -482,7 +480,6 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
     background-position:center,right -45px top 20px;
     background-image:linear-gradient(100deg,rgba(250,249,246,.99),rgba(250,249,246,.9)),url("/v2/assets/temida-watermark.svg");
   }
-  .premium-v2 #uslugi .primary-card,
   .premium-v2 .team-person{box-shadow:0 8px 22px rgba(14,40,52,.07)}
 }
 @media(prefers-reduced-motion:reduce){

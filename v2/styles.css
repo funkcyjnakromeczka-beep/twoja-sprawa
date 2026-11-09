@@ -220,3 +220,10 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .hero-team img{width:42px;height:42px;object-fit:cover;border:2px solid #d9b879;border-radius:50%}
 .hero-team a:hover,.hero-team a:focus-visible{background:#203e52;border-color:#f3d69c}
 @media(max-width:650px){.hero-team{gap:8px}.hero-team a{font-size:.79rem;padding-right:10px}.hero-team img{width:36px;height:36px}}
+
+/* Widoczne, dostępne potwierdzenie wysłania zgłoszenia. */
+.contact-status-success,.contact-status-error{display:block;padding:16px 18px;border-radius:12px;font-weight:700;line-height:1.55;margin-top:16px}
+.contact-status-success{color:#103d30!important;background:#e1f5e9!important;border:1px solid #4b9c75}
+.contact-status-error{color:#752c21!important;background:#fff0e9!important;border:1px solid #c87c64}
+.contact-form button[disabled]{opacity:.65;cursor:wait}
+.contact-form select{min-height:46px}

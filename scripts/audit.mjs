@@ -160,6 +160,19 @@ try {
  }
  if(!js.includes('selectedChannel.startsWith("facebook_") ? "facebook"')) errors.push("Campaign channel: Facebook source normalization missing");
 } catch(e){errors.push("Campaign channel audit failed: "+e.message);}
+// Accessible service choice tiles: verify content, hierarchy and mobile styles.
+try {
+ const home=await readFile(join(root,"index.html"),"utf8");
+ const css=await readFile(join(root,"premium-v2.css"),"utf8");
+ const start=home.indexOf('class="quick-path"');
+ const end=home.indexOf('class="campaign-home-feature"',start);
+ const section=home.slice(start,end);
+ if(start<0||end<0||!section.includes('id="quick-path-title"')||!section.includes('class="quick-path-links"')) errors.push("Service tiles: accessible heading or grid missing");
+ for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","kredyty-pln","sluzebnosc-przesylu"]){
+  if(!section.includes("/v2/uslugi/"+slug+".html")) errors.push("Service tiles: missing "+slug);
+ }
+ if(!css.includes(".premium-v2 .quick-path-links{display:grid")||!css.includes("@media(max-width:620px)")) errors.push("Service tiles: responsive styles missing");
+} catch(e){errors.push("Service tiles audit failed: "+e.message);}
 // Premium V2 visual components, verified logo and all five film posters.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");

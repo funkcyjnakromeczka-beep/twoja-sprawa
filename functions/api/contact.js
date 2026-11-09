@@ -51,7 +51,7 @@ export async function onRequestPost({ request, env }) {
   const message = clean(payload.message, 1200);
   const email = clean(payload.email, 254);
   const token = clean(payload.turnstileToken, 4096);
-  if (!SERVICES.has(service) || !name || !location || !/^[+0-9()\\s-]{7,30}$/.test(phone) || !validEmail(email) || !token || payload.privacyAcknowledged !== true) {
+  if (!SERVICES.has(service) || !name || !location || !/^[+0-9()\s-]{7,30}$/.test(phone) || !validEmail(email) || !token || payload.privacyAcknowledged !== true) {
     return json({ ok: false, error: "validation" }, 400);
   }
   // Check Turnstile server-side. Do not trust browser verification alone.

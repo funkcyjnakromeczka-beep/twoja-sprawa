@@ -48,6 +48,9 @@ for (const file of files) {
     if (!html.includes('class="campaign-mobile-actions"')) errors.push(label + ": missing mobile conversion bar");
     if (!html.includes('class="campaign-mobile-call"')) errors.push(label + ": missing mobile call button");
     if (!html.includes('class="campaign-process-list"')) warnings.push(label + ": campaign contact steps missing");
+    const faqMatch=html.match(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/i);
+    if (!faqMatch) warnings.push(label + ": structured FAQ missing");
+    else { try { const faq=JSON.parse(faqMatch[1]); if(faq["@type"]!=="FAQPage"||faq.mainEntity?.length!==3) warnings.push(label + ": unexpected FAQ schema"); } catch { errors.push(label + ": invalid FAQ JSON-LD"); } }
   }
   if (label === "index.html" && !html.includes("data-contact-form")) errors.push("index.html: missing contact form");
   if (label === "index.html" && !html.includes('class="campaign-home-grid"')) warnings.push("index.html: featured campaign paths missing");

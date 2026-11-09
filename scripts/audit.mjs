@@ -104,6 +104,14 @@ try {
   if(!block.includes("Nie przesyłaj danych wrażliwych")) errors.push("Premium V2: privacy reminder missing from confidence strip");
  }
 } catch(e){errors.push("Premium V2 trust strip audit failed: "+e.message);}
+// Contact landing should show both specialists without changing form delivery.
+try {
+ const page=await readFile(join(root,"kontakt.html"),"utf8");
+ if(!page.includes('class="premium-subpage theme-contact"')) errors.push("Contact premium: page theme missing");
+ if((page.match(/class="contact-specialist"/g)||[]).length!==2) errors.push("Contact premium: expected two specialist cards");
+ for(const phone of ["796 441 345","500 171 531"]) if(!page.includes(phone)) errors.push("Contact premium: missing "+phone);
+ if(!page.includes('data-contact-form')) errors.push("Contact premium: original form host missing");
+} catch(e){errors.push("Contact premium audit failed: "+e.message);}
 // Premium V2 visual components, verified logo and all five film posters.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");

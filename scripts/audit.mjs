@@ -92,6 +92,17 @@ try {
   if (count !== 5 || links !== 5) errors.push("Homepage: expected five video cards with five video links, got "+count+" cards and "+links+" links");
  }
 } catch(e) { errors.push("Homepage video library audit failed: "+e.message); }
+// Homepage must expose all five resource cards for organic discovery.
+try {
+ const homepage=await readFile(join(root,"index.html"),"utf8");
+ const start=homepage.indexOf('class="guide-showcase-grid"');
+ const end=homepage.indexOf('class="guide-showcase-note"',start);
+ if(start<0 || end<start) errors.push("Homepage: missing guide showcase");
+ else {
+  const cards=homepage.slice(start,end).split('class="guide-showcase-card"').length-1;
+  if(cards!==5) errors.push("Homepage: expected five guide cards, found "+cards);
+ }
+} catch(e) {errors.push("Homepage guide showcase audit failed: "+e.message);}
 // All five core guides must offer an interactive checklist with a local-only script.
 for (const slug of ["checklista-szkody-gorniczej","swiadczenie-wspierajace-pierwsze-kroki","renta-powypadkowa-dokumenty","skd-kredyt-pln-lista-kontrolna","sluzebnosc-przesylu-dzialka"]) {
  try {

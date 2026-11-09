@@ -365,3 +365,13 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-subpage .article:after{content:"";position:absolute;z-index:-1;pointer-events:none;right:-80px;bottom:8%;width:min(38vw,390px);height:520px;background:url("/v2/assets/temida-outline.svg") center/contain no-repeat;opacity:.07}
 @media(max-width:850px){.premium-v2 #uslugi:before{width:330px;height:420px;right:-135px;opacity:.075}.premium-subpage .article:after{width:260px;right:-110px;opacity:.045}}
 @media(max-width:520px){.premium-v2 #uslugi:before{width:230px;height:300px;right:-115px;opacity:.045}.premium-subpage .article:after{display:none}}
+
+/* Hero visual: integrated Themis silhouette, not a separate content image. */
+.premium-v2 .hero-glamour{background:linear-gradient(110deg,rgba(5,18,29,.99) 0%,rgba(7,27,42,.97) 48%,rgba(10,34,49,.86) 100%),url("https://images.unsplash.com/photo-1670078763002-59f7982d493e?auto=format&fit=crop&w=1800&q=72") center/cover no-repeat}
+.premium-v2 .hero-glamour:before{background:radial-gradient(ellipse at 77% 38%,rgba(215,172,104,.19),transparent 38%),url("/v2/assets/temida-outline.svg") no-repeat 93% 50%/auto 90%;opacity:.68}
+.premium-v2 .hero-glamour:after{opacity:.5}
+.premium-v2 .hero-glamour .hero-content{position:relative;z-index:2}
+.premium-v2 .hero-glamour h1{text-wrap:balance}
+.premium-v2 .hero-glamour .btn:focus-visible{outline:3px solid #fff;outline-offset:4px}
+@media(max-width:850px){.premium-v2 .hero-glamour:before{background:radial-gradient(ellipse at 80% 70%,rgba(215,172,104,.12),transparent 45%),url("/v2/assets/temida-outline.svg") no-repeat 95% 78%/auto 57%;opacity:.27}}
+@media(max-width:600px){.premium-v2 .hero-glamour:before{background:url("/v2/assets/temida-outline.svg") no-repeat 110% 90%/auto 58%;opacity:.11}.premium-v2 .hero-glamour:after{display:none}}

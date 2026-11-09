@@ -2017,3 +2017,316 @@ body.premium-subpage #formularz .contact-form button[type="submit"]:hover{backgr
 @media(prefers-reduced-motion:reduce){
   body.premium-subpage .chat-assistant{transition:none}
 }
+
+
+/* RED-IDENTITY-20261110: expressive, restrained scarlet accents and visible justice graphics */
+:root{
+  --brand-scarlet:#bb3040;
+  --brand-scarlet-dark:#8d1e2e;
+  --brand-scarlet-light:#fae6e7;
+  --brand-ink:#102b3a;
+}
+/* Meaningful scarlet: a brand punctuation mark, not a warning interface. */
+.premium-v2 .hero-glamour{
+  background:
+    radial-gradient(ellipse at 86% 16%,rgba(174,40,54,.18),transparent 38%),
+    linear-gradient(110deg,rgba(5,19,29,.97),rgba(9,32,45,.91) 67%,rgba(13,43,56,.83)),
+    url("/v2/assets/temida-watermark.svg") right 3% center / min(38vw,410px) auto no-repeat,
+    #071923;
+  border-bottom:4px solid transparent;
+  border-image:linear-gradient(90deg,#b72c3d 0%,#d16c5b 25%,#d6b67a 62%,#152e3e 100%) 1;
+}
+.premium-v2 .hero-glamour .hero-content{
+  position:relative;
+  z-index:1;
+}
+.premium-v2 .hero-glamour .hero-content:before{
+  content:"";
+  position:absolute;
+  top:14px;
+  left:-21px;
+  width:5px;
+  height:min(160px,22vh);
+  border-radius:4px;
+  background:linear-gradient(180deg,#d94d52 0%,#b62939 58%,transparent);
+  pointer-events:none;
+}
+.premium-v2 .hero-scarlet-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  margin:11px 0 2px;
+  padding:8px 13px;
+  border-radius:999px;
+  border:1px solid rgba(232,122,117,.36);
+  background:rgba(152,37,50,.19);
+  color:#ffe4df;
+  font-weight:800;
+  font-size:.78rem;
+  letter-spacing:.025em;
+}
+.premium-v2 .hero-scarlet-tag:before{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#f06968;
+  box-shadow:0 0 0 3px rgba(240,105,104,.17);
+}
+.premium-v2 .hero-glamour .actions .btn:first-child,
+.premium-v2 .site-header .header-cta{
+  color:#fff;
+  background:linear-gradient(120deg,#b42c3c,#8e1d31);
+  border:1px solid #d75b62;
+  box-shadow:0 12px 24px rgba(98,16,29,.24);
+}
+.premium-v2 .hero-glamour .actions .btn:first-child:hover,
+.premium-v2 .site-header .header-cta:hover{
+  background:linear-gradient(120deg,#d3434e,#9a2333);
+  border-color:#ee8a86;
+}
+.premium-v2 .site-header .nav-contact-link{
+  border:1px solid rgba(225,98,100,.50);
+  background:linear-gradient(115deg,#b72d3d,#8f2032);
+  color:#fff;
+}
+.premium-v2 .site-header .nav-contact-link:hover,
+.premium-v2 .site-header .nav-contact-link:focus-visible{
+  border-color:#f1a09b;
+  color:#fff;
+}
+.premium-v2 .hero-glamour .hero-gold{
+  color:#f0d4a5;
+}
+.premium-v2 .brand-signature{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  padding:0 clamp(16px,5vw,70px);
+  background:#f6f2ec;
+  border-bottom:1px solid #e0dbd1;
+}
+.premium-v2 .brand-signature:before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  width:8px;
+  background:linear-gradient(180deg,#d34850,#9c2336);
+}
+.premium-v2 .brand-signature-inner{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:clamp(14px,2.5vw,32px);
+  align-items:center;
+  width:min(1200px,100%);
+  min-height:130px;
+  margin:auto;
+  padding:20px 0;
+}
+.premium-v2 .brand-signature-icon{
+  display:grid;
+  place-items:center;
+  width:75px;
+  height:75px;
+  flex-shrink:0;
+  border:1px solid #dfb7b2;
+  border-radius:20px;
+  background:linear-gradient(145deg,#fff,#faeded);
+  box-shadow:0 9px 24px rgba(125,36,49,.10);
+  color:#a32334;
+  font:700 3.2rem/1 Georgia,serif;
+}
+.premium-v2 .brand-signature-kicker{
+  display:block;
+  margin-bottom:8px;
+  color:#9c2939;
+  text-transform:uppercase;
+  font-size:.75rem;
+  font-weight:850;
+  letter-spacing:.09em;
+}
+.premium-v2 .brand-signature-inner strong{
+  display:block;
+  max-width:32ch;
+  color:#173746;
+  font:700 clamp(1.18rem,2.25vw,1.85rem)/1.27 Georgia,serif;
+}
+.premium-v2 .brand-signature-inner strong em{
+  font-style:normal;
+  color:#a42b39;
+}
+.premium-v2 .brand-signature-inner>a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:46px;
+  padding:12px 19px;
+  border:1px solid #b62b3d;
+  border-radius:999px;
+  background:#b62b3d;
+  color:white;
+  font-weight:800;
+  font-size:.9rem;
+  text-decoration:none;
+}
+.premium-v2 .brand-signature-inner>a:hover{
+  background:#962134;
+}
+.premium-v2 .brand-signature-inner>a:focus-visible{
+  outline:3px solid #b72f3d;
+  outline-offset:4px;
+}
+.premium-v2 .premium-confidence-grid>div{
+  position:relative;
+  border-top:3px solid transparent;
+  border-image:linear-gradient(90deg,#b72f40,#e5c693) 1;
+}
+.premium-v2 .premium-confidence-grid .premium-confidence-num{
+  color:#b42f41;
+}
+/* Stronger editorial personality in alternating light sections, without illegible overlays. */
+.premium-v2 :is(.quick-path,.guide-showcase,.votum-proof,.faq-home,#zespol,.brand-partners){
+  background-image:
+    radial-gradient(ellipse at 100% 0%,rgba(192,44,60,.055),transparent 43%),
+    linear-gradient(114deg,rgba(250,247,241,.98),rgba(242,247,243,.94) 78%),
+    url("/v2/assets/temida-watermark.svg");
+  background-position:center,center,right 2% center;
+  background-size:cover,cover,clamp(225px,29vw,380px) auto;
+  background-repeat:no-repeat;
+}
+.premium-v2 :is(.quick-path,.guide-showcase,.votum-proof,.faq-home,#zespol,.brand-partners)>h2:before{
+  content:"";
+  display:block;
+  width:47px;
+  height:4px;
+  margin-bottom:19px;
+  border-radius:2px;
+  background:linear-gradient(90deg,#b92b3d,#d59b77);
+}
+.premium-v2 .quick-path-heading h2:before,
+.premium-v2 .campaign-home-intro h2:before{
+  content:"";
+  display:block;
+  width:47px;
+  height:4px;
+  margin-bottom:19px;
+  border-radius:2px;
+  background:linear-gradient(90deg,#b92b3d,#d59b77);
+}
+.premium-v2 .brand-partner-card{
+  border-top:3px solid #b72d3d;
+}
+.premium-v2 .brand-partner-label{
+  color:#9f293a;
+}
+.premium-v2 #uslugi .primary-card:first-child{
+  border-top:3px solid #c5404b;
+}
+.premium-v2 #uslugi .primary-card:nth-child(4){
+  border-top:3px solid #c5404b;
+}
+.premium-v2 #uslugi .primary-card .more{
+  text-decoration-color:#df7880;
+}
+.premium-v2 #kontakt{
+  border-top:4px solid #ad293a;
+}
+.premium-v2 #kontakt>.actions .btn:first-child{
+  color:#fff;
+  background:#ad2b3a;
+  border-color:#ad2b3a;
+}
+.premium-v2 #kontakt>.actions .btn:first-child:hover{background:#922336}
+.premium-v2 #kontakt .contact-steps span strong{color:#b72c40}
+/* On service pages show the actual justice motif, not only faint watermark texture. */
+body.premium-subpage .subhero{
+  border-bottom:4px solid #a82c3b;
+}
+body.premium-subpage .subhero:after{
+  display:block;
+  content:"§";
+  position:absolute;
+  pointer-events:none;
+  z-index:-1;
+  top:clamp(22px,8vw,100px);
+  right:clamp(12px,6vw,110px);
+  width:auto;
+  height:auto;
+  border:0;
+  box-shadow:none;
+  font:700 clamp(140px,24vw,340px)/1 Georgia,serif;
+  color:rgba(255,232,223,.13);
+  transform:rotate(-10deg);
+}
+body.premium-subpage .article>section:not(.service-cta):not(.focus-detail){
+  border-left:3px solid rgba(172,44,58,.32)!important;
+}
+body.premium-subpage .article>section:not(.service-cta):not(.focus-detail):before{
+  height:4px;
+  background:linear-gradient(90deg,#af2a3e 0%,#d69886 29%,#e2c895 63%,rgba(225,194,148,.10));
+}
+body.premium-subpage .article>section:not(.service-cta):not(.focus-detail):after{
+  color:rgba(176,53,62,.11);
+}
+body.premium-subpage .article:before{
+  right:5px;
+  opacity:.19;
+}
+body.premium-subpage.theme-support .subhero,
+body.premium-subpage.theme-rents .subhero{
+  border-bottom-color:#b33140;
+}
+body.premium-subpage.theme-support .article>section:not(.service-cta):not(.focus-detail),
+body.premium-subpage.theme-rents .article>section:not(.service-cta):not(.focus-detail){
+  border-left-color:#84b99a!important;
+}
+body.premium-subpage.theme-support #formularz .contact-form,
+body.premium-subpage.theme-rents #formularz .contact-form{
+  border-top-color:#287d49!important;
+}
+/* Native mobile remains breathable. Hero and editorial ribbon stack cleanly. */
+@media(max-width:760px){
+  .premium-v2 .hero-glamour .hero-content:before{left:-10px;width:3px}
+  .premium-v2 .brand-signature-inner{
+    min-height:0;
+    grid-template-columns:58px minmax(0,1fr);
+    gap:10px 13px;
+    padding:19px 0;
+  }
+  .premium-v2 .brand-signature-icon{
+    width:56px;
+    height:56px;
+    border-radius:14px;
+    font-size:2.4rem;
+  }
+  .premium-v2 .brand-signature-inner>a{
+    grid-column:1/-1;
+    width:100%;
+    margin-top:6px;
+  }
+  .premium-v2 .brand-signature-inner strong{
+    font-size:clamp(1rem,4.6vw,1.3rem);
+  }
+  .premium-v2 .brand-signature-kicker{
+    margin-bottom:5px;
+    font-size:.66rem;
+  }
+  body.premium-subpage .subhero:after{
+    top:36px;
+    right:-16px;
+    font-size:155px;
+    color:rgba(255,230,220,.085);
+  }
+  body.premium-subpage .article:before{
+    opacity:.10;
+    right:-60px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 .brand-signature-inner>a{transition:none}
+}

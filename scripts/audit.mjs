@@ -109,6 +109,7 @@ try {
  const logic=await readFile(join(root,"campaign-links.js"),"utf8");
  const contact=await readFile(join(root,"contact.js"),"utf8");
  if(!builder.includes("data-campaign-builder")||!builder.includes('src="/v2/campaign-links.js"')) errors.push("Campaign builder: missing form or script");
+ if(!builder.includes('name="style"') || !logic.includes('const hooks =') || !logic.includes('const shorts =')) errors.push("Campaign builder: creative variants missing");
  for(const field of ["utm_source","utm_medium","utm_campaign","utm_content"]){
   if(!logic.includes(field)) errors.push("Campaign builder: missing "+field);
   if(!contact.includes(field)) errors.push("Contact form: tracking parameter not accepted "+field);

@@ -467,3 +467,17 @@ h3{line-height:1.25}
 .trust-process-grid p{line-height:1.7;color:#4e626f;margin:0}
 .trust-process-note{margin-top:18px;padding:18px 24px;border-left:3px solid #bb995f;background:#f9f5ec;color:#374c57;line-height:1.6}
 @media(max-width:800px){.trust-process-grid{grid-template-columns:1fr}.trust-process-heading{display:block}.trust-process-heading>.btn{display:inline-flex;margin:12px 0 0}.trust-process-number{margin-bottom:12px}}
+
+/* Private, printable interactive checklists */
+.interactive-checklist{margin:28px 0 36px;padding:clamp(22px,4vw,36px);border-radius:20px;border:1px solid #c6ad7e;background:#fbf9f4}
+.interactive-checklist h2{margin:8px 0 12px;color:#173448}
+.interactive-checklist>p{line-height:1.65}
+.checklist-progress{font-size:.94rem;color:#52636d}
+.checklist-items{display:grid;gap:10px;margin:20px 0}
+.checklist-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;border:1px solid #d9e1e4;border-radius:12px;background:#fff;cursor:pointer;line-height:1.5}
+.checklist-item input{width:20px;height:20px;flex:none;margin:2px 0 0;accent-color:#856333}
+.checklist-item:has(input:checked){border-color:#c4ad82;background:#f7f1e5}
+.checklist-item input:checked+span{text-decoration:line-through;text-decoration-color:#9d9b90;color:#66777e}
+.checklist-actions{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0 14px}
+.interactive-checklist>small{color:#65747a;line-height:1.6;display:block}
+@media print{.interactive-checklist{break-inside:avoid;border:1px solid #777;background:#fff}.checklist-actions{display:none!important}.checklist-item{break-inside:avoid}.checklist-item input{appearance:auto}}

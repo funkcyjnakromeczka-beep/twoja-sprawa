@@ -122,6 +122,23 @@ try {
   if(!css.includes(token)) errors.push("Contact premium: missing CSS "+token);
  }
 } catch(e){errors.push("Contact premium delivery audit failed: "+e.message);}
+// Five fast-lead paths must preselect the correct service on the contact page.
+try {
+ const home=await readFile(join(root,"index.html"),"utf8");
+ const form=await readFile(join(root,"contact.js"),"utf8");
+ const contact=await readFile(join(root,"kontakt.html"),"utf8");
+ const start=home.indexOf('class="premium-quick-lead"');
+ const end=home.indexOf('class="local-areas"',start);
+ if(start<0||end<start) errors.push("Fast leads: shortcut panel missing");
+ else {
+  const links=home.slice(start,end);
+  for(const alias of ["szkody","swiadczenie","renty","skd","przesyl"]){
+   if(!links.includes("kontakt.html?usluga="+alias+"&")) errors.push("Fast leads: shortcut missing "+alias);
+   if(!form.includes('"'+alias+'":')) errors.push("Fast leads: alias not supported by form "+alias);
+  }
+ }
+ if(!contact.includes('id="formularz"')) errors.push("Fast leads: contact anchor missing");
+} catch(e){errors.push("Fast lead audit failed: "+e.message);}
 // Premium V2 visual components, verified logo and all five film posters.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");

@@ -34,6 +34,9 @@ for (const file of files) {
     if (!html.includes("data-contact-form")) errors.push(label + ": service page missing contact form");
     if (!html.includes('src="/v2/contact.js"')) errors.push(label + ": service page missing contact script");
     else if (!/data-service="[^"]+"/.test(html)) errors.push(label + ": missing default service");
+    if (!/<section\b[^>]*\bid="formularz"[^>]*>/.test(html)) errors.push(label + ": missing #formularz target");
+    if (html.includes('href="/v2/#kontakt">Przygotuj zapytanie')) errors.push(label + ": CTA incorrectly links to homepage instead of local form");
+    if (html.includes("Automatyczny formularz nie jest jeszcze aktywny")) warnings.push(label + ": outdated inactive-form notice");
     serviceForms.push(label);
   }
   if (label === "index.html" && !html.includes("data-contact-form")) errors.push("index.html: missing contact form");

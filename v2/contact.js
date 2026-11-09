@@ -6,7 +6,7 @@
  const hosts = document.querySelectorAll("[data-contact-form]");
  for (const host of hosts) {
   const form = document.createElement("form"); form.className = "contact-form";
-  const heading = document.createElement("h3"); heading.textContent = "Wyślij zapytanie"; form.append(heading);
+  const heading = document.createElement("h3"); heading.textContent = "Przygotuj zapytanie"; form.append(heading);
   const note = document.createElement("p"); note.textContent = "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
   function field(labelText,type,required,limit,auto) {
    const id = "cf-"+(auto||type)+"-"+Math.random().toString(36).slice(2,8);
@@ -14,14 +14,14 @@
    const input=document.createElement("input"); input.id=id;input.type=type;input.required=required;input.maxLength=limit;if(auto)input.autocomplete=auto;
    form.append(label,input);return input;
   }
-  const label=document.createElement("label");label.textContent="Wybór usługi";const select=document.createElement("select");select.required=true;select.setAttribute("aria-label","Wybór usługi");const empty=document.createElement("option");empty.value="";empty.textContent="Wybierz usługę";select.append(empty);
+  const label=document.createElement("label");label.textContent="Wybór usługi";const select=document.createElement("select");select.required=true;select.id="cf-service-"+Math.random().toString(36).slice(2,8);label.htmlFor=select.id;const empty=document.createElement("option");empty.value="";empty.textContent="Wybierz usługę";select.append(empty);
   for(const name of services){const option=document.createElement("option");option.value=name;option.textContent=name;if(name===current)option.selected=true;select.append(option);}
   form.append(label,select);
   const name=field("Imię","text",true,80,"given-name");
   const city=field("Miasto lub miejscowość","text",true,100,"address-level2");
   const phone=field("Telefon kontaktowy","tel",true,30,"tel");phone.pattern="[+0-9()\\s-]{7,30}";phone.title="Podaj numer telefonu (co najmniej 7 znaków)";
   const email=field("Adres e-mail","email",true,150,"email");
-  const msgLabel=document.createElement("label");msgLabel.textContent="Treść wiadomości (opcjonalnie)";const msg=document.createElement("textarea");msg.rows=4;msg.maxLength=1500;msg.placeholder="Opisz sprawę ogólnie, bez numeru PESEL, informacji medycznych i danych dokumentów.";form.append(msgLabel,msg);
+  const msgLabel=document.createElement("label");msgLabel.textContent="Treść wiadomości (opcjonalnie)";const msg=document.createElement("textarea");msg.id="cf-message-"+Math.random().toString(36).slice(2,8);msgLabel.htmlFor=msg.id;msg.rows=4;msg.maxLength=1200;msg.placeholder="Opisz sprawę ogólnie, bez numeru PESEL, informacji medycznych i danych dokumentów.";form.append(msgLabel,msg);
   const ackLabel=document.createElement("label");ackLabel.className="check";const ack=document.createElement("input");ack.type="checkbox";ack.required=true;ackLabel.append(ack,document.createTextNode(" Rozumiem, że wiadomość nie zostanie wysłana automatycznie. Zapoznałem/am się z informacjami o prywatności."));form.append(ackLabel);
   const privacy=document.createElement("a");privacy.href="/v2/polityka-prywatnosci.html";privacy.textContent="Informacje o prywatności";form.append(privacy);
   const button=document.createElement("button");button.className="btn";button.type="submit";button.textContent="Przygotuj wiadomość e-mail";form.append(button);

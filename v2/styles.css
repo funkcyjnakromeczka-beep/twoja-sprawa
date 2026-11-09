@@ -481,3 +481,19 @@ h3{line-height:1.25}
 .checklist-actions{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0 14px}
 .interactive-checklist>small{color:#65747a;line-height:1.6;display:block}
 @media print{.interactive-checklist{break-inside:avoid;border:1px solid #777;background:#fff}.checklist-actions{display:none!important}.checklist-item{break-inside:avoid}.checklist-item input{appearance:auto}}
+
+/* Editorial resource hub, five practical guides */
+.guide-showcase{padding-top:clamp(42px,6vw,80px);padding-bottom:clamp(42px,6vw,80px)}
+.guide-showcase h2{max-width:22ch;margin:12px 0}
+.guide-showcase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:28px 0 18px}
+.guide-showcase-card{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:265px;padding:clamp(20px,3vw,30px);background:#fff;border:1px solid #d9e2e5;border-radius:20px;color:#19384a;text-decoration:none;transition:transform .2s,border-color .2s,box-shadow .2s}
+.guide-showcase-card:hover{transform:translateY(-3px);border-color:#bd9c60;box-shadow:0 12px 30px rgba(15,45,64,.08)}
+.guide-showcase-card:focus-visible{outline:3px solid #a57b38;outline-offset:4px}
+.guide-showcase-symbol{display:grid;place-items:center;width:47px;height:47px;background:#f4eddf;border-radius:14px;color:#97733d;font-size:1.7rem}
+.guide-showcase-card h3{margin:4px 0 0;font-size:1.35rem}
+.guide-showcase-card p{margin:0;line-height:1.6;color:#536774}
+.guide-showcase-action{margin-top:auto;padding-top:8px;font-size:.9rem;font-weight:700;color:#876333}
+.guide-showcase-note{font-size:.85rem;color:#5d6c74}
+@media(max-width:920px){.guide-showcase-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.guide-showcase-grid{grid-template-columns:1fr}.guide-showcase-card{min-height:unset}}
+@media(prefers-reduced-motion:reduce){.guide-showcase-card{transition:none}.guide-showcase-card:hover{transform:none}}

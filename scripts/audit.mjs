@@ -25,7 +25,10 @@ for (const file of files) {
   else seenTitles.set(title, label);
   if (h1.length !== 1) errors.push(label + ": expected one H1, found " + h1.length);
   if (!/<meta\s+name="description"/i.test(html)) warnings.push(label + ": missing meta description");
+  if (!/<meta\s+name="robots" content="noindex,follow"/i.test(html)) errors.push(label + ": draft page must remain noindex");
   if (!/<html\s+lang="pl"/i.test(html)) warnings.push(label + ": missing lang=pl");
+  if (/<script\b[^>]*src="https?:/i.test(html)) warnings.push(label + ": third-party script needs privacy review");
+  if (html.includes("data-contact-form") && !html.includes('src="/v2/contact.js"')) errors.push(label + ": contact form without script");
   const attributes = [...html.matchAll(/\b(?:href|src)="([^"]+)"/g)].map(m => m[1]);
   for (const attr of attributes) {
     if (!attr.startsWith("/v2/")) continue;

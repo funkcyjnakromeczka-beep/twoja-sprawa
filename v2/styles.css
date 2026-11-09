@@ -342,3 +342,22 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .guide-more-links a:focus-visible{outline:3px solid #a27a3d;outline-offset:3px}
 @media(max-width:760px){.guide-more-links{grid-template-columns:1fr}.guide-more-links a{min-height:56px}}
 @media(prefers-reduced-motion:reduce){.guide-more-links a{transition:none}.guide-more-links a:hover{transform:none}}
+
+/* Accessible guide print control; clean A4 export without navigation or lead CTAs. */
+.guide-tools{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 26px}
+.guide-tools button{cursor:pointer}
+@media print{
+ @page{size:A4;margin:16mm 15mm}
+ html,body{background:#fff!important;color:#111!important;font:11pt/1.45 Arial,sans-serif!important}
+ body *{box-shadow:none!important;text-shadow:none!important}
+ header,footer,.guide-tools,.guide-next,.skip-link,.campaign-mobile-actions{display:none!important}
+ .guide-article{max-width:none!important;width:100%!important;margin:0!important;padding:0!important}
+ .guide-article h1{font-size:22pt!important;line-height:1.15!important;max-width:none!important;color:#111!important;margin:8mm 0 5mm!important}
+ .guide-article h2{font-size:15pt!important;color:#111!important;margin:8mm 0 4mm!important}
+ .guide-article p,.guide-checklist li{color:#111!important}
+ .guide-checklist{display:block!important;list-style:decimal!important;padding-left:7mm!important;margin:0!important}
+ .guide-checklist li{display:list-item!important;break-inside:avoid!important;border:0!important;background:#fff!important;padding:2mm 0!important;margin:0!important;border-radius:0!important}
+ .guide-checklist li::before{display:none!important}
+ .guide-checklist strong{color:#111!important}
+ a{color:#111!important;text-decoration:none!important}
+}

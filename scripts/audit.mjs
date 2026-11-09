@@ -139,6 +139,17 @@ try {
  }
  if(!contact.includes('id="formularz"')) errors.push("Fast leads: contact anchor missing");
 } catch(e){errors.push("Fast lead audit failed: "+e.message);}
+// Main acquisition landing pages must share premium styles without altering forms.
+try {
+ const css=await readFile(join(root,"premium-v2.css"),"utf8");
+ if(!css.includes(".premium-campaign .campaign-hero")||!css.includes(".premium-campaign .campaign-form")) errors.push("Campaign premium: required styles missing");
+ for(const [slug,theme] of [["swiadczenie-wspierajace","campaign-support"],["szkody-gornicze","campaign-mining"]]){
+  const page=await readFile(join(root,"kampanie",slug+".html"),"utf8");
+  if(!page.includes('class="campaign-page premium-campaign '+theme+'"')) errors.push("Campaign premium: theme missing "+slug);
+  if(!page.includes('href="/v2/premium-v2.css"')) errors.push("Campaign premium: stylesheet missing "+slug);
+  if(!page.includes('data-contact-form')||!page.includes('id="formularz"')) errors.push("Campaign premium: form missing "+slug);
+ }
+} catch(e){errors.push("Campaign premium audit failed: "+e.message);}
 // Premium V2 visual components, verified logo and all five film posters.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");

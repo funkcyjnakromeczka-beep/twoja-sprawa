@@ -489,3 +489,407 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
   .premium-v2 .quick-path-links>a:hover,
   .premium-v2 .team-person:hover{transform:none}
 }
+
+
+/* VISUAL-REFRESH-2026-11-09: editorial hierarchy, navigation and responsive polish */
+.premium-v2{
+  --editorial-ink:#153344;
+  --editorial-muted:#49616a;
+  --editorial-gold:#bd9255;
+  --editorial-cream:#faf7f0;
+  --editorial-border:#dfdfd8;
+  overflow-x:clip;
+}
+.premium-v2 :where(.wrap,.quick-path,.contact) :where(h2,h3){
+  text-wrap:balance;
+}
+.premium-v2 :where(.section-lead,.trust-process-note,.proof-note){
+  text-wrap:pretty;
+}
+.premium-v2 .site-header{
+  position:sticky;
+  top:0;
+  box-shadow:0 9px 26px rgba(7,23,33,.12);
+  transition:box-shadow .2s ease;
+}
+.premium-v2 .site-header.is-scrolled{
+  box-shadow:0 12px 35px rgba(3,15,22,.28);
+}
+.premium-v2 .site-header .main-nav a{
+  text-underline-offset:5px;
+  transition:background-color .18s ease,color .18s ease;
+}
+.premium-v2 .site-header .main-nav a:hover:not(.nav-contact-link){
+  background:rgba(255,255,255,.085);
+  color:#f0d2a1;
+}
+.premium-v2 .hero-glamour{
+  background-image:
+    radial-gradient(circle at 85% 18%,rgba(202,165,106,.19),transparent 33%),
+    linear-gradient(106deg,rgba(4,18,29,.98) 0%,rgba(9,32,47,.96) 49%,rgba(15,49,67,.79) 100%),
+    url("https://images.unsplash.com/photo-1670078763002-59f7982d493e?auto=format&fit=crop&w=1800&q=72");
+}
+.premium-v2 .hero-glamour .eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  color:#e9ca90;
+  font-size:.78rem;
+  font-weight:800;
+}
+.premium-v2 .hero-glamour .eyebrow:before{
+  content:"";
+  width:26px;
+  height:1px;
+  background:#e0b77d;
+}
+.premium-v2 .hero-glamour .hero-benefits span{
+  background:rgba(255,255,255,.065);
+  border-color:rgba(235,202,150,.23);
+  color:#f1f3ef;
+}
+.premium-v2 .hero-glamour .hero-art{
+  outline:1px solid rgba(244,216,171,.12);
+  outline-offset:10px;
+  box-shadow:0 28px 76px rgba(0,0,0,.33),0 0 65px rgba(198,159,96,.075);
+}
+.premium-v2 .hero-glamour .actions .btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:49px;
+  text-align:center;
+}
+.premium-v2 .premium-confidence-grid{
+  border-color:#d9d6d0;
+  box-shadow:0 20px 58px rgba(12,32,39,.14);
+}
+.premium-v2 .premium-confidence-grid>div{
+  background:linear-gradient(135deg,rgba(255,255,255,1),rgba(251,249,244,.93));
+}
+.premium-v2 .premium-confidence-grid strong{
+  color:#163a4a;
+}
+.premium-v2 .quick-path{
+  background-image:
+    radial-gradient(ellipse at 86% 9%,rgba(203,166,103,.13),transparent 43%),
+    linear-gradient(135deg,#fffdf8,#f1f5f3);
+}
+.premium-v2 .quick-path .quick-path-links>a{
+  border:1px solid #e0dfd5;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 9px 25px rgba(17,41,52,.065);
+}
+.premium-v2 .quick-path .quick-path-links>a .quick-path-icon{
+  display:grid;
+  place-items:center;
+  flex:0 0 43px;
+  width:43px;
+  height:43px;
+  border:1px solid #e9dcc3;
+  border-radius:13px;
+  background:linear-gradient(135deg,#f9f2e6,#f3ebdc);
+  color:#8d6637;
+  font:700 1.35rem/1 Georgia,serif;
+}
+.premium-v2 .quick-path .quick-path-links>a:hover{
+  background:#fffdf9;
+  border-color:#c6a36b;
+}
+.premium-v2 .campaign-home-feature{
+  position:relative;
+  isolation:isolate;
+  background-image:linear-gradient(105deg,rgba(249,248,244,.99) 0%,rgba(249,248,244,.97) 66%,rgba(249,248,244,.86) 100%),url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 3% center;
+  background-size:cover,240px auto;
+  background-repeat:no-repeat;
+}
+.premium-v2 .campaign-home-grid{
+  align-items:stretch;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border-radius:23px;
+  border:1px solid #d9ddd7;
+  background:linear-gradient(142deg,#ffffff,#f5f7f5);
+  box-shadow:0 17px 42px rgba(17,45,53,.085);
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:first-child{
+  border-color:#295061;
+  background:radial-gradient(ellipse at 91% 16%,rgba(202,167,109,.17),transparent 44%),linear-gradient(130deg,#153c50,#092331);
+  color:#f7f6ef;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:first-child :where(h3,p,.campaign-home-kicker){
+  color:#f5f4ec;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:nth-child(2){
+  border-color:#e6d9c3;
+  background:radial-gradient(ellipse at 92% 20%,rgba(198,161,97,.18),transparent 43%),linear-gradient(140deg,#fffaf1,#f3efe5);
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:hover{
+  transform:translateY(-3px);
+  border-color:#c5a370;
+  box-shadow:0 24px 49px rgba(17,45,53,.13);
+}
+.premium-v2 .campaign-home-feature .campaign-home-card .btn{
+  margin-top:auto;
+}
+.premium-v2 .guide-showcase{
+  background-image:linear-gradient(95deg,rgba(250,249,246,.99) 0%,rgba(250,249,246,.97) 70%,rgba(250,249,246,.82)),url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 2% top 18px;
+  background-size:cover,190px auto;
+  background-repeat:no-repeat;
+}
+.premium-v2 .guide-showcase-card{
+  border:1px solid #e2e3db;
+  border-radius:22px;
+  box-shadow:0 12px 31px rgba(19,41,48,.065);
+}
+.premium-v2 .guide-showcase-card:hover{
+  background:#fffefb;
+  border-color:#c5a775;
+}
+.premium-v2 .guide-showcase-symbol{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  background:#f7f1e6;
+  color:#866435;
+}
+.premium-v2 #dobierz-pomoc{
+  background:linear-gradient(145deg,#edf4f3,#f7f6f0);
+}
+.premium-v2 #dobierz-pomoc .navigator-option{
+  border-color:#d2dcdb;
+  border-radius:17px;
+  box-shadow:0 8px 20px rgba(15,46,55,.055);
+}
+.premium-v2 #dobierz-pomoc .navigator-option:hover,
+.premium-v2 #dobierz-pomoc .navigator-option[aria-pressed="true"]{
+  border-color:#bd985e;
+  box-shadow:0 12px 24px rgba(15,46,55,.10);
+}
+.premium-v2 #uslugi{
+  background:linear-gradient(112deg,#071d2b,#123747 62%,#0b2633);
+}
+.premium-v2 #uslugi .section-lead{
+  color:#d9e4e6;
+}
+.premium-v2 #uslugi .primary-card{
+  border-color:rgba(230,207,168,.25);
+  border-radius:22px;
+  background:linear-gradient(151deg,rgba(31,68,81,.96),rgba(8,28,39,.96));
+}
+.premium-v2 #uslugi .primary-card :where(h3,p,.overline,.more){
+  position:relative;
+  z-index:1;
+}
+.premium-v2 #uslugi .primary-card h3{
+  font-size:clamp(1.3rem,1.75vw,1.75rem);
+  line-height:1.23;
+  color:#fffdf8;
+}
+.premium-v2 #uslugi .primary-card p{
+  color:#dbe9e9;
+}
+.premium-v2 #uslugi .other-links a{
+  min-height:51px;
+  background:rgba(255,255,255,.07);
+  border-color:rgba(224,207,176,.26);
+  border-radius:12px;
+}
+.premium-v2 #uslugi .other-links a:hover{
+  background:rgba(255,255,255,.12);
+  border-color:#e0b77e;
+}
+.premium-v2 .votum-proof{
+  background-image:linear-gradient(108deg,rgba(248,245,239,.995) 0%,rgba(248,245,239,.99) 70%,rgba(248,245,239,.86)),url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 2% center;
+  background-size:cover,260px auto;
+  background-repeat:no-repeat;
+}
+.premium-v2 .votum-proof .votum-stats>div{
+  border:1px solid #deddd5;
+  border-radius:16px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 10px 28px rgba(24,44,50,.045);
+}
+.premium-v2 .trust-process{
+  background:linear-gradient(145deg,#faf9f5,#f3f6f3);
+}
+.premium-v2 .trust-process-grid>li{
+  border-radius:19px;
+  border:1px solid #dedfd8;
+  background:rgba(255,255,255,.91);
+  box-shadow:0 11px 25px rgba(14,39,48,.05);
+}
+.premium-v2 .trust-section{
+  background:linear-gradient(136deg,#f8f7f2,#f0f3f0);
+}
+.premium-v2 .trust-grid article{
+  border-radius:18px;
+  border:1px solid #dfe1db;
+  background:rgba(255,255,255,.94);
+}
+.premium-v2 .faq-home{
+  padding-block:clamp(42px,5vw,72px);
+}
+.premium-v2 .faq-home details{
+  margin:11px 0;
+  padding:0;
+  border:1px solid #dfe2dd;
+  border-radius:14px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 4px 18px rgba(22,48,52,.035);
+  overflow:hidden;
+}
+.premium-v2 .faq-home summary{
+  position:relative;
+  display:block;
+  cursor:pointer;
+  padding:19px 55px 19px 21px;
+  line-height:1.4;
+  color:#183c4d;
+  list-style:none;
+}
+.premium-v2 .faq-home summary::-webkit-details-marker{display:none}
+.premium-v2 .faq-home summary::after{
+  content:"+";
+  position:absolute;
+  right:20px;
+  top:50%;
+  transform:translateY(-50%);
+  font:600 1.6rem/1 system-ui,sans-serif;
+  color:#9b7844;
+}
+.premium-v2 .faq-home details[open]{
+  border-color:#d3b989;
+  box-shadow:0 8px 27px rgba(22,48,52,.065);
+}
+.premium-v2 .faq-home details[open] summary::after{content:"−"}
+.premium-v2 .faq-home details p{
+  padding:0 22px 20px;
+  margin:0;
+}
+.premium-v2 #kontakt{
+  background-image:linear-gradient(110deg,rgba(238,245,243,.98),rgba(249,247,240,.92)),url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 2% top 5%;
+  background-size:cover,210px auto;
+  background-repeat:no-repeat;
+}
+.premium-v2 #kontakt .lead-panel{
+  border:1px solid #d7dfd8;
+  border-radius:24px;
+  box-shadow:0 22px 57px rgba(12,39,46,.12);
+  background:rgba(255,255,255,.97);
+}
+.premium-v2 #kontakt .contact-form{
+  box-shadow:none;
+  border:0;
+  background:transparent;
+}
+.premium-v2 #kontakt .contact-form :where(input:not([type=checkbox]),select,textarea){
+  border:1px solid #bfcfce;
+  border-radius:11px;
+}
+.premium-v2 #filmy .video-feature{
+  border:1px solid #d6dcd9;
+  border-radius:22px;
+  overflow:hidden;
+  background:linear-gradient(145deg,#ffffff,#f7f8f6);
+  box-shadow:0 15px 35px rgba(22,41,46,.07);
+}
+.premium-v2 #filmy .video-feature:first-child{
+  border-color:#234a59;
+  background:linear-gradient(120deg,#0c2b3b,#1b4555);
+}
+.premium-v2 #zespol .team-person{
+  padding:clamp(22px,3vw,31px);
+  border-radius:22px;
+}
+.premium-v2 #zespol .team-person a{
+  font-weight:800;
+  text-underline-offset:4px;
+}
+.premium-v2 footer{
+  border-top:1px solid rgba(223,192,139,.28);
+}
+@media(max-width:960px){
+  .premium-v2 .hero-glamour{min-height:auto}
+  .premium-v2 .site-header{position:relative}
+  .premium-v2 .campaign-home-feature{background-size:cover,180px auto}
+}
+@media(max-width:680px){
+  .premium-v2 .hero-glamour{gap:22px}
+  .premium-v2 .hero-glamour h1{
+    font-size:clamp(2.65rem,10vw,3.75rem);
+    margin-block:11px 19px;
+  }
+  .premium-v2 .hero-glamour .actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+  .premium-v2 .hero-glamour .actions .btn{
+    min-width:0;
+    padding:12px;
+    font-size:.87rem;
+    white-space:normal;
+  }
+  .premium-v2 .hero-glamour .actions .btn:first-child{
+    grid-column:1/-1;
+  }
+  .premium-v2 .hero-visual{
+    min-height:200px;
+  }
+  .premium-v2 .hero-art{
+    width:min(56vw,220px);
+  }
+  .premium-v2 .premium-confidence-grid>div{
+    padding:18px 20px;
+  }
+  .premium-v2 .quick-path .quick-path-links>a{
+    min-height:76px;
+    padding:13px 14px;
+  }
+  .premium-v2 .quick-path .quick-path-links>a .quick-path-icon{
+    flex-basis:39px;
+    width:39px;
+    height:39px;
+  }
+  .premium-v2 .campaign-home-feature,
+  .premium-v2 .guide-showcase,
+  .premium-v2 .votum-proof,
+  .premium-v2 #kontakt{
+    background-size:cover,145px auto;
+    background-position:center,right -45px top 25px;
+  }
+  .premium-v2 #uslugi .primary-card{
+    min-height:220px;
+    padding:23px;
+  }
+  .premium-v2 .faq-home summary{
+    padding:17px 49px 17px 16px;
+    font-size:1rem;
+  }
+  .premium-v2 #kontakt .lead-panel{
+    border-radius:18px;
+    padding:14px;
+  }
+  .premium-v2 .campaign-home-feature .campaign-home-card:hover{
+    transform:none;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 .site-header,
+  .premium-v2 .site-header .main-nav a,
+  .premium-v2 .campaign-home-feature .campaign-home-card{
+    transition:none;
+  }
+  .premium-v2 .campaign-home-feature .campaign-home-card:hover{
+    transform:none;
+  }
+}

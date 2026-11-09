@@ -39,6 +39,12 @@ for (const file of files) {
     if (html.includes("Automatyczny formularz nie jest jeszcze aktywny")) warnings.push(label + ": outdated inactive-form notice");
     serviceForms.push(label);
   }
+  if (label.startsWith("kampanie/")) {
+    if (!html.includes('id="formularz"')) errors.push(label + ": campaign landing missing #formularz");
+    if (!html.includes("data-contact-form")) errors.push(label + ": campaign landing missing form");
+    if (!/data-service="[^"]+"/.test(html)) errors.push(label + ": campaign landing missing service");
+    if (!html.includes('href="#formularz"')) warnings.push(label + ": campaign landing missing form CTA");
+  }
   if (label === "index.html" && !html.includes("data-contact-form")) errors.push("index.html: missing contact form");
   if (label === "index.html" && !html.includes('src="/v2/chat-assistant.js"')) warnings.push("index.html: assistant script missing");
   const attributes = [...html.matchAll(/\b(?:href|src)="([^"]+)"/g)].map(m => m[1]);

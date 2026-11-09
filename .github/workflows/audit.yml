@@ -22,10 +22,13 @@ jobs:
           node --check scripts/build.mjs
           node --check scripts/seo-policy.mjs
           node --check scripts/test-seo-policy.mjs
+          node --check scripts/test-campaign-links.mjs
           node --check scripts/test-contact.mjs
           node --check scripts/preview.mjs
       - name: Testy formularza API bez wysyłania e-maili
         run: node scripts/test-contact.mjs
+      - name: Przetestuj generator kampanii bez połączenia z siecią
+        run: node scripts/test-campaign-links.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji
         run: node scripts/test-seo-policy.mjs
       - name: Sprawdź pliki HTML i odnośniki

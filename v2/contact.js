@@ -4,7 +4,7 @@
  const services = ["Szkody górnicze","Świadczenie wspierające","Renty powypadkowe","Kredyt w PLN / SKD","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
  const current = document.currentScript?.getAttribute("data-service") || "";
  const hosts = document.querySelectorAll("[data-contact-form]");
- const accessKey=document.querySelector('meta[name="web3forms-access-key"]')?.content?.trim()||"";
+ const accessKey="80a28b90-b5ac-406e-8512-3d3c1615b73c"; // Publiczny identyfikator formularza Web3Forms, nie hasło.
  const automatic=/^[a-f0-9-]{30,40}$/i.test(accessKey);
 
  for (const host of hosts) {

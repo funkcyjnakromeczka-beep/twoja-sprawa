@@ -8,9 +8,12 @@ import { join, relative, dirname } from "node:path";
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
 const release=process.env.RELEASE==="1";
+const legalApproved=process.env.LEGAL_APPROVED==="1";
+const contentApproved=process.env.CONTENT_APPROVED==="1";
+const formApproved=process.env.FORM_APPROVED==="1";
 if(!url || !/^https:\/\/[^/]+\.[^/]+\/?$/.test(url)) throw new Error("SITE_URL must be HTTPS origin without a path.");
 const origin=url.replace(/\/$/,"");
-if(!release) throw new Error("Release is gated: set RELEASE=1 only after content, privacy and form approval.");
+if(!release || !legalApproved || !contentApproved || !formApproved) throw new Error("Release blocked. Requires RELEASE=1, LEGAL_APPROVED=1, CONTENT_APPROVED=1 and FORM_APPROVED=1 after verified sign-off.");
 await rm(dest,{recursive:true,force:true});
 await mkdir(dest,{recursive:true});
 const pages=[];
@@ -23,12 +26,13 @@ async function walk(dir){
     await mkdir(dirname(target),{recursive:true});
     if(entry.name.endsWith(".html")){
       let html=await readFile(absolute,"utf8");
-      const route=rel==="index.html"?"/":"/"+rel;
+      const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
       const canonical=origin+route;
       html=html.replaceAll("/v2/","/");
       html=html.replace(/<meta name="robots" content="noindex,follow">/g,'<meta name="robots" content="index,follow">');
       if(!html.includes('rel="canonical"')) html=html.replace("</head>",'<link rel="canonical" href="'+canonical+'"></head>');
       if(!html.includes('property="og:url"')) html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');
+      if(!html.includes('<meta name="robots" content="index,follow">')) throw new Error("Missing indexable robots tag: "+rel);
       await writeFile(target,html);
       pages.push(route);
     } else {

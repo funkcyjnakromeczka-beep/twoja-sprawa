@@ -112,6 +112,16 @@ try {
  for(const phone of ["796 441 345","500 171 531"]) if(!page.includes(phone)) errors.push("Contact premium: missing "+phone);
  if(!page.includes('data-contact-form')) errors.push("Contact premium: original form host missing");
 } catch(e){errors.push("Contact premium audit failed: "+e.message);}
+// Premium contact form should distinguish API acceptance from inbox delivery.
+try {
+ const contact=await readFile(join(root,"contact.js"),"utf8");
+ const css=await readFile(join(root,"premium-v2.css"),"utf8");
+ if(!contact.includes("Nie jest to jeszcze potwierdzenie dostarczenia wiadomości")) errors.push("Contact premium: delivery caveat missing");
+ if(!contact.includes("form.reset();updateAdvisor();updateGuide();updateStage()")) errors.push("Contact premium: guide state not reset");
+ for(const token of [".contact-status-success",".contact-status-error",".contact-advisor",".contact-guide-box"]){
+  if(!css.includes(token)) errors.push("Contact premium: missing CSS "+token);
+ }
+} catch(e){errors.push("Contact premium delivery audit failed: "+e.message);}
 // Premium V2 visual components, verified logo and all five film posters.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");

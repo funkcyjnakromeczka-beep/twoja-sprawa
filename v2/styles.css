@@ -127,3 +127,25 @@ html{scroll-padding-top:20px}
 .team-avatar{width:110px;height:110px;border-radius:50%;margin:0 auto;display:grid;place-items:center;background:#243c50;border:2px solid #d5b67a;color:#f7e2bd;font:normal 2rem Georgia,serif;overflow:hidden}
 .team-avatar img{width:100%;height:100%;object-fit:cover;display:block}
 @media(max-width:560px){.team-grid{grid-template-columns:1fr}.team-avatar{width:92px;height:92px}}
+
+/* Projektowe kafle 2026 — wyraźna hierarchia, głębia, lekkie tła. */
+.primary-services{grid-template-columns:repeat(6,minmax(0,1fr));gap:20px;margin-top:30px}
+.primary-services>.primary-card{grid-column:span 2;position:relative;isolation:isolate;overflow:hidden;min-height:295px;padding:34px 30px 28px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;border:1px solid rgba(233,198,133,.48);border-radius:22px;background:linear-gradient(145deg,#18334a 0%,#102235 55%,#071723 100%);box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),inset -2px -2px 0 rgba(0,0,0,.38),0 4px 0 #091723,0 15px 32px rgba(0,0,0,.22);color:#f7f4ef;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.primary-services>.primary-card:nth-child(4),.primary-services>.primary-card:nth-child(5){grid-column:span 3}
+.primary-card:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;background:radial-gradient(circle at 83% 17%,rgba(236,192,115,.3),transparent 40%),linear-gradient(135deg,rgba(255,255,255,.08),transparent 45%);pointer-events:none}
+.primary-card:after{content:"";position:absolute;right:-55px;top:-65px;width:220px;height:220px;border:1px solid rgba(230,195,136,.22);border-radius:50%;box-shadow:0 0 0 32px rgba(232,193,121,.045),0 0 0 65px rgba(232,193,121,.03);pointer-events:none}
+.primary-card:nth-child(2){background:linear-gradient(145deg,#173e47,#0a222d 70%)}
+.primary-card:nth-child(3){background:linear-gradient(145deg,#344057,#111e32 70%)}
+.primary-card:nth-child(4){background:linear-gradient(145deg,#3c3448,#181a2b 70%)}
+.primary-card:nth-child(5){background:linear-gradient(145deg,#3c4038,#1b2729 70%)}
+.primary-card .project-number{position:absolute;top:23px;left:29px;color:#e4c48a;font-size:.8rem;font-weight:800;letter-spacing:.15em}
+.primary-card .project-symbol{position:absolute;top:14px;right:28px;font:normal 3.5rem Georgia,serif;color:rgba(241,204,138,.38)}
+.primary-card .overline{color:#e8cfa1;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;margin:28px 0 8px}
+.primary-card h3{font:normal clamp(1.55rem,2.1vw,2.05rem)/1.17 Georgia,serif;color:#fff;margin:0 0 12px;max-width:340px}
+.primary-card p{color:#d6e0e5;line-height:1.55;margin:0 0 22px;max-width:410px;font-size:.96rem}
+.primary-card .more{margin-top:auto;padding:11px 16px;border:1px solid rgba(236,199,139,.65);border-radius:9px;color:#f2d69e;background:rgba(0,0,0,.12)}
+.primary-services>.primary-card:hover,.primary-services>.primary-card:focus-visible{transform:translateY(-5px);border-color:#f2d69e;box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),0 5px 0 #091723,0 22px 42px rgba(0,0,0,.28)}
+#uslugi>.section-lead{max-width:660px;line-height:1.65}
+#uslugi>h2{max-width:850px}
+@media(max-width:980px){.primary-services{grid-template-columns:repeat(2,minmax(0,1fr))}.primary-services>.primary-card,.primary-services>.primary-card:nth-child(4),.primary-services>.primary-card:nth-child(5){grid-column:span 1;min-height:280px}}
+@media(max-width:620px){.primary-services{grid-template-columns:1fr;gap:16px}.primary-services>.primary-card,.primary-services>.primary-card:nth-child(4),.primary-services>.primary-card:nth-child(5){grid-column:span 1;min-height:245px;padding:28px 24px 24px}.primary-card .project-number{left:24px}.primary-card .project-symbol{right:22px}.primary-card h3{font-size:1.65rem}}

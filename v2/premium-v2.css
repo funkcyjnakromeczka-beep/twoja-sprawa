@@ -402,3 +402,14 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 .quick-path-links .quick-path-arrow{margin-left:auto;color:#997039;font-size:1.2rem}
 @media(max-width:900px){.premium-v2 .quick-path>.quick-path-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.premium-v2 .quick-path>.quick-path-heading{margin-bottom:17px}.premium-v2 .quick-path>.quick-path-links{grid-template-columns:1fr;gap:9px}.premium-v2 .quick-path-links>a{min-height:80px;padding:13px 15px}.premium-v2 .quick-path-heading h2{font-size:1.85rem}}
+
+/* Editorial hierarchy: lighter navigation aids, calmer reading sections. */
+.premium-v2 #dobierz-pomoc{background:linear-gradient(135deg,#eef3f2,#f9f7f1);border-top:1px solid #e3e7e1;border-bottom:1px solid #e3e7e1}
+.premium-v2 #dobierz-pomoc .navigator-head h2{letter-spacing:-.025em;text-wrap:balance}
+.premium-v2 #kontakt{scroll-margin-top:20px;background:linear-gradient(125deg,#f5f6f3,#eaf0ef)}
+.premium-v2 #kontakt>h2{font-size:clamp(1.85rem,3.4vw,2.9rem);letter-spacing:-.025em;line-height:1.2;text-wrap:balance}
+.premium-v2 #kontakt>.lead-panel{max-width:1100px;margin-inline:auto;border:1px solid #dce5e1;box-shadow:0 18px 44px rgba(17,44,53,.09)}
+.premium-v2 #kontakt input:not([type=checkbox]),.premium-v2 #kontakt select,.premium-v2 #kontakt textarea{max-width:100%;border-radius:10px}
+.premium-v2 #kontakt input:focus-visible,.premium-v2 #kontakt select:focus-visible,.premium-v2 #kontakt textarea:focus-visible{outline:3px solid #cba469;outline-offset:2px}
+.premium-v2 .quick-path,.premium-v2 #uslugi,.premium-v2 #dobierz-pomoc,.premium-v2 #kontakt{scroll-margin-top:16px}
+@media(max-width:650px){.premium-v2 #dobierz-pomoc,.premium-v2 #kontakt{padding-block:34px}.premium-v2 #kontakt>.lead-panel{padding:18px;margin-top:18px}.premium-v2 #kontakt>.actions{gap:9px}.premium-v2 #kontakt>.actions .btn{flex:1 1 170px;text-align:center}}

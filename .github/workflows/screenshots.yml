@@ -1,0 +1,28 @@
+name: Zrzuty ekranu — podgląd PC i telefon
+on:
+  workflow_dispatch:
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Zbuduj podgląd bez indeksowania
+        run: node scripts/preview.mjs
+      - name: Zainstaluj przeglądarkę testową
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Wykonaj zrzuty ekranu
+        run: node scripts/screenshot-preview.mjs
+      - name: Udostępnij obrazy do kontroli
+        uses: actions/upload-artifact@v4
+        with:
+          name: twoja-sprawa-podglad-pc-telefon
+          path: screenshots/
+          retention-days: 7

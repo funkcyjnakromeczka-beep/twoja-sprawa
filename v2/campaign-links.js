@@ -56,7 +56,7 @@
     przesyl: "Słupy lub linie na działce? Warto ustalić dokumentację i stan prawny urządzeń przesyłowych przed podjęciem dalszych działań."
   };
   const channels = {
-    facebook: "social", instagram: "social", tiktok: "social",
+    facebook: "social", facebook_grupa: "grupa", facebook_strona: "post", instagram: "social", tiktok: "social",
     google: "search", ulotka: "print", plakat: "print",
     qr: "print", polecenie: "referral", organiczne: "organic", inne: "other"
   };
@@ -67,9 +67,10 @@
     const origin = window.location.origin;
     const target = new URL(chosen.path, origin);
     const campaign = slug(name.value) || "kampania_bezplatna";
-    const source = Object.prototype.hasOwnProperty.call(channels, channel.value) ? channel.value : "inne";
+    const selectedChannel = Object.prototype.hasOwnProperty.call(channels, channel.value) ? channel.value : "inne";
+    const source = selectedChannel.startsWith("facebook_") ? "facebook" : selectedChannel;
     target.searchParams.set("utm_source", source);
-    target.searchParams.set("utm_medium", channels[source]);
+    target.searchParams.set("utm_medium", channels[selectedChannel]);
     target.searchParams.set("utm_campaign", campaign);
     const variant = slug(content.value) || slug(style.value);
     if (variant) target.searchParams.set("utm_content", variant);

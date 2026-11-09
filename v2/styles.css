@@ -176,3 +176,13 @@ body:has(.subhero) .article .contact-form{color:#162a3b}
 body:has(.subhero) .article .contact-form p,body:has(.subhero) .article .contact-form label{color:#1b3448!important}
 body:has(.subhero) .article .contact-form a{color:#694615}
 @media(max-width:650px){body:has(.subhero) .article{padding:24px 5%}body:has(.subhero) .article>section{margin-bottom:16px;padding:22px 20px}}
+
+/* Materiały wideo jako wyraźne, lekkie kafle zewnętrznych odtwarzaczy. */
+.video-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:25px 0}
+.video-links a{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;min-height:175px;padding:22px;border:1px solid #ad9365;border-radius:17px;background:radial-gradient(circle at 90% 0%,#395267,#152a3d 65%);color:#fff;text-decoration:none;box-shadow:0 10px 25px rgba(0,0,0,.18);transition:transform .2s ease,box-shadow .2s ease}
+.video-links a:hover,.video-links a:focus-visible{transform:translateY(-4px);box-shadow:0 16px 28px rgba(0,0,0,.25)}
+.video-links a>span{display:grid;place-items:center;width:45px;height:45px;border:1px solid #e4c487;border-radius:50%;color:#f6dca4;margin-bottom:18px}
+.video-links strong{font:normal 1.3rem Georgia,serif}
+.video-links small{color:#d8e2eb;margin-top:8px}
+@media(max-width:950px){.video-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.video-links{grid-template-columns:1fr}.video-links a{min-height:145px}}

@@ -375,3 +375,16 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 .hero-glamour .btn:focus-visible{outline:3px solid #fff;outline-offset:4px}
 @media(max-width:850px){.premium-v2 .hero-glamour:before{background:radial-gradient(ellipse at 80% 70%,rgba(215,172,104,.12),transparent 45%),url("/v2/assets/temida-outline.svg") no-repeat 95% 78%/auto 57%;opacity:.27}}
 @media(max-width:600px){.premium-v2 .hero-glamour:before{background:url("/v2/assets/temida-outline.svg") no-repeat 110% 90%/auto 58%;opacity:.11}.premium-v2 .hero-glamour:after{display:none}}
+
+/* Distinct service illustrations made from lightweight CSS motifs. */
+.premium-v2 #uslugi .primary-card{overflow:hidden}
+.premium-v2 #uslugi .primary-card:after{position:absolute;pointer-events:none;z-index:-1;right:-12px;bottom:-42px;font-family:Georgia,serif;font-weight:700;font-size:clamp(115px,13vw,195px);line-height:1;opacity:.095;color:#f4dfba;transform:rotate(-12deg)}
+.premium-v2 #uslugi .primary-card:nth-child(1):after{content:"⌂"}
+.premium-v2 #uslugi .primary-card:nth-child(2):after{content:"✧"}
+.premium-v2 #uslugi .primary-card:nth-child(3):after{content:"↗"}
+.premium-v2 #uslugi .primary-card:nth-child(4):after{content:"§"}
+.premium-v2 #uslugi .primary-card:nth-child(5):after{content:"⚡"}
+.premium-v2 #uslugi .primary-card .project-number{font-variant-numeric:tabular-nums}
+.premium-v2 #uslugi .primary-card .more{display:inline-flex;align-items:center;gap:6px;border-bottom:1px solid rgba(240,208,148,.48);padding-bottom:4px}
+.premium-v2 #uslugi .primary-card:focus-visible .more,.premium-v2 #uslugi .primary-card:hover .more{border-bottom-color:#f3d49f}
+@media(max-width:650px){.premium-v2 #uslugi .primary-card:after{font-size:135px;opacity:.055;right:-10px;bottom:-22px}}

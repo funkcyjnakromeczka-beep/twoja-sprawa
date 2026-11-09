@@ -405,3 +405,15 @@ h1{line-height:1.09}h2{line-height:1.17}h3{line-height:1.25;letter-spacing:-.018
 .video-library .video-feature p{font-size:.97rem;line-height:1.62}
 .video-library .video-feature .btn{display:inline-flex;justify-content:center;align-items:center;max-width:100%;text-align:center;white-space:normal}
 @media(max-width:760px){.video-library{grid-template-columns:1fr}.video-library .video-feature:first-child{grid-column:auto;grid-template-columns:1fr}.video-library .video-feature:first-child .video-feature-play{width:62px;height:62px;font-size:1.35rem}}
+
+/* Refined typography: distinctive but fast-loading system font stacks, no external font requests. */
+:root{--font-display:Georgia,"Iowan Old Style","Palatino Linotype",serif;--font-body:Inter,"Segoe UI",Arial,sans-serif}
+body{font-family:var(--font-body);font-synthesis:none}
+h1,h2,h3,.video-feature h3,.campaign-home-card h3{font-family:var(--font-display);font-weight:700;letter-spacing:-.025em;text-wrap:balance}
+h1{letter-spacing:-.038em;line-height:1.1}
+h2{line-height:1.17}
+h3{line-height:1.25}
+.hero-team img{object-fit:cover;object-position:center 24%;border-radius:50%}
+.hero-team a:first-child img{object-position:center 20%}
+.hero-team a:nth-child(2) img{object-position:center 20%}
+@media(max-width:650px){h1,h2,h3{text-wrap:pretty}}

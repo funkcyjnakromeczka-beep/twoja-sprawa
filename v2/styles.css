@@ -186,3 +186,12 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .video-links small{color:#d8e2eb;margin-top:8px}
 @media(max-width:950px){.video-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.video-links{grid-template-columns:1fr}.video-links a{min-height:145px}}
+
+/* Szybka nawigacja po projektach i kontakt na telefonie. */
+.quick-path{padding:26px 6% 28px;background:#f5f1e9;color:#142b3d;border-bottom:1px solid #d9cbb3}
+.quick-path p{margin:0 0 14px;font-weight:800;font-size:1rem}
+.quick-path>div{display:flex;flex-wrap:wrap;gap:10px}
+.quick-path a{display:inline-flex;align-items:center;gap:6px;padding:13px 16px;background:#fff;border:1px solid #c6b89c;border-radius:999px;color:#142b3d;text-decoration:none;font-weight:700;box-shadow:0 3px 0 #d9d0bf;transition:transform .2s ease}
+.quick-path a:hover,.quick-path a:focus-visible{transform:translateY(-3px);border-color:#9e7939}
+.mobile-contact-bar{display:none}
+@media(max-width:650px){.quick-path{padding:22px 5%}.quick-path>div{display:grid;grid-template-columns:1fr 1fr;gap:9px}.quick-path a{font-size:.84rem;line-height:1.35;padding:12px 10px;border-radius:12px}.mobile-contact-bar{display:grid;grid-template-columns:1fr 1fr;position:fixed;bottom:0;left:0;right:0;z-index:95;background:#081b2c;border-top:1px solid #bca070;padding:9px 10px calc(9px + env(safe-area-inset-bottom));gap:10px;box-shadow:0 -8px 28px rgba(0,0,0,.3)}.mobile-contact-bar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#d7b67a;border-radius:9px;color:#12283b;text-decoration:none;font-size:.77rem;padding:7px 5px;min-height:47px}.mobile-contact-bar strong{font-size:.88rem}body:has(.mobile-contact-bar){padding-bottom:90px}.chat-toggle{bottom:95px!important}}

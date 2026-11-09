@@ -92,6 +92,18 @@ try {
   if (count !== 5 || links !== 10) errors.push("Homepage: expected five video cards with ten video links (poster and button per card), got "+count+" cards and "+links+" links");
  }
 } catch(e) { errors.push("Homepage video library audit failed: "+e.message); }
+// Premium V2 trust strip must remain three steps and not imply guaranteed outcomes.
+try {
+ const home=await readFile(join(root,"index.html"),"utf8");
+ const start=home.indexOf('<section class="premium-confidence"');
+ const end=home.indexOf('<section class="quick-path"',start);
+ if(start<0||end<start) errors.push("Premium V2: confidence strip missing");
+ else {
+  const block=home.slice(start,end);
+  if((block.match(/class="premium-confidence-num"/g)||[]).length!==3) errors.push("Premium V2: expected three confidence steps");
+  if(!block.includes("Nie przesyłaj danych wrażliwych")) errors.push("Premium V2: privacy reminder missing from confidence strip");
+ }
+} catch(e){errors.push("Premium V2 trust strip audit failed: "+e.message);}
 // Premium V2 visual components, verified logo and all five film posters.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");

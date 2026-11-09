@@ -107,3 +107,13 @@ html{scroll-padding-top:20px}
  .chat-assistant{max-width:calc(100vw - 20px)}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+
+/* Strony lokalne — czytelne przejście z pięciu głównych specjalizacji. */
+.local-areas{margin:32px 0 24px;padding:clamp(18px,3vw,30px);border:1px solid #a88a57;border-radius:16px;background:linear-gradient(125deg,#13283b,#0c1926);color:#f8f5ef}
+.local-areas h3{margin:0 0 10px;font:normal clamp(1.35rem,2.3vw,1.9rem)/1.25 Georgia,serif;color:#f3d39b}
+.local-areas p{color:#d4dce2;line-height:1.6;margin:0 0 16px}
+.local-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.local-links a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 18px;border:1px solid #5b6470;border-radius:10px;color:#fff;text-decoration:none;background:#1a3144;font-weight:700}
+.local-links a:hover,.local-links a:focus-visible{border-color:#e5b969;color:#f3d39b;outline-offset:3px}
+@media(max-width:600px){.local-links{grid-template-columns:1fr}.local-areas{margin:22px 0}}

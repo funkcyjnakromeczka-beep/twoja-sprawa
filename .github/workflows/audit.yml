@@ -30,5 +30,8 @@ jobs:
           node scripts/preview.mjs
           test -f dist-preview/index.html
           test -f dist-preview/robots.txt
-          grep -q 'noindex,follow' dist-preview/index.html
+          grep -q 'noindex,nofollow' dist-preview/index.html
+          grep -q 'X-Robots-Tag: noindex, nofollow' dist-preview/_headers
+          test -f dist-preview/kampanie/szkody-gornicze.html
+          test -f dist-preview/kampanie/swiadczenie-wspierajace.html
           grep -q 'Disallow: /' dist-preview/robots.txt

@@ -24,7 +24,7 @@ const structured = (route,canonical,title) => {
   const page={"@type":"WebPage","@id":canonical+"#webpage",url:canonical,isPartOf:{"@id":site["@id"]},inLanguage:"pl-PL"};
   const graph=[person,organization,site,page];
   if(route.startsWith("/uslugi/")||route.startsWith("/lokalnie/")){
-    graph.push({"@type":"Service","@id":canonical+"#service",name:title.replace(/\\s*\\|.*$/,"").replace(/\\s*[—–-]\\s*Twoja Sprawa.*$/,""),provider:{"@id":organization["@id"]},areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",url:canonical});
+    graph.push({"@type":"Service","@id":canonical+"#service",name:title.replace(/\s*\\|.*$/,"").replace(/\s*[—–-]\s*Twoja Sprawa.*$/,""),provider:{"@id":organization["@id"]},areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",url:canonical});
   }
   return JSON.stringify({"@context":"https://schema.org","@graph":graph}).replaceAll("<","\\u003c");
 };
@@ -44,7 +44,7 @@ async function walk(dir){
       if(!html.includes('rel="canonical"')) html=html.replace("</head>",'<link rel="canonical" href="'+canonical+'"></head>');
       if(!html.includes('property="og:url"')) html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');
       if(!html.includes('<meta name="robots" content="index,follow">')) throw new Error("Missing indexable robots tag: "+rel);
-      html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
+      html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
       await writeFile(target,html);
       pages.push(route);
     } else {

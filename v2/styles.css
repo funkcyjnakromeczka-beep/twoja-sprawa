@@ -368,3 +368,21 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .guide-copy-status label{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .guide-copy-status input{width:min(100%,560px);padding:10px 12px;border:1px solid #a27a3d;border-radius:8px;font:inherit;color:#173448;background:#fff}
 @media print{.guide-copy-status{display:none!important}}
+
+/* 2026 editorial typography: distinctive serif display headings and legible UI copy. */
+:root{--display-font:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;--ui-font:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;font-family:var(--ui-font);font-optical-sizing:auto}
+body{font-family:var(--ui-font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,.hero h1,.subhero h1,.hero-glamour h1,.guide-article h1,.guide-article h2,.campaign-page h1,.campaign-page h2{font-family:var(--display-font);font-weight:700;letter-spacing:-.032em;overflow-wrap:break-word;text-wrap:balance}
+h1{line-height:1.09}h2{line-height:1.17}h3{line-height:1.25;letter-spacing:-.018em}
+.hero-glamour h1{font-size:clamp(2.65rem,5.1vw,5.15rem);line-height:1.06;letter-spacing:-.046em;max-width:15ch}
+.hero-gold{font-style:italic;letter-spacing:-.05em}
+.hero-content>p,.guide-lead,.section-lead{line-height:1.72;letter-spacing:.003em}
+.eyebrow{font-family:var(--ui-font);font-weight:800;letter-spacing:.14em}
+.logo,.btn,nav a,button,input,textarea,select{font-family:var(--ui-font)}
+/* Face-first framing for circular portraits, with an explicit per-person focal point. */
+.hero-team img{display:block;flex:none;width:56px;height:56px;aspect-ratio:1;object-fit:cover;object-position:50% 24%;border:2px solid #d9b879;border-radius:50%;background:#24485c}
+.hero-team a:first-child img{object-position:50% 20%}
+.hero-team a:nth-child(2) img{object-position:50% 22%}
+.hero-team a{min-height:68px;padding:6px 17px 6px 6px;gap:12px}
+@media(max-width:650px){.hero-team img{width:48px;height:48px}.hero-team a{min-height:58px;padding-right:12px}.hero-glamour h1{font-size:clamp(2.25rem,10vw,3.6rem)}}
+@media print{body,h1,h2,h3{font-family:Arial,sans-serif!important;letter-spacing:normal!important}}

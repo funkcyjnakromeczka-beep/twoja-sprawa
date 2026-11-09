@@ -359,3 +359,9 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-subpage .article{background:linear-gradient(165deg,#fff 0%,#f8faf9 54%,#fffdf9 100%);overflow:hidden}
 .premium-v2 .quick-path{overflow:hidden}
 @media(max-width:650px){.premium-v2 .quick-path:before{font-size:280px;left:-75px;top:28%;opacity:.045}.premium-v2 #uslugi:before{font-size:220px;opacity:.035}.premium-subpage .article:before{font-size:280px;opacity:.04}}
+
+/* Decorative original Themis line art; no remote request, no text overlap. */
+.premium-v2 #uslugi:before{content:"";width:min(42vw,490px);height:min(55vw,620px);right:-75px;top:4%;background:url("/v2/assets/temida-outline.svg") center/contain no-repeat;opacity:.13;font-size:0}
+.premium-subpage .article:after{content:"";position:absolute;z-index:-1;pointer-events:none;right:-80px;bottom:8%;width:min(38vw,390px);height:520px;background:url("/v2/assets/temida-outline.svg") center/contain no-repeat;opacity:.07}
+@media(max-width:850px){.premium-v2 #uslugi:before{width:330px;height:420px;right:-135px;opacity:.075}.premium-subpage .article:after{width:260px;right:-110px;opacity:.045}}
+@media(max-width:520px){.premium-v2 #uslugi:before{width:230px;height:300px;right:-115px;opacity:.045}.premium-subpage .article:after{display:none}}

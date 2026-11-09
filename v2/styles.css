@@ -195,3 +195,12 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .quick-path a:hover,.quick-path a:focus-visible{transform:translateY(-3px);border-color:#9e7939}
 .mobile-contact-bar{display:none}
 @media(max-width:650px){.quick-path{padding:22px 5%}.quick-path>div{display:grid;grid-template-columns:1fr 1fr;gap:9px}.quick-path a{font-size:.84rem;line-height:1.35;padding:12px 10px;border-radius:12px}.mobile-contact-bar{display:grid;grid-template-columns:1fr 1fr;position:fixed;bottom:0;left:0;right:0;z-index:95;background:#081b2c;border-top:1px solid #bca070;padding:9px 10px calc(9px + env(safe-area-inset-bottom));gap:10px;box-shadow:0 -8px 28px rgba(0,0,0,.3)}.mobile-contact-bar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#d7b67a;border-radius:9px;color:#12283b;text-decoration:none;font-size:.77rem;padding:7px 5px;min-height:47px}.mobile-contact-bar strong{font-size:.88rem}body:has(.mobile-contact-bar){padding-bottom:90px}.chat-toggle{bottom:95px!important}}
+
+/* Kontakt kontekstowy po wyborze projektu. */
+.contact-advisor{display:flex;flex-wrap:wrap;align-items:center;gap:9px 16px;padding:17px 19px;margin:12px 0 17px;border:1px solid #bda16e;border-radius:13px;background:#f6f0e5;color:#192e3d;box-shadow:0 5px 0 rgba(119,91,49,.13)}
+.contact-advisor strong{flex-basis:100%;font-size:1.02rem;color:#172d3d}
+.contact-advisor span{flex:1 1 180px;font-size:.9rem;color:#364a56}
+.contact-advisor a{display:inline-block;background:#17364a;color:#fff!important;text-decoration:none;border-radius:9px;padding:10px 14px;font-weight:800}
+.contact-people{font-size:.88rem;line-height:1.7}
+.contact-people a{white-space:normal}
+@media(max-width:600px){.contact-advisor{padding:14px}.contact-advisor a{width:100%;text-align:center}}

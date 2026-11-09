@@ -439,3 +439,17 @@ h3{line-height:1.25}
 @media(max-width:960px){.navigator-options{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.navigator-head{display:block}.navigator-step{display:inline-block;margin-top:12px}.navigator-options{grid-template-columns:1fr}.navigator-option{min-height:unset;padding:18px;gap:7px}.navigator-result-actions .btn{flex:1;min-width:140px;text-align:center}}
 @media(prefers-reduced-motion:reduce){.navigator-option{transition:none}.navigator-option:hover{transform:none}}
+
+/* Campaign landing pages: contextual explainer + practical checklist. */
+.campaign-enhancement{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(20px,4vw,44px);align-items:stretch;margin-top:clamp(36px,6vw,72px);margin-bottom:clamp(36px,6vw,72px)}
+.campaign-enhancement-main{padding:clamp(24px,4vw,44px);background:linear-gradient(125deg,#102b40,#234b5c);border:1px solid #c1a16a;border-radius:22px;color:#fff}
+.campaign-enhancement-main h2{font-size:clamp(1.7rem,3.3vw,2.5rem);color:#fff;margin:12px 0 18px}
+.campaign-enhancement-main p{max-width:55ch;line-height:1.75;color:#e7eef2}
+.campaign-enhancement-main .btn{margin-top:12px;display:inline-flex;max-width:100%;white-space:normal;text-align:center}
+.campaign-enhancement-main .campaign-media-note{font-size:.83rem;color:#cbd8df;margin-top:20px}
+.campaign-enhancement-list{padding:clamp(24px,3.5vw,38px);border-radius:22px;background:#f5f7f7;border:1px solid #e2e9ec}
+.campaign-enhancement-list h3{margin:0 0 18px;font-size:1.4rem}
+.campaign-enhancement-list>div{padding:15px 0;border-top:1px solid #d8e0e3}
+.campaign-enhancement-list strong{color:#19384b;line-height:1.4}
+.campaign-enhancement-list p{margin:7px 0 0;color:#465b67;line-height:1.6}
+@media(max-width:790px){.campaign-enhancement{grid-template-columns:1fr}}

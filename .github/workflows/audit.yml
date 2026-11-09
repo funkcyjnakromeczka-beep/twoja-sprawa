@@ -19,5 +19,8 @@ jobs:
           node --check v2/chat-assistant.js
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
+          node --check scripts/test-contact.mjs
+      - name: Testy formularza API bez wysyłania e-maili
+        run: node scripts/test-contact.mjs
       - name: Sprawdź pliki HTML i odnośniki
         run: node scripts/audit.mjs

@@ -5,7 +5,7 @@ import {readFile} from "node:fs/promises";
 import {runInNewContext} from "node:vm";
 
 class Node {
- constructor(tag="node"){this.tag=tag;this.children=[];this.events={};this.attributes={};this.value="";this.textContent="";this.checked=false;}
+ constructor(tag="node"){this.tag=tag;this.children=[];this.events={};this.attributes={};this.value="";this.textContent="";this.checked=false;this.style={cssText:""};}
  append(...children){this.children.push(...children);}
  replaceChildren(...children){this.children=[...children];}
  setAttribute(key,value){this.attributes[key]=value;}

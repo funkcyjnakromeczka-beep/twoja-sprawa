@@ -72,7 +72,7 @@
   };
   // On narrow screens the contact form takes priority over the floating help button.
   // The button remains available everywhere else and an explicitly opened panel stays visible.
-  const contactArea = document.getElementById("kontakt");
+  const contactArea = document.getElementById("kontakt") || document.getElementById("formularz");
   if (contactArea && "IntersectionObserver" in window) {
     const observer = new IntersectionObserver((entries) => {
       root.classList.toggle("is-contact-area",Boolean(entries[0]?.isIntersecting));

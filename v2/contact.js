@@ -33,7 +33,7 @@
   const privacy=document.createElement("a");privacy.href="/v2/polityka-prywatnosci.html";privacy.textContent="Informacje o prywatności";form.append(privacy);
   const button=document.createElement("button");button.className="btn";button.type="submit";button.textContent=automatic?"Wyślij zgłoszenie":"Przygotuj wiadomość e-mail";form.append(button);
   const status=document.createElement("p");status.setAttribute("role","status");status.setAttribute("aria-live","polite");form.append(status);
-  let turnstileId=null;const challenge=document.createElement("div");if(automatic){challenge.className="turnstile-container";form.insertBefore(challenge,button);const mount=()=>{if(window.turnstile&&typeof window.turnstile.render==="function"){turnstileId=window.turnstile.render(challenge,{sitekey:siteKey,theme:"light"});}else window.setTimeout(mount,300);};mount();}
+  let turnstileId=null;const challenge=document.createElement("div");if(automatic){challenge.className="turnstile-container";form.insertBefore(challenge,button);let attempts=0;const mount=()=>{if(window.turnstile&&typeof window.turnstile.render==="function"){turnstileId=window.turnstile.render(challenge,{sitekey:siteKey,theme:"light"});}else if(++attempts<40) window.setTimeout(mount,300);else status.textContent="Weryfikacja antyspamowa nie załadowała się. Odśwież stronę lub skontaktuj się telefonicznie.";};mount();}
   form.addEventListener("submit",async event=>{
    event.preventDefault();if(!form.reportValidity())return;
    if(automatic){

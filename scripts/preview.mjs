@@ -17,6 +17,8 @@ async function walk(dir){
    let html=await readFile(absolute,"utf8");
    if(!html.includes('<meta name="robots" content="noindex,follow">'))throw Error("Draft robots tag missing: "+rel);
    html=html.replaceAll("/v2/","/");
+   // Bust cached styles on each deployment while preserving the source paths.
+   html=html.replace(/(href="\/premium-v2\.css)(\?[^"]*)?(")/g,`$1?v=20261109-fix$3`);
       html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
    // Explicit preview-only robots directive in every generated HTML document.
    html=html.replace(/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i,'<meta name="robots" content="noindex,nofollow">');
@@ -24,7 +26,11 @@ async function walk(dir){
    await writeFile(target,html);
    pages++;
   }else{
-   if(rel.endsWith(".js")){
+   if(rel.endsWith(".css")){
+    let css=await readFile(absolute,"utf8");
+    css=css.replaceAll("/v2/assets/","/assets/");
+    await writeFile(target,css);
+   }else if(rel.endsWith(".js")){
     let js=await readFile(absolute,"utf8");
     js=js.replaceAll('"/v2/"','"/"').replaceAll('"/v2/','"/');
     await writeFile(target,js);

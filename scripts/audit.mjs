@@ -92,6 +92,23 @@ try {
   if (count !== 5 || links !== 5) errors.push("Homepage: expected five video cards with five video links, got "+count+" cards and "+links+" links");
  }
 } catch(e) { errors.push("Homepage video library audit failed: "+e.message); }
+// Premium V2 visual components, verified logo and all five film posters.
+try {
+ const homepage=await readFile(join(root,"index.html"),"utf8");
+ const premium=await readFile(join(root,"premium-v2.css"),"utf8");
+ const posterCount=homepage.split('class="video-poster"').length-1;
+ if(posterCount!==5) errors.push("Premium V2: expected five visual video posters, got "+posterCount);
+ if(!homepage.includes('class="premium-v2"')||!homepage.includes('href="/v2/premium-v2.css"')) errors.push("Premium V2: homepage style layer missing");
+ if(!homepage.includes('votum-sa.pl/wp-content/uploads/2024/06/logo_VOTUM_SA_rgb-480x71.png')) errors.push("Premium V2: official VOTUM logo missing");
+ for(const token of [".premium-v2 .hero-glamour",".premium-v2 #filmy .video-library",".premium-subpage .subhero"]){
+  if(!premium.includes(token)) errors.push("Premium V2: missing style "+token);
+ }
+ for(const [slug,theme] of [["szkody-gornicze","theme-mining"],["swiadczenie-wspierajace","theme-support"],["renty-powypadkowe","theme-rents"],["kredyty-pln","theme-skd"],["sluzebnosc-przesylu","theme-energy"]]){
+  const service=await readFile(join(root,"uslugi",slug+".html"),"utf8");
+  if(!service.includes('class="premium-subpage '+theme+'"')||!service.includes('href="/v2/premium-v2.css"')) errors.push("Premium V2: missing service styling "+slug);
+  if(!service.includes('class="partner-inline"')) errors.push("Premium V2: VOTUM header logo missing "+slug);
+ }
+} catch(e){errors.push("Premium V2 audit failed: "+e.message);}
 // Homepage must expose all five resource cards for organic discovery.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");

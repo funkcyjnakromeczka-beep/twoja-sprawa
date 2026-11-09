@@ -16,6 +16,7 @@
  for (const host of hosts) {
   const form = document.createElement("form"); form.className = "contact-form";
   const heading = document.createElement("h3"); heading.textContent = automatic?"Zostaw kontakt — oddzwonimy lub odpiszemy":"Przygotuj zapytanie"; form.append(heading);
+  const benefits=document.createElement("div");benefits.className="contact-benefits";for(const item of ["Bez zobowiązania do zawarcia umowy","Bez wysyłania dokumentów na początek","Kontakt w wybranej formie"]){const el=document.createElement("span");el.textContent="✓ "+item;benefits.append(el);}form.append(benefits);
   const note = document.createElement("p"); note.textContent = automatic ? "Wyślij zgłoszenie bezpośrednio z tej strony. Nie podawaj PESEL, informacji medycznych ani danych dokumentów." : "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
   function field(labelText,type,required,limit,auto) {
    const id = "cf-"+(auto||type)+"-"+Math.random().toString(36).slice(2,8);

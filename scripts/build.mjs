@@ -44,9 +44,15 @@ async function walk(dir){
       const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
       html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
-      html=html.replace(/<meta name="robots" content="noindex,follow">/g,'<meta name="robots" content="'+robots+'">');
-      if(!html.includes('rel="canonical"')) html=html.replace("</head>",'<link rel="canonical" href="'+canonical+'"></head>');
-      if(!html.includes('property="og:url"')) html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');
+      const robotsTag=/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i;
+      if(!robotsTag.test(html)) throw new Error("Source robots tag missing: "+rel);
+      html=html.replace(robotsTag,'<meta name="robots" content="'+robots+'">');
+      const canonicalTag=/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i;
+      if(canonicalTag.test(html)) html=html.replace(canonicalTag,'<link rel="canonical" href="'+canonical+'">');
+      else html=html.replace("</head>",'<link rel="canonical" href="'+canonical+'"></head>');
+      const ogUrl=/<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i;
+      if(ogUrl.test(html)) html=html.replace(ogUrl,'<meta property="og:url" content="'+canonical+'">');
+      else html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');
       if(!html.includes('<meta name="robots" content="'+robots+'">')) throw new Error("Incorrect release robots tag: "+rel);
       html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
       await writeFile(target,html);

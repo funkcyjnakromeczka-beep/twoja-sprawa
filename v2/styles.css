@@ -227,3 +227,9 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .contact-status-error{color:#752c21!important;background:#fff0e9!important;border:1px solid #c87c64}
 .contact-form button[disabled]{opacity:.65;cursor:wait}
 .contact-form select{min-height:46px}
+
+/* Formularz reagujący na wybór usługi: etap sprawy bez danych wrażliwych. */
+.contact-stage:not([hidden]){padding:15px 17px;margin:10px 0 18px;background:#f4efe6;border:1px solid #d3bb91;border-radius:12px;color:#203746}
+.contact-stage[hidden]{display:none!important}
+.contact-stage label{display:block;color:#203746!important;font-weight:800;margin-bottom:8px}
+.contact-stage select{width:100%;max-width:100%;color:#152c3a!important;background:#fff!important;border:1px solid #b4a48b;border-radius:9px;padding:11px}

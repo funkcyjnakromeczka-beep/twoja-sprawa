@@ -213,3 +213,10 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .steps-visual h3{font:normal 1.45rem Georgia,serif;margin:0 0 12px}
 .steps-visual p{color:#455a68;line-height:1.65;margin:0}
 @media(max-width:850px){.steps-visual{grid-template-columns:1fr}.steps-visual article{padding:23px}}
+
+/* Zaufanie w pierwszym ekranie: dwie osoby, nie anonimowy formularz. */
+.hero-team{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 12px}
+.hero-team a{display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 7px;border:1px solid rgba(224,193,141,.55);border-radius:999px;background:rgba(7,22,35,.56);color:#f6f1e9;text-decoration:none;font-weight:700;font-size:.9rem;box-shadow:inset 1px 1px 0 rgba(255,255,255,.12)}
+.hero-team img{width:42px;height:42px;object-fit:cover;border:2px solid #d9b879;border-radius:50%}
+.hero-team a:hover,.hero-team a:focus-visible{background:#203e52;border-color:#f3d69c}
+@media(max-width:650px){.hero-team{gap:8px}.hero-team a{font-size:.79rem;padding-right:10px}.hero-team img{width:36px;height:36px}}

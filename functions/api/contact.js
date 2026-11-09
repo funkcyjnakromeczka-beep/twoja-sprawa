@@ -8,7 +8,8 @@ const MAX_BYTES = 6000;
 const SERVICES = new Set([
   "Szkody górnicze","Świadczenie wspierające","Służebność przesyłu",
   "Renty powypadkowe","Kredyt w PLN / SKD","Wypadek komunikacyjny",
-  "Wypadek przy pracy","Inna sprawa"
+  "Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości",
+  "Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"
 ]);
 const json = (value, status = 200) => new Response(JSON.stringify(value), {
   status,
@@ -42,13 +43,15 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: "invalid_json" }, 400);
   }
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) return json({ ok: false, error: "invalid" }, 400);
-  if (payload.website) return json({ ok: true }); // honeypot; do not send email
+  if (payload.website) return json({ ok: false, error: "validation" }, 400); // honeypot; do not claim successful delivery
   const service = clean(payload.service, 100);
   const location = clean(payload.location, 100);
+  const name = clean(payload.name, 80);
+  const phone = clean(payload.phone, 30);
   const message = clean(payload.message, 1200);
   const email = clean(payload.email, 254);
   const token = clean(payload.turnstileToken, 4096);
-  if (!SERVICES.has(service) || message.length < 15 || !validEmail(email) || !token) {
+  if (!SERVICES.has(service) || !name || !location || !/^[+0-9()\\s-]{7,30}$/.test(phone) || !validEmail(email) || !token) {
     return json({ ok: false, error: "validation" }, 400);
   }
   // Check Turnstile server-side. Do not trust browser verification alone.
@@ -68,7 +71,9 @@ export async function onRequestPost({ request, env }) {
   const body = [
     "Zapytanie z witryny Twoja Sprawa", "",
     "Usługa: " + service,
-    "Miejscowość: " + (location || "nie podano"),
+    "Imię: " + name,
+    "Miejscowość: " + location,
+    "Telefon: " + phone,
     "E-mail kontaktowy: " + email, "",
     "Opis:", message, "",
     "Wiadomość wygenerowana przez formularz strony."

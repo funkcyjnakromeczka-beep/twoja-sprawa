@@ -14,6 +14,9 @@ assert.equal((await run(payload(services[0]),"https://evil.example")).status,403
 assert.equal((await run("{invalid")).status,400,"JSON validated");
 assert.equal((await run({...payload(services[0]),privacyAcknowledged:false})).status,400,"privacy acknowledgment required");
 assert.equal((await run({...payload(services[0]),phone:"abc"})).status,400,"phone validated");
+assert.equal((await run({...payload(services[0]),phone:"1234567",name:""})).status,400,"name required");
+assert.equal((await run({...payload(services[0]),location:""})).status,400,"location required");
+assert.equal((await run({...payload(services[0]),email:"invalid"})).status,400,"email validated");
 assert.equal((await run({...payload(services[0]),service:"Unknown"})).status,400,"service whitelist");
 assert.equal((await onRequest()).status,405,"other methods rejected");
 const originalFetch=globalThis.fetch;
@@ -25,8 +28,10 @@ try{
   throw Error("Unexpected external URL");
  };
  for(const service of services){const response=await run(payload(service));assert.equal(response.status,200,service);assert.equal((await response.json()).ok,true);}
- assert.equal(verified,services.length);
- assert.equal(delivered,services.length);
+ const compact=await run({...payload(services[0]),phone:"796441345"});assert.equal(compact.status,200,"compact phone accepted");
+ const dashed=await run({...payload(services[0]),phone:"796-441-345"});assert.equal(dashed.status,200,"dashed phone accepted");
+ assert.equal(verified,services.length+2);
+ assert.equal(delivered,services.length+2);
  globalThis.fetch=async(url)=>String(url).includes("siteverify")?new Response(JSON.stringify({success:true}),{status:200}):new Response("error",{status:500});
  const failed=await run(payload(services[0]));assert.equal(failed.status,502);assert.equal((await failed.json()).ok,false,"failed delivery is not success");
 }finally{globalThis.fetch=originalFetch;}

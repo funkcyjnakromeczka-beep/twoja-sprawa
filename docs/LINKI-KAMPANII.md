@@ -8,9 +8,9 @@ Formularz automatycznie wybiera usługę po parametrze `usluga` i dodaje do e-ma
 - TikTok: https://twoja-sprawa.pages.dev/kampanie/swiadczenie-wspierajace.html?usluga=swiadczenie&utm_source=tiktok&utm_campaign=swiadczenie_2026#formularz
 
 ## Szkody górnicze
-- Facebook: https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze.html?usluga=szkody&utm_source=facebook&utm_campaign=szkody_lubin#formularz
-- Ulotka / kod QR: https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze.html?usluga=szkody&utm_source=ulotka&utm_campaign=szkody_lubin#formularz
-- Polecenie: https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze.html?usluga=szkody&utm_source=polecenie&utm_campaign=szkody_lubin#formularz
+- Facebook: https://twoja-sprawa.pages.dev/kampanie/szkody-gornicze.html?usluga=szkody&utm_source=facebook&utm_campaign=szkody_lubin#formularz
+- Ulotka / kod QR: https://twoja-sprawa.pages.dev/kampanie/szkody-gornicze.html?usluga=szkody&utm_source=ulotka&utm_campaign=szkody_lubin#formularz
+- Polecenie: https://twoja-sprawa.pages.dev/kampanie/szkody-gornicze.html?usluga=szkody&utm_source=polecenie&utm_campaign=szkody_lubin#formularz
 
 ## Zasady
 - Wspierane źródła: facebook, instagram, tiktok, google, ulotka, plakat, qr, polecenie, organiczne, inne.

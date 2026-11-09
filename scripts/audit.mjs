@@ -13,6 +13,7 @@ async function walk(dir) {
 }
 await walk(root);
 const errors = [], warnings = [];
+const seenTitles = new Map();
 const exists = async path => { try { await access(path); return true; } catch { return false; } };
 for (const file of files) {
   const html = await readFile(file, "utf8");
@@ -20,6 +21,8 @@ for (const file of files) {
   const title = html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim();
   const h1 = [...html.matchAll(/<h1\b[^>]*>/gi)];
   if (!title) errors.push(label + ": missing title");
+  else if (seenTitles.has(title)) warnings.push(label + ": duplicate title with " + seenTitles.get(title));
+  else seenTitles.set(title, label);
   if (h1.length !== 1) errors.push(label + ": expected one H1, found " + h1.length);
   if (!/<meta\s+name="description"/i.test(html)) warnings.push(label + ": missing meta description");
   if (!/<html\s+lang="pl"/i.test(html)) warnings.push(label + ": missing lang=pl");

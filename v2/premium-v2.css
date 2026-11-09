@@ -413,3 +413,11 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 #kontakt input:focus-visible,.premium-v2 #kontakt select:focus-visible,.premium-v2 #kontakt textarea:focus-visible{outline:3px solid #cba469;outline-offset:2px}
 .premium-v2 .quick-path,.premium-v2 #uslugi,.premium-v2 #dobierz-pomoc,.premium-v2 #kontakt{scroll-margin-top:16px}
 @media(max-width:650px){.premium-v2 #dobierz-pomoc,.premium-v2 #kontakt{padding-block:34px}.premium-v2 #kontakt>.lead-panel{padding:18px;margin-top:18px}.premium-v2 #kontakt>.actions{gap:9px}.premium-v2 #kontakt>.actions .btn{flex:1 1 170px;text-align:center}}
+
+/* Shortcuts from service catalog to decision aid and contact. */
+.premium-v2 #uslugi .services-assist{display:flex;align-items:center;flex-wrap:wrap;gap:10px 18px;margin:18px 0 26px;padding:14px 19px;border:1px solid #e1e5df;border-radius:14px;background:rgba(255,255,255,.86)}
+.premium-v2 #uslugi .services-assist>span{font-size:.91rem;color:#365360;font-weight:700}
+.premium-v2 #uslugi .services-assist a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:9px 13px;border:1px solid #d9c8aa;border-radius:999px;background:#fffaf1;color:#254456;text-decoration:none;font-size:.88rem;font-weight:800}
+.premium-v2 #uslugi .services-assist a:hover{background:#efe0c5;border-color:#b7955d}
+.premium-v2 #uslugi .services-assist a:focus-visible{outline:3px solid #ba8a48;outline-offset:3px}
+@media(max-width:650px){.premium-v2 #uslugi .services-assist{padding:13px;gap:8px}.premium-v2 #uslugi .services-assist>span{width:100%}.premium-v2 #uslugi .services-assist a{flex:1 1 160px;justify-content:center;text-align:center}}

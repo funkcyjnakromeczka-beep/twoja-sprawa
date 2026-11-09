@@ -317,3 +317,20 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .campaign-trust{margin-top:24px;margin-bottom:40px;padding:clamp(20px,3vw,34px);background:#f8f3e9;border:1px solid #cbb88f;border-left:5px solid #a27a3d;border-radius:14px;color:#183448}
 .campaign-trust h2{font-size:clamp(1.25rem,2.4vw,1.8rem);margin:0 0 12px;color:#183448}
 .campaign-trust p{max-width:76ch;line-height:1.7;margin:0;color:#294455}
+
+/* Editorial guide and actionable mining-damage checklist. */
+.guide-article{padding-top:clamp(42px,7vw,86px);padding-bottom:70px;max-width:1020px}
+.guide-article h1{font-size:clamp(2rem,4.5vw,3.5rem);line-height:1.12;max-width:19ch;margin:16px 0 22px}
+.guide-article h2{font-size:clamp(1.4rem,2.7vw,2rem);margin:36px 0 16px}
+.guide-lead{font-size:clamp(1.1rem,2vw,1.3rem);line-height:1.7;max-width:74ch}
+.guide-article section>p{line-height:1.75;max-width:78ch}
+.guide-checklist{list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;counter-reset:checkstep}
+.guide-checklist li{counter-increment:checkstep;position:relative;padding:25px 24px 25px 65px;border:1px solid #d5c4a6;border-radius:14px;background:#fbf7f0;line-height:1.7;color:#254252}
+.guide-checklist li:before{content:counter(checkstep);position:absolute;left:20px;top:23px;width:29px;height:29px;display:grid;place-items:center;border-radius:50%;background:#193b4e;color:#f1d39c;font-weight:800}
+.guide-checklist strong{color:#173448}
+.guide-next{padding:28px;border-radius:16px;background:#173448;color:#fff;margin-top:38px}
+.guide-next h2{color:#fff;margin:0 0 14px}.guide-next p{color:#f3f5f7}
+.guide-phone{display:inline-block;margin:16px 0 0 18px;color:#f5d69d;text-underline-offset:4px}
+.campaign-guide-link{max-width:1080px;margin:12px auto 30px;padding:16px 22px;border-left:4px solid #ae8747;background:#f9f4ea;color:#1c3c4d;line-height:1.6}
+.campaign-guide-link a{color:#173b50;font-weight:750;text-underline-offset:3px}
+@media(max-width:720px){.guide-checklist{grid-template-columns:1fr}.guide-checklist li{padding:20px 18px 20px 58px}.guide-checklist li:before{left:16px;top:18px}.guide-phone{margin-left:0;display:block}}

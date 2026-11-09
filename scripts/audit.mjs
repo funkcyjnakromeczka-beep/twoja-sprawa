@@ -14,6 +14,7 @@ async function walk(dir) {
 await walk(root);
 const errors = [], warnings = [];
 const seenTitles = new Map();
+const serviceForms = [];
 const exists = async path => { try { await access(path); return true; } catch { return false; } };
 for (const file of files) {
   const html = await readFile(file, "utf8");
@@ -29,6 +30,14 @@ for (const file of files) {
   if (!/<html\s+lang="pl"/i.test(html)) warnings.push(label + ": missing lang=pl");
   if (/<script\b[^>]*src="https?:/i.test(html)) warnings.push(label + ": third-party script needs privacy review");
   if (html.includes("data-contact-form") && !html.includes('src="/v2/contact.js"')) errors.push(label + ": contact form without script");
+  if (label.startsWith("uslugi/")) {
+    if (!html.includes("data-contact-form")) errors.push(label + ": service page missing contact form");
+    if (!html.includes('src="/v2/contact.js"')) errors.push(label + ": service page missing contact script");
+    else if (!/data-service="[^"]+"/.test(html)) errors.push(label + ": missing default service");
+    serviceForms.push(label);
+  }
+  if (label === "index.html" && !html.includes("data-contact-form")) errors.push("index.html: missing contact form");
+  if (label === "index.html" && !html.includes('src="/v2/chat-assistant.js"')) warnings.push("index.html: assistant script missing");
   const attributes = [...html.matchAll(/\b(?:href|src)="([^"]+)"/g)].map(m => m[1]);
   for (const attr of attributes) {
     if (!attr.startsWith("/v2/")) continue;
@@ -39,7 +48,8 @@ for (const file of files) {
     if (!(await exists(target)) && !(await exists(join(target, "index.html")))) errors.push(label + ": broken link " + attr);
   }
 }
-console.log("Checked " + files.length + " HTML files");
+console.log("Checked " + files.length + " HTML files, including " + serviceForms.length + " service forms");
+if(serviceForms.length !== 12) errors.push("Expected 12 service pages, found "+serviceForms.length);
 for (const w of warnings) console.log("WARN " + w);
 for (const e of errors) console.error("ERROR " + e);
 if (errors.length) process.exitCode = 1;

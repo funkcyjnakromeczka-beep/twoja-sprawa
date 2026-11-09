@@ -347,3 +347,15 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-subpage .contact-section input:focus-visible,.premium-subpage .contact-section select:focus-visible,.premium-subpage .contact-section textarea:focus-visible{outline:3px solid #bd9457;outline-offset:2px}
 @media(max-width:1050px){.premium-subpage>header{flex-wrap:wrap;justify-content:space-between}.premium-subpage>header nav{width:100%;justify-content:center;border-top:1px solid rgba(255,255,255,.1);padding-top:8px}}
 @media(max-width:650px){.premium-subpage>header{padding:13px 17px;gap:10px}.premium-subpage>header .partner-inline img{width:100px}.premium-subpage>header nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.premium-subpage>header nav a{font-size:.79rem;min-height:44px;padding:8px 5px}.premium-subpage>header nav .subpage-nav-cta{grid-column:span 2}.premium-subpage .contact-section{padding:35px 16px}.premium-subpage .lead-panel{padding:18px}}
+
+/* Light-section legal watermarks: deliberately low opacity behind content. */
+.premium-v2 .quick-path,.premium-v2 #uslugi,.premium-subpage .article{position:relative;isolation:isolate}
+.premium-v2 .quick-path:before,.premium-v2 #uslugi:before,.premium-subpage .article:before{position:absolute;z-index:-1;pointer-events:none;font-family:Georgia,serif;line-height:1;color:#b19a72;opacity:.085}
+.premium-v2 .quick-path:before{content:"§";font-size:clamp(230px,32vw,540px);left:-.06em;top:5%;transform:rotate(-10deg)}
+.premium-v2 #uslugi:before{content:"⚖";font-size:clamp(220px,27vw,450px);right:0;top:0;opacity:.055}
+.premium-subpage .article:before{content:"§";font-size:clamp(260px,38vw,550px);right:-.13em;top:0;opacity:.06}
+.premium-v2 .quick-path-heading,.premium-v2 .quick-path-links,.premium-v2 #uslugi>.grid,.premium-v2 #uslugi>h2,.premium-v2 #uslugi>.section-lead,.premium-subpage .article>section{position:relative;z-index:1}
+.premium-v2 #uslugi{background:linear-gradient(145deg,#fffdf9 0%,#f4f7f5 58%,#fbf7f0 100%);overflow:hidden}
+.premium-subpage .article{background:linear-gradient(165deg,#fff 0%,#f8faf9 54%,#fffdf9 100%);overflow:hidden}
+.premium-v2 .quick-path{overflow:hidden}
+@media(max-width:650px){.premium-v2 .quick-path:before{font-size:280px;left:-75px;top:28%;opacity:.045}.premium-v2 #uslugi:before{font-size:220px;opacity:.035}.premium-subpage .article:before{font-size:280px;opacity:.04}}

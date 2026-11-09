@@ -1,0 +1,84 @@
+#!/usr/bin/env node
+/** Browser-free integration tests of the live client form. No external requests. */
+import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
+import {runInNewContext} from "node:vm";
+
+class Node {
+ constructor(tag="node"){this.tag=tag;this.children=[];this.events={};this.attributes={};this.value="";this.textContent="";this.checked=false;}
+ append(...children){this.children.push(...children);}
+ replaceChildren(...children){this.children=[...children];}
+ setAttribute(key,value){this.attributes[key]=value;}
+ getAttribute(key){return this.attributes[key]??null;}
+ addEventListener(key,cb){this.events[key]=cb;}
+ insertAdjacentElement(){}
+ reportValidity(){return true;}
+ reset(){}
+}
+const visit=(node,pred)=>{if(pred(node))return node;for(const child of node.children||[]){const found=visit(child,pred);if(found)return found;}return null;};
+const source=await readFile("v2/contact.js","utf8");
+const run=async(error=false)=>{
+ const host=new Node("host");
+ const document={
+  currentScript:{getAttribute:()=>""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={
+  location:{search:"?utm_source=facebook&utm_medium=social&utm_campaign=grupa_lubin&utm_content=post_2"},
+  setTimeout:()=>1,clearTimeout:()=>{}
+ };
+ let requestBody=null;
+ const fetch=async(url,opts)=>{
+  assert.equal(url,"https://api.web3forms.com/submit");
+  requestBody=JSON.parse(opts.body);
+  if(error)throw Error("mock network failure");
+  return {ok:true,json:async()=>({success:true})};
+ };
+ runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0];
+ assert.equal(form.tag,"form");
+ const firstName=visit(form,n=>n.autocomplete==="given-name");
+ const location=visit(form,n=>n.autocomplete==="address-level2");
+ const phone=visit(form,n=>n.autocomplete==="tel");
+ const email=visit(form,n=>n.autocomplete==="email");
+ const method=visit(form,n=>n.id?.startsWith("cf-method-"));
+ const callback=visit(form,n=>n.id?.startsWith("cf-time-"));
+ const select=visit(form,n=>n.id?.startsWith("cf-service-"));
+ assert.ok(firstName&&location&&phone&&email&&method&&callback&&select);
+ firstName.value="Test";location.value="Lubin";phone.value="";
+ email.value="test@example.com";method.value="E-mail";method.events.change();
+ callback.value="Po południu";select.value="Świadczenie wspierające";
+ if(select.events.change)select.events.change();
+ assert.equal(phone.required,false);
+ assert.equal(email.required,true);
+ const submit=form.events.submit;
+ assert.equal(typeof submit,"function");
+ await submit({preventDefault(){}});
+ assert.equal(requestBody.name,"Test");
+ assert.equal(requestBody.phone,"");
+ assert.equal(requestBody.email,"test@example.com");
+ assert.equal(requestBody.contact_preference,"E-mail");
+ assert.equal(requestBody.preferred_time,"Po południu");
+ assert.equal(requestBody.service,"Świadczenie wspierające");
+ assert.equal(requestBody.campaign_source,"facebook");
+ assert.equal(requestBody.campaign_medium,"social");
+ assert.equal(requestBody.campaign_name,"grupa_lubin");
+ assert.equal(requestBody.campaign_variant,"post_2");
+ const status=visit(form,n=>n.attributes?.role==="status");
+ assert.ok(status);
+ if(error){
+  assert.equal(status.className,"contact-status-error");
+  const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
+  assert.ok(fallback);
+  assert.ok(fallback.href.startsWith("mailto:"));
+  assert.ok(decodeURIComponent(fallback.href).includes("Dogodna pora: Po południu"));
+  assert.ok(decodeURIComponent(fallback.href).includes("grupa_lubin"));
+ }else{
+  assert.equal(status.className,"contact-status-success");
+ }
+};
+await run(false);
+await run(true);
+console.log("OK: email-only leads, callback preference, UTM attribution, network error and mailto fallback (mocked).");

@@ -6,10 +6,16 @@
  const hosts = document.querySelectorAll("[data-contact-form]");
  const accessKey="80a28b90-b5ac-406e-8512-3d3c1615b73c"; // Publiczny identyfikator formularza Web3Forms, nie hasło.
  const automatic=/^[a-f0-9-]{30,40}$/i.test(accessKey);
+ const campaignParams=new URLSearchParams(window.location.search);
+ const sourceAllowed=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","inne"]);
+ const campaignSource=(campaignParams.get("utm_source")||"").toLowerCase().trim();
+ const source=sourceAllowed.has(campaignSource)?campaignSource:"nieoznaczone";
+ const campaign=(campaignParams.get("utm_campaign")||"").toLowerCase().trim();
+ const safeCampaign=/^[a-z0-9_-]{1,40}$/.test(campaign)?campaign:"";
 
  for (const host of hosts) {
   const form = document.createElement("form"); form.className = "contact-form";
-  const heading = document.createElement("h3"); heading.textContent = "Przygotuj zapytanie"; form.append(heading);
+  const heading = document.createElement("h3"); heading.textContent = automatic?"Zostaw kontakt — oddzwonimy lub odpiszemy":"Przygotuj zapytanie"; form.append(heading);
   const note = document.createElement("p"); note.textContent = automatic ? "Wyślij zgłoszenie bezpośrednio z tej strony. Nie podawaj PESEL, informacji medycznych ani danych dokumentów." : "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
   function field(labelText,type,required,limit,auto) {
    const id = "cf-"+(auto||type)+"-"+Math.random().toString(36).slice(2,8);
@@ -18,7 +24,9 @@
    form.append(label,input);return input;
   }
   const label=document.createElement("label");label.textContent="Wybór usługi";const select=document.createElement("select");select.required=true;select.id="cf-service-"+Math.random().toString(36).slice(2,8);label.htmlFor=select.id;const empty=document.createElement("option");empty.value="";empty.textContent="Wybierz usługę";select.append(empty);
-  for(const name of services){const option=document.createElement("option");option.value=name;option.textContent=name;if(name===current)option.selected=true;select.append(option);}
+  const serviceAlias={"szkody":"Szkody górnicze","swiadczenie":"Świadczenie wspierające","renty":"Renty powypadkowe","skd":"Kredyt w PLN / SKD","przesyl":"Służebność przesyłu"};
+  const serviceFromLink=serviceAlias[(campaignParams.get("usluga")||"").toLowerCase()]||"";
+  for(const name of services){const option=document.createElement("option");option.value=name;option.textContent=name;if(name===(serviceFromLink||current))option.selected=true;select.append(option);}
   form.append(label,select);
   const people=document.createElement("p");people.className="contact-people";people.innerHTML='Kontakt telefoniczny: <a href="tel:+48796441345">Wojciech Obiegło — 796 441 345</a> · <a href="tel:+48500171531">Paulina Chandrała — 500 171 531</a>';form.append(people);
   const advisor=document.createElement("div");advisor.className="contact-advisor";advisor.setAttribute("aria-live","polite");form.append(advisor);
@@ -39,11 +47,11 @@
    if(automatic){
     if(honeypot.value){status.textContent="Nie udało się zweryfikować formularza.";return;}
     button.disabled=true;button.textContent="Wysyłanie…";status.className="";status.textContent="Przesyłam zgłoszenie…";
-    const payload={access_key:accessKey,subject:"Twoja Sprawa: "+select.value,from_name:"Formularz Twoja Sprawa",name:name.value.trim(),email:email.value.trim(),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,message:msg.value.trim()||"Prośba o kontakt.",replyto:email.value.trim(),botcheck:""};
+    const payload={access_key:accessKey,subject:"Twoja Sprawa: "+select.value,from_name:"Formularz Twoja Sprawa",name:name.value.trim(),email:email.value.trim(),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,campaign_source:source,campaign_name:safeCampaign||"brak",message:msg.value.trim()||"Prośba o kontakt.",replyto:email.value.trim(),botcheck:""};
     try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");status.className="contact-status-success";status.textContent="Dziękujemy! Zgłoszenie zostało przyjęte. Odpowiemy na podane dane kontaktowe po zapoznaniu się ze sprawą.";form.reset();updateAdvisor();}catch{status.className="contact-status-error";status.textContent="Nie udało się potwierdzić przyjęcia zgłoszenia. Spróbuj ponownie lub zadzwoń. Wpisane dane pozostały w formularzu.";}finally{button.disabled=false;button.textContent="Wyślij zgłoszenie";}return;
    }
    const subject="Zapytanie Twoja Sprawa: "+select.value;
-   const body=["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"","Opis sprawy:",""+(msg.value.trim()||"Proszę o kontakt."),"","Proszę o odpowiedź na wskazany adres e-mail lub telefon."].join("\n");
+   const body=["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Źródło zgłoszenia: "+source,"Kampania: "+(safeCampaign||"brak"),"","Opis sprawy:",""+(msg.value.trim()||"Proszę o kontakt."),"","Proszę o odpowiedź na wskazany adres e-mail lub telefon."].join("\n");
    status.textContent="Otwieram aplikację pocztową. Sprawdź przygotowaną wiadomość i wyślij ją samodzielnie.";
    window.location.href="mailto:twojasprawa_votum@outlook.com?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
   });

@@ -118,6 +118,14 @@ try {
   if(!logic.includes(service+": {")) errors.push("Campaign builder: missing "+service);
  }
 } catch(e) { errors.push("Campaign builder audit failed: "+e.message); }
+// Each core lead form service must point to a matching preparation guide.
+try {
+ const contact=await readFile(join(root,"contact.js"),"utf8");
+ for(const guide of ["checklista-szkody-gorniczej","swiadczenie-wspierajace-pierwsze-kroki","renta-powypadkowa-dokumenty","skd-kredyt-pln-lista-kontrolna","sluzebnosc-przesylu-dzialka"]){
+  if(!contact.includes("/v2/poradniki/"+guide+".html")) errors.push("Contact form: missing contextual guide "+guide);
+ }
+ if(!contact.includes('select.addEventListener("change",updateGuide)')) errors.push("Contact form: guide does not follow service selection");
+} catch(e) {errors.push("Contact guide audit failed: "+e.message);}
 // All five core guides must offer an interactive checklist with a local-only script.
 for (const slug of ["checklista-szkody-gorniczej","swiadczenie-wspierajace-pierwsze-kroki","renta-powypadkowa-dokumenty","skd-kredyt-pln-lista-kontrolna","sluzebnosc-przesylu-dzialka"]) {
  try {

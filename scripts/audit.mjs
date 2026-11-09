@@ -48,7 +48,7 @@ for (const file of files) {
     if (!html.includes('class="campaign-mobile-actions"')) errors.push(label + ": missing mobile conversion bar");
     if (!html.includes('class="campaign-mobile-call"')) errors.push(label + ": missing mobile call button");
     if (!html.includes('class="campaign-process-list"')) warnings.push(label + ": campaign contact steps missing");
-    const faqMatch=html.match(new RegExp('<script type="application/ld\\+json">([\\s\\S]*?)</script>',"i"));
+    const faqMatch=html.match(new RegExp('<script type="application/ld\\+json">([\s\S]*?)</script>',"i"));
     if (!faqMatch) warnings.push(label + ": structured FAQ missing");
     else { try { const faq=JSON.parse(faqMatch[1]); if(faq["@type"]!=="FAQPage"||faq.mainEntity?.length!==3) warnings.push(label + ": unexpected FAQ schema"); } catch { errors.push(label + ": invalid FAQ JSON-LD"); } }
   }
@@ -86,7 +86,7 @@ try {
  if (!library) errors.push("Homepage: missing video library");
  else {
   const count = (library[1].match(/class="video-feature"/g)||[]).length;
-  const links = (library[1].match(/https:\/\/scrimba\\.com\/explain\//g)||[]).length;
+  const links = (library[1].match(/https:\/\/scrimba\.com\/explain\//g)||[]).length;
   if (count !== 5 || links !== 5) errors.push("Homepage: expected five video cards with five video links, got "+count+" cards and "+links+" links");
  }
 } catch(e) { errors.push("Homepage video library audit failed: "+e.message); }

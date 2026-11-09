@@ -1118,3 +1118,145 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 @media(prefers-reduced-motion:reduce){
   .premium-v2 footer .back-to-top{transition:none}
 }
+
+
+/* PROJECT-ARTWORK-2026-11-09: original service visuals and first-screen refinement */
+/* Compact first screen: one clear headline, visible primary action, less visual noise. */
+@media(min-width:961px){
+  .premium-v2 .hero-glamour{
+    min-height:610px;
+    padding-top:clamp(48px,5vw,76px);
+    padding-bottom:clamp(65px,6vw,95px);
+    gap:clamp(32px,4.5vw,75px);
+  }
+  .premium-v2 .hero-glamour h1{
+    font-size:clamp(3.3rem,5.4vw,5.8rem);
+    max-width:13ch;
+    line-height:1.04;
+  }
+  .premium-v2 .hero-visual{
+    min-width:0;
+  }
+  .premium-v2 .hero-art{
+    width:min(100%,385px);
+  }
+}
+.premium-v2 .hero-glamour .hero-content>p{
+  max-width:61ch;
+  line-height:1.66;
+  color:#e5ecee;
+}
+.premium-v2 .hero-glamour .actions .btn:first-child{
+  box-shadow:0 13px 31px rgba(7,21,30,.30);
+}
+.premium-v2 .hero-glamour .actions .btn:first-child:hover{
+  box-shadow:0 17px 38px rgba(7,21,30,.42);
+}
+.premium-v2 .hero-glamour .hero-benefits span{
+  font-size:.9rem;
+  line-height:1.4;
+}
+.premium-v2 .premium-confidence{
+  padding-bottom:clamp(12px,2vw,24px);
+}
+.premium-v2 .quick-path{
+  border-top:1px solid #e2e3db;
+}
+/* Five original vector illustrations: small files, no external image host. */
+.premium-v2 #uslugi .primary-card{
+  isolation:isolate;
+  min-width:0;
+  padding-top:clamp(105px,9vw,124px);
+  background:linear-gradient(155deg,rgba(24,55,70,.98),rgba(7,26,37,.96));
+}
+.premium-v2 #uslugi .primary-card:before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:8px;
+  right:11px;
+  bottom:auto;
+  left:auto;
+  inset:auto;
+  display:block;
+  width:min(61%,192px);
+  height:118px;
+  border:0;
+  pointer-events:none;
+  opacity:.72;
+  background:var(--project-art) center / contain no-repeat;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 35%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 35%);
+  transition:transform .25s ease,opacity .25s ease;
+}
+.premium-v2 #uslugi .primary-card:nth-child(1){--project-art:url("/v2/assets/project-mining.svg")}
+.premium-v2 #uslugi .primary-card:nth-child(2){--project-art:url("/v2/assets/project-support.svg")}
+.premium-v2 #uslugi .primary-card:nth-child(3){--project-art:url("/v2/assets/project-rents.svg")}
+.premium-v2 #uslugi .primary-card:nth-child(4){--project-art:url("/v2/assets/project-credit.svg")}
+.premium-v2 #uslugi .primary-card:nth-child(5){--project-art:url("/v2/assets/project-utility.svg")}
+.premium-v2 #uslugi .primary-card:after{display:none}
+.premium-v2 #uslugi .primary-card :where(.project-number,.project-symbol,.overline,h3,p,.more){
+  position:relative;
+  z-index:1;
+}
+.premium-v2 #uslugi .primary-card .project-symbol{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border:1px solid rgba(239,211,163,.38);
+  border-radius:13px;
+  background:rgba(255,255,255,.075);
+  color:#eed0a0;
+  font:700 1.4rem/1 Georgia,serif;
+}
+.premium-v2 #uslugi .primary-card .overline{
+  color:#efcf96;
+  font-size:.8rem;
+}
+.premium-v2 #uslugi .primary-card .more{
+  margin-top:auto;
+  padding-top:14px;
+  color:#f1d2a4;
+}
+.premium-v2 #uslugi .primary-card:hover:before,
+.premium-v2 #uslugi .primary-card:focus-visible:before{
+  opacity:.95;
+  transform:translateY(-4px);
+}
+.premium-v2 #uslugi .primary-card:hover{
+  border-color:#e4c38a;
+}
+/* The project list remains readable on handheld devices. */
+@media(max-width:650px){
+  .premium-v2 .hero-glamour .hero-content>p{
+    font-size:1rem;
+    line-height:1.58;
+  }
+  .premium-v2 .hero-glamour .hero-benefits{
+    gap:7px;
+  }
+  .premium-v2 .hero-glamour .hero-benefits span{
+    font-size:.8rem;
+  }
+  .premium-v2 #uslugi .primary-card{
+    padding-top:89px;
+    min-height:0;
+  }
+  .premium-v2 #uslugi .primary-card:before{
+    width:150px;
+    height:92px;
+    right:10px;
+    top:9px;
+    opacity:.58;
+  }
+  .premium-v2 #uslugi .primary-card .project-symbol{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 #uslugi .primary-card:before{transition:none}
+  .premium-v2 #uslugi .primary-card:hover:before{transform:none}
+}

@@ -50,6 +50,7 @@ for (const file of files) {
     if (!html.includes('class="campaign-process-list"')) warnings.push(label + ": campaign contact steps missing");
   }
   if (label === "index.html" && !html.includes("data-contact-form")) errors.push("index.html: missing contact form");
+  if (label === "index.html" && !html.includes('class="campaign-home-grid"')) warnings.push("index.html: featured campaign paths missing");
   if (label === "index.html" && !html.includes('src="/v2/chat-assistant.js"')) warnings.push("index.html: assistant script missing");
   const anchors = new Set([...html.matchAll(/\\bid="([^"]+)"/g)].map(m => m[1]));
   for (const match of html.matchAll(/href="#([^"]+)"/g)) {

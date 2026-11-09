@@ -1709,3 +1709,46 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 @media(prefers-reduced-motion:reduce){
   .premium-v2 .brand-partner-card{transition:none}
 }
+
+
+/* 2026-11-10 | homepage alignment with green Votum Wsparcie service identity */
+.premium-v2 #uslugi .primary-card:nth-child(2),
+.premium-v2 #uslugi .primary-card:nth-child(3){
+  background:radial-gradient(circle at 90% 4%,rgba(100,184,117,.20),transparent 43%),linear-gradient(145deg,#16412c,#102d25);
+  border-color:rgba(156,218,166,.35);
+}
+.premium-v2 #uslugi .primary-card:nth-child(2) .project-symbol,
+.premium-v2 #uslugi .primary-card:nth-child(3) .project-symbol{
+  color:#d2f3da;
+  border-color:#8dbd9a;
+  background:rgba(216,250,220,.09);
+}
+.premium-v2 #uslugi .primary-card:nth-child(2) .more,
+.premium-v2 #uslugi .primary-card:nth-child(3) .more,
+.premium-v2 #uslugi .primary-card:nth-child(2) .overline,
+.premium-v2 #uslugi .primary-card:nth-child(3) .overline{color:#c3ebce}
+.premium-v2 .quick-path .quick-path-links>a:nth-child(2),
+.premium-v2 .quick-path .quick-path-links>a:nth-child(3){
+  border-color:#c6dfcb;
+  background:linear-gradient(135deg,#fff,#f1f9f2);
+}
+.premium-v2 .quick-path .quick-path-links>a:nth-child(2) .quick-path-icon,
+.premium-v2 .quick-path .quick-path-links>a:nth-child(3) .quick-path-icon{
+  color:#216b3c;
+  background:#e8f4ea;
+  border-color:#c1dfc8;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:nth-child(2){
+  border-color:#cbe4d0;
+  background:linear-gradient(140deg,#fafffb,#e8f6ec);
+  color:#18462c;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:nth-child(2) :is(h3,p,.campaign-home-kicker){color:#204b34}
+.premium-v2 .campaign-home-feature .campaign-home-card:nth-child(2) .btn{
+  background:#206b3d;
+  color:#fff;
+  border-color:#206b3d;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:nth-child(2) .btn:hover{
+  background:#18552f;
+}

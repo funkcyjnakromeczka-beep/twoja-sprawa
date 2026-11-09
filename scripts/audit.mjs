@@ -92,6 +92,13 @@ try {
   if (count !== 5 || links !== 5) errors.push("Homepage: expected five video cards with five video links, got "+count+" cards and "+links+" links");
  }
 } catch(e) { errors.push("Homepage video library audit failed: "+e.message); }
+// All five core guides must offer an interactive checklist with a local-only script.
+for (const slug of ["checklista-szkody-gorniczej","swiadczenie-wspierajace-pierwsze-kroki","renta-powypadkowa-dokumenty","skd-kredyt-pln-lista-kontrolna","sluzebnosc-przesylu-dzialka"]) {
+ try {
+  const guide=await readFile(join(root,"poradniki",slug+".html"),"utf8");
+  if (!guide.includes('class="interactive-checklist"') || !guide.includes('/v2/checklist.js')) errors.push("Guide "+slug+": missing interactive checklist or script");
+ } catch(e) { errors.push("Guide "+slug+": "+e.message); }
+}
 console.log("Checked " + files.length + " HTML files, including " + serviceForms.length + " service forms");
 if(serviceForms.length !== 12) errors.push("Expected 12 service pages, found "+serviceForms.length);
 for (const w of warnings) console.log("WARN " + w);

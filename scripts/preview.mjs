@@ -17,6 +17,7 @@ async function walk(dir){
    let html=await readFile(absolute,"utf8");
    if(!html.includes('<meta name="robots" content="noindex,follow">'))throw Error("Draft robots tag missing: "+rel);
    html=html.replaceAll("/v2/","/");
+      html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
    // Explicit preview-only robots directive in every generated HTML document.
    html=html.replace(/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i,'<meta name="robots" content="noindex,nofollow">');
    if(!/<meta\s+name="robots"\s+content="noindex,nofollow">/i.test(html)) throw Error("Preview noindex missing: "+rel);

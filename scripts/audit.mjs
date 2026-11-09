@@ -79,6 +79,17 @@ for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","v2/guid
   try { execFileSync(process.execPath, ["--check",js], {stdio:"pipe"}); }
   catch (e) { errors.push(js + ": JavaScript syntax check failed: " + String(e.stderr || e.message).slice(0,500)); }
 }
+// Main-page video library: every core service needs a playable presentation link.
+try {
+ const home = await readFile(join(root,"index.html"),"utf8");
+ const library = home.match(/<div class="video-library"[^>]*>([\\s\\S]*?)<div class="video-links">/);
+ if (!library) errors.push("Homepage: missing video library");
+ else {
+  const count = (library[1].match(/class="video-feature"/g)||[]).length;
+  const links = (library[1].match(/https:\/\/scrimba\\.com\/explain\//g)||[]).length;
+  if (count !== 5 || links !== 5) errors.push("Homepage: expected five video cards with five video links, got "+count+" cards and "+links+" links");
+ }
+} catch(e) { errors.push("Homepage video library audit failed: "+e.message); }
 console.log("Checked " + files.length + " HTML files, including " + serviceForms.length + " service forms");
 if(serviceForms.length !== 12) errors.push("Expected 12 service pages, found "+serviceForms.length);
 for (const w of warnings) console.log("WARN " + w);

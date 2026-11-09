@@ -40,8 +40,9 @@
   const updateStage=()=>{const options=stageOptions[select.value];stage.replaceChildren();stageWrap.hidden=!options;if(!options)return;stageLabel.textContent=select.value==="Szkody górnicze"?"Na jakim etapie jest sprawa szkody?":"Na jakim etapie jest sprawa świadczenia?";for(let i=0;i<options.length;i++){const option=document.createElement("option");option.value=i===0?"":options[i];option.textContent=options[i];stage.append(option);}stage.required=false;};select.addEventListener("change",updateStage);updateStage();
   const name=field("Imię","text",true,80,"given-name");
   const city=field("Miasto lub miejscowość","text",true,100,"address-level2");
-  const phone=field("Telefon kontaktowy","tel",true,30,"tel");phone.pattern="[+0-9()\\s-]{7,30}";phone.title="Podaj numer telefonu (co najmniej 7 znaków)";
+  const phone=field("Telefon kontaktowy","tel",true,30,"tel");phone.pattern="[+0-9()\\s-]{7,30}";phone.title="Podaj numer telefonu (co najmniej 7 znaków)";phone.inputMode="tel";
   const email=field("Adres e-mail (opcjonalnie, jeśli wolisz telefon)","email",false,150,"email");
+  const phoneHint=document.createElement("small");phoneHint.className="contact-field-hint";phoneHint.textContent="Telefon jest potrzebny, abyśmy mogli oddzwonić. Nie wpisuj tutaj numeru PESEL ani innych danych dokumentów.";phone.insertAdjacentElement("afterend",phoneHint);
   const methodLabel=document.createElement("label");methodLabel.textContent="Preferowany sposób kontaktu";const method=document.createElement("select");method.id="cf-method-"+Math.random().toString(36).slice(2,8);methodLabel.htmlFor=method.id;for(const [value,title] of [["Telefon","Telefon"],["E-mail","E-mail"],["Dowolny","Dowolny"]]){const option=document.createElement("option");option.value=value;option.textContent=title;method.append(option);}form.append(methodLabel,method);
   const syncContactPreference=()=>{email.required=method.value==="E-mail";email.setAttribute("aria-required",String(email.required));};
   method.addEventListener("change",syncContactPreference);syncContactPreference();

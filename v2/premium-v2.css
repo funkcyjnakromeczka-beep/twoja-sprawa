@@ -223,3 +223,41 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 @media(max-width:850px){.premium-v2 .premium-quick-lead{grid-template-columns:1fr}.premium-v2 .premium-quick-lead-links{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.premium-v2 .premium-quick-lead-links{grid-template-columns:1fr}.premium-v2 .premium-quick-lead{margin-top:20px;padding:23px}}
 @media(prefers-reduced-motion:reduce){.premium-v2 .premium-quick-lead-links a{transition:none}}
+
+/* Focused premium landing pages for organic campaigns; no scripts or tracking pixels. */
+.premium-campaign{background:#fbfaf7;color:#183746}
+.premium-campaign>header{background:#091f2d;border-bottom:1px solid rgba(222,185,125,.3)}
+.premium-campaign>header .logo,.premium-campaign>header nav a{color:#fff}
+.premium-campaign>header .logo span{color:#e6bf82}
+.premium-campaign .campaign-hero{max-width:none;padding:clamp(36px,6vw,86px) max(18px,calc((100vw - 1230px)/2));background:radial-gradient(circle at 18% 15%,rgba(220,177,106,.16),transparent 35%),linear-gradient(135deg,#0b2535,#194357);color:#fff;gap:clamp(24px,4vw,60px)}
+.premium-campaign .campaign-copy{padding-top:clamp(4px,2vw,24px)}
+.premium-campaign .campaign-copy .eyebrow{color:#eac58d;font-weight:800;letter-spacing:.12em}
+.premium-campaign .campaign-copy h1{color:#fff;max-width:16ch;font-size:clamp(2.25rem,4.2vw,4.2rem);line-height:1.09;text-wrap:balance}
+.premium-campaign .campaign-copy>p{color:#e0e9eb;max-width:60ch}
+.premium-campaign .campaign-facts span{background:rgba(255,255,255,.08);border:1px solid rgba(241,211,169,.38);color:#f5e6d0}
+.premium-campaign .campaign-copy>.btn{background:linear-gradient(110deg,#d6b47c,#f0d6a8);color:#122e3e;border-radius:999px;font-weight:850;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.premium-campaign .campaign-copy .campaign-disclaimer{color:#c9d8dc}
+.premium-campaign .campaign-form .contact-form{background:#fff;color:#173848;border:1px solid rgba(227,204,169,.7);box-shadow:0 25px 65px rgba(0,0,0,.23);border-radius:22px}
+.premium-campaign .campaign-form .contact-form h3{color:#133849;font-size:clamp(1.45rem,2.1vw,2rem);margin:0 0 6px}
+.premium-campaign .campaign-form .contact-form label{font-weight:750;color:#183b4b}
+.premium-campaign .campaign-form .contact-form input:not([type="checkbox"]),.premium-campaign .campaign-form .contact-form select,.premium-campaign .campaign-form .contact-form textarea{width:100%;max-width:100%;min-height:46px;border:1px solid #c7d7d9;border-radius:11px;background:#fff;color:#153647;padding:12px 13px;font-size:1rem}
+.premium-campaign .campaign-form .contact-form textarea{min-height:110px}
+.premium-campaign .campaign-form .contact-form :is(input,select,textarea):focus-visible{outline:3px solid #dfb777;outline-offset:2px}
+.premium-campaign .campaign-form .contact-benefits{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.premium-campaign .campaign-form .contact-benefits span{border:1px solid #d8e4dc;background:#edf5f0;color:#23543f;border-radius:999px;padding:6px 9px;font-size:.74rem;font-weight:750}
+.premium-campaign .campaign-form .contact-advisor{padding:15px;border-radius:12px;background:#eaf1f0;color:#163c4a}
+.premium-campaign .campaign-form .contact-advisor strong{color:#153949}
+.premium-campaign .campaign-form .contact-guide-box{padding:14px;border-left:4px solid #bd975e;background:#faf6ed;border-radius:10px}
+.premium-campaign .campaign-form .contact-guide-box[hidden]{display:none}
+.premium-campaign .campaign-form .contact-guide-box strong,.premium-campaign .campaign-form .contact-guide-box span{display:block}
+.premium-campaign .campaign-form .contact-guide-box a{font-weight:800;color:#75552b}
+.premium-campaign .campaign-form .contact-form .check{display:flex;align-items:flex-start;gap:10px}
+.premium-campaign .campaign-form .contact-form .check input{width:19px;height:19px;flex-shrink:0;margin-top:4px;accent-color:#aa8248}
+.premium-campaign .campaign-form .contact-form button[type="submit"]{width:100%;min-height:54px;border-radius:999px;background:linear-gradient(110deg,#d6b47c,#f0d6a8);color:#112f3d;font-weight:850}
+.premium-campaign .campaign-form .contact-status-success{padding:13px;border:1px solid #a4c6b1;background:#eef7f0;border-radius:10px;color:#23513c}
+.premium-campaign .campaign-form .contact-status-error{padding:13px;border:1px solid #dcb2a0;background:#fff3ee;border-radius:10px;color:#762f20}
+.premium-campaign .campaign-info,.premium-campaign .campaign-enhancement,.premium-campaign .campaign-process,.premium-campaign .campaign-faq{padding-top:clamp(42px,5vw,72px);padding-bottom:clamp(42px,5vw,72px)}
+.premium-campaign .campaign-steps article{background:linear-gradient(145deg,#fff,#f8f6f0);border:1px solid #dfe4e1;border-radius:18px;box-shadow:0 12px 32px rgba(8,32,45,.06)}
+.premium-campaign .campaign-steps article strong{color:#9b713c}
+@media(max-width:900px){.premium-campaign .campaign-hero{padding:36px 18px}.premium-campaign .campaign-copy h1{max-width:22ch}}
+@media(max-width:600px){.premium-campaign .campaign-hero{padding:30px 15px}.premium-campaign .campaign-copy h1{font-size:clamp(2rem,9vw,3rem)}}

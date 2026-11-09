@@ -52,6 +52,11 @@ for (const file of files) {
     if (!faqMatch) warnings.push(label + ": structured FAQ missing");
     else { try { const faq=JSON.parse(faqMatch[1]); if(faq["@type"]!=="FAQPage"||faq.mainEntity?.length!==3) warnings.push(label + ": unexpected FAQ schema"); } catch { errors.push(label + ": invalid FAQ JSON-LD"); } }
   }
+  if (label.startsWith("poradniki/")) {
+    if (!html.includes('src="/v2/guide-tools.js"')) errors.push(label + ": print tool missing");
+    if (!html.includes('class="guide-checklist"')) errors.push(label + ": checklist missing");
+    if (!html.includes('class="guide-next"')) errors.push(label + ": next-step section missing");
+  }
   if (label === "index.html" && !html.includes("data-contact-form")) errors.push("index.html: missing contact form");
   if (label === "index.html" && !html.includes('class="campaign-home-grid"')) warnings.push("index.html: featured campaign paths missing");
   if (label === "index.html" && !html.includes('src="/v2/chat-assistant.js"')) warnings.push("index.html: assistant script missing");
@@ -70,7 +75,7 @@ for (const file of files) {
     if (!(await exists(target)) && !(await exists(join(target, "index.html")))) errors.push(label + ": broken link " + attr);
   }
 }
-for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","scripts/preview.mjs"]) {
+for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","v2/guide-tools.js","scripts/preview.mjs"]) {
   try { execFileSync(process.execPath, ["--check",js], {stdio:"pipe"}); }
   catch (e) { errors.push(js + ": JavaScript syntax check failed: " + String(e.stderr || e.message).slice(0,500)); }
 }

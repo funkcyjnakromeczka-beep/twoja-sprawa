@@ -75,7 +75,7 @@ for (const file of files) {
     if (!(await exists(target)) && !(await exists(join(target, "index.html")))) errors.push(label + ": broken link " + attr);
   }
 }
-for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","v2/guide-tools.js","v2/service-navigator.js","v2/checklist.js","scripts/preview.mjs"]) {
+for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","v2/guide-tools.js","v2/service-navigator.js","v2/checklist.js","v2/campaign-links.js","scripts/preview.mjs"]) {
   try { execFileSync(process.execPath, ["--check",js], {stdio:"pipe"}); }
   catch (e) { errors.push(js + ": JavaScript syntax check failed: " + String(e.stderr || e.message).slice(0,500)); }
 }
@@ -103,6 +103,20 @@ try {
   if(cards!==5) errors.push("Homepage: expected five guide cards, found "+cards);
  }
 } catch(e) {errors.push("Homepage guide showcase audit failed: "+e.message);}
+// The campaign-link generator must use the same tracking fields as the lead form.
+try {
+ const builder=await readFile(join(root,"narzedzia","linki-kampanii.html"),"utf8");
+ const logic=await readFile(join(root,"campaign-links.js"),"utf8");
+ const contact=await readFile(join(root,"contact.js"),"utf8");
+ if(!builder.includes("data-campaign-builder")||!builder.includes('src="/v2/campaign-links.js"')) errors.push("Campaign builder: missing form or script");
+ for(const field of ["utm_source","utm_medium","utm_campaign","utm_content"]){
+  if(!logic.includes(field)) errors.push("Campaign builder: missing "+field);
+  if(!contact.includes(field)) errors.push("Contact form: tracking parameter not accepted "+field);
+ }
+ for(const service of ["szkody","swiadczenie","renty","skd","przesyl"]){
+  if(!logic.includes(service+": {")) errors.push("Campaign builder: missing "+service);
+ }
+} catch(e) { errors.push("Campaign builder audit failed: "+e.message); }
 // All five core guides must offer an interactive checklist with a local-only script.
 for (const slug of ["checklista-szkody-gorniczej","swiadczenie-wspierajace-pierwsze-kroki","renta-powypadkowa-dokumenty","skd-kredyt-pln-lista-kontrolna","sluzebnosc-przesylu-dzialka"]) {
  try {

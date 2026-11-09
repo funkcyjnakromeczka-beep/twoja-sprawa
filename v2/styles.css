@@ -334,3 +334,11 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .campaign-guide-link{max-width:1080px;margin:12px auto 30px;padding:16px 22px;border-left:4px solid #ae8747;background:#f9f4ea;color:#1c3c4d;line-height:1.6}
 .campaign-guide-link a{color:#173b50;font-weight:750;text-underline-offset:3px}
 @media(max-width:720px){.guide-checklist{grid-template-columns:1fr}.guide-checklist li{padding:20px 18px 20px 58px}.guide-checklist li:before{left:16px;top:18px}.guide-phone{margin-left:0;display:block}}
+
+/* Compact navigation across the five educational guides. */
+.guide-more-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px}
+.guide-more-links a{display:flex;align-items:center;min-height:72px;padding:17px 20px;border:1px solid #c8b58c;border-radius:12px;background:#fbf7ef;color:#19394c;font-weight:750;line-height:1.4;text-decoration:none;transition:transform .18s ease,border-color .18s ease}
+.guide-more-links a:hover{transform:translateY(-2px);border-color:#98723c}
+.guide-more-links a:focus-visible{outline:3px solid #a27a3d;outline-offset:3px}
+@media(max-width:760px){.guide-more-links{grid-template-columns:1fr}.guide-more-links a{min-height:56px}}
+@media(prefers-reduced-motion:reduce){.guide-more-links a{transition:none}.guide-more-links a:hover{transform:none}}

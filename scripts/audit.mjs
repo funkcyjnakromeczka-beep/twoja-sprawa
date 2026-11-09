@@ -165,7 +165,7 @@ try {
  const home=await readFile(join(root,"index.html"),"utf8");
  const css=await readFile(join(root,"premium-v2.css"),"utf8");
  const start=home.indexOf('class="quick-path"');
- const end=home.indexOf('class="campaign-home-feature"',start);
+ const end=home.indexOf('class="campaign-home-feature wrap"',start);
  const section=home.slice(start,end);
  if(start<0||end<0||!section.includes('id="quick-path-title"')||!section.includes('class="quick-path-links"')) errors.push("Service tiles: accessible heading or grid missing");
  for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","kredyty-pln","sluzebnosc-przesylu"]){

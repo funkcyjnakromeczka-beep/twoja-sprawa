@@ -1417,3 +1417,295 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
     transition:none;
   }
 }
+
+
+/* 2026-11-10 | verified VOTUM logos, Votum Wsparcie themes and legibility audit */
+:root{--vws-green:#257c46;--vws-deep:#174d31;--vws-mint:#e9f5ed;--vws-line:#c6dece}
+
+/* A restrained, credible relationship section: actual corporate logo assets, not imitation marks. */
+.premium-v2 .brand-partners{
+  position:relative;
+  isolation:isolate;
+  padding-block:clamp(48px,6vw,88px);
+  background-image:linear-gradient(105deg,rgba(250,249,245,.99),rgba(250,249,245,.93)),url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 3% center;
+  background-size:cover,245px auto;
+  background-repeat:no-repeat;
+  color:#163644;
+}
+.premium-v2 .brand-partners .eyebrow{color:#86622e}
+.premium-v2 .brand-partners>h2{
+  max-width:23ch;
+  margin:10px 0 14px;
+  color:#153543;
+  line-height:1.15;
+}
+.premium-v2 .brand-partners>.section-lead,
+.premium-v2 .brand-partners-disclaimer{color:#3d545e}
+.premium-v2 .brand-partners-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(15px,2vw,24px);
+  margin:30px 0 18px;
+}
+.premium-v2 .brand-partner-card{
+  display:grid;
+  grid-template-columns:minmax(120px,.42fr) minmax(0,.58fr);
+  align-items:center;
+  gap:clamp(14px,2vw,26px);
+  min-width:0;
+  padding:clamp(18px,2.3vw,31px);
+  border:1px solid #d5ded9;
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 13px 37px rgba(14,42,50,.08);
+}
+.premium-v2 .brand-partner-mark{
+  display:grid;
+  place-items:center;
+  min-width:0;
+  min-height:128px;
+  padding:9px;
+  border:1px solid #ebeee9;
+  border-radius:14px;
+  background:#fff;
+}
+.premium-v2 .brand-partner-mark img{
+  display:block;
+  width:100%;
+  max-width:225px;
+  height:auto;
+  max-height:130px;
+  object-fit:contain;
+}
+.premium-v2 .brand-partner-copy{min-width:0}
+.premium-v2 .brand-partner-label{
+  display:inline-block;
+  margin-bottom:7px;
+  font-size:.75rem;
+  line-height:1.5;
+  font-weight:850;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  color:#795626;
+}
+.premium-v2 .brand-partner-copy h3{
+  margin:0 0 10px;
+  color:#133746;
+  font-size:clamp(1.3rem,1.75vw,1.85rem);
+}
+.premium-v2 .brand-partner-copy p{
+  margin:0 0 17px;
+  color:#3d5760;
+  line-height:1.65;
+  font-size:.92rem;
+}
+.premium-v2 .brand-partner-copy a{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-height:44px;
+  color:#16516a;
+  font-weight:800;
+  text-underline-offset:4px;
+}
+.premium-v2 .brand-partner-copy a:focus-visible{
+  outline:3px solid #ba945a;
+  outline-offset:4px;
+}
+.premium-v2 .brand-partners-disclaimer{
+  max-width:105ch;
+  font-size:.83rem;
+  line-height:1.6;
+}
+@media(max-width:1060px){
+  .premium-v2 .brand-partner-card{grid-template-columns:1fr;align-items:start}
+  .premium-v2 .brand-partner-mark{min-height:122px}
+}
+@media(max-width:680px){
+  .premium-v2 .brand-partners-grid{grid-template-columns:1fr}
+  .premium-v2 .brand-partner-card{
+    grid-template-columns:minmax(0,1fr);
+    gap:13px;
+    padding:19px;
+  }
+  .premium-v2 .brand-partner-mark{min-height:108px}
+  .premium-v2 .brand-partners{background-size:cover,145px auto}
+}
+
+/* The Votum Wsparcie-inspired identity is intentionally green, not turquoise/grey.
+   Hero labels retain enough contrast with the header background. */
+.premium-subpage.theme-support,
+.premium-subpage.theme-rents{
+  --service-glow:rgba(80,171,105,.23);
+  --service-text:#1b4430;
+  --service-muted:#385b48;
+  background:#f3f8f3;
+}
+.premium-subpage.theme-support .subhero,
+.premium-subpage.theme-rents .subhero{
+  background-image:
+    radial-gradient(circle at 91% 17%,rgba(90,176,113,.24),transparent 39%),
+    linear-gradient(115deg,#102e23 0%,#174e34 62%,#236d49 100%);
+}
+.premium-subpage.theme-support .subhero>h1,
+.premium-subpage.theme-rents .subhero>h1,
+.premium-subpage.theme-support .subhero>.eyebrow,
+.premium-subpage.theme-rents .subhero>.eyebrow{color:#fbfffc}
+.premium-subpage.theme-support .subhero>p,
+.premium-subpage.theme-rents .subhero>p{color:#e0f0e6}
+.premium-subpage.theme-support .subhero>a,
+.premium-subpage.theme-rents .subhero>a,
+.premium-subpage.theme-support .service-hero-secondary,
+.premium-subpage.theme-rents .service-hero-secondary{color:#e8f5ec}
+.premium-subpage.theme-support .service-hero-actions .btn,
+.premium-subpage.theme-rents .service-hero-actions .btn{
+  background:linear-gradient(120deg,#e3f3e7,#a4dab4);
+  border:1px solid rgba(7,60,31,.16);
+  color:#0e3d23;
+}
+.premium-subpage.theme-support .service-hero-actions .btn:hover,
+.premium-subpage.theme-rents .service-hero-actions .btn:hover{
+  background:#d3eedd;
+  color:#0e3d23;
+}
+.premium-subpage .vws-service-brand{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px 20px;
+  width:max-content;
+  max-width:100%;
+  margin:0 0 29px;
+  padding:10px 18px 10px 12px;
+  border-radius:15px;
+  border:1px solid rgba(207,242,219,.24);
+  background:rgba(255,255,255,.96);
+  box-shadow:0 13px 30px rgba(0,15,7,.13);
+  color:#1d4d33;
+}
+.premium-subpage .vws-service-brand img{
+  display:block;
+  width:clamp(138px,15vw,190px);
+  height:auto;
+  max-height:65px;
+  object-fit:contain;
+}
+.premium-subpage .vws-service-brand span{
+  max-width:21ch;
+  font-size:.75rem;
+  line-height:1.5;
+  font-weight:750;
+  color:#28563b;
+}
+.premium-subpage.theme-support .article,
+.premium-subpage.theme-rents .article{
+  background-image:
+    linear-gradient(130deg,rgba(255,255,255,.995),rgba(236,247,238,.95) 65%,rgba(250,253,250,.9)),
+    url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 3% bottom 10%;
+  background-size:cover,230px auto;
+  color:#234634;
+}
+.premium-subpage.theme-support .article>section,
+.premium-subpage.theme-rents .article>section{
+  border-color:#cfe3d5;
+  background:rgba(255,255,255,.96);
+}
+.premium-subpage.theme-support .article :is(h2,h3),
+.premium-subpage.theme-rents .article :is(h2,h3){color:#184a2e}
+.premium-subpage.theme-support .article :is(p,li),
+.premium-subpage.theme-rents .article :is(p,li){color:#345242}
+.premium-subpage.theme-support .article a,
+.premium-subpage.theme-rents .article a{color:#155c35}
+.premium-subpage.theme-support .article details,
+.premium-subpage.theme-rents .article details{
+  background:#f6fcf8;
+  border-color:#cde3d2;
+}
+.premium-subpage.theme-support .article summary,
+.premium-subpage.theme-rents .article summary{color:#1b482f}
+@media(max-width:650px){
+  .premium-subpage.theme-support .subhero,
+  .premium-subpage.theme-rents .subhero{
+    background-image:linear-gradient(120deg,#123c2a,#236a47);
+  }
+  .premium-subpage .vws-service-brand{
+    margin-bottom:21px;
+    padding:9px 12px;
+    gap:10px;
+  }
+  .premium-subpage .vws-service-brand img{width:145px}
+  .premium-subpage .vws-service-brand span{font-size:.7rem}
+}
+
+/* Contrast repair: only LIGHT containers receive dark type, never the dark hero/cards.
+   Avoid global .premium-v2 p rules: the mining tile and hero require light copy. */
+.premium-v2 :is(
+  .quick-path,.guide-showcase,.trust-process,.trust-section,
+  .votum-proof,.faq-home,#poradniki,#zespol,#kontakt,.brand-partners
+){
+  color:#193b49;
+}
+.premium-v2 :is(
+  .quick-path,.guide-showcase,.trust-process,.trust-section,
+  .votum-proof,.faq-home,#poradniki,#zespol,#kontakt,.brand-partners
+) :is(h2,h3){
+  color:#183947;
+}
+.premium-v2 :is(
+  .quick-path,.guide-showcase,.trust-process,.trust-section,
+  .votum-proof,.faq-home,#poradniki,#zespol,#kontakt,.brand-partners
+) :is(p,.section-lead,li){
+  color:#3e5862;
+}
+.premium-v2 :is(.guide-showcase-card,.trust-grid article,.faq-home details,.team-person,.brand-partner-card){
+  background-color:rgba(255,255,255,.97);
+  color:#173949;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:not(:first-child) :is(h3,p){
+  color:#1b3c48;
+}
+.premium-v2 .campaign-home-feature .campaign-home-card:first-child :is(h3,p,.campaign-home-kicker){
+  color:#f1f6f6;
+}
+.premium-v2 #uslugi .primary-card :is(h3,p){color:#eef5f3}
+.premium-v2 #uslugi .primary-card .overline{color:#f1d2a4}
+.premium-v2 .hero-glamour .hero-content>p{color:#eef4f4}
+.premium-v2 .brand-partners .brand-partner-copy p,
+.premium-v2 .brand-partners-disclaimer{color:#405b64}
+.premium-v2 :is(#kontakt,.faq-home,#zespol,#poradniki,.brand-partners){
+  background-color:#f8faf7;
+}
+/* Legacy white-on-white exceptions: visually essential FAQ, cards and form text. */
+.premium-v2 .faq-home :is(summary,p),
+.premium-v2 #kontakt :is(p,small,label),
+.premium-v2 #zespol .team-person :is(h3,p,a),
+.premium-v2 #poradniki .campaign-home-card:not(:first-child) :is(h3,p){
+  color:#214351;
+}
+.premium-v2 #kontakt :is(input:not([type=checkbox]),select,textarea){
+  color:#173746;
+  background-color:#fff;
+  border-color:#9fb3b6;
+}
+.premium-v2 #kontakt :is(input,textarea)::placeholder{color:#5d747b}
+.premium-v2 .guide-showcase .guide-showcase-card p{color:#3c5965}
+.premium-v2 :is(.quick-path,.guide-showcase,.trust-process,.trust-section,.votum-proof,.faq-home,#poradniki,#zespol,#kontakt,.brand-partners) .eyebrow{
+  color:#795b2f;
+}
+.premium-subpage .article{
+  color:#1d3c48;
+}
+.premium-subpage .article :is(h2,h3){color:#163847}
+.premium-subpage .article :is(p,li,summary){color:#334f5c}
+.premium-subpage .article a{color:#145775}
+.premium-subpage .article>section:not(.service-cta):not(.focus-detail){
+  background:rgba(255,255,255,.97);
+  border-color:#d5e0dd;
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 .brand-partner-card{transition:none}
+}

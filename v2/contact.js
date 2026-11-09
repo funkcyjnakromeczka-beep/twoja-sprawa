@@ -7,7 +7,7 @@
  const accessKey="80a28b90-b5ac-406e-8512-3d3c1615b73c"; // Publiczny identyfikator formularza Web3Forms, nie hasło.
  const automatic=/^[a-f0-9-]{30,40}$/i.test(accessKey);
  const campaignParams=new URLSearchParams(window.location.search);
- const sourceAllowed=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","inne"]);
+ const sourceAllowed=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
  const campaignSource=(campaignParams.get("utm_source")||"").toLowerCase().trim();
  const source=sourceAllowed.has(campaignSource)?campaignSource:"nieoznaczone";
  const campaign=(campaignParams.get("utm_campaign")||"").toLowerCase().trim();

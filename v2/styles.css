@@ -204,3 +204,12 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .contact-people{font-size:.88rem;line-height:1.7}
 .contact-people a{white-space:normal}
 @media(max-width:600px){.contact-advisor{padding:14px}.contact-advisor a{width:100%;text-align:center}}
+
+/* Trzy kroki: zamiast ściany tekstu. */
+.steps-visual{gap:18px;margin-top:25px}
+.steps-visual article{position:relative;padding:30px 25px;background:#fff;border:1px solid #d7c6a7;border-radius:19px;box-shadow:inset 1px 1px 0 #fff,0 5px 0 #e4dac8,0 14px 24px rgba(15,33,47,.1);color:#182f40}
+.steps-visual .step-icon{display:grid;place-items:center;width:56px;height:56px;margin-bottom:19px;border-radius:15px;background:#132d42;color:#f3d6a0;font:normal 2rem Georgia,serif}
+.steps-visual article>b{position:absolute;top:26px;right:26px;color:#a68043;font-size:.9rem;letter-spacing:.12em}
+.steps-visual h3{font:normal 1.45rem Georgia,serif;margin:0 0 12px}
+.steps-visual p{color:#455a68;line-height:1.65;margin:0}
+@media(max-width:850px){.steps-visual{grid-template-columns:1fr}.steps-visual article{padding:23px}}

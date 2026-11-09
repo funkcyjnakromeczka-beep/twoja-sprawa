@@ -240,3 +240,24 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 #formularz{scroll-margin-top:100px}
 #kontakt{scroll-margin-top:100px}
 @media(max-width:650px){.contact-benefits{flex-direction:column;align-items:flex-start}.contact-benefits span{font-size:.8rem}}
+
+/* Dedykowany landing: krótka droga od reklamy do zgłoszenia. */
+.campaign-page{overflow-x:hidden}
+.campaign-hero{max-width:1280px;margin:0 auto;padding:clamp(28px,5vw,76px) clamp(18px,4vw,48px);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:clamp(24px,5vw,72px);align-items:start}
+.campaign-copy{padding-top:clamp(10px,3vw,40px)}
+.campaign-copy h1{font-size:clamp(2rem,4.1vw,4rem);line-height:1.1;letter-spacing:-.035em;margin:16px 0 22px}
+.campaign-copy>p{font-size:clamp(1rem,1.45vw,1.2rem);line-height:1.7}
+.campaign-facts{display:flex;gap:9px;flex-wrap:wrap;margin:25px 0}
+.campaign-facts span{background:#e6f2ec;color:#174b3a;border:1px solid #a9c9b7;border-radius:30px;padding:8px 12px;font-size:.86rem;font-weight:700}
+.campaign-copy .campaign-disclaimer{font-size:.85rem;line-height:1.6;opacity:.87;margin-top:28px}
+.campaign-form{scroll-margin-top:100px;min-width:0}
+.campaign-form .contact-form{box-shadow:0 16px 60px rgba(0,0,0,.12);border-radius:18px;padding:clamp(16px,3vw,30px)}
+.campaign-info{padding-top:36px;padding-bottom:42px}
+.campaign-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:24px 0}
+.campaign-steps article{border:1px solid #b8a37c;border-radius:16px;padding:23px;background:#f7f2e9;color:#183344}
+.campaign-steps article strong{color:#80601d;letter-spacing:.09em}
+.campaign-steps article h3{color:#183344;margin:10px 0}
+.campaign-steps article p{color:#294355;line-height:1.6}
+.campaign-contact{padding-bottom:60px}
+@media(max-width:900px){.campaign-hero{grid-template-columns:1fr;gap:20px}.campaign-copy{padding-top:0}.campaign-steps{grid-template-columns:1fr}}
+@media(max-width:600px){.campaign-hero{padding:24px 15px}.campaign-facts{gap:6px}.campaign-facts span{font-size:.78rem}.campaign-copy h1{font-size:clamp(2rem,9vw,3rem)}.campaign-form .contact-form{padding:16px}}

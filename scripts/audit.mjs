@@ -89,7 +89,7 @@ try {
   const section = home.slice(start,end);
   const count = section.split('class="video-feature"').length - 1;
   const links = section.split('https://scrimba.com/explain/').length - 1;
-  if (count !== 5 || links !== 5) errors.push("Homepage: expected five video cards with five video links, got "+count+" cards and "+links+" links");
+  if (count !== 5 || links !== 10) errors.push("Homepage: expected five video cards with ten video links (poster and button per card), got "+count+" cards and "+links+" links");
  }
 } catch(e) { errors.push("Homepage video library audit failed: "+e.message); }
 // Premium V2 visual components, verified logo and all five film posters.

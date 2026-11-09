@@ -151,3 +151,12 @@ html{scroll-padding-top:20px}
 @media(max-width:620px){.primary-services{grid-template-columns:1fr;gap:16px}.primary-services>.primary-card,.primary-services>.primary-card:nth-child(4),.primary-services>.primary-card:nth-child(5){grid-column:span 1;min-height:245px;padding:28px 24px 24px}.primary-card .project-number{left:24px}.primary-card .project-symbol{right:22px}.primary-card h3{font-size:1.65rem}}
 
 .brand-small{display:block;letter-spacing:.1em}.brand-separator{color:#e1bf80;padding:0 .22em}.votum-wordmark{font-weight:900;letter-spacing:.14em;color:#f0d29c;text-shadow:0 1px 0 rgba(0,0,0,.35)}
+
+/* Subtelna dynamika inspirowana dobrymi praktykami witryn korporacyjnych. */
+html{scroll-behavior:smooth;scroll-padding-top:125px}
+.site-header{position:sticky;top:0;z-index:90;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:box-shadow .2s ease,background .2s ease}
+.site-header.is-scrolled{box-shadow:0 10px 25px rgba(5,17,29,.22)}
+.mobile-menu-toggle{display:none;cursor:pointer;background:#d5b477;color:#10263b;border:1px solid #a78245;border-radius:9px;padding:10px 17px;font:700 .95rem system-ui}
+@media(max-width:760px){.mobile-menu-toggle{display:block;align-self:flex-end}.site-header .main-nav{display:none;width:100%;flex-direction:column;align-items:stretch;gap:0}.site-header .main-nav.nav-open{display:flex}.site-header .main-nav a{padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.15)}.site-header{gap:10px}}
+@media(prefers-reduced-motion:no-preference){.motion-ready{opacity:0;transform:translateY(26px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1)}.motion-ready.motion-visible{opacity:1;transform:translateY(0)}.primary-card .project-symbol{transition:transform .5s ease}.primary-card:hover .project-symbol{transform:rotate(-10deg) scale(1.14)}.btn{transition:transform .2s ease,box-shadow .2s ease}.btn:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(0,0,0,.18)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.motion-ready{opacity:1;transform:none}}

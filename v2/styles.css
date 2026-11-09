@@ -361,3 +361,10 @@ body:has(.subhero) .article .contact-form a{color:#694615}
  .guide-checklist strong{color:#111!important}
  a{color:#111!important;text-decoration:none!important}
 }
+
+/* Shareable educational guides: accessible copy confirmation. */
+.guide-copy-status{align-self:center;flex-basis:100%;font-size:.94rem;line-height:1.5;color:#254b5e}
+.guide-copy-status:empty{display:none}
+.guide-copy-status label{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.guide-copy-status input{width:min(100%,560px);padding:10px 12px;border:1px solid #a27a3d;border-radius:8px;font:inherit;color:#173448;background:#fff}
+@media print{.guide-copy-status{display:none!important}}

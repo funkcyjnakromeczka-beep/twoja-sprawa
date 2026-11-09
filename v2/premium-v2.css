@@ -1752,3 +1752,268 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 .campaign-home-feature .campaign-home-card:nth-child(2) .btn:hover{
   background:#18552f;
 }
+
+
+/* READABILITY-HOTFIX-20261110: light-card text, form labels and restored legal visuals */
+/* ROOT CAUSE: styles.css applies 'body:has(.subhero) .article p, li'
+   as near-white !important. Service pages now have white cards, so override
+   with explicit dark-on-light selectors of higher precedence. */
+body.premium-subpage:has(.subhero) .article>section:not(.service-cta) :is(p,li,small,summary),
+body.premium-subpage:has(.subhero) .article>section:not(.service-cta) :is(p,li,small,summary) *,
+body.premium-subpage:has(.subhero) .article>section :is(.contact-form p,.contact-form small,.contact-form label){
+  color:#334f5b!important;
+  opacity:1!important;
+}
+body.premium-subpage.theme-support:has(.subhero) .article>section:not(.service-cta) :is(p,li,small,summary),
+body.premium-subpage.theme-rents:has(.subhero) .article>section:not(.service-cta) :is(p,li,small,summary){
+  color:#31523d!important;
+  opacity:1!important;
+}
+body.premium-subpage:has(.subhero) .article>section:not(.service-cta) :is(h2,h3,h4){
+  color:#153b49!important;
+  opacity:1!important;
+}
+body.premium-subpage.theme-support:has(.subhero) .article>section:not(.service-cta) :is(h2,h3,h4),
+body.premium-subpage.theme-rents:has(.subhero) .article>section:not(.service-cta) :is(h2,h3,h4){
+  color:#14512d!important;
+}
+body.premium-subpage:has(.subhero) .article>section:not(.service-cta) :is(a:not(.btn),a:not(.btn):visited){
+  color:#145a70!important;
+  text-underline-offset:4px;
+}
+body.premium-subpage.theme-support:has(.subhero) .article>section:not(.service-cta) a:not(.btn),
+body.premium-subpage.theme-rents:has(.subhero) .article>section:not(.service-cta) a:not(.btn){
+  color:#17633a!important;
+}
+/* Cards are not full-bleed white: green paper, fine edge and architectural details. */
+body.premium-subpage .article{
+  position:relative;
+  isolation:isolate;
+  background-image:
+    linear-gradient(125deg,rgba(238,246,240,.97),rgba(250,250,245,.91) 55%,rgba(232,244,235,.90)),
+    url("/v2/assets/temida-watermark.svg");
+  background-position:center,right -16px top 100px;
+  background-size:cover,clamp(220px,33vw,410px) auto;
+  background-repeat:no-repeat;
+}
+body.premium-subpage .article>section:not(.service-cta):not(.focus-detail){
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:linear-gradient(145deg,#ffffff 0%,#f8faf6 65%,#edf6ef 100%)!important;
+  border:1px solid #c7d9ce!important;
+  border-radius:19px;
+  box-shadow:0 10px 35px rgba(15,57,35,.065);
+}
+body.premium-subpage .article>section:not(.service-cta):not(.focus-detail):before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+  border:0;
+  background:linear-gradient(90deg,#267345,#8dbd9a 50%,rgba(149,193,156,.12));
+  pointer-events:none;
+}
+body.premium-subpage .article>section:not(.service-cta):not(.focus-detail):after{
+  content:"§";
+  position:absolute;
+  top:13px;
+  right:24px;
+  font:700 clamp(75px,10vw,136px)/1 Georgia,serif;
+  color:rgba(36,101,62,.065);
+  pointer-events:none;
+  z-index:0;
+}
+body.premium-subpage .article>section:not(.service-cta):not(.focus-detail)>*{
+  position:relative;
+  z-index:1;
+}
+body.premium-subpage .article>section:not(.service-cta):not(.focus-detail)>h2{
+  max-width:19ch;
+  line-height:1.15;
+  letter-spacing:-.025em;
+}
+body.premium-subpage:not(.theme-support):not(.theme-rents) .article>section:not(.service-cta):not(.focus-detail):before{
+  background:linear-gradient(90deg,#a9834c,#e1c48c 50%,rgba(225,196,140,.12));
+}
+body.premium-subpage:not(.theme-support):not(.theme-rents) .article>section:not(.service-cta):not(.focus-detail):after{
+  color:rgba(165,127,67,.07);
+}
+/* Reintroduce a visible justice silhouette in the empty outer margins. */
+body.premium-subpage .article:before{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  z-index:0;
+  right:-38px;
+  top:20%;
+  width:clamp(160px,27vw,315px);
+  height:450px;
+  background:url("/v2/assets/temida-outline.svg") center/contain no-repeat;
+  opacity:.12;
+}
+body.premium-subpage .article>section{position:relative;z-index:1}
+
+/* Dedicated white form surface with dark labels, explicit inputs and comfortable spacing. */
+body.premium-subpage #formularz{
+  position:relative;
+  isolation:isolate;
+  padding-block:clamp(28px,5vw,68px);
+  background-image:
+    linear-gradient(115deg,rgba(234,246,237,.97),rgba(249,250,245,.95) 69%),
+    url("/v2/assets/temida-watermark.svg");
+  background-position:center,right -45px center;
+  background-size:cover,240px auto;
+  background-repeat:no-repeat;
+  border-top:1px solid #d6e5d9;
+}
+body.premium-subpage #formularz:before{
+  content:"§";
+  position:absolute;
+  right:clamp(13px,4vw,70px);
+  top:3%;
+  font:700 clamp(80px,12vw,150px)/1 Georgia,serif;
+  color:rgba(39,111,66,.09);
+  pointer-events:none;
+}
+body.premium-subpage #formularz>[data-contact-form]{position:relative;z-index:1}
+body.premium-subpage #formularz .contact-form{
+  width:min(100%,780px);
+  max-width:780px;
+  margin-inline:auto;
+  padding:clamp(22px,4vw,42px);
+  background:linear-gradient(160deg,#ffffff,#fffefb)!important;
+  border:1px solid #c4d9c9!important;
+  border-top:5px solid #2a8050!important;
+  border-radius:22px;
+  box-shadow:0 19px 48px rgba(14,58,32,.10);
+  color:#1c3a2c!important;
+}
+body.premium-subpage #formularz .contact-form :is(h2,h3,h4){
+  color:#17462a!important;
+  opacity:1!important;
+}
+body.premium-subpage #formularz .contact-form :is(label,legend,.contact-field-hint,small,p,.check){
+  color:#294b39!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+body.premium-subpage #formularz .contact-form label:not(.check){
+  font-weight:750;
+  line-height:1.5;
+  margin-top:9px;
+}
+body.premium-subpage #formularz .contact-form :is(input:not([type=checkbox]),select,textarea),
+.premium-v2 #kontakt .contact-form :is(input:not([type=checkbox]),select,textarea){
+  min-height:48px;
+  background:#fff!important;
+  color:#193c30!important;
+  border:1.5px solid #97b4a2!important;
+  border-radius:12px;
+  box-shadow:none!important;
+}
+body.premium-subpage #formularz .contact-form :is(input,textarea)::placeholder{
+  color:#60796a!important;
+  opacity:1!important;
+}
+body.premium-subpage #formularz .contact-form :is(input,select,textarea):focus-visible{
+  outline:3px solid #9acbae!important;
+  outline-offset:2px;
+  border-color:#267845!important;
+}
+body.premium-subpage #formularz .contact-form .contact-stage:not([hidden]){
+  background:#eff7ef!important;
+  border:1px solid #b9d2be!important;
+  border-radius:13px;
+}
+body.premium-subpage #formularz .contact-form .contact-stage :is(label,select){
+  color:#22442e!important;
+}
+body.premium-subpage #formularz .contact-form .btn,
+body.premium-subpage #formularz .contact-form button[type="submit"]{
+  background:#206b3f;
+  color:white!important;
+  border:1px solid #206b3f;
+  font-weight:800;
+}
+body.premium-subpage #formularz .contact-form button[type="submit"]:hover{background:#164f31}
+/* Home page light sections: stronger but subdued justice symbolism. */
+.premium-v2 :is(.faq-home,#zespol,#kontakt,.guide-showcase,.brand-partners){
+  position:relative;
+  isolation:isolate;
+  background-image:
+    linear-gradient(110deg,rgba(251,249,243,.98),rgba(244,248,242,.95) 76%,rgba(246,246,237,.88)),
+    url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 2% center;
+  background-size:cover,clamp(195px,26vw,335px) auto;
+  background-repeat:no-repeat;
+}
+.premium-v2 :is(.faq-home,#zespol,#kontakt,.guide-showcase,.brand-partners):before{
+  content:"§";
+  position:absolute;
+  top:clamp(10px,3vw,38px);
+  right:clamp(15px,4vw,60px);
+  font:700 clamp(70px,10vw,132px)/1 Georgia,serif;
+  color:rgba(173,131,64,.10);
+  pointer-events:none;
+}
+.premium-v2 :is(.faq-home,#zespol,#kontakt,.guide-showcase,.brand-partners)>*{
+  position:relative;
+  z-index:1;
+}
+/* Undo light-on-light labels in home contact while preserving dark-panel variants. */
+.premium-v2 #kontakt .contact-form :is(label,legend,small,p){
+  color:#244654!important;
+  opacity:1!important;
+}
+.premium-v2 #kontakt .contact-form :is(h2,h3,h4){
+  color:#163946!important;
+}
+/* On handhelds the assistant must yield to the visible form, including service pages. */
+@media(max-width:760px){
+  body.premium-subpage .chat-assistant.is-contact-area:not(.is-open),
+  body.premium-v2 .chat-assistant.is-contact-area:not(.is-open){
+    opacity:0!important;
+    pointer-events:none!important;
+    transform:translateY(15px);
+  }
+  body.premium-subpage .chat-assistant:not(.is-open){
+    right:10px;
+    bottom:16px;
+  }
+  body.premium-subpage .chat-assistant .chat-toggle{
+    padding:10px 13px;
+    min-height:44px;
+    font-size:.83rem;
+    border-radius:13px;
+  }
+  body.premium-subpage .article:before{
+    right:-68px;
+    width:180px;
+    height:290px;
+    opacity:.085;
+  }
+  body.premium-subpage .article>section:not(.service-cta):not(.focus-detail):after{
+    right:12px;
+    top:16px;
+    font-size:86px;
+    opacity:.75;
+  }
+  body.premium-subpage #formularz{
+    padding:26px 14px 52px;
+    background-size:cover,150px auto;
+  }
+  body.premium-subpage #formularz .contact-form{
+    padding:21px 17px;
+    border-radius:18px;
+  }
+  .premium-v2 :is(.faq-home,#zespol,#kontakt,.guide-showcase,.brand-partners){
+    background-position:center,right -60px top 25px;
+    background-size:cover,180px auto;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body.premium-subpage .chat-assistant{transition:none}
+}

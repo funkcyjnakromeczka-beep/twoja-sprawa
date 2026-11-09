@@ -43,6 +43,7 @@ async function walk(dir){
       const indexable=shouldIndexRoute(route);
       const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
+      html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
       html=html.replace(/<meta name="robots" content="noindex,follow">/g,'<meta name="robots" content="'+robots+'">');
       if(!html.includes('rel="canonical"')) html=html.replace("</head>",'<link rel="canonical" href="'+canonical+'"></head>');
       if(!html.includes('property="og:url"')) html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');

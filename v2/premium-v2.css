@@ -280,3 +280,15 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 @media(max-width:1040px){.premium-v2 .quick-path-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.premium-v2 .quick-path{padding:40px 16px}.premium-v2 .quick-path-heading{text-align:left;margin-bottom:23px}.premium-v2 .quick-path-links{grid-template-columns:1fr;gap:10px}.premium-v2 .quick-path-links>a{min-height:84px;padding:14px 16px}.premium-v2 .quick-path-icon{flex-basis:42px;height:42px}.premium-v2 .quick-path-heading h2{font-size:2rem}}
 @media(prefers-reduced-motion:reduce){.premium-v2 .quick-path-links>a{transition:none}.premium-v2 .quick-path-links>a:hover{transform:none}}
+
+/* Simpler navigation: obvious primary action, secondary recruitment link. */
+.premium-v2 .site-header .main-nav{justify-content:center;gap:clamp(4px,1.3vw,20px);flex-wrap:wrap;padding:11px 0}
+.premium-v2 .site-header .main-nav>a{padding:11px 15px;min-height:44px;display:inline-flex;align-items:center;font-weight:700;white-space:nowrap}
+.premium-v2 .site-header .main-nav .nav-contact-link{margin-left:auto;border-radius:999px;background:linear-gradient(115deg,#e9c990,#d3a86d);color:#102b3a;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+.premium-v2 .site-header .main-nav .nav-contact-link:hover{background:#f4d7a5;color:#102b3a}
+.premium-v2 .site-header .main-nav .nav-more{display:flex;align-items:center}
+.premium-v2 .site-header .main-nav .nav-more a{font-size:.81rem;color:#cbd7db;text-decoration:none;padding:11px 9px}
+.premium-v2 .site-header .main-nav .nav-more a:hover{color:#f1d29e}
+@media(max-width:1000px){.premium-v2 .header-contact>a[href^="mailto:"]{display:none}.premium-v2 .brand-line{gap:10px}.premium-v2 .site-header .main-nav{gap:3px}}
+@media(max-width:760px){.premium-v2 .site-header .main-nav{flex-wrap:nowrap;align-items:stretch;gap:0;padding:8px 0 16px}.premium-v2 .site-header .main-nav>a{min-height:50px;padding:13px 15px}.premium-v2 .site-header .main-nav .nav-contact-link{margin:12px 0 0;justify-content:center}.premium-v2 .site-header .main-nav .nav-more{padding:7px 0}.premium-v2 .site-header .main-nav .nav-more a{display:block;width:100%;padding:12px 15px}.premium-v2 .mobile-menu-toggle{min-height:44px}}
+@media(max-width:500px){.premium-v2 .brand-line{flex-wrap:wrap}.premium-v2 .partner-logo{display:none}.premium-v2 .header-contact>a:not(.header-cta){display:none}.premium-v2 .header-contact .header-cta{font-size:.78rem;padding:9px 12px}.premium-v2 .site-header .brand-name{font-size:1.65rem}}

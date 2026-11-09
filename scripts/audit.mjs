@@ -2,6 +2,7 @@
 /** Read-only HTML and internal-link audit. No dependencies. Node 20+. */
 import { readdir, readFile, access } from "node:fs/promises";
 import { join, dirname, resolve } from "node:path";
+import { execFileSync } from "node:child_process";
 const root = resolve("v2");
 const files = [];
 async function walk(dir) {
@@ -47,6 +48,11 @@ for (const file of files) {
   }
   if (label === "index.html" && !html.includes("data-contact-form")) errors.push("index.html: missing contact form");
   if (label === "index.html" && !html.includes('src="/v2/chat-assistant.js"')) warnings.push("index.html: assistant script missing");
+  const anchors = new Set([...html.matchAll(/\\bid="([^"]+)"/g)].map(m => m[1]));
+  for (const match of html.matchAll(/href="#([^"]+)"/g)) {
+    const targetId = decodeURIComponent(match[1]);
+    if (!anchors.has(targetId)) errors.push(label + ": missing internal anchor #" + targetId);
+  }
   const attributes = [...html.matchAll(/\b(?:href|src)="([^"]+)"/g)].map(m => m[1]);
   for (const attr of attributes) {
     if (!attr.startsWith("/v2/")) continue;
@@ -56,6 +62,10 @@ for (const file of files) {
     if (!target.startsWith(root + "/") && target !== root) { errors.push(label + ": outside root " + attr); continue; }
     if (!(await exists(target)) && !(await exists(join(target, "index.html")))) errors.push(label + ": broken link " + attr);
   }
+}
+for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","scripts/preview.mjs"]) {
+  try { execFileSync(process.execPath, ["--check",js], {stdio:"pipe"}); }
+  catch (e) { errors.push(js + ": JavaScript syntax check failed: " + String(e.stderr || e.message).slice(0,500)); }
 }
 console.log("Checked " + files.length + " HTML files, including " + serviceForms.length + " service forms");
 if(serviceForms.length !== 12) errors.push("Expected 12 service pages, found "+serviceForms.length);

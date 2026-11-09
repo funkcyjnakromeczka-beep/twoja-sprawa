@@ -13,5 +13,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Sprawdź składnię JavaScript
+        run: |
+          node --check v2/contact.js
+          node --check v2/chat-assistant.js
+          node --check scripts/audit.mjs
+          node --check scripts/build.mjs
       - name: Sprawdź pliki HTML i odnośniki
         run: node scripts/audit.mjs

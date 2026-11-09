@@ -77,3 +77,33 @@ footer a{color:#e5bd7d}
 @media(max-width:1099px){.header-contact a[href^=mailto]{display:none}.main-nav{flex-wrap:wrap;justify-content:center}.hero-glamour{grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr)}}
 @media(max-width:760px){.site-header{padding:0 4%}.brand-line{min-height:74px}.header-contact{justify-content:flex-end}.header-contact .header-cta{display:none}.main-nav{display:flex;overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;gap:6px;scrollbar-width:thin;padding:9px 0}.main-nav a{flex:0 0 auto;font-size:.82rem;padding:9px 12px}.hero-glamour{grid-template-columns:1fr;min-height:0;padding:50px 6% 36px;gap:26px}.hero-glamour h1{font-size:clamp(2.35rem,8.5vw,3.6rem)}.hero-visual{max-height:260px}.hero-art{width:190px}.hero-visual-caption{position:static;max-width:210px;margin-left:12px}.hero-benefits{gap:8px 15px}.wrap{padding:46px 5%}#uslugi .primary-services{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#uslugi .primary-card{min-height:0;padding:16px}#uslugi .primary-card h3{font-size:1.12rem}#uslugi .primary-card p{font-size:.85rem}.lead-panel{margin:12px auto}.lead-panel .contact-form{padding:22px}}
 @media(max-width:420px){.site-header .brand-name{font-size:1.6rem}.site-header .brand-caption{font-size:10px}.header-contact a{font-size:.8rem}.hero-visual{display:none}#uslugi .primary-services{grid-template-columns:1fr}#uslugi .primary-card{min-height:0}.hero-glamour .actions{flex-direction:column}.hero-glamour .btn{text-align:center;width:100%}}
+
+
+/* Uzupełnienie mobilne: bezpieczne łamanie tekstu, kontrast i obsługa dotykiem. */
+html{scroll-padding-top:20px}
+.site-header,.brand-line,.header-contact,.hero-content,.contact-form{min-width:0}
+.site-header .brand-name,.hero-glamour h1,.contact h2{overflow-wrap:break-word}
+.header-contact a[href^=tel]{white-space:nowrap}
+.main-nav{max-width:100%}
+.main-nav a{white-space:nowrap}
+.contact-form input,.contact-form select,.contact-form textarea{max-width:100%}
+.contact-form .check{overflow-wrap:anywhere}
+.contact-form .check input{flex:0 0 auto;width:18px;height:18px}
+.contact-form button{min-height:44px}
+.site-header a:focus-visible,.hero-glamour a:focus-visible,.contact-form input:focus-visible,.contact-form select:focus-visible,.contact-form textarea:focus-visible,.contact-form button:focus-visible{outline:3px solid #f4d18d;outline-offset:3px}
+@media(max-width:760px){
+ .main-nav{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+ .main-nav:after{content:"";flex:0 0 12px}
+ .hero-glamour .actions{flex-wrap:wrap}
+ .hero-glamour .actions a{max-width:100%;box-sizing:border-box}
+ .chat-toggle{min-height:44px}
+}
+@media(max-width:420px){
+ .brand-line{gap:8px}
+ .site-header .brand-name{font-size:clamp(1.35rem,6vw,1.6rem)}
+ .header-contact a[href^=tel]{font-size:.75rem}
+ .hero-glamour h1{font-size:clamp(2rem,9vw,2.4rem)}
+ .contact-form{padding:16px}
+ .chat-assistant{max-width:calc(100vw - 20px)}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}

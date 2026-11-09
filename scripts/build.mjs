@@ -57,6 +57,10 @@ async function walk(dir){
       html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
       await writeFile(target,html);
       if(indexable) pages.push(route);
+    } else if (rel.endsWith(".css")) {
+      let css=await readFile(absolute,"utf8");
+      css=css.replaceAll("/v2/assets/","/assets/");
+      await writeFile(target,css);
     } else if (rel.endsWith(".js")) {
       let js=await readFile(absolute,"utf8");
       js=js.replaceAll('"/v2/"','"/"').replaceAll('"/v2/','"/');

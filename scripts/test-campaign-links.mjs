@@ -46,11 +46,11 @@ const check=(service,path,phone)=>{
  assert.ok(post.value.includes(link.value));
  assert.equal(open.href,link.value);
 };
-check("szkody","/v2/kampanie/szkody-gornicze.html","796 441 345");
-check("swiadczenie","/v2/kampanie/swiadczenie-wspierajace.html","500 171 531");
-check("renty","/v2/uslugi/renty-powypadkowe.html","500 171 531");
-check("skd","/v2/uslugi/kredyty-pln.html","500 171 531");
-check("przesyl","/v2/uslugi/sluzebnosc-przesylu.html","796 441 345");
+check("szkody","/kampanie/szkody-gornicze.html","796 441 345");
+check("swiadczenie","/kampanie/swiadczenie-wspierajace.html","500 171 531");
+check("renty","/uslugi/renty-powypadkowe.html","500 171 531");
+check("skd","/uslugi/kredyty-pln.html","500 171 531");
+check("przesyl","/uslugi/sluzebnosc-przesylu.html","796 441 345");
 values.channel.value="ulotka";
 values.content.value="Grupa 1";
 values.style.value="short";

@@ -519,3 +519,11 @@ h3{line-height:1.25}
 .campaign-builder-faq p{max-width:85ch;line-height:1.75}
 @media(max-width:840px){.campaign-builder-layout{grid-template-columns:1fr}}
 @media print{.campaign-builder-buttons{display:none!important}}
+
+/* Contextual preparation guide inside lead form */
+.contact-guide-box{display:flex;flex-direction:column;gap:8px;margin:14px 0 20px;padding:18px 20px;border:1px solid #c9d9dd;border-left:4px solid #b69760;border-radius:12px;background:#f6f9f9;line-height:1.55}
+.contact-guide-box[hidden]{display:none}
+.contact-guide-box strong{font-size:1rem;color:#173649}
+.contact-guide-box span{font-size:.91rem;color:#435d69}
+.contact-guide-box a{font-size:.91rem;font-weight:700;color:#76572d;text-decoration:underline;text-underline-offset:3px}
+.contact-guide-box a:focus-visible{outline:3px solid #b69760;outline-offset:3px}

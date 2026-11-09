@@ -75,7 +75,7 @@ for (const file of files) {
     if (!(await exists(target)) && !(await exists(join(target, "index.html")))) errors.push(label + ": broken link " + attr);
   }
 }
-for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","v2/guide-tools.js","v2/service-navigator.js","scripts/preview.mjs"]) {
+for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","v2/guide-tools.js","v2/service-navigator.js","v2/checklist.js","scripts/preview.mjs"]) {
   try { execFileSync(process.execPath, ["--check",js], {stdio:"pipe"}); }
   catch (e) { errors.push(js + ": JavaScript syntax check failed: " + String(e.stderr || e.message).slice(0,500)); }
 }

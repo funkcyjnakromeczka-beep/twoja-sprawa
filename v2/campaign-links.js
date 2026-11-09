@@ -77,7 +77,7 @@
     const selectedText = style.value === "short" ? shorts[service.value] : style.value === "hook" ? hooks[service.value] + "\n\n" + chosen.text : chosen.text;
     postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + "Kontakt: " + (["swiadczenie", "renty", "skd"].includes(service.value) ? "500 171 531" : "796 441 345");
     openAction.href = target.href;
-    message.textContent = /(?:^|\\.)pages\\.dev$/i.test(window.location.hostname || "") ? "UWAGA: to link do wersji testowej Cloudflare Pages. Przed masową publikacją uruchom i zweryfikuj docelową domenę oraz dostarczanie formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
+    message.textContent = /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "UWAGA: to link do wersji testowej Cloudflare Pages. Przed masową publikacją uruchom i zweryfikuj docelową domenę oraz dostarczanie formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
   };
   const copy = async (value, label) => {
     try {

@@ -33,3 +33,11 @@ W Chrome lub Edge otwórz Narzędzia deweloperskie → Tryb urządzenia (Ctrl+Sh
 - Backend e-mail i tawk.to nie są podłączone.
 - Nie należy udostępniać folderu `dist-preview` jako strony produkcyjnej.
 - Generator produkcyjny `scripts/build.mjs` ma osobne blokady zatwierdzenia.
+
+## Automatyczne zrzuty ekranu bez instalowania przeglądarki na swoim komputerze
+
+Na GitHub otwórz **Actions → Zrzuty ekranu — podgląd PC i telefon → Run workflow**. Zadanie uruchomi testową przeglądarkę Chromium na GitHub Actions i wygeneruje cztery obrazy pełnej strony (360, 390, 768 i 1440 px). Po wykonaniu otwórz wynik zadania i pobierz artefakt **twoja-sprawa-podglad-pc-telefon**.
+
+Test wykrywa też poziome przewijanie całej strony oraz brak nagłówka lub formularza. Jest uruchamiany **ręcznie**; nie publikuje strony. GitHub Actions może zużywać minuty dostępne w planie konta, dlatego nie uruchamia się po każdym commicie. Obrazy są przechowywane przez 7 dni.
+
+Sam fakt dodania tego zadania nie oznacza, że zostało uruchomione ani że strona przeszła testy.

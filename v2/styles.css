@@ -149,3 +149,5 @@ html{scroll-padding-top:20px}
 #uslugi>h2{max-width:850px}
 @media(max-width:980px){.primary-services{grid-template-columns:repeat(2,minmax(0,1fr))}.primary-services>.primary-card,.primary-services>.primary-card:nth-child(4),.primary-services>.primary-card:nth-child(5){grid-column:span 1;min-height:280px}}
 @media(max-width:620px){.primary-services{grid-template-columns:1fr;gap:16px}.primary-services>.primary-card,.primary-services>.primary-card:nth-child(4),.primary-services>.primary-card:nth-child(5){grid-column:span 1;min-height:245px;padding:28px 24px 24px}.primary-card .project-number{left:24px}.primary-card .project-symbol{right:22px}.primary-card h3{font-size:1.65rem}}
+
+.brand-small{display:block;letter-spacing:.1em}.brand-separator{color:#e1bf80;padding:0 .22em}.votum-wordmark{font-weight:900;letter-spacing:.14em;color:#f0d29c;text-shadow:0 1px 0 rgba(0,0,0,.35)}

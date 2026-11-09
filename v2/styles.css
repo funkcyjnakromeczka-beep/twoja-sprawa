@@ -394,3 +394,14 @@ h1{line-height:1.09}h2{line-height:1.17}h3{line-height:1.25;letter-spacing:-.018
 .video-feature p{max-width:64ch;line-height:1.65;color:#edf3f5;margin:0 0 20px}
 .video-feature .eyebrow{color:#e4c58c}
 @media(max-width:620px){.video-feature{grid-template-columns:1fr;gap:14px}.video-feature-play{width:62px;height:62px;font-size:1.4rem}}
+
+/* Compact editorial video library: five presentations without an excessively long page. */
+.video-library{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:26px 0 30px}
+.video-library .video-feature{grid-template-columns:1fr;align-content:start;gap:14px;margin:0;padding:clamp(20px,2.8vw,30px);min-width:0}
+.video-library .video-feature:first-child{grid-column:1/-1;grid-template-columns:88px minmax(0,1fr);align-items:center;background:linear-gradient(120deg,#0b263b,#24516a)}
+.video-library .video-feature-play{width:62px;height:62px;font-size:1.35rem}
+.video-library .video-feature:first-child .video-feature-play{width:80px;height:80px;font-size:1.7rem}
+.video-library .video-feature h3{font-size:clamp(1.3rem,2.2vw,1.8rem);line-height:1.22}
+.video-library .video-feature p{font-size:.97rem;line-height:1.62}
+.video-library .video-feature .btn{display:inline-flex;justify-content:center;align-items:center;max-width:100%;text-align:center;white-space:normal}
+@media(max-width:760px){.video-library{grid-template-columns:1fr}.video-library .video-feature:first-child{grid-column:auto;grid-template-columns:1fr}.video-library .video-feature:first-child .video-feature-play{width:62px;height:62px;font-size:1.35rem}}

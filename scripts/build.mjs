@@ -24,7 +24,7 @@ const structured = (route,canonical,title) => {
   const page={"@type":"WebPage","@id":canonical+"#webpage",url:canonical,isPartOf:{"@id":site["@id"]},inLanguage:"pl-PL"};
   const graph=[person,organization,site,page];
   if(route.startsWith("/uslugi/")||route.startsWith("/lokalnie/")){
-    graph.push({"@type":"Service","@id":canonical+"#service",name:title.replace(/\s*\\|.*$/,"").replace(/\s*[—–-]\s*Twoja Sprawa.*$/,""),provider:{"@id":organization["@id"]},areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",url:canonical});
+    graph.push({"@type":"Service","@id":canonical+"#service",name:title.split("|")[0].trim().replace(/\s*[—–-]\s*Twoja Sprawa.*$/,""),provider:{"@id":organization["@id"]},areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",url:canonical});
   }
   return JSON.stringify({"@context":"https://schema.org","@graph":graph}).replaceAll("<","\\u003c");
 };
@@ -47,6 +47,10 @@ async function walk(dir){
       html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
       await writeFile(target,html);
       pages.push(route);
+    } else if (rel.endsWith(".js")) {
+      let js=await readFile(absolute,"utf8");
+      js=js.replaceAll('"/v2/"','"/"').replaceAll('"/v2/','"/');
+      await writeFile(target,js);
     } else {
       await cp(absolute,target);
     }

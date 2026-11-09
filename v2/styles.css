@@ -261,3 +261,13 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 .campaign-contact{padding-bottom:60px}
 @media(max-width:900px){.campaign-hero{grid-template-columns:1fr;gap:20px}.campaign-copy{padding-top:0}.campaign-steps{grid-template-columns:1fr}}
 @media(max-width:600px){.campaign-hero{padding:24px 15px}.campaign-facts{gap:6px}.campaign-facts span{font-size:.78rem}.campaign-copy h1{font-size:clamp(2rem,9vw,3rem)}.campaign-form .contact-form{padding:16px}}
+
+/* FAQ kampanii: dostępne natywne rozwijanie, bez dodatkowych skryptów. */
+.campaign-faq{padding-top:10px;padding-bottom:44px}
+.campaign-faq h2{margin-bottom:20px}
+.campaign-faq details{border:1px solid #b5a384;border-radius:12px;background:#faf7f0;margin:10px 0;color:#173448;overflow:hidden}
+.campaign-faq summary{padding:16px 20px;cursor:pointer;font-weight:750;line-height:1.5;list-style-position:inside;color:#173448}
+.campaign-faq summary:focus-visible{outline:3px solid #bc9144;outline-offset:-3px}
+.campaign-faq details[open] summary{border-bottom:1px solid #d7c7ab}
+.campaign-faq details p{padding:0 20px 18px;margin:16px 0 0;line-height:1.65;color:#30495b}
+@media(prefers-reduced-motion:reduce){.campaign-page *{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}

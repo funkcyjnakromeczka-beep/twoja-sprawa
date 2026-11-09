@@ -98,6 +98,8 @@ try {
  const premium=await readFile(join(root,"premium-v2.css"),"utf8");
  const posterCount=homepage.split('class="video-poster"').length-1;
  if(posterCount!==5) errors.push("Premium V2: expected five visual video posters, got "+posterCount);
+ if((homepage.match(/<a class="video-poster" href="https:\/\/scrimba\.com\/explain\//g)||[]).length!==5) errors.push("Premium V2: five poster video links missing");
+ if(!homepage.includes('class="btn hero-video-cta" href="#filmy"')) errors.push("Premium V2: hero video CTA missing");
  if(!homepage.includes('class="premium-v2"')||!homepage.includes('href="/v2/premium-v2.css"')) errors.push("Premium V2: homepage style layer missing");
  if(!homepage.includes('votum-sa.pl/wp-content/uploads/2024/06/logo_VOTUM_SA_rgb-480x71.png')) errors.push("Premium V2: official VOTUM logo missing");
  for(const token of [".premium-v2 .hero-glamour",".premium-v2 #filmy .video-library",".premium-subpage .subhero"]){

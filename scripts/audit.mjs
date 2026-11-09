@@ -150,6 +150,16 @@ try {
   if(!page.includes('data-contact-form')||!page.includes('id="formularz"')) errors.push("Campaign premium: form missing "+slug);
  }
 } catch(e){errors.push("Campaign premium audit failed: "+e.message);}
+// Organic campaign generator must distinguish Facebook page and group traffic.
+try {
+ const html=await readFile(join(root,"narzedzia","linki-kampanii.html"),"utf8");
+ const js=await readFile(join(root,"campaign-links.js"),"utf8");
+ for(const channel of ["facebook_grupa","facebook_strona"]){
+  if(!html.includes('value="'+channel+'"')) errors.push("Campaign channel: missing selector "+channel);
+  if(!js.includes(channel+":")) errors.push("Campaign channel: missing medium "+channel);
+ }
+ if(!js.includes('selectedChannel.startsWith("facebook_") ? "facebook"')) errors.push("Campaign channel: Facebook source normalization missing");
+} catch(e){errors.push("Campaign channel audit failed: "+e.message);}
 // Premium V2 visual components, verified logo and all five film posters.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");

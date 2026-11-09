@@ -17,14 +17,14 @@ if(!release || !legalApproved || !contentApproved || !formApproved) throw new Er
 await rm(dest,{recursive:true,force:true});
 await mkdir(dest,{recursive:true});
 const pages=[];
-const structured = (route,canonical) => {
+const structured = (route,canonical,title) => {
   const person={"@type":"Person","@id":origin+"/#wojciech-obieglo",name:"Wojciech Obiegło",url:origin+"/o-nas.html"};
   const organization={"@type":"Organization","@id":origin+"/#successtree",name:"SuccessTree OBIEGŁO WOJCIECH",url:origin+"/",email:"twojasprawa_votum@outlook.com",telephone:"+48 796 441 345",founder:{"@id":person["@id"]}};
   const site={"@type":"WebSite","@id":origin+"/#website",name:"Twoja Sprawa",url:origin+"/",publisher:{"@id":organization["@id"]},inLanguage:"pl-PL"};
   const page={"@type":"WebPage","@id":canonical+"#webpage",url:canonical,isPartOf:{"@id":site["@id"]},inLanguage:"pl-PL"};
   const graph=[person,organization,site,page];
   if(route.startsWith("/uslugi/")||route.startsWith("/lokalnie/")){
-    graph.push({"@type":"Service","@id":canonical+"#service",name:route.includes("szkody-gornicze")?"Analiza szkód górniczych":route.includes("swiadczenie-wspierajace")?"Wsparcie w sprawach świadczenia wspierającego":"Wstępna analiza sprawy",provider:{"@id":organization["@id"]},areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",url:canonical});
+    graph.push({"@type":"Service","@id":canonical+"#service",name:title.replace(/\\s*\\|.*$/,"").replace(/\\s*[—–-]\\s*Twoja Sprawa.*$/,""),provider:{"@id":organization["@id"]},areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",url:canonical});
   }
   return JSON.stringify({"@context":"https://schema.org","@graph":graph}).replaceAll("<","\\u003c");
 };
@@ -44,7 +44,7 @@ async function walk(dir){
       if(!html.includes('rel="canonical"')) html=html.replace("</head>",'<link rel="canonical" href="'+canonical+'"></head>');
       if(!html.includes('property="og:url"')) html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');
       if(!html.includes('<meta name="robots" content="index,follow">')) throw new Error("Missing indexable robots tag: "+rel);
-      html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical)+'</script></head>');
+      html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
       await writeFile(target,html);
       pages.push(route);
     } else {

@@ -32,7 +32,7 @@ const nodes={
  "[data-open-link]":open
 };
 const document={querySelector:sel=>nodes[sel]};
-const window={location:{origin:"https://twoja-sprawa.pages.dev"},isSecureContext:true};
+const window={location:{origin:"https://twoja-sprawa.pages.dev",hostname:"twoja-sprawa.pages.dev"},isSecureContext:true};
 runInNewContext(source,{window,document,URL,console});
 const check=(service,path,phone)=>{
  values.service.value=service;
@@ -64,4 +64,5 @@ values.style.value="hook";values.content.value="";
 listeners.change();
 assert.equal(new URL(link.value).searchParams.get("utm_content"),"hook");
 assert.ok(post.value.includes("Czy na Twojej działce"));
+assert.ok(status.textContent.includes("wersji testowej Cloudflare Pages"));
 console.log("OK: five services, phone routing, UTM channels, variants and generated content, with no external requests.");

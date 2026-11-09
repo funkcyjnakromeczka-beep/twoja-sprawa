@@ -17,6 +17,8 @@ jobs:
         run: |
           node --check v2/contact.js
           node --check v2/campaign-links.js
+          node --check v2/attribution.js
+          node --check scripts/test-attribution.mjs
           node --check v2/chat-assistant.js
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
@@ -32,6 +34,8 @@ jobs:
         run: node scripts/test-campaign-links.mjs
       - name: Przetestuj formularz w przeglądarce symulowanej bez wysyłki danych
         run: node scripts/test-contact-client.mjs
+      - name: Przetestuj atrybucję kampanii między podstronami
+        run: node scripts/test-attribution.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji
         run: node scripts/test-seo-policy.mjs
       - name: Sprawdź pliki HTML i odnośniki
@@ -46,4 +50,7 @@ jobs:
           test -f dist-preview/kampanie/szkody-gornicze.html
           test -f dist-preview/kampanie/swiadczenie-wspierajace.html
           test -f dist-preview/narzedzia/linki-kampanii.html
+          test -f dist-preview/attribution.js
+          grep -q 'src="/attribution.js"' dist-preview/index.html
+          grep -q 'src="/attribution.js"' dist-preview/poradniki/checklista-szkody-gorniczej.html
           grep -q 'Disallow: /' dist-preview/robots.txt

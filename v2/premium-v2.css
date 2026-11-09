@@ -1259,3 +1259,161 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
   .premium-v2 #uslugi .primary-card:before{transition:none}
   .premium-v2 #uslugi .primary-card:hover:before{transform:none}
 }
+
+
+/* SERVICE-HERO-ART-2026-11-10: branded original vector illustrations */
+/* Every premium service page keeps the same readable hero hierarchy. */
+.premium-subpage{
+  --service-art:url("/v2/assets/temida-watermark.svg");
+  --service-glow:rgba(210,172,113,.14);
+}
+.premium-subpage.theme-mining{
+  --service-art:url("/v2/assets/project-mining.svg");
+  --service-glow:rgba(198,151,90,.21);
+}
+.premium-subpage.theme-support{
+  --service-art:url("/v2/assets/project-support.svg");
+  --service-glow:rgba(117,185,175,.20);
+}
+.premium-subpage.theme-rents{
+  --service-art:url("/v2/assets/project-rents.svg");
+  --service-glow:rgba(124,164,188,.19);
+}
+.premium-subpage.theme-skd{
+  --service-art:url("/v2/assets/project-credit.svg");
+  --service-glow:rgba(210,172,113,.20);
+}
+.premium-subpage.theme-energy{
+  --service-art:url("/v2/assets/project-utility.svg");
+  --service-glow:rgba(129,177,167,.20);
+}
+.premium-subpage.theme-general{
+  --service-art:url("/v2/assets/temida-watermark.svg");
+  --service-glow:rgba(210,172,113,.12);
+}
+.premium-subpage .subhero{
+  position:relative;
+  isolation:isolate;
+  min-height:360px;
+  background-image:
+    radial-gradient(circle at 91% 28%,var(--service-glow),transparent 35%),
+    linear-gradient(105deg,rgba(5,21,32,.99) 0%,rgba(8,33,47,.98) 58%,rgba(17,55,68,.92) 100%);
+  background-position:center;
+  background-size:cover;
+  overflow:hidden;
+}
+/* Override legacy decorative rings; use a meaningful illustration per service. */
+.premium-subpage .subhero:before{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  z-index:-1;
+  inset:auto;
+  right:max(1%,calc((100vw - 1440px)/2));
+  top:6%;
+  width:clamp(245px,32vw,490px);
+  height:86%;
+  background:var(--service-art) center/contain no-repeat;
+  opacity:.31;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 34%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 34%);
+}
+.premium-subpage .subhero:after{display:none}
+.premium-subpage .subhero>h1,
+.premium-subpage .subhero>p,
+.premium-subpage .subhero>.eyebrow,
+.premium-subpage .subhero>.service-hero-actions,
+.premium-subpage .subhero>.service-hero-note,
+.premium-subpage .subhero>a{
+  position:relative;
+  z-index:1;
+}
+.premium-subpage .subhero>h1{
+  max-width:min(820px,73%);
+  letter-spacing:-.04em;
+}
+.premium-subpage .subhero>p:not(.service-hero-note){
+  max-width:min(750px,77%);
+  color:#e4eff0;
+}
+.premium-subpage .subhero .service-hero-actions .btn{
+  box-shadow:0 10px 29px rgba(3,15,23,.26);
+}
+.premium-subpage .subhero .service-hero-actions .btn:hover,
+.premium-subpage .subhero .service-hero-actions .btn:focus-visible{
+  box-shadow:0 14px 33px rgba(3,15,23,.35);
+}
+.premium-subpage .article{
+  background-image:
+    linear-gradient(160deg,rgba(255,254,250,.99) 0%,rgba(249,250,247,.95) 63%,rgba(255,253,247,.83) 100%),
+    url("/v2/assets/temida-watermark.svg");
+  background-repeat:no-repeat;
+  background-position:center,right 0 bottom 13%;
+  background-size:cover,230px auto;
+}
+.premium-subpage .article:after{display:none}
+.premium-subpage .article>section{
+  scroll-margin-top:26px;
+}
+.premium-subpage .contact-section,
+.premium-subpage #formularz{
+  scroll-margin-top:22px;
+}
+@media(min-width:901px){
+  .premium-subpage .subhero .service-hero-actions{
+    margin-top:31px;
+  }
+}
+@media(max-width:900px){
+  .premium-subpage .subhero>h1,
+  .premium-subpage .subhero>p:not(.service-hero-note){
+    max-width:85%;
+  }
+  .premium-subpage .subhero:before{
+    width:clamp(225px,37vw,340px);
+    opacity:.22;
+    right:-7%;
+  }
+}
+@media(max-width:650px){
+  .premium-subpage .subhero{
+    min-height:0;
+    padding:40px 20px 46px;
+    background-image:
+      radial-gradient(circle at 110% 8%,var(--service-glow),transparent 47%),
+      linear-gradient(120deg,#071c2b,#153d4c);
+  }
+  .premium-subpage .subhero:before{
+    top:2px;
+    right:-65px;
+    width:205px;
+    height:200px;
+    opacity:.13;
+  }
+  .premium-subpage .subhero>h1,
+  .premium-subpage .subhero>p:not(.service-hero-note){
+    max-width:100%;
+  }
+  .premium-subpage .subhero>h1{
+    font-size:clamp(2.1rem,8vw,3.2rem);
+    text-wrap:balance;
+    line-height:1.1;
+  }
+  .premium-subpage .subhero>p:not(.service-hero-note){
+    font-size:1rem;
+    line-height:1.65;
+  }
+  .premium-subpage .article{
+    background-position:center,right -60px top 20px;
+    background-size:cover,165px auto;
+  }
+  .premium-subpage .service-hero-actions>a{
+    min-height:47px;
+    text-align:center;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-subpage .subhero .service-hero-actions .btn{
+    transition:none;
+  }
+}

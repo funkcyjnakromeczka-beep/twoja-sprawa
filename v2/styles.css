@@ -497,3 +497,25 @@ h3{line-height:1.25}
 @media(max-width:920px){.guide-showcase-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.guide-showcase-grid{grid-template-columns:1fr}.guide-showcase-card{min-height:unset}}
 @media(prefers-reduced-motion:reduce){.guide-showcase-card{transition:none}.guide-showcase-card:hover{transform:none}}
+
+/* Marketing toolkit: accessible, local-only link and post builder */
+.campaign-builder-hero{padding-bottom:clamp(24px,4vw,52px)}
+.campaign-builder-hero h1{max-width:22ch}
+.campaign-builder-hero p{max-width:76ch;line-height:1.7}
+.campaign-builder-disclosure{padding:15px 20px;border-left:4px solid #b8955a;background:#fff7e8;border-radius:0 10px 10px 0}
+.campaign-builder-layout{display:grid;grid-template-columns:minmax(0,.83fr) minmax(0,1.17fr);gap:clamp(16px,3vw,34px);align-items:start;padding-top:clamp(24px,4vw,50px);padding-bottom:clamp(28px,4vw,56px)}
+.campaign-builder-controls,.campaign-builder-results{display:flex;flex-direction:column;gap:10px;border:1px solid #dce5e8;border-radius:20px;padding:clamp(18px,3vw,30px);background:#fff;min-width:0;box-shadow:0 7px 23px rgba(15,42,60,.04)}
+.campaign-builder-results{background:#f5f8f9}
+.campaign-builder-layout h2{margin:0 0 16px;font-size:1.45rem}
+.campaign-builder-layout label{font-weight:700;margin-top:8px;color:#173548}
+.campaign-builder-layout input,.campaign-builder-layout select,.campaign-builder-layout textarea{display:block;width:100%;padding:12px 13px;font:inherit;line-height:1.55;background:#fff;color:#163145;border:1px solid #aebdc5;border-radius:10px}
+.campaign-builder-layout input:focus-visible,.campaign-builder-layout select:focus-visible,.campaign-builder-layout textarea:focus-visible{outline:3px solid #b18b4d;outline-offset:2px}
+.campaign-builder-layout textarea{resize:vertical;overflow-wrap:anywhere}
+.campaign-builder-layout small{font-size:.82rem;line-height:1.5;color:#526873}
+.campaign-builder-buttons{display:flex;flex-wrap:wrap;gap:10px;margin:5px 0 16px}
+.campaign-builder-buttons .btn{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-align:center}
+.campaign-builder-status{min-height:2em;font-size:.9rem;color:#3c5b6a;line-height:1.5}
+.campaign-builder-faq{padding-bottom:clamp(42px,6vw,70px);max-width:1050px}
+.campaign-builder-faq p{max-width:85ch;line-height:1.75}
+@media(max-width:840px){.campaign-builder-layout{grid-template-columns:1fr}}
+@media print{.campaign-builder-buttons{display:none!important}}

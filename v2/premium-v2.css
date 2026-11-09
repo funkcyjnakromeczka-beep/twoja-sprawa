@@ -893,3 +893,198 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
     transform:none;
   }
 }
+
+
+/* POLISH-2026-11-09: navigation, mobile conversion and visible watermark */
+/* Keep anchor targets clear of the two-row sticky desktop header. */
+@media(min-width:961px){
+  body.premium-v2 :is(#uslugi,#kontakt,#filmy,#zespol,#poradniki,#narzedzia,#dobierz-pomoc,#main){
+    scroll-margin-top:170px;
+  }
+}
+@media(max-width:960px){
+  body.premium-v2 :is(#uslugi,#kontakt,#filmy,#zespol,#poradniki,#narzedzia,#dobierz-pomoc,#main){
+    scroll-margin-top:24px;
+  }
+}
+/* The light justice motif is intentionally visible but never competes with content. */
+.premium-v2 .faq-home{
+  background-image:
+    linear-gradient(96deg,rgba(250,249,246,.99) 0%,rgba(250,249,246,.94) 68%,rgba(250,249,246,.58) 100%),
+    url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 0 center;
+  background-size:cover,clamp(190px,26vw,330px) auto;
+  background-repeat:no-repeat;
+}
+.premium-v2 #zespol{
+  background-image:
+    linear-gradient(100deg,rgba(250,249,246,.99) 0%,rgba(250,249,246,.95) 63%,rgba(250,249,246,.60) 100%),
+    url("/v2/assets/temida-watermark.svg");
+  background-position:center,right 2% center;
+  background-size:cover,clamp(190px,26vw,330px) auto;
+  background-repeat:no-repeat;
+}
+.premium-v2 .quick-path .quick-path-links>a{
+  min-width:0;
+}
+.premium-v2 .quick-path .quick-path-links>a span:nth-child(2){
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.premium-v2 .quick-path .quick-path-links>a .quick-path-arrow{
+  flex:0 0 auto;
+}
+.premium-v2 .site-header .main-nav a{
+  outline-offset:3px;
+}
+.premium-v2 .site-header .main-nav a:focus-visible,
+.premium-v2 .site-header .mobile-menu-toggle:focus-visible{
+  outline:3px solid #efd39f;
+  outline-offset:3px;
+}
+.premium-v2 #filmy .video-poster:focus-visible{
+  outline:3px solid #e5bd7d;
+  outline-offset:4px;
+}
+.premium-v2 #uslugi .primary-card:focus-visible{
+  outline:3px solid #eed49e;
+  outline-offset:4px;
+}
+/* Keep the content comfortably readable on narrower desktop and tablets. */
+@media(min-width:761px) and (max-width:1050px){
+  .premium-v2 .site-header .main-nav{
+    column-gap:3px;
+    row-gap:4px;
+  }
+  .premium-v2 .site-header .main-nav>a{
+    padding:9px 11px;
+  }
+  .premium-v2 #uslugi .primary-services{
+    gap:13px;
+  }
+}
+/* Mobile navigation behaves like a clear, touch-friendly expanded panel. */
+@media(max-width:760px){
+  .premium-v2 .site-header .mobile-menu-toggle{
+    display:block;
+    margin:10px 0 12px auto;
+    padding:11px 18px;
+    min-height:46px;
+    border-radius:12px;
+    background:#e3c18a;
+    color:#102d3d;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+  }
+  .premium-v2 .site-header .main-nav{
+    display:none;
+    width:100%;
+  }
+  .premium-v2 .site-header .main-nav.nav-open{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:3px;
+    padding:8px;
+    margin-bottom:13px;
+    border:1px solid rgba(231,204,158,.23);
+    border-radius:16px;
+    background:#102b3a;
+    box-shadow:0 15px 32px rgba(5,18,26,.20);
+  }
+  .premium-v2 .site-header .main-nav.nav-open>a,
+  .premium-v2 .site-header .main-nav.nav-open .nav-more>a{
+    display:flex;
+    justify-content:flex-start;
+    min-height:48px;
+    width:100%;
+    padding:13px 15px;
+    border:0;
+    border-radius:10px;
+    font-size:.97rem;
+    white-space:normal;
+  }
+  .premium-v2 .site-header .main-nav.nav-open .nav-contact-link{
+    margin-left:0;
+    justify-content:center;
+    color:#102b3a;
+  }
+  .premium-v2 .site-header .main-nav.nav-open .nav-more{
+    width:100%;
+    padding:0;
+  }
+  .premium-v2 .site-header .main-nav.nav-open .nav-more>a{
+    border:1px solid rgba(231,204,158,.17);
+    color:#f2d9b0;
+  }
+}
+/* Mobile call bar and floating assistant are visually and functionally separated. */
+@media(max-width:650px){
+  body:has(.mobile-contact-bar) .chat-assistant{
+    bottom:calc(89px + env(safe-area-inset-bottom));
+    right:10px;
+    z-index:110;
+    transition:opacity .18s ease,transform .18s ease;
+  }
+  body:has(.mobile-contact-bar) .chat-assistant .chat-toggle{
+    padding:10px 13px;
+    min-height:44px;
+    border-radius:13px;
+    font-size:.82rem;
+    line-height:1.3;
+    box-shadow:0 7px 20px rgba(3,18,28,.21);
+  }
+  body:has(.mobile-contact-bar) .chat-assistant .chat-panel{
+    max-height:min(60dvh,530px);
+    width:min(350px,calc(100vw - 20px));
+    border-radius:14px;
+  }
+  body:has(.mobile-contact-bar) .chat-assistant.is-contact-area:not(.is-open){
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(15px);
+  }
+  .premium-v2 .mobile-contact-bar{
+    z-index:125;
+    gap:8px;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+    box-shadow:0 -6px 22px rgba(4,22,30,.22);
+  }
+  .premium-v2 .mobile-contact-bar a{
+    min-height:50px;
+    border-radius:11px;
+    font-size:.8rem;
+    background:#e4c38a;
+    color:#102b3a;
+  }
+  .premium-v2 .mobile-contact-bar a strong{
+    font-size:.96rem;
+  }
+  .premium-v2 .faq-home,
+  .premium-v2 #zespol{
+    background-image:
+      linear-gradient(90deg,rgba(250,249,246,.99) 0%,rgba(250,249,246,.95) 64%,rgba(250,249,246,.74) 100%),
+      url("/v2/assets/temida-watermark.svg");
+    background-position:center,right -55px top 15px;
+    background-size:cover,170px auto;
+  }
+  .premium-v2 .campaign-home-feature .campaign-home-card{
+    padding:20px;
+  }
+  .premium-v2 #uslugi .primary-card{
+    min-height:0;
+  }
+  .premium-v2 #kontakt .lead-panel,
+  .premium-v2 #kontakt .contact-form{
+    min-width:0;
+  }
+  .premium-v2 #kontakt input:not([type="checkbox"]),
+  .premium-v2 #kontakt select,
+  .premium-v2 #kontakt textarea{
+    min-width:0;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body:has(.mobile-contact-bar) .chat-assistant{
+    transition:none;
+  }
+}

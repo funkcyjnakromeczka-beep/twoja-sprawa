@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 710" role="img" aria-labelledby="title desc">
+<title id="title">Alegoria sprawiedliwości</title><desc id="desc">Delikatny symbol Temidy z wagą i znakiem paragrafu do dekoracyjnego tła</desc>
+<g fill="none" stroke="#997b4d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".4">
+<circle cx="288" cy="137" r="49"/><path d="M244 121Q287 89 332 120M253 148q36 17 72 0M248 179Q273 218 253 242M326 177Q309 215 327 240"/>
+<path d="M250 215Q203 232 185 280L153 384M326 215Q376 234 401 279L447 375"/><path d="M185 280L153 384 194 392 219 329M401 279l46 96-38 16-31-67"/>
+<path d="M248 211Q277 246 328 212L349 280l-27 60 75 230q-112 53-224 0l74-230-25-59z"/><path d="M223 285q57 31 124-2M248 342q42 23 74-2M212 468q75 37 150 0M185 552q99 50 202 0"/>
+<path d="M164 384Q122 335 85 300M435 378q47-43 66-92M83 298l-5-28m-5 35h150"/>
+<path d="M148 304v84m-54-84-29 71m83-71 29 71m-129 0q48 50 97 0m0 0q43 44 85 0"/>
+<path d="M392 279v102m-44-93 29 71m15-71 33 71m-64 0q30 38 63 0"/>
+<path d="M265 109q23-13 49 0"/>
+<path d="M193 592h197m-213 16h230"/>
+</g><text x="94" y="625" font-family="Georgia,serif" font-size="128" fill="#997b4d" opacity=".15">§</text>
+</svg>

@@ -388,3 +388,17 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 #uslugi .primary-card .more{display:inline-flex;align-items:center;gap:6px;border-bottom:1px solid rgba(240,208,148,.48);padding-bottom:4px}
 .premium-v2 #uslugi .primary-card:focus-visible .more,.premium-v2 #uslugi .primary-card:hover .more{border-bottom-color:#f3d49f}
 @media(max-width:650px){.premium-v2 #uslugi .primary-card:after{font-size:135px;opacity:.055;right:-10px;bottom:-22px}}
+
+/* Quick path heading: override legacy direct-div grid on narrow screens. */
+.premium-v2 .quick-path>.quick-path-heading{display:block;max-width:880px;margin:0 auto 24px;text-align:center}
+.premium-v2 .quick-path-heading h2{font-size:clamp(1.8rem,3.2vw,2.65rem);line-height:1.18;letter-spacing:-.025em;margin:8px 0 11px;text-wrap:balance;color:#152f40}
+.premium-v2 .quick-path-heading p{font-size:1rem;font-weight:400;line-height:1.65;color:#425b66;margin:0}
+.premium-v2 .quick-path>.quick-path-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:1180px;margin:auto}
+.premium-v2 .quick-path-links>a{display:flex;align-items:center;gap:12px;min-height:102px;padding:18px;border-radius:16px;border:1px solid #d8d6cc;background:rgba(255,255,255,.9);box-shadow:0 6px 20px rgba(28,51,57,.055);color:#163243;text-decoration:none}
+.premium-v2 .quick-path-links>a:hover{transform:translateY(-2px);border-color:#c39b60;box-shadow:0 10px 25px rgba(28,51,57,.12)}
+.premium-v2 .quick-path-links>a:focus-visible{outline:3px solid #ba8a48;outline-offset:3px}
+.premium-v2 .quick-path-links>a strong{display:block;font-size:1rem;line-height:1.3}
+.premium-v2 .quick-path-links>a small{display:block;font-size:.79rem;line-height:1.4;color:#4b6570;margin-top:4px}
+.premium-v2 .quick-path-links .quick-path-arrow{margin-left:auto;color:#997039;font-size:1.2rem}
+@media(max-width:900px){.premium-v2 .quick-path>.quick-path-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.premium-v2 .quick-path>.quick-path-heading{margin-bottom:17px}.premium-v2 .quick-path>.quick-path-links{grid-template-columns:1fr;gap:9px}.premium-v2 .quick-path-links>a{min-height:80px;padding:13px 15px}.premium-v2 .quick-path-heading h2{font-size:1.85rem}}

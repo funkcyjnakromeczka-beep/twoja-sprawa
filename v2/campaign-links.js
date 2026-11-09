@@ -16,27 +16,27 @@
   const openAction = document.querySelector("[data-open-link]");
   const campaigns = {
     szkody: {
-      path: "/v2/kampanie/szkody-gornicze.html",
+      path: "/kampanie/szkody-gornicze.html",
       title: "Szkody górnicze — Lubin, Polkowice i okolice",
       text: "Pęknięcia ścian, uszkodzenia elewacji lub nierówna kostka brukowa? Warto udokumentować zauważone zmiany i ustalić możliwości działania. Pomagam w pierwszym kontakcie i wstępnej analizie spraw dotyczących szkód górniczych. Zostaw kontakt, aby omówić swoją sytuację. Wysłanie zapytania nie oznacza podpisania umowy."
     },
     swiadczenie: {
-      path: "/v2/kampanie/swiadczenie-wspierajace.html",
+      path: "/kampanie/swiadczenie-wspierajace.html",
       title: "Świadczenie wspierające — WZON i ZUS",
       text: "Masz pytania o świadczenie wspierające, ocenę potrzeby wsparcia lub otrzymaną decyzję? Możemy pomóc uporządkować etap sprawy i ustalić możliwe dalsze kroki. Nie trzeba wysyłać dokumentacji medycznej przez formularz. Samo zgłoszenie nie gwarantuje przyznania świadczenia."
     },
     renty: {
-      path: "/v2/uslugi/renty-powypadkowe.html",
+      path: "/uslugi/renty-powypadkowe.html",
       title: "Renty powypadkowe",
       text: "Po wypadku ponosisz dodatkowe koszty lub zmieniły się Twoje możliwości zarobkowania? Sprawdź, jakie informacje mogą być potrzebne do indywidualnej analizy roszczenia o rentę powypadkową. Pierwszy kontakt nie zobowiązuje do zawarcia umowy."
     },
     skd: {
-      path: "/v2/uslugi/kredyty-pln.html",
+      path: "/uslugi/kredyty-pln.html",
       title: "Kredyty PLN — sankcja kredytu darmowego",
       text: "Masz kredyt konsumencki w PLN? Warunki umowy i rozliczenie kosztów można poddać indywidualnej analizie pod kątem sankcji kredytu darmowego. Nie każda umowa daje podstawę do roszczenia. Skontaktuj się, aby poznać możliwe następne kroki."
     },
     przesyl: {
-      path: "/v2/uslugi/sluzebnosc-przesylu.html",
+      path: "/uslugi/sluzebnosc-przesylu.html",
       title: "Służebność przesyłu",
       text: "Na Twojej działce znajdują się słupy, linie lub inne urządzenia przesyłowe? Warto ustalić stan prawny nieruchomości oraz dokumentację dotyczącą urządzeń. Możesz zostawić kontakt do wstępnej analizy sytuacji. Samo istnienie urządzeń nie oznacza automatycznie prawa do wynagrodzenia."
     }

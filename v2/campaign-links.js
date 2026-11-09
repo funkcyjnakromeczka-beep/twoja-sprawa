@@ -7,6 +7,7 @@
   const channel = form.querySelector("[name=channel]");
   const name = form.querySelector("[name=campaign]");
   const content = form.querySelector("[name=content]");
+  const style = form.querySelector("[name=style]");
   const urlOutput = document.querySelector("[data-campaign-url]");
   const postOutput = document.querySelector("[data-campaign-post]");
   const message = document.querySelector("[data-campaign-status]");
@@ -40,6 +41,20 @@
       text: "Na Twojej działce znajdują się słupy, linie lub inne urządzenia przesyłowe? Warto ustalić stan prawny nieruchomości oraz dokumentację dotyczącą urządzeń. Możesz zostawić kontakt do wstępnej analizy sytuacji. Samo istnienie urządzeń nie oznacza automatycznie prawa do wynagrodzenia."
     }
   };
+  const hooks = {
+    szkody: "Zauważyłeś rysę na elewacji i zastanawiasz się, czy może mieć związek z działalnością górniczą?",
+    swiadczenie: "Masz decyzję WZON albo dopiero planujesz wniosek o świadczenie wspierające?",
+    renty: "Czy skutki wypadku nadal wpływają na Twoje wydatki lub możliwości zarobkowania?",
+    skd: "Czy dokładnie wiesz, jakie koszty przewiduje Twoja umowa kredytu konsumenckiego?",
+    przesyl: "Czy na Twojej działce znajdują się urządzenia przesyłowe?"
+  };
+  const shorts = {
+    szkody: "Lubin, Polkowice i okolice: pęknięcia ścian, elewacji lub uszkodzenia kostki? Warto udokumentować szkody i sprawdzić możliwości działania. Pierwszy kontakt bez zobowiązania do umowy.",
+    swiadczenie: "Świadczenie wspierające: WZON, ZUS, decyzja lub wniosek? Uporządkuj etap sprawy i poznaj możliwe dalsze kroki. Bez obietnic wyniku.",
+    renty: "Renta powypadkowa: sprawdź, jakie dokumenty i informacje mogą być potrzebne do analizy indywidualnej sytuacji.",
+    skd: "Kredyt konsumencki w PLN? Sprawdź, czy warunki umowy można analizować pod kątem sankcji kredytu darmowego. Nie każda umowa daje podstawę do roszczenia.",
+    przesyl: "Słupy lub linie na działce? Warto ustalić dokumentację i stan prawny urządzeń przesyłowych przed podjęciem dalszych działań."
+  };
   const channels = {
     facebook: "social", instagram: "social", tiktok: "social",
     google: "search", ulotka: "print", plakat: "print",
@@ -56,10 +71,11 @@
     target.searchParams.set("utm_source", source);
     target.searchParams.set("utm_medium", channels[source]);
     target.searchParams.set("utm_campaign", campaign);
-    const variant = slug(content.value);
+    const variant = slug(content.value) || slug(style.value);
     if (variant) target.searchParams.set("utm_content", variant);
     urlOutput.value = target.href;
-    postOutput.value = chosen.text + "\n\n" + target.href + "\n\n" + "Kontakt: " + (["swiadczenie", "renty", "skd"].includes(service.value) ? "500 171 531" : "796 441 345");
+    const selectedText = style.value === "short" ? shorts[service.value] : style.value === "hook" ? hooks[service.value] + "\n\n" + chosen.text : chosen.text;
+    postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + "Kontakt: " + (["swiadczenie", "renty", "skd"].includes(service.value) ? "500 171 531" : "796 441 345");
     openAction.href = target.href;
     message.textContent = "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
   };

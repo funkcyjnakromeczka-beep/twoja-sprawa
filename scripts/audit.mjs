@@ -82,11 +82,13 @@ for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","v2/guid
 // Main-page video library: every core service needs a playable presentation link.
 try {
  const home = await readFile(join(root,"index.html"),"utf8");
- const library = home.match(/<div class="video-library"[^>]*>([\\s\\S]*?)<div class="video-links">/);
- if (!library) errors.push("Homepage: missing video library");
+ const start = home.indexOf('<div class="video-library"');
+ const end = home.indexOf('<div class="video-links">',start);
+ if (start < 0 || end < start) errors.push("Homepage: missing video library");
  else {
-  const count = (library[1].match(/class="video-feature"/g)||[]).length;
-  const links = (library[1].match(/https:\/\/scrimba\.com\/explain\//g)||[]).length;
+  const section = home.slice(start,end);
+  const count = section.split('class="video-feature"').length - 1;
+  const links = section.split('https://scrimba.com/explain/').length - 1;
   if (count !== 5 || links !== 5) errors.push("Homepage: expected five video cards with five video links, got "+count+" cards and "+links+" links");
  }
 } catch(e) { errors.push("Homepage video library audit failed: "+e.message); }

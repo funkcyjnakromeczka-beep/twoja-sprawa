@@ -1088,3 +1088,33 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
     transition:none;
   }
 }
+
+/* BACK-TOP-2026-11-09: unobtrusive footer return link */
+.premium-v2 footer .back-to-top{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:46px;
+  margin:0 0 24px;
+  padding:10px 17px;
+  border:1px solid rgba(218,185,131,.43);
+  border-radius:999px;
+  background:rgba(255,255,255,.075);
+  color:#f3d8a6;
+  font-size:.9rem;
+  font-weight:800;
+  text-decoration:none;
+  transition:background-color .18s ease,border-color .18s ease;
+}
+.premium-v2 footer .back-to-top:hover,
+.premium-v2 footer .back-to-top:focus-visible{
+  background:rgba(255,255,255,.14);
+  border-color:#dfbd84;
+}
+.premium-v2 footer .back-to-top:focus-visible{
+  outline:3px solid #f3d8a6;
+  outline-offset:3px;
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 footer .back-to-top{transition:none}
+}

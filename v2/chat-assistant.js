@@ -65,10 +65,20 @@
   document.body.append(root);
   const show = (open) => {
     panel.hidden = !open;
+    root.classList.toggle("is-open",open);
     toggle.setAttribute("aria-expanded",String(open));
     if (open) close.focus();
     else toggle.focus();
   };
+  // On narrow screens the contact form takes priority over the floating help button.
+  // The button remains available everywhere else and an explicitly opened panel stays visible.
+  const contactArea = document.getElementById("kontakt");
+  if (contactArea && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      root.classList.toggle("is-contact-area",Boolean(entries[0]?.isIntersecting));
+    },{threshold:0,rootMargin:"0px 0px -50px 0px"});
+    observer.observe(contactArea);
+  }
   toggle.addEventListener("click",()=>show(panel.hidden));
   close.addEventListener("click",()=>show(false));
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden)show(false);});

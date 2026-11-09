@@ -5,6 +5,7 @@
  */
 import { readdir, readFile, writeFile, mkdir, cp, rm } from "node:fs/promises";
 import { join, relative, dirname } from "node:path";
+import { shouldIndexRoute } from "./seo-policy.mjs";
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
 const release=process.env.RELEASE==="1";
@@ -39,14 +40,16 @@ async function walk(dir){
       let html=await readFile(absolute,"utf8");
       const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
       const canonical=origin+route;
+      const indexable=shouldIndexRoute(route);
+      const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
-      html=html.replace(/<meta name="robots" content="noindex,follow">/g,'<meta name="robots" content="index,follow">');
+      html=html.replace(/<meta name="robots" content="noindex,follow">/g,'<meta name="robots" content="'+robots+'">');
       if(!html.includes('rel="canonical"')) html=html.replace("</head>",'<link rel="canonical" href="'+canonical+'"></head>');
       if(!html.includes('property="og:url"')) html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');
-      if(!html.includes('<meta name="robots" content="index,follow">')) throw new Error("Missing indexable robots tag: "+rel);
+      if(!html.includes('<meta name="robots" content="'+robots+'">')) throw new Error("Incorrect release robots tag: "+rel);
       html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
       await writeFile(target,html);
-      pages.push(route);
+      if(indexable) pages.push(route);
     } else if (rel.endsWith(".js")) {
       let js=await readFile(absolute,"utf8");
       js=js.replaceAll('"/v2/"','"/"').replaceAll('"/v2/','"/');

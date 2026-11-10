@@ -14,6 +14,14 @@ on:
       - 'v2/knowledge-articles.css'
       - 'v2/wiedza/**'
       - 'scripts/build.mjs'
+      - 'v2/journey.css'
+      - 'v2/lead-persona.css'
+      - 'v2/service-navigator.js'
+      - 'v2/contact.js'
+      - 'v2/uslugi/szkody-gornicze.html'
+      - 'v2/uslugi/swiadczenie-wspierajace.html'
+      - 'v2/kampanie/szkody-gornicze.html'
+      - 'v2/kampanie/swiadczenie-wspierajace.html'
 jobs:
   screenshots:
     runs-on: ubuntu-latest

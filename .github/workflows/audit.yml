@@ -20,6 +20,7 @@ jobs:
           node --check v2/attribution.js
           node --check scripts/test-attribution.mjs
           node --check v2/chat-assistant.js
+          node --check v2/share-page.js
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/seo-policy.mjs
@@ -51,6 +52,10 @@ jobs:
           test -f dist-preview/kampanie/swiadczenie-wspierajace.html
           test -f dist-preview/narzedzia/linki-kampanii.html
           test -f dist-preview/attribution.js
+          test -f dist-preview/assets/site-mark.svg
+          grep -q 'rel="icon" type="image/svg+xml" href="/assets/site-mark.svg"' dist-preview/index.html
+          grep -q 'Referrer-Policy: strict-origin-when-cross-origin' dist-preview/_headers
+          grep -q 'Permissions-Policy: geolocation=(), camera=(), microphone=()' dist-preview/_headers
           grep -q 'src="/attribution.js"' dist-preview/index.html
           grep -q 'src="/attribution.js"' dist-preview/poradniki/checklista-szkody-gorniczej.html
           grep -q 'Disallow: /' dist-preview/robots.txt

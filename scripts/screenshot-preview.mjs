@@ -69,7 +69,7 @@ try{
  }
  // Playwright interaction verification: chatbot maps scenario to corresponding form.
  const page=await browser.newPage({viewport:{width:390,height:844}});
- await page.goto(origin+"/kampanie/szkody-gornicze.html?utm_source=facebook&utm_medium=grupa&utm_campaign=lokalna",{waitUntil:"domcontentloaded"});
+ await page.goto(origin+"/uslugi/szkody-gornicze.html?utm_source=facebook&utm_medium=grupa&utm_campaign=lokalna",{waitUntil:"domcontentloaded"});
  await page.locator(".chat-toggle").click();
  await page.locator('[data-topic="szkody"]').click();
  await page.locator(".chat-stage-choice",{hasText:"Mam propozycję ugody"}).click();

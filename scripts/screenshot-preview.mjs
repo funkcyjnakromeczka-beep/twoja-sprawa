@@ -93,7 +93,24 @@ try{
  if(picked!=="Otrzymałem/am propozycję ugody")throw Error("Form stage was not preselected: "+picked);
  console.log("FUNNEL_OK",JSON.stringify({url:chosen.pathname+chosen.search,stage:picked}));
  await page.close();
- console.log("SUCCESS",checks.length,"visual routes, sticky partner logos and one chatbot lead funnel. No real leads sent.");
+ // Verify that the standalone three-step guide really prepares the correct contact form.
+ const guidePage=await browser.newPage({viewport:{width:390,height:844}});
+ await guidePage.goto(origin+"/?utm_source=facebook&utm_medium=grupa&utm_campaign=szkody_lubin",{waitUntil:"domcontentloaded"});
+ await guidePage.locator("#dobierz-pomoc > summary").click();
+ await guidePage.locator('[data-navigator="szkody"]').click();
+ await guidePage.locator('.navigator-stage-choice[data-stage="ugoda"]').click();
+ const route=await guidePage.locator(".navigator-contact-cta").getAttribute("href");
+ const selected=new URL(route,origin);
+ if(selected.pathname!=="/kampanie/szkody-gornicze.html"||selected.searchParams.get("etap")!=="ugoda"||selected.searchParams.get("lead_path")!=="navigator"||selected.searchParams.get("utm_medium")!=="grupa")throw Error("Navigator did not pass safe stage and campaign context: "+route);
+ await guidePage.locator("#dobierz-pomoc").screenshot({path:"screenshots/przewodnik-ugoda-telefon.png",animations:"disabled"});
+ await guidePage.goto(origin+selected.pathname+selected.search+selected.hash,{waitUntil:"domcontentloaded"});
+ const stageFromGuide=await guidePage.locator('.contact-form select[id^="cf-stage-"]').inputValue();
+ if(stageFromGuide!=="Otrzymałem/am propozycję ugody")throw Error("Navigator stage not preselected in destination: "+stageFromGuide);
+ const contextVisible=await guidePage.locator(".contact-context-notice").isVisible();
+ if(!contextVisible)throw Error("Navigator stage confirmation missing in lead form");
+ console.log("NAVIGATOR_OK",JSON.stringify({url:selected.pathname+selected.search,stage:stageFromGuide}));
+ await guidePage.close();
+ console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();
  server.kill("SIGTERM");

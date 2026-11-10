@@ -12,8 +12,8 @@
   const requestedCampaign=(incoming.get("utm_campaign")||"").toLowerCase().trim();
   const campaign=validAttribution(requestedCampaign)?requestedCampaign:"wybor_uslugi";
   const requestedContent=(incoming.get("utm_content")||"").toLowerCase().trim();
-  const content=validAttribution(requestedContent)?"&utm_content="+encodeURIComponent(requestedContent):"";
-  const params="?utm_source="+encodeURIComponent(source)+"&utm_medium=chatbot&utm_campaign="+encodeURIComponent(campaign)+content;
+  const contentSuffix=validAttribution(requestedContent)?"&utm_content="+encodeURIComponent(requestedContent):"";
+  const params="?utm_source="+encodeURIComponent(source)+"&utm_medium=chatbot&utm_campaign="+encodeURIComponent(campaign)+contentSuffix;
   const topics=[
     {
       key:"swiadczenie",name:"Świadczenie wspierające",short:"WZON, decyzje, ZUS",phone:"500 171 531",tel:"+48500171531",

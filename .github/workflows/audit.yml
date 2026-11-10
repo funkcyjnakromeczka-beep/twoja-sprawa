@@ -30,6 +30,8 @@ jobs:
           node --check scripts/test-contact-client.mjs
           node --check scripts/test-contact.mjs
           node --check scripts/preview.mjs
+          node --check scripts/network-brand.mjs
+          node --check scripts/test-network-brand.mjs
       - name: Testy formularza API bez wysyłania e-maili
         run: node scripts/test-contact.mjs
       - name: Przetestuj generator kampanii bez połączenia z siecią
@@ -44,6 +46,8 @@ jobs:
         run: node scripts/test-seo-policy.mjs
       - name: Sprawdź pliki HTML i odnośniki
         run: node scripts/audit.mjs
+      - name: Sprawdź logotypy partnerów na każdej podstronie
+        run: node scripts/test-network-brand.mjs
       - name: Zbuduj podgląd bez indeksowania
         run: |
           node scripts/preview.mjs
@@ -56,6 +60,11 @@ jobs:
           test -f dist-preview/narzedzia/linki-kampanii.html
           test -f dist-preview/attribution.js
           test -f dist-preview/assets/site-mark.svg
+          test -f dist-preview/network-brand.css
+          grep -q 'class="network-brand-bar"' dist-preview/index.html
+          grep -q 'class="network-brand-bar"' dist-preview/404.html
+          grep -q 'class="network-brand-bar"' dist-preview/kampanie/szkody-gornicze.html
+          grep -q 'class="network-brand-bar"' dist-preview/kampanie/swiadczenie-wspierajace.html
           grep -q 'rel="icon" type="image/svg+xml" href="/assets/site-mark.svg"' dist-preview/index.html
           grep -q 'Referrer-Policy: strict-origin-when-cross-origin' dist-preview/_headers
           grep -q 'Permissions-Policy: geolocation=(), camera=(), microphone=()' dist-preview/_headers

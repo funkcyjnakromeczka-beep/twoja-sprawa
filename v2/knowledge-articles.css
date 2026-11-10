@@ -29,3 +29,9 @@
 .premium-v2 .hub-all-link a{display:inline-flex;align-items:center;justify-content:center;min-height:49px;padding:12px 18px;border:1px solid #c9a66f;border-radius:12px;background:#f8ead1;color:#173a48;font-weight:800;text-decoration:none}
 .premium-v2 .hub-all-link a:hover{background:#eed7b1}
 .premium-v2 .hub-all-link a:focus-visible{outline:3px solid #bb8741;outline-offset:4px}
+
+/* CTA do pełnej bazy FAQ bez wydłużania strony głównej. */
+.premium-v2 .faq-explore-all{display:flex;justify-content:center;margin:23px 0 0}
+.premium-v2 .faq-explore-all a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 19px;border:1px solid #be965b;border-radius:12px;background:#f2dfbc;color:#173b4b;text-decoration:none;text-align:center;font-weight:800;line-height:1.4}
+.premium-v2 .faq-explore-all a:hover{background:#e9cca0}
+.premium-v2 .faq-explore-all a:focus-visible{outline:3px solid #b58c4f;outline-offset:3px}

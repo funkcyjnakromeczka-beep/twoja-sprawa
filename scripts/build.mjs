@@ -20,13 +20,41 @@ await rm(dest,{recursive:true,force:true});
 await mkdir(dest,{recursive:true});
 const pages=[];
 const structured = (route,canonical,title) => {
-  const person={"@type":"Person","@id":origin+"/#wojciech-obieglo",name:"Wojciech Obiegło",url:origin+"/o-nas.html"};
-  const organization={"@type":"Organization","@id":origin+"/#successtree",name:"SuccessTree OBIEGŁO WOJCIECH",url:origin+"/",email:"twojasprawa_votum@outlook.com",telephone:"+48 796 441 345",founder:{"@id":person["@id"]}};
+  // This graph describes SuccessTree's own agency site, never VOTUM as the publisher.
+  const owner={"@type":"Person","@id":origin+"/#wojciech-obieglo",name:"Wojciech Obiegło",url:origin+"/o-nas.html#wojciech",image:"https://twojasprawa-votum.lovable.app/assets/wojciech-CIUxrQ8A.jpg"};
+  const colleague={"@type":"Person","@id":origin+"/#paulina-chandrala",name:"Paulina Chandrała",url:origin+"/o-nas.html#paulina",image:"https://twojasprawa-votum.lovable.app/assets/paulina-B6guxyXQ.jpg"};
+  const organization={
+    "@type":"Organization","@id":origin+"/#successtree",name:"SuccessTree OBIEGŁO WOJCIECH",
+    url:origin+"/",email:"twojasprawa_votum@outlook.com",telephone:"+48 796 441 345",
+    founder:{"@id":owner["@id"]},
+    contactPoint:[
+      {"@type":"ContactPoint",contactType:"Szkody górnicze i pozostałe zapytania",telephone:"+48 796 441 345",areaServed:"PL",availableLanguage:"pl"},
+      {"@type":"ContactPoint",contactType:"Świadczenie wspierające i renty",telephone:"+48 500 171 531",areaServed:"PL",availableLanguage:"pl"}
+    ]
+  };
   const site={"@type":"WebSite","@id":origin+"/#website",name:"Twoja Sprawa",url:origin+"/",publisher:{"@id":organization["@id"]},inLanguage:"pl-PL"};
-  const page={"@type":"WebPage","@id":canonical+"#webpage",url:canonical,isPartOf:{"@id":site["@id"]},inLanguage:"pl-PL"};
-  const graph=[person,organization,site,page];
+  const page={"@type":"WebPage","@id":canonical+"#webpage",url:canonical,name:title,isPartOf:{"@id":site["@id"]},inLanguage:"pl-PL"};
+  if(route==="/o-nas.html")page.about=[{"@id":owner["@id"]},{"@id":colleague["@id"]}];
+  const graph=[owner,colleague,organization,site,page];
   if(route.startsWith("/uslugi/")||route.startsWith("/lokalnie/")){
-    graph.push({"@type":"Service","@id":canonical+"#service",name:title.split("|")[0].trim().replace(/\s*[—–-]\s*Twoja Sprawa.*$/,""),provider:{"@id":organization["@id"]},areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",url:canonical});
+    graph.push({
+      "@type":"Service","@id":canonical+"#service",
+      name:title.split("|")[0].trim().replace(/\\s*[—–-]\\s*Twoja Sprawa.*$/,""),
+      provider:{"@id":organization["@id"]},
+      areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",
+      url:canonical,
+      serviceType:route.includes("swiadczenie")?"Wsparcie w sprawach świadczenia wspierającego":route.includes("szkody-gornicze")?"Wstępna analiza szkód górniczych":"Wstępny kontakt i analiza sprawy"
+    });
+  }
+  const category=route.startsWith("/uslugi/")?"Usługi":route.startsWith("/poradniki/")?"Poradniki":route.startsWith("/lokalnie/")?"Szkody górnicze — lokalnie":null;
+  if(category){
+    const categoryUrl=route.startsWith("/poradniki/")?origin+"/wiedza/":origin+"/#uslugi";
+    graph.push({"@type":"BreadcrumbList","@id":canonical+"#breadcrumb",itemListElement:[
+      {"@type":"ListItem",position:1,name:"Twoja Sprawa",item:origin+"/"},
+      {"@type":"ListItem",position:2,name:category,item:categoryUrl},
+      {"@type":"ListItem",position:3,name:title.split("|")[0].trim(),item:canonical}
+    ]});
+    page.breadcrumb={"@id":canonical+"#breadcrumb"};
   }
   return JSON.stringify({"@context":"https://schema.org","@graph":graph}).replaceAll("<","\\u003c");
 };

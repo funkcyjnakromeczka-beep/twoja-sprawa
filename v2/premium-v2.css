@@ -2709,3 +2709,46 @@ body.premium-subpage.theme-rents #formularz .contact-form{
   .premium-v2 .hero-scarlet-tag:before,
   .premium-v2 .hero-visual .hero-themis-figure{animation:none}
 }
+
+
+/* VIDEO-UX-OVERRIDES-20261110: neutralize legacy first-video grid and mobile assistant overlap */
+.premium-v2 #filmy .video-feature:first-child{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  background:#fff;
+  border-color:#d1dad5;
+}
+.premium-v2 #filmy .video-feature:first-child .video-poster{
+  aspect-ratio:16/9;
+  min-height:190px;
+}
+.premium-v2 #filmy .video-feature > .video-feature-details{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-width:0;
+  flex:1;
+  padding:clamp(22px,3vw,31px);
+  background:linear-gradient(160deg,#fff,#fcfaf6 65%,#f6f7f3);
+  color:#193a47!important;
+}
+.premium-v2 #filmy .video-feature:first-child .video-feature-details :is(h3,p,.eyebrow){
+  color:#193a47!important;
+}
+.premium-v2 #filmy .video-feature:first-child .video-feature-details .eyebrow{
+  color:#8e602e!important;
+}
+.premium-v2 #filmy .video-feature:first-child .video-feature-details p{
+  color:#3c5964!important;
+}
+@media(max-width:760px){
+  .premium-v2 .chat-assistant.is-video-area:not(.is-open),
+  .premium-v2 .chat-assistant.is-contact-area:not(.is-open){
+    opacity:0!important;
+    pointer-events:none!important;
+    transform:translateY(15px);
+  }
+  .premium-v2 #filmy .video-feature:first-child .video-poster{min-height:185px}
+  .premium-v2 #filmy .video-feature > .video-feature-details{padding:21px}
+}

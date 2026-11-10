@@ -18,6 +18,7 @@
 - Formularz Web3Forms: `v2/contact.js`
 - Styl graficzny: `v2/styles.css` i `v2/premium-v2.css`
 - Biblioteka wiedzy i szybkie wyszukiwanie: `v2/wiedza/index.html`, `v2/knowledge-hub.js`, `v2/knowledge-hub.css`
+- Baza 24 FAQ: `v2/faq.html`, `v2/faq.js`, `v2/faq.css` — sześć kategorii, wyszukiwarka lokalna, odnośniki do oficjalnych źródeł, filtrowanie `?temat=szkody|swiadczenie|renty|skd|przesyl|kontakt`.
 - Generator planu pierwszych kroków: `v2/plan-dzialania.html`, `v2/plan-dzialania.js`, `v2/plan-dzialania.css` — pięć usług, etap sprawy, checklista, druk i kontakt bez danych osobowych.
 - Powiększanie tekstu i druk artykułów: `v2/article-accessibility.js` i `v2/article-accessibility.css`
 - Strona kontaktu ze zdjęciami specjalistów: `v2/kontakt.html` i `v2/contact-hub.css`
@@ -32,6 +33,8 @@ node scripts/test-article-accessibility.mjs
 node scripts/test-release-readiness.mjs
 node scripts/test-action-plan.mjs
 node scripts/test-50-continuations.mjs
+node scripts/test-faq.mjs
+node scripts/test-50-continuations-iii.mjs
 node scripts/test-contact-client.mjs
 node scripts/test-network-brand.mjs
 node scripts/test-seo-policy.mjs
@@ -61,3 +64,8 @@ Dane przekazywane przez formularz kierowane są do Web3Forms i następnie na `tw
 - Formularz obsługuje `lead_path=plan` i wstępne zaznaczenie etapu, ale nie przyjmuje diagnoz ani dokumentów.
 - Weryfikacja ZUS: trzy miesiące od ostateczności decyzji WZON mogą mieć znaczenie dla wyrównania świadczenia. Treść należy monitorować przy zmianach prawa.
 \n## Adresy Cloudflare i SEO\n- Pliki źródłowe nadal mają nazwy `*.html`, ale Cloudflare Pages przekierowuje ich publiczne odpowiedniki na adresy bez `.html`, np. `/kontakt` i `/plan-dzialania`.\n- `scripts/public-routes.mjs` jest jedynym konwerterem tras dla kanonicznych adresów i mapy witryny. Test `scripts/test-public-routes.mjs` bada 10 poprawnych przykładów oraz 5 błędnych wejść.\n- Przegląd `robots.txt` i faktycznego `sitemap.xml` jest konieczny **po zatwierdzonym wdrożeniu produkcyjnym**; zielony test CI nie dowodzi opublikowania mapy.\n
+## Trzecia seria rozwoju (11 listopada 2026)
+- Dodatkowa strona `/faq` z 24 edukacyjnymi pytaniami: 6 szkody górnicze, 6 świadczenie wspierające, 3 renty, 3 kredyty PLN/SKD, 2 służebność przesyłu, 4 kontakt.
+- Skrót na stronie głównej, link z biblioteki poradników i kontekstowe odnośniki z najważniejszych usług. FAQ jest indeksowalne dopiero w zatwierdzonym wydaniu produkcyjnym.
+- 50 sekwencyjnych kontroli treści, bezpieczeństwa i technicznego SEO uruchamia `scripts/test-50-continuations-iii.mjs`; test interakcji filtrów: `scripts/test-faq.mjs`.
+- Dalsze zatwierdzenia prawne, wizerunki, formularz i konfiguracja Cloudflare pozostają oddzielnymi zadaniami. Zaliczenie CI nie oznacza zakończenia publikacji.

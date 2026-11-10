@@ -133,7 +133,9 @@
         for(const item of stages.querySelectorAll("button"))item.setAttribute("aria-pressed",String(item===btn));
         answer.textContent=text;
         form.href=destination(topic,stageCode);
+        form.textContent="Przejdź do formularza z wybranym etapem ↗";
         contact.href=destination(topic,stageCode);
+        contact.textContent="✉ Zostaw kontakt — etap wybrany";
         answer.scrollIntoView({block:"nearest",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
       });
       stages.append(btn);

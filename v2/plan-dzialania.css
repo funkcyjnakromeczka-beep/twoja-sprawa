@@ -43,6 +43,8 @@
 .plan-page .plan-actions button:nth-child(2){background:transparent;color:#e7d7b8;border-color:#b6a081}
 .plan-page .plan-actions a{background:#bedaca;color:#173b30;border-color:#92bba5}
 .plan-page .plan-actions button:disabled{opacity:.45;cursor:not-allowed}
+.plan-page .plan-actions a[hidden]{display:none!important}
+.plan-page .plan-actions a[data-plan-call]{background:transparent;color:#f3ddb7;border-color:#c4a875}
 .plan-page .plan-actions button:focus-visible,.plan-page .plan-actions a:focus-visible,.plan-page .plan-kind-grid button:focus-visible,.plan-page .plan-stage select:focus-visible{outline:3px solid #efc985;outline-offset:3px}
 .plan-page .plan-help{font-size:.79rem;color:#c3d8dc;line-height:1.62;margin-bottom:0}
 .plan-page .plan-after{padding:32px 0 80px}

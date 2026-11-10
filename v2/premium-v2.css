@@ -3168,3 +3168,22 @@ html{scroll-padding-top:16px}
     transform:none!important;
   }
 }
+
+
+/* TEN-PASS-QA: legible but subordinate partnership disclaimer */
+.premium-v2 .agency-logos-note,
+.premium-subpage .agency-logos-note{
+  color:#40545c!important;
+  opacity:1!important;
+  font-weight:500;
+  font-size:clamp(.7rem,.83vw,.82rem)!important;
+  line-height:1.5!important;
+}
+@media(max-width:930px){
+  .premium-v2 .agency-logos-note,
+  .premium-subpage .agency-logos-note{
+    color:#42565e!important;
+    font-size:.72rem!important;
+    line-height:1.48!important;
+  }
+}

@@ -3596,3 +3596,76 @@ html{scroll-padding-top:16px}
 }
 .premium-v2 #kontakt>.actions .btn.secondary:hover,.premium-v2 #kontakt>.actions .btn.secondary:focus-visible{background:#225468!important;border-color:#cfae78}
 @media(max-width:650px){.premium-v2 #kontakt>.actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}.premium-v2 #kontakt>.actions .btn{width:100%;margin:0}}
+
+
+/* FOCUSED-DISCOVERABILITY-20261110: strong dark click targets */
+/* FAQ summaries clearly behave like interactive dark cards; the answers stay light. */
+.premium-v2 .home-faq-grid details{
+  background:#fffdfa!important;
+  border:1px solid #c4d2d0!important;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 10px 24px rgba(10,31,43,.08);
+}
+.premium-v2 .home-faq-grid details>summary{
+  display:block;
+  list-style:none;
+  position:relative;
+  min-height:76px;
+  padding:21px 60px 21px 21px;
+  border:0;
+  background:linear-gradient(130deg,#123b4c,#091f2c)!important;
+  color:#f5f4ec!important;
+  font-size:clamp(1rem,1.35vw,1.09rem);
+  line-height:1.48;
+  font-weight:750;
+  transition:background .2s ease;
+}
+.premium-v2 .home-faq-grid details>summary::-webkit-details-marker{display:none}
+.premium-v2 .home-faq-grid details>summary::after{
+  content:"+";
+  position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  width:31px;height:31px;display:grid;place-items:center;
+  border:1px solid rgba(230,207,164,.55);border-radius:10px;
+  color:#ecd1a2;font-size:1.28rem;line-height:1;
+}
+.premium-v2 .home-faq-grid details[open]>summary::after{content:"−"}
+.premium-v2 .home-faq-grid details>summary:hover{background:linear-gradient(130deg,#1e5364,#0f3040)!important}
+.premium-v2 .home-faq-grid details>summary:focus-visible{
+  outline:3px solid #e4b46c;outline-offset:-4px;
+}
+.premium-v2 .home-faq-grid details>p{
+  margin:0;
+  padding:20px 22px 23px;
+  background:#fffdfa;
+  color:#2f4c57!important;
+  font-size:1rem;
+  line-height:1.72;
+}
+.premium-v2 #uslugi .primary-card .more{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:14px;
+  padding:9px 14px;
+  border-radius:999px;
+  border:1px solid rgba(243,212,159,.48);
+  background:rgba(245,221,180,.11);
+  color:#f5d9a9!important;
+  font-size:.87rem;
+  font-weight:800;
+  line-height:1.4;
+}
+.premium-v2 #uslugi .primary-card.support-featured .more{
+  background:#d8eddf;
+  border-color:#d8eddf;
+  color:#143e36!important;
+}
+@media(max-width:600px){
+ .premium-v2 .home-faq-grid details>summary{
+   min-height:66px;padding:17px 54px 17px 17px;font-size:1rem;
+ }
+ .premium-v2 .home-faq-grid details>summary::after{right:12px}
+ .premium-v2 .home-faq-grid details>p{padding:17px 18px 20px;font-size:.95rem}
+}
+@media(prefers-reduced-motion:reduce){
+ .premium-v2 .home-faq-grid details>summary{transition:none}
+}

@@ -36,6 +36,8 @@ try{
   ["plan-desktop","/plan-dzialania.html",1440,900],
   ["faq-telefon","/faq.html",390,844],
   ["faq-desktop","/faq.html",1440,900],
+  ["wyszukiwarka-telefon","/szukaj.html",390,844],
+  ["wyszukiwarka-desktop","/szukaj.html",1440,900],
   ["wiedza-szkody-telefon","/wiedza/drobne-pekniecia-szkody-gornicze.html",390,844],
   ["wiedza-swiadczenie-telefon","/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",390,844],
   ["blad-404-telefon","/404.html",390,844]
@@ -196,6 +198,28 @@ try{
  await faqPage.screenshot({path:"screenshots/faq-swiadczenie-telefon.png",fullPage:false,animations:"disabled"});
  console.log("FAQ_UI_OK",JSON.stringify({total:24,mining:faqInitial,search:faqSearch,support:6}));
  await faqPage.close();
+ // Global search — 60 local records and deep linking into the relevant expanded FAQ.
+ const searchPage=await browser.newPage({viewport:{width:390,height:844}});
+ await searchPage.goto(origin+"/szukaj.html?q=PEKNIECIE&temat=szkody",{waitUntil:"domcontentloaded"});
+ const found=await searchPage.locator(".site-search-card").count();
+ if(found<1)throw Error("Global search does not find crack-related content");
+ const faqSearchResult=searchPage.locator('a.site-search-card[href*="/faq.html#pytanie-1-"]').first();
+ if(await faqSearchResult.count()!==1)throw Error("Global search lacks question about facade cracks");
+ const countLabel=await searchPage.locator("[data-search-count]").textContent();
+ if(!countLabel.includes("Znaleziono:"))throw Error("Accessible search result status missing");
+ await searchPage.screenshot({path:"screenshots/wyszukiwarka-pekniecia-telefon.png",fullPage:false,animations:"disabled"});
+ await faqSearchResult.click();
+ await searchPage.waitForURL(/faq\.html#pytanie-1-/);
+ if(!await searchPage.locator('[id^="pytanie-1-"] details[open]').count())throw Error("Linked FAQ answer did not expand automatically");
+ await searchPage.goto(origin+"/szukaj.html",{waitUntil:"domcontentloaded"});
+ await searchPage.locator("#site-search-input").fill("WZON");
+ await searchPage.locator('[data-search-category="swiadczenie"]').click();
+ if(await searchPage.locator(".site-search-card").count()<1)throw Error("WZON search category should have matches");
+ await searchPage.locator("[data-search-reset]").click();
+ const afterReset=await searchPage.locator(".site-search-card").count();
+ if(afterReset!==18)throw Error("Search reset should restore the first 18 cards: "+afterReset);
+ console.log("GLOBAL_SEARCH_OK",JSON.stringify({sourceCount:60,cracks:found,faqDeepLink:true,wzon:true,reset:afterReset}));
+ await searchPage.close();
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

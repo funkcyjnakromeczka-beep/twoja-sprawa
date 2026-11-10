@@ -35,6 +35,8 @@ jobs:
           node --check scripts/test-50-continuations.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
+          node --check scripts/public-routes.mjs
+          node --check scripts/test-public-routes.mjs
           node --check scripts/seo-policy.mjs
           node --check scripts/test-seo-policy.mjs
           node --check scripts/test-campaign-links.mjs
@@ -61,6 +63,8 @@ jobs:
         run: node scripts/test-article-accessibility.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji
         run: node scripts/test-seo-policy.mjs
+      - name: Sprawdź kanoniczne adresy Cloudflare Pages
+        run: node scripts/test-public-routes.mjs
       - name: Kontrola bramek przed oficjalną publikacją
         run: node scripts/test-release-readiness.mjs
       - name: Test interaktywnego planu pierwszych kroków

@@ -10,7 +10,7 @@
  const cards=[...hub.querySelectorAll("[data-hub-category]")];
  if(!input||!count||!empty||!cards.length)return;
  let category="all";
- const normalize=value=>String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLocaleLowerCase("pl-PL");
+ const normalize=value=>String(value||"").toLocaleLowerCase("pl-PL").normalize("NFD").replace(/\p{M}/gu,"").replaceAll("ł","l");
  const update=()=>{
   const q=normalize(input.value.trim());
   let shown=0;

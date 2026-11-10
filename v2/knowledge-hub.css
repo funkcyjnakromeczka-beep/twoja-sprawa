@@ -46,3 +46,10 @@
 .knowledge-hub .hub-reset{display:inline-flex;align-items:center;justify-content:center;margin:11px 0 0;padding:9px 15px;min-height:42px;background:#e7eee9;border:1px solid #8da9ad;border-radius:9px;color:#1c4554;font:750 .86rem/1.35 system-ui,sans-serif;cursor:pointer}
 .knowledge-hub .hub-reset[hidden]{display:none!important}
 .knowledge-hub .hub-reset:focus-visible{outline:3px solid #ad833c;outline-offset:3px}
+
+/* Dwie ścieżki po lekturze: bezpłatny plan lub bezpośredni kontakt. */
+.knowledge-hub .hub-banner-actions{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin-top:15px}
+.knowledge-hub .hub-banner-actions a{margin:0;min-height:48px}
+.knowledge-hub .hub-banner-actions a:nth-child(2){background:transparent;color:#f5dba9;border-color:#c1a070}
+.knowledge-hub .hub-banner-actions a:focus-visible{outline:3px solid #f7d49a;outline-offset:3px}
+@media(max-width:560px){.knowledge-hub .hub-banner-actions{flex-direction:column}.knowledge-hub .hub-banner-actions a{width:100%}}

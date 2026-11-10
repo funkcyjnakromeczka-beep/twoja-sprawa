@@ -1,0 +1,47 @@
+/* Twoja Sprawa — lokalne wyszukiwanie 60 materiałów, jasny content i premium navy/gold. */
+.search-page{background:#f5f6f1;color:#183b48;min-height:100vh}
+.search-page .search-container{width:min(1200px,calc(100% - 40px));margin-inline:auto}
+.search-page .search-hero{background:radial-gradient(ellipse at 85% 5%,rgba(225,182,113,.24),transparent 42%),linear-gradient(115deg,#091e2d,#17414f 76%,#1e4d48);padding:clamp(50px,8vw,94px) 0;color:#f8f8f4;border-bottom:3px solid #c7a575}
+.search-page .search-hero .eyebrow{color:#eed6a6;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+.search-page .search-hero h1{max-width:840px;font:700 clamp(2.1rem,5.3vw,4.2rem)/1.09 Georgia,serif;letter-spacing:-.035em;color:#fff;margin:15px 0 22px}
+.search-page .search-hero p{max-width:85ch;color:#e0e9e9;font-size:clamp(.98rem,1.45vw,1.13rem);line-height:1.75}
+.search-page .search-hero-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.search-page .search-hero-links a{display:inline-flex;align-items:center;justify-content:center;min-height:49px;border:1px solid #ddc296;border-radius:10px;background:#e8c992;color:#113544;font-size:.94rem;font-weight:800;text-decoration:none;padding:11px 17px}
+.search-page .search-hero-links a:nth-child(2){background:transparent;color:#ffe0ae}
+.search-page .search-workspace{padding-top:39px;padding-bottom:53px}
+.search-page .search-workspace-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:14px;margin-bottom:24px}
+.search-page .search-workspace-top h2{font:700 clamp(1.6rem,3.3vw,2.25rem)/1.19 Georgia,serif;color:#173c4c;margin:8px 0}
+.search-page .search-workspace-top .eyebrow{font-size:.73rem;font-weight:800;letter-spacing:.1em;color:#88714d;text-transform:uppercase}
+.search-page [data-search-count]{font-size:.88rem;color:#527080}
+.search-page label[for="site-search-input"]{display:block;font-size:.93rem;font-weight:800;color:#265263;margin-bottom:9px}
+.search-page #site-search-input{display:block;width:100%;min-height:56px;padding:15px 18px;border:1px solid #8ba9ae;border-radius:12px;background:#fff;color:#123643;font:500 1rem/1.4 system-ui,sans-serif;box-shadow:0 4px 13px #092c3d10}
+.search-page .search-hints{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:13px 0 19px;color:#596f77;font-size:.82rem}
+.search-page .search-hints a{display:inline-flex;align-items:center;min-height:35px;padding:7px 11px;border-radius:100px;border:1px solid #c3d0ce;background:#fff;color:#275764;font-weight:700;text-decoration:none}
+.search-page .search-hints a:hover{border-color:#b99862;background:#ffedd0}
+.search-page .search-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.search-page .search-filters button{min-height:44px;padding:9px 13px;border-radius:100px;border:1px solid #c3d3d1;background:#fff;color:#224955;cursor:pointer;font:760 .85rem/1.35 system-ui,sans-serif}
+.search-page .search-filters button[aria-pressed="true"]{background:#143b4a;color:#fce1b7;border-color:#c29d61}
+.search-page .search-reset{display:inline-flex;align-items:center;min-height:42px;margin:0 0 21px;border:1px solid #adc5bb;background:#e8f0e9;padding:9px 15px;border-radius:10px;color:#225647;font-weight:760;cursor:pointer}
+.search-page .search-reset[hidden]{display:none!important}
+.search-page .search-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(13px,2vw,21px);align-items:stretch}
+.search-page .site-search-card{display:flex;flex-direction:column;gap:11px;min-width:0;background:#fff;border:1px solid #d1dfdc;border-radius:17px;padding:clamp(18px,2.3vw,25px);box-shadow:0 8px 21px #082a3510;text-decoration:none;color:#164051;transition:transform .15s ease,border-color .15s ease}
+.search-page .site-search-card:hover{transform:translateY(-2px);border-color:#b49768}
+.search-page .site-search-card strong{font:700 clamp(1.06rem,1.7vw,1.3rem)/1.3 Georgia,serif;color:#133b4c}
+.search-page .site-search-card .site-search-tag{display:inline-flex;align-self:flex-start;padding:6px 10px;border-radius:20px;background:#e9f2ed;color:#286357;text-transform:uppercase;letter-spacing:.04em;font:780 .66rem/1.2 system-ui,sans-serif}
+.search-page .site-search-card .site-search-description{color:#4b6872;font-size:.9rem;line-height:1.7;flex:1}
+.search-page .site-search-card .site-search-cta{margin-top:3px;color:#956e31;font-size:.85rem;font-weight:800}
+.search-page .search-empty{padding:25px;margin-top:20px;border:1px dashed #a5bdb7;border-radius:15px;background:#fff}
+.search-page .search-empty[hidden]{display:none!important}
+.search-page .search-empty a{display:inline-flex;margin-top:12px;color:#1c6372;font-weight:800}
+.search-page .search-legal{margin-top:27px;color:#4e6973;font-size:.84rem;line-height:1.75}
+.search-page .search-contact{padding:clamp(22px,3vw,37px);background:#103544;color:#f5f7f4;border:1px solid #bca072;border-radius:19px;margin-bottom:68px}
+.search-page .search-contact h2{color:#f8ddb1;font:700 clamp(1.35rem,2.7vw,2rem)/1.23 Georgia,serif}
+.search-page .search-contact p{color:#d7e5e5;line-height:1.7}
+.search-page .search-contact>div{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
+.search-page .search-contact a{display:inline-flex;justify-content:center;align-items:center;min-height:45px;border:1px solid #c5ac83;background:#e5cda0;padding:10px 16px;border-radius:10px;color:#133745;text-decoration:none;font-weight:800}
+.search-page .search-contact a:not(:first-child){background:transparent;color:#f8dbaa}
+.search-page :is(.search-hints a,.site-search-card,.search-filters button,.search-reset,.search-contact a,.search-hero-links a):focus-visible{outline:3px solid #ae8648;outline-offset:4px}
+@media(max-width:990px){.search-page .search-results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:670px){.search-page .search-results{grid-template-columns:1fr}.search-page .search-workspace{padding-top:27px}.search-page .search-hints{gap:6px}.search-page .search-container{width:calc(100% - 28px)}.search-page .search-contact>div,.search-page .search-hero-links{flex-direction:column}.search-page .search-contact a,.search-page .search-hero-links a{width:100%}}
+@media(prefers-reduced-motion:reduce){.search-page .site-search-card{transition:none}.search-page .site-search-card:hover{transform:none}}
+@media print{.search-page .search-filters,.search-page .search-hints,.search-page .search-reset,.search-page #site-search-input,.search-page .search-contact{display:none!important}.search-page .site-search-card{break-inside:avoid;box-shadow:none}}

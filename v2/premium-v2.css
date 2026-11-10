@@ -3008,3 +3008,64 @@ html{scroll-padding-top:16px}
 .premium-subpage :is(#formularz,#kontakt,.article section){
   scroll-margin-top:24px;
 }
+
+
+/* AUTONOMOUS-PASS-07: legible premium video cards on real Android widths */
+@media(max-width:760px){
+ .premium-v2 #filmy .video-library{
+   display:grid;
+   grid-template-columns:minmax(0,1fr);
+   gap:18px;
+   margin-top:24px;
+ }
+ .premium-v2 #filmy .video-feature,
+ .premium-v2 #filmy .video-feature:first-child{
+   grid-column:auto;
+   min-width:0;
+   display:flex;
+   flex-direction:column;
+   border-radius:21px;
+ }
+ .premium-v2 #filmy .video-feature .video-poster{
+   flex:0 0 auto;
+   min-height:190px;
+   aspect-ratio:16/9;
+ }
+ .premium-v2 #filmy .video-feature .video-feature-details{
+   display:flex;
+   flex-direction:column;
+   gap:0;
+   min-width:0;
+   padding:23px 23px 26px;
+   background:#fffdf9!important;
+   color:#193744!important;
+ }
+ .premium-v2 #filmy .video-feature .video-feature-details h3{
+   color:#153747!important;
+   font-size:clamp(1.43rem,6vw,1.92rem);
+   line-height:1.21;
+   opacity:1!important;
+   margin:13px 0 15px;
+ }
+ .premium-v2 #filmy .video-feature .video-feature-details p{
+   color:#405e67!important;
+   opacity:1!important;
+   font-size:1rem;
+   line-height:1.66;
+ }
+ .premium-v2 #filmy .video-feature .video-feature-details .eyebrow{
+   color:#8c552b!important;
+   font-size:.7rem;
+   opacity:1!important;
+ }
+ .premium-v2 #filmy .video-feature .video-feature-details .btn{
+   min-height:50px;
+   margin-top:17px;
+   white-space:normal;
+   text-wrap:balance;
+ }
+ .premium-v2 #filmy .video-feature:hover,
+ .premium-v2 #filmy .video-feature:focus-within{
+   transform:none;
+ }
+}

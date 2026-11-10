@@ -3951,3 +3951,40 @@ html{scroll-padding-top:16px}
  .campaign-share{flex-direction:column;align-items:stretch;padding:21px 18px;margin:20px 14px 29px}
  .campaign-share-action{width:100%}
 }
+
+
+/* ACCESSIBILITY-CONTRAST-20261110: stronger legibility for high-contrast preferences */
+@media(prefers-contrast:more){
+  .premium-v2 #uslugi .primary-card,
+  .premium-v2 .hero-priority-grid>a,
+  .premium-v2 .home-resource-grid>a{
+    border-width:2px!important;border-color:#e8d7a8!important;
+    box-shadow:0 0 0 2px rgba(255,255,255,.12);
+  }
+  .premium-v2 :is(.hero-all-services,.hero-support-link,.featured-tag,.project-symbol){
+    color:#ffe3a9!important;
+  }
+  .premium-v2 .site-header .main-nav>a,
+  .premium-v2 .site-header .main-nav>details>summary{
+    color:#fff!important;border-color:#f0d5a1!important;
+  }
+  .chat-assistant .chat-panel{
+    border:3px solid #f0d5a1;
+  }
+  .chat-assistant :is(.chat-choices button,.chat-stage-choice,.chat-reply-links a){
+    border-width:2px!important;
+  }
+  .contact-form :is(input,textarea,select):focus-visible{
+    outline:3px solid #a47232!important;outline-offset:2px;
+    border-color:#895e2c!important;
+  }
+}
+@media(forced-colors:active){
+  .premium-v2 :is(.hero-priority-grid>a,#uslugi .primary-card,.home-resource-grid>a),
+  .chat-assistant :is(.chat-toggle,.chat-choices button,.chat-stage-choice,.chat-reply-links a){
+    forced-color-adjust:auto;border:1px solid CanvasText;
+  }
+  .chat-assistant :is(.chat-choices button[aria-pressed="true"],.chat-stage-choice[aria-pressed="true"]){
+    outline:2px solid Highlight;outline-offset:2px;
+  }
+}

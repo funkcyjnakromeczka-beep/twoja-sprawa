@@ -2918,3 +2918,54 @@ body.premium-subpage.theme-rents #formularz .contact-form{
   .premium-v2 .agency-logos-bar,.premium-subpage .agency-logos-bar{padding-inline:8px}
   .premium-v2 .agency-logo-item,.premium-subpage .agency-logo-item{max-width:160px}
 }
+
+
+/* AUTONOMOUS-PASS-05: direct film actions across five key services */
+.premium-subpage .subhero .service-video-direct{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:47px;
+  padding:11px 18px;
+  border:1px solid rgba(244,224,194,.43);
+  border-radius:999px;
+  background:rgba(255,255,255,.085);
+  color:#f8e4c2!important;
+  font-size:.94rem;
+  font-weight:800;
+  letter-spacing:.01em;
+  text-decoration:none;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease;
+}
+.premium-subpage .subhero .service-video-direct:hover,
+.premium-subpage .subhero .service-video-direct:focus-visible{
+  background:rgba(255,255,255,.16);
+  border-color:#f1c996;
+  transform:translateY(-2px);
+}
+.premium-subpage:is(.theme-support,.theme-rents) .subhero .service-video-direct{
+  border-color:rgba(192,237,200,.44);
+  color:#e4f7e7!important;
+}
+@media(max-width:650px){
+  .premium-subpage .subhero .service-hero-actions{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+    max-width:100%;
+  }
+  .premium-subpage .subhero .service-hero-actions>a{
+    min-height:47px;
+    width:100%;
+    margin:0;
+    text-align:center;
+  }
+  .premium-subpage .subhero .service-video-direct{
+    border-radius:13px;
+    min-height:48px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-subpage .subhero .service-video-direct{transition:none}
+  .premium-subpage .subhero .service-video-direct:hover{transform:none}
+}

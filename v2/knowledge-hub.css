@@ -42,3 +42,7 @@
 @media(max-width:650px){.knowledge-hub .hub-grid{grid-template-columns:1fr}.knowledge-hub .hub-filters{gap:7px}.knowledge-hub .hub-filters button{padding:9px 12px}.knowledge-hub .hub-hero{padding:47px 5% 50px}.knowledge-hub .hub-body{padding:28px 5% 55px}}
 @media(prefers-reduced-motion:reduce){.knowledge-hub .hub-card{transition:none}.knowledge-hub .hub-card:hover{transform:none}}
 @media print{.knowledge-hub .hub-filters,.knowledge-hub #hub-search,.knowledge-hub .hub-banner{display:none!important}.knowledge-hub .hub-grid{display:block}.knowledge-hub .hub-card{break-inside:avoid;box-shadow:none}}
+
+.knowledge-hub .hub-reset{display:inline-flex;align-items:center;justify-content:center;margin:11px 0 0;padding:9px 15px;min-height:42px;background:#e7eee9;border:1px solid #8da9ad;border-radius:9px;color:#1c4554;font:750 .86rem/1.35 system-ui,sans-serif;cursor:pointer}
+.knowledge-hub .hub-reset[hidden]{display:none!important}
+.knowledge-hub .hub-reset:focus-visible{outline:3px solid #ad833c;outline-offset:3px}

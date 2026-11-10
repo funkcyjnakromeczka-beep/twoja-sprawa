@@ -2752,3 +2752,127 @@ body.premium-subpage.theme-rents #formularz .contact-form{
   .premium-v2 #filmy .video-feature:first-child .video-poster{min-height:185px}
   .premium-v2 #filmy .video-feature > .video-feature-details{padding:21px}
 }
+
+
+/* AGENCY-HEADER-20261110: visible VOTUM Network and Scale Agency identity on every service page */
+.premium-v2 .agency-logos-bar,
+.premium-subpage .agency-logos-bar{
+  display:grid;
+  grid-template-columns:minmax(130px,1fr) auto minmax(130px,1fr);
+  align-items:center;
+  gap:clamp(12px,2vw,25px);
+  padding:11px clamp(17px,5vw,75px);
+  background:linear-gradient(120deg,#f8f6f1 0%,#fff 52%,#f6faf6 100%);
+  border-bottom:1px solid #d6deda;
+  border-top:3px solid #b73443;
+  box-shadow:0 8px 20px rgba(11,36,49,.08);
+  color:#213d48;
+}
+.premium-v2 .agency-logos-label,
+.premium-subpage .agency-logos-label{
+  justify-self:start;
+  font-size:clamp(.72rem,.83vw,.83rem);
+  text-transform:uppercase;
+  letter-spacing:.075em;
+  font-weight:850;
+  line-height:1.35;
+  color:#8d2d3b;
+}
+.premium-v2 .agency-logos-pair,
+.premium-subpage .agency-logos-pair{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:nowrap;
+  gap:clamp(11px,1.5vw,24px);
+}
+.premium-v2 .agency-logo-item,
+.premium-subpage .agency-logo-item{
+  display:grid;
+  place-items:center;
+  width:clamp(140px,16vw,197px);
+  min-width:0;
+  height:64px;
+  padding:6px 13px;
+  border:1px solid #dde4df;
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 3px 10px rgba(16,38,49,.045);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.premium-v2 .agency-logo-item:hover,
+.premium-subpage .agency-logo-item:hover{
+  transform:translateY(-2px);
+  border-color:#b7555e;
+  box-shadow:0 7px 18px rgba(16,38,49,.09);
+}
+.premium-v2 .agency-logo-item:focus-visible,
+.premium-subpage .agency-logo-item:focus-visible{
+  outline:3px solid #b73443;
+  outline-offset:3px;
+}
+.premium-v2 .agency-logo-item img,
+.premium-subpage .agency-logo-item img{
+  display:block;
+  width:100%;
+  height:100%;
+  max-height:51px;
+  object-fit:contain;
+  object-position:center;
+}
+.premium-v2 .agency-logos-note,
+.premium-subpage .agency-logos-note{
+  justify-self:end;
+  max-width:34ch;
+  margin:0;
+  padding:0;
+  color:#60747c;
+  font-size:clamp(.64rem,.78vw,.77rem)!important;
+  font-weight:450;
+  line-height:1.5;
+}
+@media(max-width:930px){
+  .premium-v2 .agency-logos-bar,
+  .premium-subpage .agency-logos-bar{
+    grid-template-columns:1fr;
+    gap:8px;
+    padding:12px 15px 15px;
+    text-align:center;
+  }
+  .premium-v2 .agency-logos-label,
+  .premium-subpage .agency-logos-label,
+  .premium-v2 .agency-logos-note,
+  .premium-subpage .agency-logos-note{
+    justify-self:center;
+  }
+  .premium-v2 .agency-logos-pair,
+  .premium-subpage .agency-logos-pair{gap:10px;width:100%}
+  .premium-v2 .agency-logo-item,
+  .premium-subpage .agency-logo-item{
+    flex:0 1 180px;
+    width:calc(50% - 6px);
+    height:70px;
+    padding:7px 11px;
+  }
+  .premium-v2 .agency-logos-note,
+  .premium-subpage .agency-logos-note{
+    max-width:56ch;
+    font-size:.66rem!important;
+    line-height:1.35;
+  }
+}
+@media(max-width:380px){
+  .premium-v2 .agency-logos-bar,
+  .premium-subpage .agency-logos-bar{padding-inline:10px}
+  .premium-v2 .agency-logo-item,
+  .premium-subpage .agency-logo-item{
+    height:60px;
+    padding:6px 8px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 .agency-logo-item,
+  .premium-subpage .agency-logo-item{transition:none}
+  .premium-v2 .agency-logo-item:hover,
+  .premium-subpage .agency-logo-item:hover{transform:none}
+}

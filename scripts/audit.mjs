@@ -191,7 +191,7 @@ try {
 try {
  const home=await readFile(join(root,"index.html"),"utf8");
  const start=home.indexOf('class="home-resource-grid"');
- const end=home.indexOf('</div></section>',start);
+ const end=home.indexOf('</div>',start); // Count only the compact guide grid, not later editorial links.
  const part=start>=0&&end>start?home.slice(start,end):"";
  const count=(part.match(/href="\/v2\/poradniki\/[^"]+\.html"/g)||[]).length;
  if(count!==5)errors.push("Homepage: expected five concise guide links, got "+count);

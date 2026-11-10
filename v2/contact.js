@@ -87,7 +87,7 @@
     stage.required=false;
   };
   select.addEventListener("change",updateStage);updateStage();
-  const requestedLeadPath=(campaignParams.get("lead_path")||"").toLowerCase().trim();   const leadPath=requestedLeadPath==="chatbot"||requestedLeadPath==="navigator"?requestedLeadPath:"formularz";
+  const requestedLeadPath=(campaignParams.get("lead_path")||"").toLowerCase().trim();   const leadPath=["chatbot","navigator","plan"].includes(requestedLeadPath)?requestedLeadPath:"formularz";
   // Dyskretny komunikat dla osób, które wybrały konkretną sytuację w przewodniku.
   const contextNotice=document.createElement("div");contextNotice.className="contact-context-notice";
   const contextLabel=document.createElement("strong");contextLabel.textContent="Twój wybór w przewodniku";
@@ -96,7 +96,7 @@
   contextNotice.append(contextLabel,contextValue,contextChange);
   form.append(contextNotice);
   const updateContextNotice=()=>{
-    contextNotice.hidden=!((leadPath==="chatbot"||leadPath==="navigator")&&stage.value&&!stageWrap.hidden);
+    contextNotice.hidden=!((leadPath==="chatbot"||leadPath==="navigator"||leadPath==="plan")&&stage.value&&!stageWrap.hidden);
     contextValue.textContent=stage.value;
   };
   stage.addEventListener("change",updateContextNotice);

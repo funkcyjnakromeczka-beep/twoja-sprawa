@@ -82,6 +82,7 @@ try{
   if(measured.scrollWidth>measured.viewport+2)throw Error("Horizontal overflow "+name+": "+JSON.stringify(measured));
   if(["/","/o-nas.html"].includes(path)&&(measured.teamImages.length!==2||measured.teamImages.some(img=>!img.loaded)))throw Error("Two authentic profile images not loaded on "+path+": "+JSON.stringify(measured));
   if(["/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html","/kampanie/szkody-gornicze.html","/kampanie/swiadczenie-wspierajace.html"].includes(path)&&(measured.personaImages.length!==1||!measured.personaImages[0].loaded))throw Error("Contact portrait not loaded on "+path+": "+JSON.stringify(measured));
+  if(path==="/kontakt.html"&&(measured.personaImages.length!==2||measured.personaImages.some(x=>!x.loaded)))throw Error("Both contact portraits missing "+name+": "+JSON.stringify(measured));
   if(measured.barCount!==1||measured.images.length!==2||!measured.sticky||measured.oldDuplicate)throw Error("Partner logo bar failed "+name+": "+JSON.stringify(measured));
   if(measured.images[0].alt!=="Votum Network"||measured.images[1].alt!=="Votum Scale Agency")throw Error("Wrong logos "+name);
   if(measured.images.some(img=>!(img.loaded&&img.logoVisible)&&!img.fallbackVisible))throw Error("Logo and fallback both invisible "+name);
@@ -127,6 +128,22 @@ try{
  if(!contextVisible)throw Error("Navigator stage confirmation missing in lead form");
  console.log("NAVIGATOR_OK",JSON.stringify({url:selected.pathname+selected.search,stage:stageFromGuide}));
  await guidePage.close();
+ // Knowledge hub: category choice and a Polish text search must both work.
+ const hubPage=await browser.newPage({viewport:{width:390,height:844}});
+ await hubPage.goto(origin+"/wiedza/",{waitUntil:"domcontentloaded"});
+ const allCount=await hubPage.locator(".hub-card:visible").count();
+ if(allCount!==10)throw Error("Knowledge hub must show 10 articles, got "+allCount);
+ await hubPage.locator('[data-hub-filter="szkody"]').click();
+ const miningCount=await hubPage.locator(".hub-card:visible").count();
+ if(miningCount!==3)throw Error("Knowledge category filter should show 3 mining articles, got "+miningCount);
+ await hubPage.locator("#hub-search").fill("PEKNIECIA");
+ const filtered=await hubPage.locator(".hub-card:visible").count();
+ if(filtered<1||filtered>3)throw Error("Polish article search fails: "+filtered);
+ await hubPage.locator("#hub-search").fill("niewystepujace_w_serwisie");
+ if(!await hubPage.locator("#hub-empty").isVisible())throw Error("Knowledge hub no-results message missing");
+ await hubPage.screenshot({path:"screenshots/biblioteka-filtr-telefon.png",fullPage:false,animations:"disabled"});
+ console.log("KNOWLEDGE_HUB_OK",JSON.stringify({all:allCount,mining:miningCount,search:filtered,empty:true}));
+ await hubPage.close();
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

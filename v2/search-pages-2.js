@@ -1,147 +1,147 @@
-/* Statyczne i jawne dane wyszukiwania — 36 adresów istniejących stron. */
+/* Statyczny indeks rzeczywistych stron Twoja Sprawa (część 2). */
 window.TwojaSprawaSearchPages2=[
  {
   "id": "page:v2/uslugi/sluzebnosc-przesylu.html",
-  "href": "/v2/uslugi/sluzebnosc-przesylu",
-  "title": "Sluzebnosc Przesylu",
-  "description": "Sluzebnosc Przesylu. Opis usługi, pierwsze kroki oraz informacje o możliwości kontaktu.",
+  "href": "/v2/uslugi/sluzebnosc-przesylu.html",
+  "title": "Służebność przesyłu — sprawdź sytuację swojej działki",
+  "description": "Słup, linia energetyczna lub gazociąg na działce? Poznaj dokumenty potrzebne do analizy praw operatora i możliwych roszczeń właściciela.",
   "category": "przesyl",
-  "keywords": "v2 uslugi sluzebnosc przesylu html Sluzebnosc Przesylu"
+  "keywords": "Służebność przesyłu — sprawdź sytuację swojej działki v2 uslugi sluzebnosc przesylu html Sluzebnosc Przesylu"
  },
  {
   "id": "page:v2/uslugi/swiadczenie-wspierajace.html",
-  "href": "/v2/uslugi/swiadczenie-wspierajace",
-  "title": "Swiadczenie Wspierajace",
-  "description": "Swiadczenie Wspierajace. Opis usługi, pierwsze kroki oraz informacje o możliwości kontaktu.",
+  "href": "/v2/uslugi/swiadczenie-wspierajace.html",
+  "title": "Świadczenie wspierające — pomoc od pierwszego zgłoszenia",
+  "description": "Pomoc w uporządkowaniu dokumentów do WZON i ZUS oraz analizie decyzji dotyczącej potrzeby wsparcia. Poznaj etapy postępowania i zgłoś swoją sprawę.",
   "category": "swiadczenie",
-  "keywords": "v2 uslugi swiadczenie wspierajace html Swiadczenie Wspierajace"
+  "keywords": "Świadczenie wspierające — pomoc od pierwszego zgłoszenia v2 uslugi swiadczenie wspierajace html Swiadczenie Wspierajace"
  },
  {
   "id": "page:v2/uslugi/szkody-gornicze.html",
-  "href": "/v2/uslugi/szkody-gornicze",
-  "title": "Szkody Gornicze",
-  "description": "Szkody Gornicze. Opis usługi, pierwsze kroki oraz informacje o możliwości kontaktu.",
+  "href": "/v2/uslugi/szkody-gornicze.html",
+  "title": "Szkody górnicze w Lubinie, Polkowicach i okolicach",
+  "description": "Szkody górnicze w gminie Lubin i gminie Polkowice: dojeżdżamy do klientów, analizujemy pęknięcia, elewacje i kostkę. Wstępna opłata 1 zł i success fee według umowy.",
   "category": "szkody",
-  "keywords": "v2 uslugi szkody gornicze html Szkody Gornicze"
+  "keywords": "Szkody górnicze w Lubinie, Polkowicach i okolicach v2 uslugi szkody gornicze html Szkody Gornicze"
  },
  {
   "id": "page:v2/uslugi/szkody-na-nieruchomosci.html",
-  "href": "/v2/uslugi/szkody-na-nieruchomosci",
-  "title": "Szkody Na Nieruchomosci",
-  "description": "Szkody Na Nieruchomosci. Opis usługi, pierwsze kroki oraz informacje o możliwości kontaktu.",
-  "category": "inne",
-  "keywords": "v2 uslugi szkody na nieruchomosci html Szkody Na Nieruchomosci"
+  "href": "/v2/uslugi/szkody-na-nieruchomosci.html",
+  "title": "Szkoda na nieruchomości — sprawdź decyzję i rozliczenie",
+  "description": "Zaniżona wypłata lub odmowa po zalaniu, pożarze i innych szkodach? Zgłoś polisę, kosztorys i dokumentację do analizy.",
+  "category": "szkody",
+  "keywords": "Szkoda na nieruchomości — sprawdź decyzję i rozliczenie v2 uslugi szkody na nieruchomosci html Szkody Na Nieruchomosci"
  },
  {
   "id": "page:v2/uslugi/wypadki-komunikacyjne.html",
-  "href": "/v2/uslugi/wypadki-komunikacyjne",
-  "title": "Wypadki Komunikacyjne",
-  "description": "Wypadki Komunikacyjne. Opis usługi, pierwsze kroki oraz informacje o możliwości kontaktu.",
-  "category": "renty",
-  "keywords": "v2 uslugi wypadki komunikacyjne html Wypadki Komunikacyjne"
+  "href": "/v2/uslugi/wypadki-komunikacyjne.html",
+  "title": "Wypadek komunikacyjny — sprawdź możliwe świadczenia",
+  "description": "Zgłoś sprawę po wypadku komunikacyjnym do analizy. Dokumenty, decyzje ubezpieczyciela i możliwe świadczenia dla poszkodowanych.",
+  "category": "swiadczenie",
+  "keywords": "Wypadek komunikacyjny — sprawdź możliwe świadczenia v2 uslugi wypadki komunikacyjne html Wypadki Komunikacyjne"
  },
  {
   "id": "page:v2/uslugi/wypadki-przy-pracy.html",
-  "href": "/v2/uslugi/wypadki-przy-pracy",
-  "title": "Wypadki Przy Pracy",
-  "description": "Wypadki Przy Pracy. Opis usługi, pierwsze kroki oraz informacje o możliwości kontaktu.",
+  "href": "/v2/uslugi/wypadki-przy-pracy.html",
+  "title": "Wypadek przy pracy — uporządkuj dokumenty i możliwości działania",
+  "description": "Dokumentacja powypadkowa, świadczenia i możliwe roszczenia po wypadku przy pracy. Zgłoś swoją sytuację do analizy we współpracy z Votum.",
   "category": "renty",
-  "keywords": "v2 uslugi wypadki przy pracy html Wypadki Przy Pracy"
+  "keywords": "Wypadek przy pracy — uporządkuj dokumenty i możliwości działania v2 uslugi wypadki przy pracy html Wypadki Przy Pracy"
  },
  {
   "id": "page:v2/uslugi/wypadki-w-rolnictwie.html",
-  "href": "/v2/uslugi/wypadki-w-rolnictwie",
-  "title": "Wypadki W Rolnictwie",
-  "description": "Wypadki W Rolnictwie. Opis usługi, pierwsze kroki oraz informacje o możliwości kontaktu.",
+  "href": "/v2/uslugi/wypadki-w-rolnictwie.html",
+  "title": "Wypadek w gospodarstwie rolnym — sprawdź podstawy roszczeń",
+  "description": "Wypadek w gospodarstwie rolnym: dokumenty, ubezpieczenie i możliwe świadczenia. Poznaj informacje potrzebne do analizy sprawy.",
   "category": "renty",
-  "keywords": "v2 uslugi wypadki w rolnictwie html Wypadki W Rolnictwie"
+  "keywords": "Wypadek w gospodarstwie rolnym — sprawdź podstawy roszczeń v2 uslugi wypadki w rolnictwie html Wypadki W Rolnictwie"
  },
  {
   "id": "page:v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
-  "href": "/v2/wiedza/drobne-pekniecia-szkody-gornicze",
-  "title": "Drobne Pekniecia Szkody Gornicze",
-  "description": "Drobne Pekniecia Szkody Gornicze. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
+  "href": "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
+  "title": "Drobne pęknięcia ścian, elewacji i kostki a szkody górnicze | Lubin i Polkowice",
+  "description": "Niewielkie rysy na ścianie, pęknięcia elewacji, nierówna kostka brukowa? Jak udokumentować uszkodzenia w rejonie Lubina i Polkowic i kiedy zgłosić je do analizy.",
   "category": "szkody",
-  "keywords": "v2 wiedza drobne pekniecia szkody gornicze html Drobne Pekniecia Szkody Gornicze"
+  "keywords": "Drobne pęknięcia ścian lub elewacji? Nie ignoruj pierwszych oznak uszkodzeń. v2 wiedza drobne pekniecia szkody gornicze html Drobne Pekniecia Szkody Gornicze"
  },
  {
   "id": "page:v2/wiedza/index.html",
   "href": "/v2/wiedza/",
-  "title": "Biblioteka wiedzy — wszystkie poradniki",
-  "description": "Dziesięć artykułów o szkodach górniczych, świadczeniu wspierającym, WZON/ZUS, rentach, kredytach PLN i służebności przesyłu.",
+  "title": "Poradniki: szkody górnicze, WZON/ZUS, renty i SKD",
+  "description": "Poradniki SuccessTree o szkodach górniczych w Lubinie i Polkowicach, świadczeniu wspierającym WZON i ZUS, rentach, SKD i służebności przesyłu. Wyszukaj temat i przygotuj zgłoszenie.",
   "category": "inne",
-  "keywords": "v2 wiedza index html Biblioteka wiedzy — wszystkie poradniki"
+  "keywords": "Zrozum swoją sprawę, zanim podejmiesz decyzję. v2 wiedza index html Biblioteka wiedzy — wszystkie poradniki"
  },
  {
   "id": "page:v2/wiedza/kredyt-pln-dokumenty-skd.html",
-  "href": "/v2/wiedza/kredyt-pln-dokumenty-skd",
-  "title": "Kredyt PLN Dokumenty SKD",
-  "description": "Kredyt PLN Dokumenty SKD. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
+  "href": "/v2/wiedza/kredyt-pln-dokumenty-skd.html",
+  "title": "Kredyt w PLN i sankcja kredytu darmowego — jakie dokumenty przygotować?",
+  "description": "Sankcja kredytu darmowego dotyczy określonych umów kredytu konsumenckiego i naruszeń obowiązków kredytodawcy. Nie każda umowa w złotych kwalifikuje się do jej zastosowania.",
   "category": "skd",
-  "keywords": "v2 wiedza kredyt pln dokumenty skd html Kredyt PLN Dokumenty SKD"
+  "keywords": "Kredyt w PLN i sankcja kredytu darmowego — jakie dokumenty przygotować? v2 wiedza kredyt pln dokumenty skd html Kredyt PLN Dokumenty SKD"
  },
  {
   "id": "page:v2/wiedza/renta-powypadkowa-dokumenty.html",
-  "href": "/v2/wiedza/renta-powypadkowa-dokumenty",
-  "title": "Renta Powypadkowa Dokumenty",
-  "description": "Renta Powypadkowa Dokumenty. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
+  "href": "/v2/wiedza/renta-powypadkowa-dokumenty.html",
+  "title": "Renta powypadkowa od ubezpieczyciela — jakie dokumenty zebrać?",
+  "description": "Renta powypadkowa może wiązać się z utratą zdolności zarobkowania, zwiększonymi potrzebami lub zmniejszeniem widoków powodzenia na przyszłość. Ocena zależy od okoliczności i podstawy odpowiedzialności.",
   "category": "renty",
-  "keywords": "v2 wiedza renta powypadkowa dokumenty html Renta Powypadkowa Dokumenty"
+  "keywords": "Renta powypadkowa od ubezpieczyciela — jakie dokumenty zebrać? v2 wiedza renta powypadkowa dokumenty html Renta Powypadkowa Dokumenty"
  },
  {
   "id": "page:v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
-  "href": "/v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce",
-  "title": "Sluzebnosc Przesylu Slup Na Dzialce",
-  "description": "Sluzebnosc Przesylu Slup Na Dzialce. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
+  "href": "/v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
+  "title": "Słup energetyczny na działce — co sprawdzić przed zgłoszeniem sprawy?",
+  "description": "Obecność słupa, linii energetycznej lub innego urządzenia przesyłowego może uzasadniać analizę stanu prawnego nieruchomości, ale nie oznacza automatycznie prawa do wynagrodzenia.",
   "category": "przesyl",
-  "keywords": "v2 wiedza sluzebnosc przesylu slup na dzialce html Sluzebnosc Przesylu Slup Na Dzialce"
+  "keywords": "Słup energetyczny na działce — co sprawdzić przed zgłoszeniem sprawy? v2 wiedza sluzebnosc przesylu slup na dzialce html Sluzebnosc Przesylu Slup Na Dzialce"
  },
  {
   "id": "page:v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
-  "href": "/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus",
-  "title": "Swiadczenie Wspierajace 2026 WZON ZUS",
-  "description": "Swiadczenie Wspierajace 2026 WZON ZUS. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
+  "href": "/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
+  "title": "Świadczenie wspierające w 2026 r. — WZON, 70 punktów i wniosek do ZUS",
+  "description": "Świadczenie wspierające w 2026 r.: WZON, decyzja o poziomie potrzeby wsparcia od 70 punktów, wniosek do ZUS i ważne terminy. Poradnik SuccessTree.",
   "category": "swiadczenie",
-  "keywords": "v2 wiedza swiadczenie wspierajace 2026 wzon zus html Swiadczenie Wspierajace 2026 WZON ZUS"
+  "keywords": "Świadczenie wspierające w 2026 r. — od decyzji WZON do ZUS. v2 wiedza swiadczenie wspierajace 2026 wzon zus html Swiadczenie Wspierajace 2026 WZON ZUS"
  },
  {
   "id": "page:v2/wiedza/swiadczenie-wspierajace-dokumenty.html",
-  "href": "/v2/wiedza/swiadczenie-wspierajace-dokumenty",
-  "title": "Swiadczenie Wspierajace Dokumenty",
-  "description": "Swiadczenie Wspierajace Dokumenty. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
+  "href": "/v2/wiedza/swiadczenie-wspierajace-dokumenty.html",
+  "title": "Świadczenie wspierające — jak przygotować informacje do oceny potrzeby wsparcia?",
+  "description": "Przygotowanie do postępowania dotyczącego potrzeby wsparcia polega przede wszystkim na rzetelnym opisaniu codziennego funkcjonowania.",
   "category": "swiadczenie",
-  "keywords": "v2 wiedza swiadczenie wspierajace dokumenty html Swiadczenie Wspierajace Dokumenty"
+  "keywords": "Świadczenie wspierające — jak przygotować informacje do oceny potrzeby wsparcia? v2 wiedza swiadczenie wspierajace dokumenty html Swiadczenie Wspierajace Dokumenty"
  },
  {
   "id": "page:v2/wiedza/swiadczenie-wspierajace-wzon-zus.html",
-  "href": "/v2/wiedza/swiadczenie-wspierajace-wzon-zus",
-  "title": "Swiadczenie Wspierajace WZON ZUS",
-  "description": "Swiadczenie Wspierajace WZON ZUS. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
+  "href": "/v2/wiedza/swiadczenie-wspierajace-wzon-zus.html",
+  "title": "Świadczenie wspierające: WZON i ZUS — czym różnią się ich role?",
+  "description": "W sprawie świadczenia wspierającego występują dwa odrębne etapy: ustalenie poziomu potrzeby wsparcia oraz rozpoznanie wniosku o wypłatę świadczenia.",
   "category": "swiadczenie",
-  "keywords": "v2 wiedza swiadczenie wspierajace wzon zus html Swiadczenie Wspierajace WZON ZUS"
+  "keywords": "Świadczenie wspierające: WZON i ZUS — czym różnią się ich role? v2 wiedza swiadczenie wspierajace wzon zus html Swiadczenie Wspierajace WZON ZUS"
  },
  {
   "id": "page:v2/wiedza/szkody-gornicze-drobne-pekniecia.html",
-  "href": "/v2/wiedza/szkody-gornicze-drobne-pekniecia",
-  "title": "Szkody Gornicze Drobne Pekniecia",
-  "description": "Szkody Gornicze Drobne Pekniecia. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
+  "href": "/v2/wiedza/szkody-gornicze-drobne-pekniecia.html",
+  "title": "Drobne pęknięcia ścian a szkody górnicze — co dokumentować?",
+  "description": "Niewielka rysa na elewacji nie przesądza o szkodzie górniczej, ale warto ją udokumentować, szczególnie gdy nieruchomość znajduje się w rejonie oddziaływania eksploatacji.",
   "category": "szkody",
-  "keywords": "v2 wiedza szkody gornicze drobne pekniecia html Szkody Gornicze Drobne Pekniecia"
+  "keywords": "Drobne pęknięcia ścian a szkody górnicze — co dokumentować? v2 wiedza szkody gornicze drobne pekniecia html Szkody Gornicze Drobne Pekniecia"
  },
  {
   "id": "page:v2/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
-  "href": "/v2/wiedza/ugoda-z-kopalnia-co-sprawdzic",
-  "title": "Ugoda Z Kopalnia Co Sprawdzic",
-  "description": "Ugoda Z Kopalnia Co Sprawdzic. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
-  "category": "inne",
-  "keywords": "v2 wiedza ugoda z kopalnia co sprawdzic html Ugoda Z Kopalnia Co Sprawdzic"
+  "href": "/v2/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
+  "title": "Ugoda z kopalnią — co sprawdzić przed podpisaniem?",
+  "description": "Proponowana ugoda może zakończyć spór dotyczący określonych szkód. Jej skutki zależą jednak od dokładnego brzmienia dokumentu.",
+  "category": "szkody",
+  "keywords": "Ugoda z kopalnią — co sprawdzić przed podpisaniem? v2 wiedza ugoda z kopalnia co sprawdzic html Ugoda Z Kopalnia Co Sprawdzic"
  },
  {
   "id": "page:v2/wiedza/wypadek-przy-pracy-pierwsze-kroki.html",
-  "href": "/v2/wiedza/wypadek-przy-pracy-pierwsze-kroki",
-  "title": "Wypadek Przy Pracy Pierwsze Kroki",
-  "description": "Wypadek Przy Pracy Pierwsze Kroki. Artykuł edukacyjny i praktyczne wskazówki, w tym dokumentacja oraz dalsze kroki.",
-  "category": "inne",
-  "keywords": "v2 wiedza wypadek przy pracy pierwsze kroki html Wypadek Przy Pracy Pierwsze Kroki"
+  "href": "/v2/wiedza/wypadek-przy-pracy-pierwsze-kroki.html",
+  "title": "Wypadek przy pracy — jakie dokumenty przygotować?",
+  "description": "Po wypadku przy pracy warto uporządkować dowody dotyczące przebiegu zdarzenia, jego następstw i dotychczasowych decyzji. Dostępne świadczenia zależą od stanu faktycznego.",
+  "category": "renty",
+  "keywords": "Wypadek przy pracy — jakie dokumenty przygotować? v2 wiedza wypadek przy pracy pierwsze kroki html Wypadek Przy Pracy Pierwsze Kroki"
  }
 ];

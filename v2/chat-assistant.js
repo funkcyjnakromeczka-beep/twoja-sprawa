@@ -7,7 +7,7 @@
   const topics=[
     {
       key:"swiadczenie",name:"Świadczenie wspierające",short:"WZON, decyzje, ZUS",phone:"500 171 531",tel:"+48500171531",
-      service:"swiadczenie-wspierajace.html",form:"kampanie/swiadczenie-wspierajace.html"+params,
+      service:"swiadczenie-wspierajace.html",checklist:"swiadczenie-wspierajace-pierwsze-kroki.html",form:"kampanie/swiadczenie-wspierajace.html"+params,
       intro:"Pomagamy uporządkować etap sprawy przed WZON lub ZUS. O uprawnieniu do świadczenia rozstrzygają właściwe organy, nie chatbot.",
       stages:[
         ["Dopiero planuję wniosek","Zacznij od ustalenia etapu postępowania i informacji o codziennym funkcjonowaniu. Nie przesyłaj w czacie diagnoz ani dokumentacji medycznej."],
@@ -19,7 +19,7 @@
     },
     {
       key:"szkody",name:"Szkody górnicze",short:"Lubin, Polkowice i okolice",phone:"796 441 345",tel:"+48796441345",
-      service:"szkody-gornicze.html",form:"kampanie/szkody-gornicze.html"+params,
+      service:"szkody-gornicze.html",checklist:"checklista-szkody-gorniczej.html",form:"kampanie/szkody-gornicze.html"+params,
       intro:"Analizujemy m.in. pęknięcia ścian, elewacji i nierówności kostki w rejonie Lubina i Polkowic. Sama lokalizacja nie przesądza o przyczynie uszkodzeń.",
       stages:[
         ["Widziałem niewielkie pęknięcia","Zrób zdjęcie z bliska i ujęcie całej ściany. Zapisz, kiedy po raz pierwszy zauważono uszkodzenie."],
@@ -31,7 +31,7 @@
     },
     {
       key:"renty",name:"Renty powypadkowe",short:"Wysokość renty i waloryzacja",phone:"500 171 531",tel:"+48500171531",
-      service:"renty-powypadkowe.html",alias:"renty",
+      service:"renty-powypadkowe.html",checklist:"renta-powypadkowa-dokumenty.html",alias:"renty",
       intro:"Można przeanalizować wysokość renty wypłacanej przez ubezpieczyciela i zmiany potrzeb lub możliwości zarobkowych. Nie obiecujemy podwyższenia świadczenia.",
       stages:[
         ["Mam już rentę","Przygotuj informacje o obecnej wysokości renty, wcześniejszych decyzjach i zmianach kosztów lub dochodów."],
@@ -40,7 +40,7 @@
     },
     {
       key:"skd",name:"Kredyty PLN / SKD",short:"Sprawdzenie umowy kredytowej",phone:"500 171 531",tel:"+48500171531",
-      service:"kredyty-pln.html",alias:"skd",
+      service:"kredyty-pln.html",checklist:"skd-kredyt-pln-lista-kontrolna.html",alias:"skd",
       intro:"Analiza może dotyczyć wybranych umów kredytu konsumenckiego w PLN. Nie każdy kredyt podlega sankcji kredytu darmowego.",
       stages:[
         ["Mam umowę kredytu","Zachowaj umowę, aneksy i harmonogram. Istotne mogą być rodzaj kredytu, koszty i daty."],
@@ -49,7 +49,7 @@
     },
     {
       key:"przesyl",name:"Służebność przesyłu",short:"Urządzenia na działce",phone:"796 441 345",tel:"+48796441345",
-      service:"sluzebnosc-przesylu.html",alias:"przesyl",
+      service:"sluzebnosc-przesylu.html",checklist:"sluzebnosc-przesylu-dzialka.html",alias:"przesyl",
       intro:"Pomoc zaczyna się od sprawdzenia, z jakiej podstawy przedsiębiorca korzysta z nieruchomości. Obecność urządzeń nie oznacza automatycznie należnego wynagrodzenia.",
       stages:[
         ["Na działce stoi słup lub przebiega linia","Zachowaj numer działki i zdjęcia urządzeń. Sprawdź, czy istnieją umowy albo wpisy w księdze wieczystej."],
@@ -119,14 +119,16 @@
       btn.addEventListener("click",()=>{
         for(const item of stages.querySelectorAll("button"))item.setAttribute("aria-pressed",String(item===btn));
         answer.textContent=text;
+        answer.scrollIntoView({block:"nearest",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
       });
       stages.append(btn);
     }
     const links=mk("div","chat-reply-links");
     const form=mk("a","chat-reply-contact","Zostaw kontakt ↗");form.href=destination(topic);
     const details=mk("a","chat-reply-detail","Przeczytaj o usłudze");details.href=base+"uslugi/"+topic.service;
-    links.append(form,details);
-    const caution=mk("small","chat-caution","Wskazówki są ogólne. Nie zastępują analizy dokumentów i nie gwarantują wyniku.");
+    const checklist=mk("a","chat-reply-checklist","Lista kroków przed rozmową");checklist.href=base+"poradniki/"+topic.checklist;
+    links.append(form,details,checklist);
+    const caution=mk("small","chat-caution","Wybór odpowiedzi w tym przewodniku niczego nie wysyła. Wskazówki nie zastępują analizy dokumentów ani nie gwarantują wyniku.");
     reply.append(heading,summary,prompt,stages,answer,links,caution);
     phone.href="tel:"+topic.tel;phone.textContent="☎ Zadzwoń: "+topic.phone;
     contact.href=destination(topic);contact.textContent="✉ Zostaw kontakt";

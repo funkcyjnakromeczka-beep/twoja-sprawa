@@ -3282,3 +3282,27 @@ html{scroll-padding-top:16px}
 @media(prefers-reduced-motion:reduce){
   .premium-v2 .agency-logo-item,.premium-subpage .agency-logo-item{transform:none!important}
 }
+
+
+/* FAQ-20261110: readable mobile-first disclosure cards */
+.premium-v2 .home-faq{padding-block:clamp(42px,6vw,88px)}
+.premium-v2 .home-faq-heading{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:25px}
+.premium-v2 .home-faq-heading h2{margin:8px 0 12px;color:#163d4b}
+.premium-v2 .home-faq-heading .section-lead{max-width:55ch;margin:0;color:#48626c}
+.premium-v2 .home-faq-cta{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;padding:13px 18px;border-radius:999px;background:#a72c3c;color:#fff!important;text-decoration:none;font-size:.9rem;font-weight:750;box-shadow:0 9px 22px rgba(167,44,60,.16)}
+.premium-v2 .home-faq-cta:hover{background:#852232}
+.premium-v2 .home-faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.premium-v2 .home-faq-grid details{min-width:0;align-self:start;border:1px solid #d9e1df;border-left:3px solid #b93949;border-radius:15px;background:#fffdf9;box-shadow:0 8px 24px rgba(20,52,60,.055);overflow:hidden}
+.premium-v2 .home-faq-grid details[open]{border-color:#c3d0ce;box-shadow:0 12px 27px rgba(20,52,60,.08)}
+.premium-v2 .home-faq-grid summary{display:list-item;cursor:pointer;padding:19px 20px;color:#193e4b!important;font-size:1.02rem;font-weight:760;line-height:1.45;list-style-position:inside}
+.premium-v2 .home-faq-grid summary::marker{color:#ad3041}
+.premium-v2 .home-faq-grid summary:focus-visible{outline:3px solid #b93949;outline-offset:-3px}
+.premium-v2 .home-faq-grid details p{margin:0;padding:0 20px 20px;color:#39545f!important;font-size:.97rem;line-height:1.7}
+.premium-v2 .home-faq-grid details a{color:#842738!important;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:760px){
+ .premium-v2 .home-faq-heading{display:grid;gap:16px}
+ .premium-v2 .home-faq-cta{width:fit-content;white-space:normal}
+ .premium-v2 .home-faq-grid{grid-template-columns:minmax(0,1fr);gap:11px}
+ .premium-v2 .home-faq-grid summary{padding:17px 16px;font-size:1rem}
+ .premium-v2 .home-faq-grid details p{padding:0 16px 17px;font-size:.96rem}
+}

@@ -143,6 +143,15 @@ try{
  if(!await hubPage.locator("#hub-empty").isVisible())throw Error("Knowledge hub no-results message missing");
  await hubPage.screenshot({path:"screenshots/biblioteka-filtr-telefon.png",fullPage:false,animations:"disabled"});
  console.log("KNOWLEDGE_HUB_OK",JSON.stringify({all:allCount,mining:miningCount,search:filtered,empty:true}));
+ await hubPage.goto(origin+"/wiedza/drobne-pekniecia-szkody-gornicze.html",{waitUntil:"domcontentloaded"});
+ const textButtons=hubPage.locator(".article-reading-tools button");
+ if(await textButtons.count()!==3)throw Error("Article controls: expected 3 buttons");
+ await textButtons.first().click();
+ if(!await hubPage.locator("main article.article.reading-large").count())throw Error("Large text toggle did not work");
+ await hubPage.screenshot({path:"screenshots/poradnik-duzy-tekst.png",fullPage:false,animations:"disabled"});
+ await textButtons.first().click();
+ if(await hubPage.locator("main article.article.reading-large").count())throw Error("Large text toggle did not reset");
+ console.log("ARTICLE_ACCESSIBILITY_OK",JSON.stringify({controls:3,largeText:true,reset:true}));
  await hubPage.close();
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{

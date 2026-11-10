@@ -29,6 +29,9 @@ try{
   ["usluga-swiadczenie-telefon","/uslugi/swiadczenie-wspierajace.html",390,844],
   ["poradnik-telefon","/poradniki/checklista-szkody-gorniczej.html",390,844],
   ["zespol-o-nas-telefon","/o-nas.html",390,844],
+  ["kontakt-telefon","/kontakt.html",390,844],
+  ["biblioteka-telefon","/wiedza/",390,844],
+  ["biblioteka-desktop","/wiedza/",1440,900],
   ["wiedza-szkody-telefon","/wiedza/drobne-pekniecia-szkody-gornicze.html",390,844],
   ["wiedza-swiadczenie-telefon","/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",390,844],
   ["blad-404-telefon","/404.html",390,844]
@@ -44,12 +47,12 @@ try{
   // Lazy-loaded portraits may be below the fold. Ensure the browser requests them
   // before measuring image status; full-page screenshots alone are not a loading signal.
   await page.evaluate(()=>{
-    for(const img of document.querySelectorAll(".team-spotlight img,.team-portrait-grid img,.service-persona img,.campaign-persona img")){
+    for(const img of document.querySelectorAll(".team-spotlight img,.team-portrait-grid img,.service-persona img,.campaign-persona img,.contact-specialist-photo img")){
       img.loading="eager";
     }
   });
   await page.waitForFunction(()=>{
-    const portraits=[...document.querySelectorAll(".team-spotlight img,.team-portrait-grid img,.service-persona img,.campaign-persona img")];
+    const portraits=[...document.querySelectorAll(".team-spotlight img,.team-portrait-grid img,.service-persona img,.campaign-persona img,.contact-specialist-photo img")];
     return portraits.every(img=>img.complete&&img.naturalWidth>0);
   },undefined,{timeout:15000}).catch(()=>{});
 
@@ -72,7 +75,7 @@ try{
       hasForm:!!document.querySelector(".contact-form"),
       formChoice:document.querySelector(".contact-form select")?.value||"",
       teamImages:[...document.querySelectorAll(".team-spotlight img,.team-portrait-grid img")].map(img=>({alt:img.alt,loaded:img.complete&&img.naturalWidth>0})),
-      personaImages:[...document.querySelectorAll(".service-persona img,.campaign-persona img")].map(img=>({alt:img.alt,loaded:img.complete&&img.naturalWidth>0})),
+      personaImages:[...document.querySelectorAll(".service-persona img,.campaign-persona img,.contact-specialist-photo img")].map(img=>({alt:img.alt,loaded:img.complete&&img.naturalWidth>0})),
       documentHeight:document.documentElement.scrollHeight
     };
   });

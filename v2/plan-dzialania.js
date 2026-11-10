@@ -12,6 +12,7 @@ const progress=root.querySelector("[data-plan-progress]");
 const printButton=root.querySelector("[data-plan-print]");
 const resetButton=root.querySelector("[data-plan-reset]");
 const contact=root.querySelector("[data-plan-contact]");
+const phoneLink=root.querySelector("[data-plan-call]");
 if(!kinds.length||!stageSelect||!checklist||!progress||!contact)return;
 const DATA={
  szkody:{
@@ -117,7 +118,7 @@ const render=()=>{
   const empty=document.createElement("li");empty.className="plan-placeholder";empty.textContent="Po wybraniu tematu pojawi się tutaj lista czynności.";
   checklist.replaceChildren(empty);stageContainer.hidden=true;
   progress.textContent="0 z 0";printButton.disabled=true;resetButton.disabled=true;
-  contact.href="/v2/kontakt.html";contact.textContent="Zostaw kontakt →";return;
+  contact.href="/v2/kontakt.html";contact.textContent="Zostaw kontakt →";if(phoneLink)phoneLink.hidden=true;return;
  }
  title.textContent=data.title;
  intro.textContent=data.intro;
@@ -136,6 +137,7 @@ const render=()=>{
  resetProgress();printButton.disabled=false;resetButton.disabled=false;
  contact.href=makeLink(key,stage);
  contact.textContent="Zostaw kontakt: "+data.phone+" →";
+ if(phoneLink){phoneLink.hidden=false;phoneLink.href="tel:"+data.tel;phoneLink.textContent="Zadzwoń: "+data.phone;}
  stageContainer.hidden=!data.stages;
 };
 const choose=(value,initialStage="")=>{

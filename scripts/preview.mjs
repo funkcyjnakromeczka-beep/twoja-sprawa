@@ -23,7 +23,7 @@ async function walk(dir){
    html=html.replace(/(src="\/[^"]+?\.js)(\?[^"]*)?(")/g,`$1?v=${buildId}$3`);
       html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
    // A non-sensitive version marker makes deployment verification possible.
-   html=html.replace("</head>",`<meta name="site-build" content="${buildId}"></head>`);
+   html=html.replace("</head>",`<link rel="icon" type="image/svg+xml" href="/assets/site-mark.svg"><meta name="site-build" content="${buildId}"></head>`);
    // Explicit preview-only robots directive in every generated HTML document.
    html=html.replace(/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i,'<meta name="robots" content="noindex,nofollow">');
    if(!/<meta\s+name="robots"\s+content="noindex,nofollow">/i.test(html)) throw Error("Preview noindex missing: "+rel);

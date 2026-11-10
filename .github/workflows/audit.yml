@@ -32,6 +32,7 @@ jobs:
           node --check scripts/test-release-readiness.mjs
           node --check v2/plan-dzialania.js
           node --check scripts/test-action-plan.mjs
+          node --check scripts/test-50-continuations.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/seo-policy.mjs
@@ -64,6 +65,8 @@ jobs:
         run: node scripts/test-release-readiness.mjs
       - name: Test interaktywnego planu pierwszych kroków
         run: node scripts/test-action-plan.mjs
+      - name: 50 kolejnych kontroli serwisu
+        run: node scripts/test-50-continuations.mjs
       - name: Sprawdź pliki HTML i odnośniki
         run: node scripts/audit.mjs
       - name: Sprawdź logotypy partnerów na każdej podstronie

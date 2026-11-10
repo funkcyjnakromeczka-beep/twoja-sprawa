@@ -70,6 +70,7 @@ const run=async(error=false)=>{
  assert.equal(requestBody.campaign_medium,"social");
  assert.equal(requestBody.campaign_name,"grupa_lubin");
  assert.equal(requestBody.campaign_variant,"post_2");
+ assert.equal(requestBody.lead_path,"formularz");
  const status=visit(form,n=>n.attributes?.role==="status");
  assert.ok(status);
  if(error){
@@ -95,17 +96,21 @@ const stageCase=(service,code,expected)=>{
   createElement:tag=>new Node(tag),
   createTextNode:text=>({tag:"text",textContent:text})
  };
- const window={location:{search:"?etap="+code}};
+ const window={location:{search:"?etap="+code+"&lead_path=chatbot"}};
  runInNewContext(source,{document,window,URLSearchParams,Math});
  const form=host.children[0];
  const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
  const chosen=visit(form,n=>n.id?.startsWith("cf-service-"));
  assert.equal(chosen.value,service);
  assert.equal(stage.value,expected);
+ const note=visit(form,n=>n.className==="contact-context-notice");
+ assert.ok(note,"Context note must be in the form");
+ assert.equal(note.hidden,!Boolean(expected),"Valid chatbot stages reveal the summary");
+ if(expected)assert.ok(note.children.some(n=>n.textContent===expected),"Summary should describe the selected stage");
 };
 stageCase("Szkody górnicze","ugoda","Otrzymałem/am propozycję ugody");
 stageCase("Szkody górnicze","odmowa","Kopalnia odmówiła");
 stageCase("Świadczenie wspierające","decyzja","Mam decyzję WZON");
 stageCase("Świadczenie wspierające","odwolanie","Chcę przeanalizować decyzję lub odwołanie");
 stageCase("Szkody górnicze","nieznany_kod","");
-console.log("OK: email-only leads, UTM attribution, delivery errors, and five validated chatbot stage preselection cases.");
+console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

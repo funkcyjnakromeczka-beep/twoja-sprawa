@@ -2,7 +2,7 @@
 
 ## Struktura projektu
 - **`v2/` to katalog źródłowy wersji wdrażanej na Cloudflare Pages.** Zmiany w wyglądzie, tekstach i skryptach wprowadzaj tutaj.
-- `scripts/build.mjs` buduje katalog produkcyjny `dist/`, zamienia ścieżki `/v2/` na `/`, ustawia właściwe indeksowanie i dodaje dane strukturalne. Samo uruchomienie skryptu **nie publikuje strony**.
+- `scripts/build.mjs` buduje katalog produkcyjny `dist/`, zamienia ścieżki `/v2/` na `/`, ustawia właściwe indeksowanie, dodaje dane strukturalne, a publiczne adresy kanoniczne i sitemap tworzy **bez rozszerzenia `.html`**, zgodnie z przekierowaniami Cloudflare Pages. Samo uruchomienie skryptu **nie publikuje strony**.
 - `scripts/preview.mjs` tworzy podgląd `dist-preview/` z wyłączonym indeksowaniem.
 - Główny `/index.html` w repozytorium jest osobnym plikiem historycznym. **Nie należy traktować go jako źródła aktualnej publikacji.**
 - `scripts/network-brand.mjs` dodaje na każdej podstronie stały górny pasek logotypów **Votum Network** i **Votum Scale Agency**. Nie dodawaj drugiego takiego paska w `v2/index.html`.
@@ -60,3 +60,4 @@ Dane przekazywane przez formularz kierowane są do Web3Forms i następnie na `tw
 - Zrealizowano 50 kolejnych kontroli funkcji, SEO, prywatności, wydania i dostępności. Wyniki oraz nazwy kontroli opisano w `docs/50-KONTYNUACJI-ETAP-II.md`.
 - Formularz obsługuje `lead_path=plan` i wstępne zaznaczenie etapu, ale nie przyjmuje diagnoz ani dokumentów.
 - Weryfikacja ZUS: trzy miesiące od ostateczności decyzji WZON mogą mieć znaczenie dla wyrównania świadczenia. Treść należy monitorować przy zmianach prawa.
+\n## Adresy Cloudflare i SEO\n- Pliki źródłowe nadal mają nazwy `*.html`, ale Cloudflare Pages przekierowuje ich publiczne odpowiedniki na adresy bez `.html`, np. `/kontakt` i `/plan-dzialania`.\n- `scripts/public-routes.mjs` jest jedynym konwerterem tras dla kanonicznych adresów i mapy witryny. Test `scripts/test-public-routes.mjs` bada 10 poprawnych przykładów oraz 5 błędnych wejść.\n- Przegląd `robots.txt` i faktycznego `sitemap.xml` jest konieczny **po zatwierdzonym wdrożeniu produkcyjnym**; zielony test CI nie dowodzi opublikowania mapy.\n

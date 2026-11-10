@@ -34,6 +34,8 @@ try{
   ["biblioteka-desktop","/wiedza/",1440,900],
   ["plan-telefon","/plan-dzialania.html",390,844],
   ["plan-desktop","/plan-dzialania.html",1440,900],
+  ["faq-telefon","/faq.html",390,844],
+  ["faq-desktop","/faq.html",1440,900],
   ["wiedza-szkody-telefon","/wiedza/drobne-pekniecia-szkody-gornicze.html",390,844],
   ["wiedza-swiadczenie-telefon","/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",390,844],
   ["blad-404-telefon","/404.html",390,844]
@@ -175,6 +177,25 @@ try{
  if(!planContextVisible)throw Error("Plan handoff not explained in form");
  console.log("ACTION_PLAN_OK",JSON.stringify({service:planFormService,stage:planFormStage,progress:"1 z 5",context:planContextVisible}));
  await planPage.close();
+ // Searchable FAQ: ensure the Polish input, category deep link and reset work.
+ const faqPage=await browser.newPage({viewport:{width:390,height:844}});
+ await faqPage.goto(origin+"/faq.html?temat=szkody",{waitUntil:"domcontentloaded"});
+ const faqInitial=await faqPage.locator(".faq-card:visible").count();
+ if(faqInitial!==6)throw Error("Filtered mining FAQ must show six entries, got "+faqInitial);
+ const preselected=await faqPage.locator('[data-faq-filter="szkody"]').getAttribute("aria-pressed");
+ if(preselected!=="true")throw Error("Category deep link did not select mining");
+ await faqPage.locator("#faq-search").fill("PEKNIECIE");
+ const faqSearch=await faqPage.locator(".faq-card:visible").count();
+ if(faqSearch!==1)throw Error("Polish diacritic search should match one FAQ about cracks: "+faqSearch);
+ await faqPage.locator("#faq-search").fill("brak_odpowiedzi_123");
+ if(!await faqPage.locator("[data-faq-empty]").isVisible())throw Error("FAQ missing no-results state");
+ await faqPage.locator("[data-faq-reset]").click();
+ if(await faqPage.locator(".faq-card:visible").count()!==24)throw Error("FAQ reset must show 24 entries");
+ await faqPage.locator('[data-faq-filter="swiadczenie"]').click();
+ if(await faqPage.locator(".faq-card:visible").count()!==6)throw Error("Support category should show six entries");
+ await faqPage.screenshot({path:"screenshots/faq-swiadczenie-telefon.png",fullPage:false,animations:"disabled"});
+ console.log("FAQ_UI_OK",JSON.stringify({total:24,mining:faqInitial,search:faqSearch,support:6}));
+ await faqPage.close();
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

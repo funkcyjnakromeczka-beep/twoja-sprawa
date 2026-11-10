@@ -113,4 +113,24 @@ stageCase("Szkody górnicze","odmowa","Kopalnia odmówiła");
 stageCase("Świadczenie wspierające","decyzja","Mam decyzję WZON");
 stageCase("Świadczenie wspierające","odwolanie","Chcę przeanalizować decyzję lub odwołanie");
 stageCase("Szkody górnicze","nieznany_kod","");
+// Navigator path must show the same safe, editable case-stage summary as chatbot.
+{
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?"Szkody górnicze":""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?etap=ugoda&lead_path=navigator&utm_source=facebook&utm_campaign=test"}};
+ runInNewContext(source,{document,window,URLSearchParams,Math});
+ const form=host.children[0];
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const context=visit(form,n=>n.className==="contact-context-notice");
+ assert.equal(stage.value,"Otrzymałem/am propozycję ugody");
+ assert.equal(context.hidden,false);
+ assert.ok(context.children.some(n=>n.textContent==="Otrzymałem/am propozycję ugody"));
+}
+
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

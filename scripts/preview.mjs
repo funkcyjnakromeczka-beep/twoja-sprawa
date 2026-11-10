@@ -44,5 +44,5 @@ async function walk(dir){
 }
 await walk(source);
 await writeFile(join(dest,"robots.txt"),"User-agent: *\nDisallow: /\n");
-await writeFile(join(dest,"_headers"),"/*\n  X-Robots-Tag: noindex, nofollow\n  X-Content-Type-Options: nosniff\n");
+await writeFile(join(dest,"_headers"),"/*\n  X-Robots-Tag: noindex, nofollow\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: geolocation=(), camera=(), microphone=()\n");
 console.log("Prepared "+pages+" HTML pages in dist-preview/. Not deployed.");

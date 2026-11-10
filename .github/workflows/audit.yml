@@ -27,6 +27,8 @@ jobs:
           node --check scripts/test-service-navigator.mjs
           node --check v2/knowledge-hub.js
           node --check scripts/test-knowledge-hub.mjs
+          node --check v2/article-accessibility.js
+          node --check scripts/test-article-accessibility.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/seo-policy.mjs
@@ -51,6 +53,8 @@ jobs:
         run: node scripts/test-service-navigator.mjs
       - name: Testuj wyszukiwarkę i filtry poradników
         run: node scripts/test-knowledge-hub.mjs
+      - name: Testuj narzędzia czytania we wszystkich poradnikach
+        run: node scripts/test-article-accessibility.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji
         run: node scripts/test-seo-policy.mjs
       - name: Sprawdź pliki HTML i odnośniki

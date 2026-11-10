@@ -23,6 +23,8 @@ jobs:
           node --check v2/share-page.js
           node --check v2/network-brand.js
           node --check scripts/test-chat-lead.mjs
+          node --check v2/service-navigator.js
+          node --check scripts/test-service-navigator.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/seo-policy.mjs
@@ -43,6 +45,8 @@ jobs:
         run: node scripts/test-chat-lead.mjs
       - name: Przetestuj atrybucję kampanii między podstronami
         run: node scripts/test-attribution.mjs
+      - name: Przetestuj nowy przewodnik wyboru usługi i etapu sprawy
+        run: node scripts/test-service-navigator.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji
         run: node scripts/test-seo-policy.mjs
       - name: Sprawdź pliki HTML i odnośniki

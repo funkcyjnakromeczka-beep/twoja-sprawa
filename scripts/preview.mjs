@@ -2,6 +2,7 @@
 /** Builds a local-only preview. No release flags, no publishing, no indexing. */
 import {readdir,readFile,writeFile,mkdir,cp,rm} from "node:fs/promises";
 import {join,relative,dirname} from "node:path";
+import {withNetworkBrand} from "./network-brand.mjs";
 const source="v2",dest="dist-preview";
 const buildId="20261110-lead30";
 await rm(dest,{recursive:true,force:true});
@@ -15,7 +16,7 @@ async function walk(dir){
   const target=join(dest,rel);
   await mkdir(dirname(target),{recursive:true});
   if(rel.endsWith(".html")){
-   let html=await readFile(absolute,"utf8");
+   let html=withNetworkBrand(await readFile(absolute,"utf8"));
    if(!/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i.test(html))throw Error("Source robots tag missing: "+rel);
    html=html.replaceAll("/v2/","/");
    // Refresh every local CSS and JS asset with the same build version.

@@ -3121,3 +3121,50 @@ html{scroll-padding-top:16px}
    line-height:1.75;
  }
 }
+
+
+/* AUTONOMOUS-PASS-09: low-cost micro-interactions without hiding content */
+/* Keep all content visible without JavaScript; motion enriches but never gates reading. */
+.premium-v2 :is(.primary-card,.guide-showcase-card,.brand-partner-card,.how-to-use-grid article),
+.premium-subpage .article>section{
+  backface-visibility:hidden;
+}
+.premium-v2 .hero-scarlet-tag,
+.premium-v2 .brand-signature-icon{
+  will-change:auto;
+}
+.premium-v2 :is(.mobile-quick-nav a,.quick-path-links a,.agency-logo-item,.brand-signature-inner>a):focus-visible,
+.premium-subpage .agency-logo-item:focus-visible{
+  outline:3px solid #b63140;
+  outline-offset:3px;
+}
+.premium-v2 .mobile-quick-nav a:active,
+.premium-v2 .quick-path-links a:active{
+  transform:scale(.98);
+}
+.premium-v2 .quick-path-links a{
+  transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+  .premium-v2 .quick-path-links a:hover{
+    border-color:#c8a37d;
+    transform:translateY(-3px);
+    box-shadow:0 14px 26px rgba(24,57,61,.10);
+  }
+  .premium-v2 .brand-signature-icon{
+    animation:brand-icon-breathe 5.5s ease-in-out infinite;
+  }
+}
+@keyframes brand-icon-breathe{
+  0%,100%{box-shadow:0 9px 24px rgba(125,36,49,.10)}
+  50%{box-shadow:0 9px 30px rgba(174,43,59,.23)}
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 .quick-path-links a,
+  .premium-v2 .mobile-quick-nav a,
+  .premium-v2 .brand-signature-icon{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}

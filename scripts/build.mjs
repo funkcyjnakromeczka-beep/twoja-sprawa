@@ -18,11 +18,35 @@ const origin=url.replace(/\/$/,"");
 if(!release || !legalApproved || !contentApproved || !formApproved) throw new Error("Release blocked. Requires RELEASE=1, LEGAL_APPROVED=1, CONTENT_APPROVED=1 and FORM_APPROVED=1 after verified sign-off.");
 await rm(dest,{recursive:true,force:true});
 await mkdir(dest,{recursive:true});
+// Source portraits are existing, owner-supplied images from the prior Lovable project.
+ // Copy them into the final release so public pages do not depend on the old Lovable host.
+const portraits=[
+ {source:"https://twojasprawa-votum.lovable.app/assets/wojciech-CIUxrQ8A.jpg",output:"assets/wojciech-obieglo.jpg"},
+ {source:"https://twojasprawa-votum.lovable.app/assets/paulina-B6guxyXQ.jpg",output:"assets/paulina-chandrala.jpg"}
+];
+const localizePortraits=markup=>portraits.reduce((html,item)=>html.replaceAll(item.source,"/"+item.output),markup);
+async function fetchPortraits(){
+  for(const item of portraits){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),20000);
+    try{
+      const response=await fetch(item.source,{signal:controller.signal});
+      if(!response.ok || !(response.headers.get("content-type")||"").startsWith("image/jpeg")){
+        throw new Error("Invalid image response: "+response.status+" "+item.source);
+      }
+      const data=new Uint8Array(await response.arrayBuffer());
+      if(data.length<10000 || data.length>8_000_000 || data[0]!==0xff || data[1]!==0xd8){
+        throw new Error("Invalid JPEG bytes: "+item.output);
+      }
+      await writeFile(join(dest,item.output),data);
+    }finally{clearTimeout(timer);}
+  }
+}
 const pages=[];
 const structured = (route,canonical,title) => {
   // This graph describes SuccessTree's own agency site, never VOTUM as the publisher.
-  const owner={"@type":"Person","@id":origin+"/#wojciech-obieglo",name:"Wojciech Obiegło",url:origin+"/o-nas.html#wojciech",image:"https://twojasprawa-votum.lovable.app/assets/wojciech-CIUxrQ8A.jpg"};
-  const colleague={"@type":"Person","@id":origin+"/#paulina-chandrala",name:"Paulina Chandrała",url:origin+"/o-nas.html#paulina",image:"https://twojasprawa-votum.lovable.app/assets/paulina-B6guxyXQ.jpg"};
+  const owner={"@type":"Person","@id":origin+"/#wojciech-obieglo",name:"Wojciech Obiegło",url:origin+"/o-nas.html#wojciech",image:origin+"/assets/wojciech-obieglo.jpg"};
+  const colleague={"@type":"Person","@id":origin+"/#paulina-chandrala",name:"Paulina Chandrała",url:origin+"/o-nas.html#paulina",image:origin+"/assets/paulina-chandrala.jpg"};
   const organization={
     "@type":"Organization","@id":origin+"/#successtree",name:"SuccessTree OBIEGŁO WOJCIECH",
     url:origin+"/",email:"twojasprawa_votum@outlook.com",telephone:"+48 796 441 345",
@@ -72,6 +96,7 @@ async function walk(dir){
       const indexable=shouldIndexRoute(route);
       const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
+      html=localizePortraits(html);
       html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
       const robotsTag=/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i;
       if(!robotsTag.test(html)) throw new Error("Source robots tag missing: "+rel);
@@ -100,6 +125,7 @@ async function walk(dir){
   }
 }
 await walk(source);
+await fetchPortraits();
 await writeFile(join(dest,"robots.txt"),"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: "+origin+"/sitemap.xml\n");
 const xml=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll('"',"&quot;");
 await writeFile(join(dest,"sitemap.xml"),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+pages.sort().map(p=>'  <url><loc>'+xml(origin+p)+'</loc></url>').join("\n")+'\n</urlset>\n');

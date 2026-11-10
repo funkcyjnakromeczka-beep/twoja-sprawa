@@ -21,6 +21,8 @@ async function walk(dir){
     assert.ok(rendered.includes('alt="Votum Network"'),label+": Votum Network logo missing");
     assert.ok(rendered.includes('alt="Votum Scale Agency"'),label+": Votum Scale Agency logo missing");
     assert.ok(rendered.includes('/v2/network-brand.css'),label+": shared style missing");
+    assert.equal((rendered.match(/class="network-brand-fallback"/g)||[]).length,2,label+": readable loading fallbacks required");
+    assert.ok(rendered.includes('/v2/network-brand.js'),label+": fallback enhancement missing");
     const firstHeader=rendered.indexOf("<header");
     const firstBrand=rendered.indexOf('class="network-brand-bar"');
     const firstMain=rendered.indexOf("<main");

@@ -29,6 +29,7 @@ jobs:
           node --check scripts/test-knowledge-hub.mjs
           node --check v2/article-accessibility.js
           node --check scripts/test-article-accessibility.mjs
+          node --check scripts/test-release-readiness.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/seo-policy.mjs
@@ -57,6 +58,8 @@ jobs:
         run: node scripts/test-article-accessibility.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji
         run: node scripts/test-seo-policy.mjs
+      - name: Kontrola bramek przed oficjalną publikacją
+        run: node scripts/test-release-readiness.mjs
       - name: Sprawdź pliki HTML i odnośniki
         run: node scripts/audit.mjs
       - name: Sprawdź logotypy partnerów na każdej podstronie

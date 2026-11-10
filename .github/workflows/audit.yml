@@ -21,6 +21,7 @@ jobs:
           node --check scripts/test-attribution.mjs
           node --check v2/chat-assistant.js
           node --check v2/share-page.js
+          node --check v2/network-brand.js
           node --check scripts/test-chat-lead.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
@@ -61,6 +62,8 @@ jobs:
           test -f dist-preview/attribution.js
           test -f dist-preview/assets/site-mark.svg
           test -f dist-preview/network-brand.css
+          test -f dist-preview/network-brand.js
+          grep -q 'network-brand.js?v=' dist-preview/index.html
           grep -q 'class="network-brand-bar"' dist-preview/index.html
           grep -q 'class="network-brand-bar"' dist-preview/404.html
           grep -q 'class="network-brand-bar"' dist-preview/kampanie/szkody-gornicze.html

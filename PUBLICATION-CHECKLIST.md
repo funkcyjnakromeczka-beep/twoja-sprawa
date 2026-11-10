@@ -43,5 +43,15 @@ W panelu **Workers & Pages → projekt → Settings → Builds**:
 - [ ] Google Search Console: zweryfikuj domenę i prześlij `/sitemap.xml`; monitoruj stan indeksacji. Dodatkowo Bing Webmaster Tools.
 - [ ] Sprawdź dostępność dla `Googlebot`, `Bingbot` i `OAI-SearchBot` także przez WAF/ochronę botów Cloudflare.
 
+## 5. Dodatkowy pakiet jakości UX i SEO
+- [x] Biblioteka wiedzy (10 artykułów, filtrowanie, wyszukiwanie bez polskich znaków i reset) — test automatyczny.
+- [x] Narzędzia czytania i drukowania na 10 artykułach — test automatyczny.
+- [x] Przebudowana strona kontaktu ze zdjęciami i przyciskami do wstępnego wyboru usługi.
+- [x] Wykluczenie strony `/404.html` z przyszłej mapy witryny.
+- [x] Automatyczna kontrola flag zatwierdzenia treści, kwestii prawnych i formularza.
+- [ ] Test rzeczywistego doręczenia formularza i zgodności treści polityki prywatności po wdrożeniu.
+- [ ] Potwierdzenie zezwoleń na wizerunki oraz dozwolonego użycia logo podmiotów VOTUM.
+- [ ] Aktywacja właściwej konfiguracji Cloudflare Pages, wydanie produkcyjne i ponowny test robotów oraz sitemap.
+
 ## 5. Istotne ograniczenia
 Zielone testy GitHub Actions nie potwierdzają wdrożenia na Cloudflare. Prawidłowe `robots.txt`, sitemap i JSON-LD nie gwarantują indeksacji ani polecania strony przez AI. Treści prawne i strony wejściowe należy okresowo aktualizować, a dane kontaktowe monitorować. Kopie zdjęć w wydaniu produkcyjnym zależą od dostępności zdjęć ze starego projektu w trakcie *pierwszej budowy*; po utworzeniu release są hostowane przez Cloudflare.

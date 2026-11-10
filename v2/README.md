@@ -18,6 +18,7 @@
 - Formularz Web3Forms: `v2/contact.js`
 - Styl graficzny: `v2/styles.css` i `v2/premium-v2.css`
 - Biblioteka wiedzy i szybkie wyszukiwanie: `v2/wiedza/index.html`, `v2/knowledge-hub.js`, `v2/knowledge-hub.css`
+- Generator planu pierwszych kroków: `v2/plan-dzialania.html`, `v2/plan-dzialania.js`, `v2/plan-dzialania.css` — pięć usług, etap sprawy, checklista, druk i kontakt bez danych osobowych.
 - Powiększanie tekstu i druk artykułów: `v2/article-accessibility.js` i `v2/article-accessibility.css`
 - Strona kontaktu ze zdjęciami specjalistów: `v2/kontakt.html` i `v2/contact-hub.css`
 
@@ -29,6 +30,8 @@ node scripts/test-service-navigator.mjs
 node scripts/test-knowledge-hub.mjs
 node scripts/test-article-accessibility.mjs
 node scripts/test-release-readiness.mjs
+node scripts/test-action-plan.mjs
+node scripts/test-50-continuations.mjs
 node scripts/test-contact-client.mjs
 node scripts/test-network-brand.mjs
 node scripts/test-seo-policy.mjs
@@ -52,3 +55,8 @@ Dane przekazywane przez formularz kierowane są do Web3Forms i następnie na `tw
 - Każdy artykuł w `v2/wiedza/` zawiera narzędzia: większy tekst, druk do PDF przez przeglądarkę i kopiowanie linku. Funkcje nie wymagają rejestracji i nie zapisują wyszukiwań.
 - Strona kontaktu prezentuje Wojciecha i Paulinę ze zdjęciami; przyciski wskazują usługę przed wejściem do formularza.
 - W polityce SEO strona `/404.html` jest wykluczona z indeksacji i mapy witryny.
+
+## Druga seria iteracji (11 listopada 2026)
+- Zrealizowano 50 kolejnych kontroli funkcji, SEO, prywatności, wydania i dostępności. Wyniki oraz nazwy kontroli opisano w `docs/50-KONTYNUACJI-ETAP-II.md`.
+- Formularz obsługuje `lead_path=plan` i wstępne zaznaczenie etapu, ale nie przyjmuje diagnoz ani dokumentów.
+- Weryfikacja ZUS: trzy miesiące od ostateczności decyzji WZON mogą mieć znaczenie dla wyrównania świadczenia. Treść należy monitorować przy zmianach prawa.

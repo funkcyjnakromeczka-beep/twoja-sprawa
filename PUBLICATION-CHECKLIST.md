@@ -43,6 +43,14 @@ W panelu **Workers & Pages → projekt → Settings → Builds**:
 - [ ] Google Search Console: zweryfikuj domenę i prześlij `/sitemap.xml`; monitoruj stan indeksacji. Dodatkowo Bing Webmaster Tools.
 - [ ] Sprawdź dostępność dla `Googlebot`, `Bingbot` i `OAI-SearchBot` także przez WAF/ochronę botów Cloudflare.
 
+## Seria III — baza FAQ i kontrola jakości
+- [x] Nowa baza 24 pytań i odpowiedzi, z oficjalnymi odnośnikami w częściach dotyczących ZUS.
+- [x] Sześć filtrów i wyszukiwanie bez polskich znaków, reset, brak cookies oraz zapisywania zapytań.
+- [x] Skrót do FAQ na stronie głównej, w bibliotece wiedzy oraz w opisach szkód górniczych i świadczenia wspierającego.
+- [x] Testy przeglądarkowe FAQ oraz 50 sekwencyjnych kontroli treści, prywatności, SEO i dostępności.
+- [ ] Ostateczny redakcyjny przegląd wszystkich informacji prawnych i procedur przed publicznym indeksowaniem.
+- [ ] Sprawdź rzeczywistą dostarczalność leadów i wymagane zatwierdzenia identyfikacji, materiałów oraz polityki prywatności.
+
 ## Seria II — plan działania i poprawne adresy SEO
 - [x] Dodano generator planu pierwszych kroków dla pięciu usług, z dziewięcioma etapami szkód górniczych i WZON/ZUS.
 - [x] Dodano postęp checklisty, druk PDF, reset i bezpośredni numer osoby do kontaktu; zero cookies i brak zewnętrznych żądań.

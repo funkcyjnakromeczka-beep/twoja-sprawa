@@ -32,6 +32,8 @@ try{
   ["kontakt-telefon","/kontakt.html",390,844],
   ["biblioteka-telefon","/wiedza/",390,844],
   ["biblioteka-desktop","/wiedza/",1440,900],
+  ["plan-telefon","/plan-dzialania.html",390,844],
+  ["plan-desktop","/plan-dzialania.html",1440,900],
   ["wiedza-szkody-telefon","/wiedza/drobne-pekniecia-szkody-gornicze.html",390,844],
   ["wiedza-swiadczenie-telefon","/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",390,844],
   ["blad-404-telefon","/404.html",390,844]
@@ -155,6 +157,24 @@ try{
  if(await hubPage.locator("main article.article.reading-large").count())throw Error("Large text toggle did not reset");
  console.log("ARTICLE_ACCESSIBILITY_OK",JSON.stringify({controls:3,largeText:true,reset:true}));
  await hubPage.close();
+ // First steps plan: prefilled mining settlement scenario, progress and form handoff.
+ const planPage=await browser.newPage({viewport:{width:390,height:844}});
+ await planPage.goto(origin+"/plan-dzialania.html?usluga=szkody&etap=ugoda&utm_source=facebook&utm_medium=grupa&utm_campaign=wybor",{waitUntil:"domcontentloaded"});
+ if(await planPage.locator("[data-plan-title]").textContent()!=="Szkody górnicze")throw Error("Plan should start with mining topic");
+ if(await planPage.locator("[data-plan-checklist] input").count()!==5)throw Error("Mining agreement plan should have five steps");
+ await planPage.locator("[data-plan-checklist] input").first().check();
+ if((await planPage.locator("[data-plan-progress]").textContent()).trim()!=="1 z 5")throw Error("Checklist progress incorrect");
+ const planTarget=new URL(await planPage.locator("[data-plan-contact]").getAttribute("href"),origin);
+ if(planTarget.pathname!=="/kontakt.html"||planTarget.searchParams.get("usluga")!=="szkody"||planTarget.searchParams.get("etap")!=="ugoda"||planTarget.searchParams.get("lead_path")!=="plan"||planTarget.searchParams.get("utm_medium")!=="grupa")throw Error("Plan handoff broken: "+planTarget);
+ await planPage.screenshot({path:"screenshots/plan-szkody-ugoda-telefon.png",fullPage:true,animations:"disabled"});
+ await planPage.goto(origin+planTarget.pathname+planTarget.search+planTarget.hash,{waitUntil:"domcontentloaded"});
+ const planFormService=await planPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
+ const planFormStage=await planPage.locator('.contact-form select[id^="cf-stage-"]').inputValue();
+ if(planFormService!=="Szkody górnicze"||planFormStage!=="Otrzymałem/am propozycję ugody")throw Error("Plan stage not prefilled in contact form");
+ const planContextVisible=await planPage.locator(".contact-context-notice").isVisible();
+ if(!planContextVisible)throw Error("Plan handoff not explained in form");
+ console.log("ACTION_PLAN_OK",JSON.stringify({service:planFormService,stage:planFormStage,progress:"1 z 5",context:planContextVisible}));
+ await planPage.close();
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

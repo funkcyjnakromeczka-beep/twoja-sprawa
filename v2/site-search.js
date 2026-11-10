@@ -30,7 +30,7 @@
    card.href=item.href;
    card.className="site-search-card";
    const tag=document.createElement("span");tag.className="site-search-tag";tag.textContent=item.id.startsWith("faq:")?"Pytanie i odpowiedź":labels[item.category]||"Informacje";
-   const title=document.createElement("strong");title.textContent=item.title;
+   const title=document.createElement("h3");title.textContent=item.title;
    const desc=document.createElement("span");desc.className="site-search-description";desc.textContent=item.description;
    const tail=document.createElement("span");tail.className="site-search-cta";tail.textContent="Otwórz materiał ↗";
    card.append(tag,title,desc,tail);

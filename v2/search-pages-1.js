@@ -5,7 +5,7 @@ window.TwojaSprawaSearchPages1=[
   "href": "/v2/faq.html",
   "title": "Najczęstsze pytania — szkody górnicze, WZON/ZUS i SKD",
   "description": "Odpowiedzi na 24 pytania dotyczące szkód górniczych, świadczenia wspierającego WZON i ZUS, rent powypadkowych, kredytów PLN, SKD i służebności przesyłu. Bez obietnic wyniku.",
-  "category": "szkody",
+  "category": "inne",
   "keywords": "Masz pytanie? Znajdź konkretną odpowiedź. v2 faq html Najczęstsze pytania i odpowiedzi"
  },
  {

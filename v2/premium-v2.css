@@ -2876,3 +2876,45 @@ body.premium-subpage.theme-rents #formularz .contact-form{
   .premium-v2 .agency-logo-item:hover,
   .premium-subpage .agency-logo-item:hover{transform:none}
 }
+
+
+/* AUTONOMOUS-PASS-04: less crowded agency band on phones */
+@media(max-width:760px){
+  .premium-v2 .agency-logos-bar,
+  .premium-subpage .agency-logos-bar{
+    gap:7px;
+    padding:8px 12px 10px;
+    border-top-width:2px;
+    box-shadow:0 4px 14px rgba(11,36,49,.06);
+  }
+  .premium-v2 .agency-logos-label,
+  .premium-subpage .agency-logos-label{
+    font-size:.68rem;
+    letter-spacing:.07em;
+  }
+  .premium-v2 .agency-logos-pair,
+  .premium-subpage .agency-logos-pair{gap:8px}
+  .premium-v2 .agency-logo-item,
+  .premium-subpage .agency-logo-item{
+    min-height:55px;
+    height:58px;
+    max-width:185px;
+    padding:5px 9px;
+    border-radius:10px;
+  }
+  .premium-v2 .agency-logo-item img,
+  .premium-subpage .agency-logo-item img{
+    max-height:46px;
+    object-fit:contain;
+  }
+  .premium-v2 .agency-logos-note,
+  .premium-subpage .agency-logos-note{
+    max-width:56ch;
+    font-size:.63rem!important;
+    line-height:1.38;
+  }
+}
+@media(max-width:390px){
+  .premium-v2 .agency-logos-bar,.premium-subpage .agency-logos-bar{padding-inline:8px}
+  .premium-v2 .agency-logo-item,.premium-subpage .agency-logo-item{max-width:160px}
+}

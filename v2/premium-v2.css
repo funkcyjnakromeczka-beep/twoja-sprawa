@@ -3187,3 +3187,98 @@ html{scroll-padding-top:16px}
     line-height:1.48!important;
   }
 }
+
+
+/* CONTINUOUS-UX-20261110: cohesive header, readable agency copy and simpler form */
+.premium-v2 .agency-logos-note,
+.premium-subpage .agency-logos-note{
+  color:#344d58!important;
+  opacity:1!important;
+  font-size:.75rem!important;
+  font-weight:550!important;
+  line-height:1.55!important;
+}
+.premium-v2 .agency-logos-bar,
+.premium-subpage .agency-logos-bar{
+  background:linear-gradient(115deg,#f8f5f1 0%,#fff 52%,#f5f9f7 100%);
+  border-bottom:1px solid #cfd9d8;
+}
+.premium-v2 .agency-logo-item img,
+.premium-subpage .agency-logo-item img{
+  object-fit:contain;
+  max-width:100%;
+}
+.premium-v2 .contact-form .contact-optional-details,
+.premium-subpage .contact-form .contact-optional-details{
+  display:block;
+  margin:12px 0 18px;
+  padding:12px 15px;
+  background:#f7f9f8;
+  border:1px solid #c9d7d7;
+  border-radius:13px;
+  color:#193a46;
+}
+.premium-v2 .contact-form .contact-optional-details summary,
+.premium-subpage .contact-form .contact-optional-details summary{
+  display:list-item;
+  cursor:pointer;
+  font-size:.95rem;
+  font-weight:750;
+  line-height:1.55;
+  color:#213d47;
+}
+.premium-v2 .contact-form .contact-optional-details[open],
+.premium-subpage .contact-form .contact-optional-details[open]{
+  background:#fff;
+  border-color:#9ab2b6;
+}
+.premium-v2 .contact-form .contact-optional-details label,
+.premium-subpage .contact-form .contact-optional-details label{
+  display:block;
+  margin:16px 0 8px;
+  font-size:.9rem;
+  color:#2c4954!important;
+}
+.premium-v2 .contact-form .contact-optional-details select,
+.premium-subpage .contact-form .contact-optional-details select{
+  width:100%;
+  min-height:48px;
+  font-size:16px;
+  color:#173b46!important;
+  background:#fff!important;
+}
+.premium-v2 .contact-form .contact-optional-details small,
+.premium-subpage .contact-form .contact-optional-details small{
+  display:block;
+  margin-top:8px;
+  font-size:.76rem;
+  color:#4b626b!important;
+}
+@media(max-width:760px){
+  .premium-v2 .agency-logos-note,
+  .premium-subpage .agency-logos-note{font-size:.71rem!important;line-height:1.5!important}
+  .premium-v2 .site-header .header-contact a:not(.header-cta){
+    font-size:.75rem;
+  }
+  .premium-v2 .hero-glamour h1{
+    font-size:clamp(2.45rem,10.5vw,4rem);
+    overflow-wrap:normal;
+    text-wrap:balance;
+  }
+  .premium-v2 #filmy .video-feature-details,
+  .premium-v2 #filmy .video-feature:first-child .video-feature-details{
+    color:#193744!important;
+    background:#fffdf9!important;
+  }
+  .premium-v2 #filmy .video-feature-details :is(h3,p){
+    color:#193744!important;
+    opacity:1!important;
+  }
+  .premium-v2 :is(.contact-form,.lead-panel,.video-feature,.agency-logos-bar){
+    max-width:100%;
+    min-width:0;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 .agency-logo-item,.premium-subpage .agency-logo-item{transform:none!important}
+}

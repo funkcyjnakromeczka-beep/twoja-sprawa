@@ -20,11 +20,11 @@
       service:"swiadczenie-wspierajace.html",checklist:"swiadczenie-wspierajace-pierwsze-kroki.html",form:"kampanie/swiadczenie-wspierajace.html"+params,
       intro:"Pomagamy uporządkować etap sprawy przed WZON lub ZUS. O uprawnieniu do świadczenia rozstrzygają właściwe organy, nie chatbot.",
       stages:[
-        ["Dopiero planuję wniosek","Zacznij od ustalenia etapu postępowania i informacji o codziennym funkcjonowaniu. Nie przesyłaj w czacie diagnoz ani dokumentacji medycznej."],
-        ["Czekam na decyzję WZON","Zachowaj potwierdzenie złożenia wniosku i przychodzącą korespondencję. W razie otrzymania decyzji zanotuj datę jej doręczenia."],
-        ["Mam decyzję WZON","Sprawdź liczbę punktów oraz pouczenie o dostępnych działaniach i terminach. Sam wynik nie przesądza automatycznie o wypłacie świadczenia."],
-        ["Mam sprawę w ZUS","Warto ustalić, czy wniosek został złożony i jakie pisma już otrzymano. Ewentualne wyrównanie zależy od przepisów, terminów i sytuacji."],
-        ["Chcę sprawdzić odwołanie","Zachowaj decyzję wraz z pouczeniem i dokładną datę doręczenia. Dalszy tryb i termin trzeba sprawdzić w konkretnej sprawie."]
+        ["Dopiero planuję wniosek","Zacznij od ustalenia etapu postępowania i informacji o codziennym funkcjonowaniu. Nie przesyłaj w czacie diagnoz ani dokumentacji medycznej.","wniosek"],
+        ["Czekam na decyzję WZON","Zachowaj potwierdzenie złożenia wniosku i przychodzącą korespondencję. W razie otrzymania decyzji zanotuj datę jej doręczenia.","oczekiwanie"],
+        ["Mam decyzję WZON","Sprawdź liczbę punktów oraz pouczenie o dostępnych działaniach i terminach. Sam wynik nie przesądza automatycznie o wypłacie świadczenia.","decyzja"],
+        ["Mam sprawę w ZUS","Warto ustalić, czy wniosek został złożony i jakie pisma już otrzymano. Ewentualne wyrównanie zależy od przepisów, terminów i sytuacji.","zus"],
+        ["Chcę sprawdzić odwołanie","Zachowaj decyzję wraz z pouczeniem i dokładną datę doręczenia. Dalszy tryb i termin trzeba sprawdzić w konkretnej sprawie.","odwolanie"]
       ]
     },
     {
@@ -32,11 +32,11 @@
       service:"szkody-gornicze.html",checklist:"checklista-szkody-gorniczej.html",form:"kampanie/szkody-gornicze.html"+params,
       intro:"Analizujemy m.in. pęknięcia ścian, elewacji i nierówności kostki w rejonie Lubina i Polkowic. Sama lokalizacja nie przesądza o przyczynie uszkodzeń.",
       stages:[
-        ["Widziałem niewielkie pęknięcia","Zrób zdjęcie z bliska i ujęcie całej ściany. Zapisz, kiedy po raz pierwszy zauważono uszkodzenie."],
-        ["Kostka lub ogrodzenie są uszkodzone","Zrób fotografie nierówności, ogrodzenia i otoczenia oraz zanotuj, czy zmiany postępują."],
-        ["Zgłosiłem szkodę do kopalni","Zachowaj zgłoszenie, potwierdzenie i odpowiedzi przedsiębiorcy górniczego. Przydadzą się do indywidualnej analizy."],
-        ["Mam propozycję ugody","Nie zakładaj, że propozycja obejmuje wszystkie szkody. Przed podpisaniem warto dokładnie przeanalizować jej zakres i skutki."],
-        ["Otrzymałem odmowę","Zachowaj treść odmowy, wcześniejszą korespondencję i zdjęcia. Można przeanalizować argumentację oraz dostępne możliwości działania."]
+        ["Widziałem niewielkie pęknięcia","Zrób zdjęcie z bliska i ujęcie całej ściany. Zapisz, kiedy po raz pierwszy zauważono uszkodzenie.","uszkodzenia"],
+        ["Kostka lub ogrodzenie są uszkodzone","Zrób fotografie nierówności, ogrodzenia i otoczenia oraz zanotuj, czy zmiany postępują.","uszkodzenia"],
+        ["Zgłosiłem szkodę do kopalni","Zachowaj zgłoszenie, potwierdzenie i odpowiedzi przedsiębiorcy górniczego. Przydadzą się do indywidualnej analizy.","zgloszona"],
+        ["Mam propozycję ugody","Nie zakładaj, że propozycja obejmuje wszystkie szkody. Przed podpisaniem warto dokładnie przeanalizować jej zakres i skutki.","ugoda"],
+        ["Otrzymałem odmowę","Zachowaj treść odmowy, wcześniejszą korespondencję i zdjęcia. Można przeanalizować argumentację oraz dostępne możliwości działania.","odmowa"]
       ]
     },
     {
@@ -112,7 +112,11 @@
     const el=document.createElement(tag);if(className)el.className=className;
     if(text)el.textContent=text;return el;
   };
-  const destination=topic=>base+(topic.form||"?usluga="+encodeURIComponent(topic.alias||topic.key)+"&"+params.slice(1)+"#kontakt");
+  const destination=(topic,stageCode="")=>{
+    const address=new URL(base+(topic.form||"?usluga="+encodeURIComponent(topic.alias||topic.key)+"&"+params.slice(1)+"#kontakt"),window.location.origin);
+    if(stageCode && (topic.key==="szkody"||topic.key==="swiadczenie"))address.searchParams.set("etap",stageCode);
+    return address.pathname+address.search+address.hash;
+  };
   const choose=topic=>{
     for(const b of buttons.querySelectorAll("button"))b.setAttribute("aria-pressed",String(b.dataset.topic===topic.key));
     reply.replaceChildren();
@@ -122,12 +126,14 @@
     const stages=mk("div","chat-stage-choices");
     const answer=mk("p","chat-stage-answer","Wybierz sytuację, aby zobaczyć ogólną wskazówkę.");
     answer.setAttribute("role","status");
-    for(const [question,text] of topic.stages){
+    for(const [question,text,stageCode] of topic.stages){
       const btn=mk("button","chat-stage-choice",question);btn.type="button";
       btn.setAttribute("aria-pressed","false");
       btn.addEventListener("click",()=>{
         for(const item of stages.querySelectorAll("button"))item.setAttribute("aria-pressed",String(item===btn));
         answer.textContent=text;
+        form.href=destination(topic,stageCode);
+        contact.href=destination(topic,stageCode);
         answer.scrollIntoView({block:"nearest",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
       });
       stages.append(btn);
@@ -137,7 +143,7 @@
     const details=mk("a","chat-reply-detail","Przeczytaj o usłudze");details.href=base+"uslugi/"+topic.service;
     const checklist=mk("a","chat-reply-checklist","Lista kroków przed rozmową");checklist.href=base+"poradniki/"+topic.checklist;
     links.append(form,details,checklist);
-    const caution=mk("small","chat-caution","Wybór odpowiedzi w tym przewodniku niczego nie wysyła. Wskazówki nie zastępują analizy dokumentów ani nie gwarantują wyniku.");
+    const caution=mk("small","chat-caution","Po wybraniu sytuacji zostanie ona zaznaczona w formularzu kontaktowym. Sam wybór niczego nie wysyła. Wskazówki nie gwarantują wyniku.");
     reply.append(heading,summary,prompt,stages,answer,links,caution);
     phone.href="tel:"+topic.tel;phone.textContent="☎ Zadzwoń: "+topic.phone;
     contact.href=destination(topic);contact.textContent="✉ Zostaw kontakt";

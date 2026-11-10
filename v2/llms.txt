@@ -14,6 +14,7 @@
 ## Artykuły i praktyczne materiały
 - [Drobne pęknięcia ścian i kostka a szkody górnicze](https://twoja-sprawa.pages.dev/wiedza/drobne-pekniecia-szkody-gornicze.html)
 - [Świadczenie wspierające 2026: WZON i ZUS](https://twoja-sprawa.pages.dev/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html)
+- [Biblioteka poradników z wyszukiwarką i filtrami](https://twoja-sprawa.pages.dev/wiedza/): 10 artykułów o szkodach, WZON, ZUS, rentach, SKD i przesyle, z narzędziami powiększania tekstu i wydruku.
 - [Poradniki i listy kontrolne](https://twoja-sprawa.pages.dev/wiedza/)
 
 ## O nas i kontakt
@@ -25,4 +26,4 @@
 ## Granice informacji
 Wszystkie usługi wymagają indywidualnej analizy. Sama lokalizacja na terenie górniczym nie dowodzi odpowiedzialności za pęknięcia. Samo orzeczenie o niepełnosprawności nie przesądza o prawie do świadczenia wspierającego. Dane medyczne i numery identyfikacyjne nie powinny być podawane w otwartym formularzu.
 
-Ten dokument pomaga czytelnikom i systemom automatycznym znaleźć właściwe strony. Nie jest oficjalnym standardem pozycjonowania ani gwarancją uwzględnienia w odpowiedziach AI.
+Ten dokument pomaga czytelnikom i systemom automatycznym znaleźć właściwe strony. Możliwości wyszukiwania i powiększania tekstu działają lokalnie, bez cookies. Nie jest oficjalnym standardem pozycjonowania ani gwarancją uwzględnienia w odpowiedziach AI.

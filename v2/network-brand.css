@@ -1,0 +1,58 @@
+/* Always-visible agency partner identities, every page. */
+:root{--network-brand-height:69px}
+.network-brand-bar{
+ position:sticky;top:0;z-index:180;min-height:var(--network-brand-height);
+ background:linear-gradient(105deg,#092332,#123b4c 55%,#0c2e3e);
+ border-bottom:2px solid #cba56c;color:#f6eadd;
+ box-shadow:0 4px 17px rgba(5,22,32,.22);
+}
+.network-brand-bar *{box-sizing:border-box}
+.network-brand-inner{
+ max-width:1560px;margin:0 auto;min-height:var(--network-brand-height);
+ display:flex;align-items:center;justify-content:space-between;
+ gap:clamp(9px,2.2vw,24px);padding:7px clamp(13px,3vw,42px);
+}
+.network-brand-label{
+ flex:1 0 auto;font:750 clamp(.72rem,1vw,.88rem)/1.32 system-ui,sans-serif;
+ letter-spacing:.025em;color:#efe2c9;white-space:nowrap;
+}
+.network-brand-label span{color:#d9b77b}
+.network-brand-logos{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.network-brand-logos a{
+ display:flex;align-items:center;justify-content:center;
+ width:clamp(120px,12vw,164px);height:51px;padding:3px 10px;
+ background:#fff;border:1px solid #e6d2ab;border-radius:10px;
+ box-shadow:0 2px 8px rgba(2,12,18,.18);
+ transition:transform .15s ease,border-color .15s ease;
+}
+.network-brand-logos img{display:block;width:100%;height:100%;object-fit:contain}
+.network-brand-logos a:hover{transform:translateY(-1px);border-color:#f9d18d}
+.network-brand-logos a:focus-visible{outline:3px solid #fff2b9;outline-offset:3px}
+.network-brand-note{
+ flex:1 1 0;max-width:28ch;font:500 .67rem/1.3 system-ui,sans-serif;
+ text-align:right;color:#cfdbdf;
+}
+body:has(.network-brand-bar) .site-header{top:var(--network-brand-height)!important}
+body:has(.network-brand-bar) .skip-link:focus{
+ position:fixed;top:calc(var(--network-brand-height) + 6px);
+ left:10px;z-index:350;
+}
+@media(max-width:980px){
+ .network-brand-note{display:none}
+ .network-brand-label{flex:1 1 auto}
+}
+@media(max-width:630px){
+ :root{--network-brand-height:64px}
+ .network-brand-inner{justify-content:center;gap:7px;padding:6px 8px}
+ .network-brand-label{display:none}
+ .network-brand-logos{width:100%;justify-content:center;gap:9px}
+ .network-brand-logos a{height:50px;width:min(44vw,167px);padding:3px 8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .network-brand-logos a{transition:none}
+ .network-brand-logos a:hover{transform:none}
+}
+@media(forced-colors:active){
+ .network-brand-bar{border-bottom:2px solid CanvasText}
+ .network-brand-logos a{border:2px solid LinkText}
+}

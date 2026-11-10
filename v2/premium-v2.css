@@ -2330,3 +2330,70 @@ body.premium-subpage.theme-rents #formularz .contact-form{
 @media(prefers-reduced-motion:reduce){
   .premium-v2 .brand-signature-inner>a{transition:none}
 }
+
+
+/* THEMiS-VISIBLE-20261110: rendered decorative Lady Justice assets, not CSS-only ghosts */
+.premium-v2 .hero-visual{
+  position:relative;
+  isolation:isolate;
+  overflow:visible;
+}
+.premium-v2 .hero-visual .hero-themis-figure{
+  position:absolute;
+  z-index:0;
+  right:-5%;
+  top:0;
+  width:min(76%,330px);
+  height:min(100%,490px);
+  max-height:490px;
+  opacity:.70;
+  object-fit:contain;
+  object-position:center;
+  filter:drop-shadow(0 8px 20px rgba(224,181,121,.11));
+  pointer-events:none;
+}
+.premium-v2 .hero-visual .hero-art{
+  position:relative;
+  z-index:1;
+  max-width:min(71%,315px);
+  transform:translate(-17%,4%);
+  border-color:rgba(232,181,142,.48);
+  box-shadow:0 25px 85px rgba(0,0,0,.4),0 0 0 8px rgba(185,47,61,.08);
+}
+.premium-v2 .hero-visual-caption{
+  position:relative;
+  z-index:2;
+}
+.premium-v2 .brand-signature-inner .brand-signature-temida{
+  position:absolute;
+  z-index:0;
+  right:10%;
+  top:-40px;
+  width:150px;
+  height:205px;
+  object-fit:contain;
+  opacity:.22;
+  pointer-events:none;
+}
+.premium-v2 .brand-signature-inner>*:not(.brand-signature-temida){
+  position:relative;
+  z-index:1;
+}
+@media(max-width:960px){
+  .premium-v2 .hero-visual .hero-themis-figure{
+    width:min(71%,260px);
+    opacity:.50;
+  }
+  .premium-v2 .hero-visual .hero-art{
+    max-width:min(72%,250px);
+  }
+}
+@media(max-width:760px){
+  .premium-v2 .brand-signature-inner .brand-signature-temida{
+    top:-5px;
+    right:-19px;
+    width:102px;
+    height:140px;
+    opacity:.13;
+  }
+}

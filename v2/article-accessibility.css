@@ -1,21 +1,21 @@
-.premium-subpage .article-reading-tools{
+.article-reading-tools{
  display:flex;flex-wrap:wrap;align-items:center;gap:9px;
  padding:15px 18px;margin:0 0 25px;
  background:linear-gradient(120deg,#f8f5ed,#f1f8f5);
  border:1px solid #bdc9c5;border-radius:13px;color:#254655;
 }
-.premium-subpage .article-reading-tools button{
+.article-reading-tools button{
  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
  min-height:44px;padding:10px 14px;background:#fff;color:#173847;border:1px solid #8faeb1;
  border-radius:9px;font:750 .9rem/1.35 system-ui,sans-serif;
 }
-.premium-subpage .article-reading-tools button[aria-pressed="true"]{background:#123e4d;color:#fff;border-color:#123e4d}
-.premium-subpage .article-reading-tools button:focus-visible{outline:3px solid #bf965d;outline-offset:3px}
-.premium-subpage .article-reading-message{flex:1 1 100%;font-size:.83rem;color:#315e67}
-.premium-subpage .article-reading-message:empty{display:none}
-.premium-subpage .article-reading-message label{display:flex;flex-direction:column;gap:5px;max-width:100%}
-.premium-subpage .article-reading-message input{width:min(100%,650px);background:#fff;border:1px solid #9cb8bc;padding:9px;font-size:.82rem}
-.premium-subpage article.article.reading-large :is(p,li,dd){font-size:clamp(1.18rem,2.4vw,1.3rem)!important;line-height:1.95!important}
-.premium-subpage article.article.reading-large :is(h2,h3){line-height:1.3!important}
-@media(max-width:620px){.premium-subpage .article-reading-tools{padding:13px;gap:7px}.premium-subpage .article-reading-tools button{flex:1 1 42%;padding:9px 8px;font-size:.82rem}}
-@media print{.premium-subpage .article-reading-tools{display:none!important}}
+.article-reading-tools button[aria-pressed="true"]{background:#123e4d;color:#fff;border-color:#123e4d}
+.article-reading-tools button:focus-visible{outline:3px solid #bf965d;outline-offset:3px}
+.article-reading-message{flex:1 1 100%;font-size:.83rem;color:#315e67}
+.article-reading-message:empty{display:none}
+.article-reading-message label{display:flex;flex-direction:column;gap:5px;max-width:100%}
+.article-reading-message input{width:min(100%,650px);background:#fff;border:1px solid #9cb8bc;padding:9px;font-size:.82rem}
+article.article.reading-large :is(p,li,dd){font-size:clamp(1.18rem,2.4vw,1.3rem)!important;line-height:1.95!important}
+article.article.reading-large :is(h2,h3){line-height:1.3!important}
+@media(max-width:620px){.article-reading-tools{padding:13px;gap:7px}.article-reading-tools button{flex:1 1 42%;padding:9px 8px;font-size:.82rem}}
+@media print{.article-reading-tools{display:none!important}}

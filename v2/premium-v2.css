@@ -3585,3 +3585,14 @@ html{scroll-padding-top:16px}
   .premium-v2 #kontakt .contact-form .contact-case-details .contact-stage select,
   .premium-v2 #kontakt .contact-form .contact-case-details .contact-optional-details select{width:100%;max-width:100%}
 }
+
+
+/* FOCUSED-CTA-20261110: clearly clickable contact choices */
+.premium-v2 #kontakt>.actions{display:flex;gap:11px;flex-wrap:wrap;margin:22px 0}
+.premium-v2 #kontakt>.actions .btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:13px 21px;border-radius:12px;box-shadow:0 8px 20px rgba(8,30,43,.1);text-align:center}
+.premium-v2 #kontakt>.actions .btn.secondary{
+  color:#fff!important;background:linear-gradient(137deg,#174256,#0e2d40)!important;
+  border:1.5px solid #b7a37c;
+}
+.premium-v2 #kontakt>.actions .btn.secondary:hover,.premium-v2 #kontakt>.actions .btn.secondary:focus-visible{background:#225468!important;border-color:#cfae78}
+@media(max-width:650px){.premium-v2 #kontakt>.actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}.premium-v2 #kontakt>.actions .btn{width:100%;margin:0}}

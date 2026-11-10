@@ -18,9 +18,9 @@ const nav=document.querySelector('.main-nav');const trigger=document.querySelect
   }
 }
 // Open native disclosures for hash links without requiring extra clicks.
-const revealTarget=()=>{
-  if(!window.location.hash)return;
-  let id;try{id=decodeURIComponent(window.location.hash.slice(1));}catch{return;}
+const revealTarget=(hash=window.location.hash)=>{
+  if(!hash)return;
+  let id;try{id=decodeURIComponent(hash.slice(1));}catch{return;}
   const target=document.getElementById(id);if(!target)return;
   let node=target,changed=false;
   while(node&&node!==document.body){
@@ -37,8 +37,8 @@ document.addEventListener("click",event=>{
   try{destination=new URL(link.href,window.location.href);}catch{return;}
   if(destination.origin===window.location.origin
      &&destination.pathname===window.location.pathname
-     &&destination.hash===window.location.hash&&destination.hash){
-    revealTarget();
+     &&destination.hash){
+    revealTarget(destination.hash);
   }
 },true);
 window.addEventListener("hashchange",revealTarget);

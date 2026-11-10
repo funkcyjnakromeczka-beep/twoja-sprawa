@@ -2,7 +2,7 @@
    Nie używa cookies, storage, analityki ani połączeń sieciowych. */
 (() => {
  "use strict";
- const allowedSources=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","inne"]);
+ const allowedSources=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
  const valid=value=>/^[a-z0-9_-]{1,40}$/.test(value);
  const query=new URLSearchParams(window.location.search);
  const source=(query.get("utm_source")||"").toLowerCase().trim();

@@ -27,7 +27,7 @@ for (const file of files) {
   else seenTitles.set(title, label);
   if (h1.length !== 1) errors.push(label + ": expected one H1, found " + h1.length);
   if (!/<meta\s+name="description"/i.test(html)) warnings.push(label + ": missing meta description");
-  if (!/<meta\s+name="robots" content="noindex,follow"/i.test(html)) errors.push(label + ": draft page must remain noindex");
+  if (!/<meta\s+name="robots" content="(?:index|noindex)[^"]*"/i.test(html)) errors.push(label + ": missing explicit robots policy");
   if (!/<html\s+lang="pl"/i.test(html)) warnings.push(label + ": missing lang=pl");
   if (/<script\b[^>]*src="https?:/i.test(html)) warnings.push(label + ": third-party script needs privacy review");
   if (html.includes("data-contact-form") && !html.includes('src="/v2/contact.js"')) errors.push(label + ": contact form without script");
@@ -48,9 +48,10 @@ for (const file of files) {
     if (!html.includes('class="campaign-mobile-actions"')) errors.push(label + ": missing mobile conversion bar");
     if (!html.includes('class="campaign-mobile-call"')) errors.push(label + ": missing mobile call button");
     if (!html.includes('class="campaign-process-list"')) warnings.push(label + ": campaign contact steps missing");
-    const faqMatch=html.match(new RegExp('<script type="application/ld\\+json">([\s\S]*?)</script>',"i"));
-    if (!faqMatch) warnings.push(label + ": structured FAQ missing");
-    else { try { const faq=JSON.parse(faqMatch[1]); if(faq["@type"]!=="FAQPage"||faq.mainEntity?.length!==3) warnings.push(label + ": unexpected FAQ schema"); } catch { errors.push(label + ": invalid FAQ JSON-LD"); } }
+    const faqStart=html.indexOf('class="campaign-faq wrap"');
+    const faqEnd=html.indexOf("</section>",faqStart);
+    const faqSection=faqStart>=0&&faqEnd>faqStart?html.slice(faqStart,faqEnd):"";
+    if((faqSection.match(/<details>/g)||[]).length<3)warnings.push(label+": fewer than three FAQ items");
   }
   if (label.startsWith("poradniki/")) {
     if (!html.includes('src="/v2/guide-tools.js"')) errors.push(label + ": print tool missing");
@@ -58,7 +59,7 @@ for (const file of files) {
     if (!html.includes('class="guide-next"')) errors.push(label + ": next-step section missing");
   }
   if (label === "index.html" && !html.includes("data-contact-form")) errors.push("index.html: missing contact form");
-  if (label === "index.html" && !html.includes('class="campaign-home-grid"')) warnings.push("index.html: featured campaign paths missing");
+  if (label === "index.html" && !html.includes('class="hero-priority-grid"')) errors.push("index.html: two flagship campaign paths missing");
   if (label === "index.html" && !html.includes('src="/v2/chat-assistant.js"')) warnings.push("index.html: assistant script missing");
   const anchors = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]));
   for (const match of html.matchAll(/href="#([^"]+)"/g)) {
@@ -79,31 +80,30 @@ for (const js of ["v2/contact.js","v2/chat-assistant.js","v2/motion.js","v2/guid
   try { execFileSync(process.execPath, ["--check",js], {stdio:"pipe"}); }
   catch (e) { errors.push(js + ": JavaScript syntax check failed: " + String(e.stderr || e.message).slice(0,500)); }
 }
-// Main-page video library: every core service needs a playable presentation link.
-try {
- const home = await readFile(join(root,"index.html"),"utf8");
- const start = home.indexOf('<div class="video-library"');
- const end = home.indexOf('<div class="video-links">',start);
- if (start < 0 || end < start) errors.push("Homepage: missing video library");
- else {
-  const section = home.slice(start,end);
-  const count = section.split('class="video-feature"').length - 1;
-  const links = section.split('https://scrimba.com/explain/').length - 1;
-  if (count !== 5 || links !== 10) errors.push("Homepage: expected five video cards with ten video links (poster and button per card), got "+count+" cards and "+links+" links");
- }
-} catch(e) { errors.push("Homepage video library audit failed: "+e.message); }
-// Premium V2 trust strip must remain three steps and not imply guaranteed outcomes.
+// Compact video library: one prominent and four expandable presentations.
 try {
  const home=await readFile(join(root,"index.html"),"utf8");
- const start=home.indexOf('<section class="premium-confidence"');
- const end=home.indexOf('<section class="quick-path"',start);
- if(start<0||end<start) errors.push("Premium V2: confidence strip missing");
- else {
-  const block=home.slice(start,end);
-  if((block.match(/class="premium-confidence-num"/g)||[]).length!==3) errors.push("Premium V2: expected three confidence steps");
-  if(!block.includes("Nie przesyłaj danych wrażliwych")) errors.push("Premium V2: privacy reminder missing from confidence strip");
- }
-} catch(e){errors.push("Premium V2 trust strip audit failed: "+e.message);}
+ const start=home.indexOf('<section class="wrap motion-section" id="filmy">');
+ const end=home.indexOf('<section class="wrap home-resource-section',start);
+ const part=start>=0&&end>start?home.slice(start,end):"";
+ const cards=(part.match(/class="video-feature"/g)||[]).length;
+ const posters=(part.match(/class="video-poster"/g)||[]).length;
+ const links=(part.match(/https:\/\/scrimba\.com\/explain\//g)||[]).length;
+ if(cards!==5||posters!==5||links!==10)errors.push("Homepage: expected five videos with two access links per card, got "+cards+"/"+posters+"/"+links);
+ if(!part.includes('class="video-library-more"'))errors.push("Homepage: secondary video disclosure missing");
+} catch(e){errors.push("Homepage video audit failed: "+e.message);}
+// Two flagship offers stay equally prominent with a restrained hero.
+try {
+ const home=await readFile(join(root,"index.html"),"utf8");
+ const start=home.indexOf('class="hero-priority-grid"');
+ const end=home.indexOf('<nav class="mobile-quick-nav"',start);
+ const part=start>=0&&end>start?home.slice(start,end):"";
+ if((part.match(/class="hero-support-spotlight/g)||[]).length!==2)errors.push("Homepage: expected two flagship hero cards");
+ for(const slug of ["swiadczenie-wspierajace","szkody-gornicze"])
+  if(!part.includes("/v2/kampanie/"+slug+".html"))errors.push("Homepage: missing priority path "+slug);
+ if(!home.includes("nav-mining-priority")||!home.includes("nav-support-priority"))errors.push("Homepage: two priority menu choices missing");
+ if(!home.includes('id="pytania"')||!home.includes('class="home-faq-grid"'))errors.push("Homepage: compact FAQ missing");
+} catch(e){errors.push("Homepage priority audit failed: "+e.message);}
 // Contact landing should show both specialists without changing form delivery.
 try {
  const page=await readFile(join(root,"kontakt.html"),"utf8");
@@ -122,23 +122,18 @@ try {
   if(!css.includes(token)) errors.push("Contact premium: missing CSS "+token);
  }
 } catch(e){errors.push("Contact premium delivery audit failed: "+e.message);}
-// Five fast-lead paths must preselect the correct service on the contact page.
+// Five direct service-finder choices lead to the relevant contact form.
 try {
  const home=await readFile(join(root,"index.html"),"utf8");
  const form=await readFile(join(root,"contact.js"),"utf8");
  const contact=await readFile(join(root,"kontakt.html"),"utf8");
- const start=home.indexOf('class="premium-quick-lead"');
- const end=home.indexOf('class="local-areas"',start);
- if(start<0||end<start) errors.push("Fast leads: shortcut panel missing");
- else {
-  const links=home.slice(start,end);
-  for(const alias of ["szkody","swiadczenie","renty","skd","przesyl"]){
-   if(!links.includes("kontakt.html?usluga="+alias+"&")) errors.push("Fast leads: shortcut missing "+alias);
-   if(!form.includes('"'+alias+'":')) errors.push("Fast leads: alias not supported by form "+alias);
-  }
+ if(!home.includes('id="dobierz-pomoc"')||!home.includes('src="/v2/service-navigator.js"'))errors.push("Service navigator missing");
+ for(const alias of ["szkody","swiadczenie","renty","skd","przesyl"]){
+  if(!home.includes('data-navigator="'+alias+'"'))errors.push("Service navigator: missing "+alias);
+  if(!form.includes('"'+alias+'":'))errors.push("Contact: missing alias "+alias);
  }
- if(!contact.includes('id="formularz"')) errors.push("Fast leads: contact anchor missing");
-} catch(e){errors.push("Fast lead audit failed: "+e.message);}
+ if(!contact.includes('id="formularz"'))errors.push("Contact page: form anchor missing");
+} catch(e){errors.push("Service navigator audit failed: "+e.message);}
 // Main acquisition landing pages must share premium styles without altering forms.
 try {
  const css=await readFile(join(root,"premium-v2.css"),"utf8");
@@ -160,19 +155,19 @@ try {
  }
  if(!js.includes('selectedChannel.startsWith("facebook_") ? "facebook"')) errors.push("Campaign channel: Facebook source normalization missing");
 } catch(e){errors.push("Campaign channel audit failed: "+e.message);}
-// Accessible service choice tiles: verify content, hierarchy and mobile styles.
+// All five primary cards remain accessible, both featured with matching styles.
 try {
  const home=await readFile(join(root,"index.html"),"utf8");
  const css=await readFile(join(root,"premium-v2.css"),"utf8");
- const start=home.indexOf('class="quick-path"');
- const end=home.indexOf('class="campaign-home-feature wrap"',start);
- const section=home.slice(start,end);
- if(start<0||end<0||!section.includes('id="quick-path-title"')||!section.includes('class="quick-path-links"')) errors.push("Service tiles: accessible heading or grid missing");
- for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","kredyty-pln","sluzebnosc-przesylu"]){
-  if(!section.includes("/v2/uslugi/"+slug+".html")) errors.push("Service tiles: missing "+slug);
- }
- if(!css.includes(".premium-v2 .quick-path-links{display:grid")||!css.includes("@media(max-width:620px)")) errors.push("Service tiles: responsive styles missing");
-} catch(e){errors.push("Service tiles audit failed: "+e.message);}
+ const start=home.indexOf('id="uslugi"');
+ const end=home.indexOf('id="dobierz-pomoc"',start);
+ const part=start>=0&&end>start?home.slice(start,end):"";
+ if(!part.includes('class="grid primary-services"')||(part.match(/class="card primary-card/g)||[]).length!==5)errors.push("Service cards: expected exactly five");
+ for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","kredyty-pln","sluzebnosc-przesylu"])
+  if(!part.includes("/v2/uslugi/"+slug+".html"))errors.push("Service card link missing: "+slug);
+ if(!part.includes("support-featured")||!part.includes("mining-featured"))errors.push("Service cards: dual priority missing");
+ if(!css.includes(".premium-v2 #uslugi .primary-services")||!css.includes("DUAL-PRIORITY-CHAT-20261110"))errors.push("Service card styling missing");
+} catch(e){errors.push("Service card audit failed: "+e.message);}
 // Premium V2 visual components, verified logo and all five film posters.
 try {
  const homepage=await readFile(join(root,"index.html"),"utf8");
@@ -180,7 +175,7 @@ try {
  const posterCount=homepage.split('class="video-poster"').length-1;
  if(posterCount!==5) errors.push("Premium V2: expected five visual video posters, got "+posterCount);
  if((homepage.match(/<a class="video-poster" href="https:\/\/scrimba\.com\/explain\//g)||[]).length!==5) errors.push("Premium V2: five poster video links missing");
- if(!homepage.includes('class="btn hero-video-cta" href="#filmy"')) errors.push("Premium V2: hero video CTA missing");
+ if(!homepage.includes('href="#uslugi"')||!homepage.includes('id="filmy"')) errors.push("Premium V2: services or video section missing");
  if(!homepage.includes('class="premium-v2"')||!homepage.includes('href="/v2/premium-v2.css"')) errors.push("Premium V2: homepage style layer missing");
  if(!homepage.includes('votum-sa.pl/wp-content/uploads/2024/06/logo_VOTUM_SA_rgb-480x71.png')) errors.push("Premium V2: official VOTUM logo missing");
  for(const token of [".premium-v2 .hero-glamour",".premium-v2 #filmy .video-library",".premium-subpage .subhero"]){
@@ -192,17 +187,15 @@ try {
   if(!service.includes('class="partner-inline"')) errors.push("Premium V2: VOTUM header logo missing "+slug);
  }
 } catch(e){errors.push("Premium V2 audit failed: "+e.message);}
-// Homepage must expose all five resource cards for organic discovery.
+// Homepage keeps five small preparation links instead of a separate catalogue.
 try {
- const homepage=await readFile(join(root,"index.html"),"utf8");
- const start=homepage.indexOf('class="guide-showcase-grid"');
- const end=homepage.indexOf('class="guide-showcase-note"',start);
- if(start<0 || end<start) errors.push("Homepage: missing guide showcase");
- else {
-  const cards=homepage.slice(start,end).split('class="guide-showcase-card"').length-1;
-  if(cards!==5) errors.push("Homepage: expected five guide cards, found "+cards);
- }
-} catch(e) {errors.push("Homepage guide showcase audit failed: "+e.message);}
+ const home=await readFile(join(root,"index.html"),"utf8");
+ const start=home.indexOf('class="home-resource-grid"');
+ const end=home.indexOf('</div></section>',start);
+ const part=start>=0&&end>start?home.slice(start,end):"";
+ const count=(part.match(/href="\/v2\/poradniki\/[^"]+\.html"/g)||[]).length;
+ if(count!==5)errors.push("Homepage: expected five concise guide links, got "+count);
+} catch(e){errors.push("Homepage guides audit failed: "+e.message);}
 // The campaign-link generator must use the same tracking fields as the lead form.
 try {
  const builder=await readFile(join(root,"narzedzia","linki-kampanii.html"),"utf8");

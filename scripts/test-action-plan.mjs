@@ -21,7 +21,7 @@ function setup(query){
  const keys=["szkody","swiadczenie","renty","skd","przesyl"];
  const buttons=keys.map(key=>{const b=new Node("button");b.dataset.planService=key;return b;});
  const dom={};
- for(const key of ["[data-plan-stage-container]","[data-plan-stage-select]","[data-plan-title]","[data-plan-intro]","[data-plan-checklist]","[data-plan-progress]","[data-plan-print]","[data-plan-reset]","[data-plan-contact]"])dom[key]=new Node(key==="[data-plan-stage-select]"?"select":"div");
+ for(const key of ["[data-plan-stage-container]","[data-plan-stage-select]","[data-plan-title]","[data-plan-intro]","[data-plan-checklist]","[data-plan-progress]","[data-plan-print]","[data-plan-reset]","[data-plan-contact]","[data-plan-call]"])dom[key]=new Node(key==="[data-plan-stage-select]"?"select":"div");
  const root={querySelector:key=>dom[key],querySelectorAll:sel=>sel==="[data-plan-service]"?buttons:[]};
  let printCount=0;
  const window={location:{search:query,origin:"https://twoja-sprawa.pages.dev"},print:()=>printCount++};
@@ -36,6 +36,8 @@ assert.equal(get("[data-plan-checklist]").children.length,5);
 assert.equal(get("[data-plan-progress]").textContent,"0 z 5");
 let u=new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev");
 assert.equal(u.pathname,"/v2/kontakt.html");
+assert.equal(get("[data-plan-call]").href,"tel:+48796441345");
+assert.equal(get("[data-plan-call]").hidden,false);
 for(const [field,value] of Object.entries({usluga:"szkody",etap:"ugoda",lead_path:"plan",utm_source:"facebook",utm_medium:"social",utm_campaign:"szkody_lubin",utm_content:"post_a"}))assert.equal(u.searchParams.get(field),value);
 assert.equal(u.hash,"#formularz");
 assert.equal(u.searchParams.get("name"),null);
@@ -50,6 +52,7 @@ for(const [name,expectedTel] of [["swiadczenie","500 171 531"],["renty","500 171
  state.click(name);assert.ok(get("[data-plan-title]").textContent.length>5);
  assert.equal(get("[data-plan-checklist]").children.length,4);
  assert.ok(get("[data-plan-contact]").textContent.includes(expectedTel));
+ assert.ok(get("[data-plan-call]").textContent.includes(expectedTel));
  assert.equal(get("[data-plan-progress]").textContent,"0 z 4");
 }
 state.click("swiadczenie");
@@ -61,6 +64,7 @@ assert.equal(u.searchParams.get("etap"),"odwolanie");
 get("[data-plan-reset]").events.click();
 assert.equal(get("[data-plan-title]").textContent,"Wybierz temat po lewej stronie");
 assert.equal(get("[data-plan-print]").disabled,true);
+assert.equal(get("[data-plan-call]").hidden,true);
 const invalid=setup("?usluga=<script>&etap=xxxx&utm_source=not_allowed&utm_campaign=%3Cscript%3E");
 invalid.click("szkody");
 u=new URL(invalid.dom["[data-plan-contact]"].href,"https://twoja-sprawa.pages.dev");

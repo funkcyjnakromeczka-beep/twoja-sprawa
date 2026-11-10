@@ -55,7 +55,38 @@
    "Szkody górnicze":["Wybierz etap sprawy","Zauważyłem/am uszkodzenia","Zgłosiłem/am szkodę do kopalni","Otrzymałem/am propozycję ugody","Kopalnia odmówiła","Inna sytuacja"],
    "Świadczenie wspierające":["Wybierz etap sprawy","Dopiero planuję wniosek do WZON","Czekam na decyzję WZON","Mam decyzję WZON","Chcę przeanalizować decyzję lub odwołanie","Mam sprawę w ZUS","Inna sytuacja"]
   };
-  const updateStage=()=>{const options=stageOptions[select.value];stage.replaceChildren();stageWrap.hidden=!options;if(!options)return;stageLabel.textContent=select.value==="Szkody górnicze"?"Na jakim etapie jest sprawa szkody?":"Na jakim etapie jest sprawa świadczenia?";for(let i=0;i<options.length;i++){const option=document.createElement("option");option.value=i===0?"":options[i];option.textContent=options[i];stage.append(option);}stage.required=false;};select.addEventListener("change",updateStage);updateStage();
+  // Etap pochodzi tylko ze ścisłej listy kodów, bez przyjmowania dowolnego tekstu z URL.
+  const stageCodes={
+    "Szkody górnicze":{
+      uszkodzenia:"Zauważyłem/am uszkodzenia",
+      zgloszona:"Zgłosiłem/am szkodę do kopalni",
+      ugoda:"Otrzymałem/am propozycję ugody",
+      odmowa:"Kopalnia odmówiła"
+    },
+    "Świadczenie wspierające":{
+      wniosek:"Dopiero planuję wniosek do WZON",
+      oczekiwanie:"Czekam na decyzję WZON",
+      decyzja:"Mam decyzję WZON",
+      zus:"Mam sprawę w ZUS",
+      odwolanie:"Chcę przeanalizować decyzję lub odwołanie"
+    }
+  };
+  const requestedStage=(campaignParams.get("etap")||"").toLowerCase().trim();
+  let stagePrefillPending=true;
+  const updateStage=()=>{
+    const options=stageOptions[select.value];
+    stage.replaceChildren();stageWrap.hidden=!options;
+    if(!options){stagePrefillPending=false;return;}
+    stageLabel.textContent=select.value==="Szkody górnicze"?"Na jakim etapie jest sprawa szkody?":"Na jakim etapie jest sprawa świadczenia?";
+    for(let i=0;i<options.length;i++){
+      const option=document.createElement("option");option.value=i===0?"":options[i];option.textContent=options[i];stage.append(option);
+    }
+    const prefill=stagePrefillPending?stageCodes[select.value]?.[requestedStage]:"";
+    if(prefill&&options.includes(prefill))stage.value=prefill;
+    stagePrefillPending=false;
+    stage.required=false;
+  };
+  select.addEventListener("change",updateStage);updateStage();
   const name=field("Imię","text",true,80,"given-name");
   const city=field("Miejscowość (opcjonalnie)","text",false,100,"address-level2");
   const phone=field("Telefon kontaktowy (telefon lub e-mail wystarczy)","tel",false,30,"tel");phone.pattern="[+0-9()\\s-]{7,30}";phone.title="Podaj numer telefonu (co najmniej 7 znaków)";phone.inputMode="tel";
@@ -73,6 +104,7 @@
     const extra=document.createElement("details");extra.className="contact-case-details";
     const summary=document.createElement("summary");summary.textContent="Dodaj opis i szczegóły sprawy (opcjonalnie)";
     extra.append(summary,stageWrap,city.previousElementSibling,city,methodLabel,method,optionalDetails,msgLabel,msg);
+    if(stage.value && requestedStage)extra.open=true;
     form.append(extra);
   }
   const ackLabel=document.createElement("label");ackLabel.className="check";const ack=document.createElement("input");ack.type="checkbox";ack.required=true;ackLabel.append(ack,document.createTextNode(automatic ? " Zapoznałem/am się z informacjami o prywatności i proszę o kontakt w sprawie mojego zgłoszenia." : " Rozumiem, że wiadomość nie zostanie wysłana automatycznie. Zapoznałem/am się z informacjami o prywatności."));form.append(ackLabel);

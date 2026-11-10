@@ -1,0 +1,25 @@
+/* Twoja Sprawa — własne treści edukacyjne i organiczne ścieżki kontaktu */
+.knowledge-article .subhero{padding-top:clamp(45px,6vw,80px);padding-bottom:clamp(48px,6vw,85px)}
+.knowledge-article .subhero h1{max-width:1040px;font-size:clamp(2.3rem,4.3vw,4rem)}
+.knowledge-article .subhero p{max-width:78ch}
+.knowledge-article .knowledge-body{max-width:1020px;padding-top:55px;padding-bottom:45px}
+.knowledge-article .knowledge-body>section{padding:clamp(19px,3vw,36px);border:1px solid #dce4df;background:#fff;border-radius:16px;margin:0 0 18px}
+.knowledge-article .knowledge-body h2{font:700 clamp(1.35rem,2.5vw,1.9rem)/1.2 Georgia,serif;color:#143847;margin:0 0 15px}
+.knowledge-article .knowledge-body :is(p,li){font-size:1rem;line-height:1.8;color:#2b4b58}
+.knowledge-article .knowledge-body :is(ul,ol){padding-left:25px;margin:15px 0 10px}
+.knowledge-article .knowledge-body li{margin:9px 0}
+.knowledge-article .knowledge-body a{color:#0f5775;text-decoration:underline;text-underline-offset:3px}
+.knowledge-article .knowledge-lead{margin:0 0 26px;font-size:1.11rem;line-height:1.8;color:#213f4c}
+.knowledge-article .knowledge-contact{max-width:100%;padding:clamp(35px,6vw,70px) 6%}
+.knowledge-article .knowledge-contact>h2{font:700 clamp(1.6rem,3vw,2.4rem)/1.2 Georgia,serif;color:#153847}
+.knowledge-article .knowledge-contact>p{color:#3d5863}
+.knowledge-article .knowledge-contact [data-contact-form]{max-width:890px;margin:28px auto}
+.premium-v2 .editorial-reading{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:23px}
+.premium-v2 .editorial-reading a{display:flex;flex-direction:column;gap:9px;border:1px solid #d2bd94;border-radius:16px;padding:22px;background:linear-gradient(135deg,#142f3d,#0a2432);color:#fff;text-decoration:none;min-height:180px;box-shadow:0 10px 25px rgba(8,37,49,.12)}
+.premium-v2 .editorial-reading strong{font:700 clamp(1.11rem,1.9vw,1.35rem)/1.2 Georgia,serif;color:#ffe4b3}
+.premium-v2 .editorial-reading small{color:#d8e2e5;font-size:.89rem;line-height:1.5}
+.premium-v2 .editorial-reading em{font-style:normal;font-weight:760;color:#e8bb79;margin-top:auto}
+.premium-v2 .editorial-reading a:hover{border-color:#d7a45e;transform:translateY(-2px)}
+.premium-v2 .editorial-reading a:focus-visible{outline:3px solid #e8bb79;outline-offset:4px}
+@media(max-width:700px){.premium-v2 .editorial-reading{grid-template-columns:1fr}.premium-v2 .editorial-reading a{min-height:142px}.knowledge-article .knowledge-body{padding:32px 5%}}
+@media(prefers-reduced-motion:reduce){.premium-v2 .editorial-reading a:hover{transform:none}}

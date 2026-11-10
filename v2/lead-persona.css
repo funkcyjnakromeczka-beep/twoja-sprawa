@@ -49,3 +49,11 @@
  .premium-subpage .service-persona-copy small,
  .premium-campaign .campaign-persona-copy small{font-size:.66rem}
 }
+
+/* Merytoryczna ścieżka z głównej usługi do filtrowanej bazy FAQ. */
+.premium-subpage .faq-service-link{padding:clamp(20px,3vw,35px);margin-block:25px 43px;background:#f5f7f3;border:1px solid #c5d6d1;border-left:4px solid #b99660;border-radius:14px;max-width:1150px}
+.premium-subpage .faq-service-link h2{font:700 clamp(1.35rem,2.5vw,1.8rem)/1.2 Georgia,serif;color:#1a4050;margin:0 0 12px}
+.premium-subpage .faq-service-link p{color:#46626c;line-height:1.65;margin:0 0 14px}
+.premium-subpage .faq-service-link a{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:11px 16px;border-radius:10px;background:#143c4a;color:#fff;text-decoration:none;font-weight:750}
+.premium-subpage .faq-service-link a:focus-visible{outline:3px solid #ba9250;outline-offset:3px}
+@media(max-width:580px){.premium-subpage .faq-service-link{margin-inline:14px}.premium-subpage .faq-service-link a{width:100%}}

@@ -3923,3 +3923,31 @@ html{scroll-padding-top:16px}
   .chat-assistant .chat-toggle{font-size:.82rem;padding:10px 13px}
   .chat-assistant .chat-choices button{min-height:46px}
 }
+
+
+/* ORGANIC-SHARE-20261110: compact referral utility on dedicated landing pages */
+.campaign-share{
+  display:flex;align-items:center;justify-content:space-between;gap:25px;
+  max-width:1180px;margin:24px auto 32px;padding:24px clamp(18px,3vw,32px);
+  background:linear-gradient(130deg,#123b4c,#0a2638);
+  color:#f7f6f1;border:1px solid #bba16f;border-radius:17px;
+  box-shadow:0 13px 30px rgba(9,32,44,.11);
+}
+.campaign-share h2{font-size:clamp(1.3rem,2.3vw,1.65rem);margin:5px 0 7px;color:#fff!important}
+.campaign-share p{max-width:65ch;color:#dce8e8;margin:0;font-size:.92rem;line-height:1.55}
+.campaign-share-action{display:grid;gap:9px;min-width:min(240px,100%)}
+.campaign-share-action .btn{
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  min-height:49px;text-align:center;padding:12px 17px;border-radius:12px;
+  background:#e0be87!important;color:#102e3e!important;border:1px solid #ead1a7;
+  font:800 .91rem/1.35 system-ui,sans-serif;
+}
+.campaign-share-action .btn:hover{background:#f0d1a1!important}
+.campaign-share-action .btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.campaign-share-action [data-share-feedback]{
+  display:block;min-height:1em;font-size:.8rem;line-height:1.5;color:#f2e3c9;
+}
+@media(max-width:760px){
+ .campaign-share{flex-direction:column;align-items:stretch;padding:21px 18px;margin:20px 14px 29px}
+ .campaign-share-action{width:100%}
+}

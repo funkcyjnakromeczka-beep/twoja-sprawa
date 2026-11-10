@@ -41,4 +41,16 @@
  const known=filters.map(button=>button.dataset.faqFilter);
  if(requested!=="all"&&known.includes(requested))choose(requested);
  else refresh();
+ // Direct links from the global search open the exact answer instead of a closed accordion.
+ const revealLinkedQuestion=()=>{
+  const hash=(window.location.hash||"").slice(1);
+  if(!/^pytanie-[0-9]+-[a-z0-9-]+$/.test(hash))return;
+  const card=cards.find(item=>item.id===hash);
+  if(!card)return;
+  if(card.hidden)choose(card.dataset.faqCategory);
+  const details=card.querySelector?.("details");
+  if(details)details.open=true;
+ };
+ window.addEventListener?.("hashchange",revealLinkedQuestion);
+ revealLinkedQuestion();
 })();

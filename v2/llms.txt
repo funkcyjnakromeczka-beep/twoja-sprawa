@@ -17,6 +17,9 @@
 - [Biblioteka poradników z wyszukiwarką i filtrami](https://twoja-sprawa.pages.dev/wiedza/): 10 artykułów o szkodach, WZON, ZUS, rentach, SKD i przesyle, z narzędziami powiększania tekstu i wydruku.
 - [Poradniki i listy kontrolne](https://twoja-sprawa.pages.dev/wiedza/)
 
+## Bezpłatne narzędzia
+- [Plan pierwszych kroków — pięć usług](https://twoja-sprawa.pages.dev/plan-dzialania.html): prywatna checklista dokumentowania szkód górniczych, WZON/ZUS, rent powypadkowych, umów kredytu PLN oraz służebności przesyłu. Zaznaczanie kroków i wydruk działają lokalnie, bez logowania, bez przekazywania danych osobowych; narzędzie nie stanowi indywidualnej porady prawnej.
+
 ## O nas i kontakt
 - [Osoby do kontaktu: Wojciech Obiegło i Paulina Chandrała](https://twoja-sprawa.pages.dev/o-nas.html)
 - [Kontakt](https://twoja-sprawa.pages.dev/kontakt.html)

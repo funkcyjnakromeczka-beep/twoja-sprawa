@@ -143,12 +143,12 @@
   if(url.includes("swiadczenie-wspierajace"))choose(topics[0]);
   else if(url.includes("szkody-gornicze"))choose(topics[1]);
   // On narrow screens, the form should remain unobstructed while the assistant is closed.
-  for(const [areaId,className] of [["kontakt","is-contact-area"],["formularz","is-contact-area"],["filmy","is-video-area"]]){
-    const target=document.getElementById(areaId);
+  const contactArea=document.getElementById("formularz")||document.getElementById("kontakt");
+  const videoArea=document.getElementById("filmy");
+  for(const [target,className] of [[contactArea,"is-contact-area"],[videoArea,"is-video-area"]]){
     if(!target||!("IntersectionObserver" in window))continue;
     const observer=new IntersectionObserver(entries=>{
-      const near=entries.some(entry=>entry.isIntersecting);
-      root.classList.toggle(className,near);
+      root.classList.toggle(className,Boolean(entries[0]?.isIntersecting));
     },{threshold:0,rootMargin:"0px 0px -50px 0px"});
     observer.observe(target);
   }

@@ -6,6 +6,7 @@
 import { readdir, readFile, writeFile, mkdir, cp, rm } from "node:fs/promises";
 import { join, relative, dirname } from "node:path";
 import {withNetworkBrand} from "./network-brand.mjs";
+import {toPublicRoute} from "./public-routes.mjs";
 import { shouldIndexRoute } from "./seo-policy.mjs";
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
@@ -45,8 +46,8 @@ async function fetchPortraits(){
 const pages=[];
 const structured = (route,canonical,title) => {
   // This graph describes SuccessTree's own agency site, never VOTUM as the publisher.
-  const owner={"@type":"Person","@id":origin+"/#wojciech-obieglo",name:"Wojciech Obiegło",url:origin+"/o-nas.html#wojciech",image:origin+"/assets/wojciech-obieglo.jpg"};
-  const colleague={"@type":"Person","@id":origin+"/#paulina-chandrala",name:"Paulina Chandrała",url:origin+"/o-nas.html#paulina",image:origin+"/assets/paulina-chandrala.jpg"};
+  const owner={"@type":"Person","@id":origin+"/#wojciech-obieglo",name:"Wojciech Obiegło",url:origin+"/o-nas#wojciech",image:origin+"/assets/wojciech-obieglo.jpg"};
+  const colleague={"@type":"Person","@id":origin+"/#paulina-chandrala",name:"Paulina Chandrała",url:origin+"/o-nas#paulina",image:origin+"/assets/paulina-chandrala.jpg"};
   const organization={
     "@type":"Organization","@id":origin+"/#successtree",name:"SuccessTree OBIEGŁO WOJCIECH",
     url:origin+"/",email:"twojasprawa_votum@outlook.com",telephone:"+48 796 441 345",
@@ -92,10 +93,13 @@ async function walk(dir){
     if(entry.name.endsWith(".html")){
       let html=withNetworkBrand(await readFile(absolute,"utf8"));
       const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
-      const canonical=origin+route;
+      const publicRoute=toPublicRoute(route); // Cloudflare Pages maps *.html to extensionless URLs.
+      const canonical=origin+publicRoute;
       const indexable=shouldIndexRoute(route);
       const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
+      // Avoid extra redirects: static links use the same extensionless public paths as sitemap.
+      html=html.replace(/href="(\/[^"?#]+)\.html(?=[?#"])/g,(_m,path)=>'href="'+path);
       html=localizePortraits(html);
       html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
       const robotsTag=/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i;
@@ -110,7 +114,7 @@ async function walk(dir){
       if(!html.includes('<meta name="robots" content="'+robots+'">')) throw new Error("Incorrect release robots tag: "+rel);
       html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
       await writeFile(target,html);
-      if(indexable) pages.push(route);
+      if(indexable) pages.push(publicRoute);
     } else if (rel.endsWith(".css")) {
       let css=await readFile(absolute,"utf8");
       css=css.replaceAll("/v2/assets/","/assets/");

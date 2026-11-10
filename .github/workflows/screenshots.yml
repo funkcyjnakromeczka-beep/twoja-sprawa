@@ -1,12 +1,19 @@
 name: Zrzuty ekranu — podgląd PC i telefon
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/screenshots.yml'
+      - 'scripts/screenshot-preview.mjs'
+      - 'scripts/network-brand.mjs'
+      - 'v2/network-brand.css'
 jobs:
   screenshots:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,9 +27,11 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Wykonaj zrzuty ekranu
         run: node scripts/screenshot-preview.mjs
-      - name: Udostępnij obrazy do kontroli
+      - name: Udostępnij obrazy do kontroli, również przy błędach
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: twoja-sprawa-podglad-pc-telefon
           path: screenshots/
-          retention-days: 7
+          retention-days: 3
+          if-no-files-found: warn

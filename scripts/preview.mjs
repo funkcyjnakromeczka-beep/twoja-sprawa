@@ -3,7 +3,7 @@
 import {readdir,readFile,writeFile,mkdir,cp,rm} from "node:fs/promises";
 import {join,relative,dirname} from "node:path";
 const source="v2",dest="dist-preview";
-const buildId="20261110-focused20";
+const buildId="20261110-focused21";
 await rm(dest,{recursive:true,force:true});
 await mkdir(dest,{recursive:true});
 let pages=0;

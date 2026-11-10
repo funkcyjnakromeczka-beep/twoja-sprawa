@@ -43,6 +43,15 @@ W panelu **Workers & Pages → projekt → Settings → Builds**:
 - [ ] Google Search Console: zweryfikuj domenę i prześlij `/sitemap.xml`; monitoruj stan indeksacji. Dodatkowo Bing Webmaster Tools.
 - [ ] Sprawdź dostępność dla `Googlebot`, `Bingbot` i `OAI-SearchBot` także przez WAF/ochronę botów Cloudflare.
 
+## Seria II — plan działania i poprawne adresy SEO
+- [x] Dodano generator planu pierwszych kroków dla pięciu usług, z dziewięcioma etapami szkód górniczych i WZON/ZUS.
+- [x] Dodano postęp checklisty, druk PDF, reset i bezpośredni numer osoby do kontaktu; zero cookies i brak zewnętrznych żądań.
+- [x] Połączono generator z przewodnikiem, dwiema głównymi usługami, biblioteką i formularzami.
+- [x] Testy scenariuszy planu, formularza i 50 kolejnych kontroli zakończyły się powodzeniem.
+- [x] Zweryfikowano przekierowania Cloudflare Pages z `*.html` na adresy bez rozszerzenia. Poprawiono canonical, og:url, JSON-LD i sitemap w kodzie wydania.
+- [ ] Po zatwierdzonym wdrożeniu zweryfikuj końcowy `/plan-dzialania`, robots, sitemap, canonical, przekierowania oraz stan indeksacji.
+- [ ] Wykonaj rzeczywisty test doręczenia Web3Forms do skrzynki Outlook (bez danych szczególnie chronionych).
+
 ## 5. Dodatkowy pakiet jakości UX i SEO
 - [x] Biblioteka wiedzy (10 artykułów, filtrowanie, wyszukiwanie bez polskich znaków i reset) — test automatyczny.
 - [x] Narzędzia czytania i drukowania na 10 artykułach — test automatyczny.

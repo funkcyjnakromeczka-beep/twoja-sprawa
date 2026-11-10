@@ -142,7 +142,10 @@
     buttons.append(btn);
   }
   const url=window.location.pathname;
-  if(url.includes("swiadczenie-wspierajace"))choose(topics[0]);
+  const chosenInForm=(new URLSearchParams(window.location.search).get("usluga")||"").toLowerCase();
+  const chosenTopic=topics.find(t=>(t.alias||t.key)===chosenInForm);
+  if(chosenTopic)choose(chosenTopic);
+  else if(url.includes("swiadczenie-wspierajace"))choose(topics[0]);
   else if(url.includes("szkody-gornicze"))choose(topics[1]);
   // On narrow screens, the form should remain unobstructed while the assistant is closed.
   const contactArea=document.getElementById("formularz")||document.getElementById("kontakt");

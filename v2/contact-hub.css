@@ -1,0 +1,31 @@
+/* Kontakt 2.0 — osobista i prosta ścieżka do pierwszego zgłoszenia. */
+.premium-subpage.theme-contact .contact-specialists{padding-top:clamp(32px,5vw,67px);padding-bottom:clamp(28px,4vw,52px)}
+.premium-subpage.theme-contact .contact-specialists .section-lead{max-width:70ch}
+.premium-subpage.theme-contact .contact-specialists-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2.5vw,27px);margin-top:24px}
+.premium-subpage.theme-contact .contact-specialist{
+ display:grid;grid-template-columns:clamp(95px,12vw,156px) minmax(0,1fr);
+ align-items:center;gap:clamp(15px,2vw,25px);border-radius:23px;
+ background:linear-gradient(130deg,#0b2939,#154151);color:#fff;
+ border:1px solid #cead78;box-shadow:0 16px 35px rgba(8,39,54,.16);padding:clamp(16px,2.4vw,29px);min-width:0;
+}
+.premium-subpage.theme-contact .contact-specialist.support{background:linear-gradient(125deg,#16453b,#0d362f);border-color:#a8ccb5}
+.premium-subpage.theme-contact .contact-specialist-photo{position:relative;width:100%;aspect-ratio:4/5;border:3px solid #dfbc85;border-radius:15px;overflow:hidden;display:grid;place-items:center;background:#2c5863;color:white;font-weight:800}
+.premium-subpage.theme-contact .contact-specialist.support .contact-specialist-photo{border-color:#b7d7bf}
+.premium-subpage.theme-contact .contact-specialist-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%}
+.premium-subpage.theme-contact .contact-specialist-photo img[hidden]{display:none}
+.premium-subpage.theme-contact .contact-specialist-content{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.premium-subpage.theme-contact .contact-specialist-tag{background:none;border:0;color:#eac994;font-size:.72rem;font-weight:780;text-transform:uppercase;letter-spacing:.055em}
+.premium-subpage.theme-contact .contact-specialist.support .contact-specialist-tag{color:#b6e4c5}
+.premium-subpage.theme-contact .contact-specialist h3{font:700 clamp(1.16rem,2.2vw,1.58rem)/1.18 Georgia,serif;color:#fff;margin:0}
+.premium-subpage.theme-contact .contact-specialist p{color:#dae5e6;line-height:1.56;margin:2px 0 6px;font-size:.92rem}
+.premium-subpage.theme-contact .contact-specialist-phone{color:#ffe1b3;font-weight:800;font-size:1.04rem;padding:7px 1px;min-height:40px}
+.premium-subpage.theme-contact .contact-specialist.support .contact-specialist-phone{color:#c7efd4}
+.premium-subpage.theme-contact .contact-specialist .btn{display:inline-flex;align-items:center;justify-content:center;background:#e9c68d;color:#123241;min-height:46px;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:800;margin:3px 0 0}
+.premium-subpage.theme-contact .contact-specialist.support .btn{background:#c5e6ce;color:#103e33}
+.premium-subpage.theme-contact .contact-specialist a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.premium-subpage.theme-contact .contact-process{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:18px 0 0}
+.premium-subpage.theme-contact .contact-process li{list-style:none;padding:18px;background:#fff;border:1px solid #d9e1df;border-radius:14px;color:#2a4b59;line-height:1.5}
+.premium-subpage.theme-contact .contact-process strong{display:block;color:#10546a;font-weight:800;margin-bottom:5px}
+@media(max-width:920px){.premium-subpage.theme-contact .contact-specialists-grid{grid-template-columns:1fr}.premium-subpage.theme-contact .contact-specialist{max-width:770px}}
+@media(max-width:530px){.premium-subpage.theme-contact .contact-specialist{grid-template-columns:92px minmax(0,1fr);gap:12px;padding:14px}.premium-subpage.theme-contact .contact-specialist h3{font-size:1.12rem}.premium-subpage.theme-contact .contact-specialist p{font-size:.86rem}.premium-subpage.theme-contact .contact-specialist-tag{font-size:.65rem}.premium-subpage.theme-contact .contact-specialist .btn{width:100%;font-size:.84rem}.premium-subpage.theme-contact .contact-process{grid-template-columns:1fr}}
+@media(max-width:760px) and (min-width:531px){.premium-subpage.theme-contact .contact-process{grid-template-columns:1fr}}

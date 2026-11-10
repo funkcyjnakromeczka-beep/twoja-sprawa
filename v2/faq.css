@@ -1,0 +1,48 @@
+/* Twoja Sprawa FAQ 2026 — wyszukiwarka i dostępny akordeon. */
+.faq-page{background:#f4f5f0;color:#193b49}
+.faq-page .faq-container{width:min(1190px,calc(100% - 34px));margin-inline:auto}
+.faq-page .faq-hero{padding:clamp(45px,6.5vw,90px) 0;background:radial-gradient(circle at 85% 10%,rgba(221,183,114,.2),transparent 43%),linear-gradient(125deg,#0a2332,#144151 73%,#16423e);border-bottom:2px solid #c3a071;color:#f6f7f3}
+.faq-page .faq-hero .eyebrow{color:#d9b779;text-transform:uppercase;letter-spacing:.13em;font-weight:800}
+.faq-page .faq-hero h1{max-width:850px;margin:13px 0 18px;font:700 clamp(2rem,5vw,3.9rem)/1.12 Georgia,serif;color:#fff;letter-spacing:-.03em}
+.faq-page .faq-hero p{max-width:77ch;color:#e0e8e7;line-height:1.8;font-size:clamp(1rem,1.4vw,1.12rem)}
+.faq-page .faq-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:23px}
+.faq-page .faq-hero-actions a{display:inline-flex;align-items:center;justify-content:center;padding:12px 17px;min-height:49px;background:#e8c58f;color:#102f3d;text-decoration:none;font-weight:800;border:1px solid #d4b176;border-radius:10px}
+.faq-page .faq-hero-actions a:nth-child(2){background:transparent;color:#ffe1b4}
+.faq-page .faq-workspace{padding:40px 0 55px}
+.faq-page .faq-workspace-intro{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
+.faq-page .faq-workspace-intro h2{font:700 clamp(1.6rem,3.2vw,2.3rem)/1.2 Georgia,serif;color:#173c4c;margin:0 0 17px}
+.faq-page [data-faq-count]{color:#546e77;font-size:.87rem;margin:0 0 14px}
+.faq-page label[for="faq-search"]{display:block;font-size:.92rem;font-weight:800;color:#245062;margin-bottom:10px}
+.faq-page #faq-search{width:100%;border:1px solid #a9bfc0;border-radius:12px;padding:14px 17px;background:#fff;color:#143544;box-shadow:0 4px 15px rgba(15,52,64,.06);min-height:54px;font:500 1rem/1.35 system-ui,sans-serif}
+.faq-page .faq-filters{display:flex;flex-wrap:wrap;gap:8px;margin:17px 0 16px}
+.faq-page .faq-filters button{cursor:pointer;min-height:44px;border:1px solid #c2d0ce;border-radius:30px;background:#fff;color:#23505c;padding:9px 13px;font:750 .82rem/1.3 system-ui,sans-serif}
+.faq-page .faq-filters button[aria-pressed="true"]{color:#f8e2b6;background:#123949;border-color:#bd965e}
+.faq-page :is(.faq-filters button,.faq-reset,.faq-card summary,.faq-next a,.faq-hero-actions a):focus-visible{outline:3px solid #b99354;outline-offset:3px}
+.faq-page .faq-reset{cursor:pointer;display:inline-flex;min-height:42px;align-items:center;margin:0 0 16px;padding:9px 13px;background:#eaf1e9;border:1px solid #9eb6ae;color:#1d5247;border-radius:9px;font-weight:750}
+.faq-page .faq-reset[hidden]{display:none!important}
+.faq-page .faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+.faq-page .faq-card{min-width:0;background:#fff;border:1px solid #d2dddd;border-radius:15px;overflow:hidden;box-shadow:0 7px 18px rgba(9,45,61,.05)}
+.faq-page .faq-card[hidden]{display:none!important}
+.faq-page .faq-tag{display:block;font:800 .67rem/1.4 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6b7e75;padding:15px 18px 0}
+.faq-page .faq-card summary{cursor:pointer;padding:10px 43px 18px 18px;font:700 clamp(.97rem,1.35vw,1.08rem)/1.5 system-ui,sans-serif;color:#193d4c;list-style:none;position:relative}
+.faq-page .faq-card summary::-webkit-details-marker{display:none}
+.faq-page .faq-card summary:after{content:"+";position:absolute;right:17px;top:9px;font-size:1.5rem;font-weight:600;color:#987238}
+.faq-page .faq-card details[open] summary:after{content:"−"}
+.faq-page .faq-card details[open] summary{border-bottom:1px solid #d9e1dc}
+.faq-page .faq-answer{padding:16px 18px 21px}
+.faq-page .faq-answer p{margin:0;color:#405f6b;line-height:1.78;font-size:.92rem}
+.faq-page .faq-source{display:inline-flex;align-items:center;min-height:38px;margin-top:13px;color:#1c6570;font-size:.85rem;font-weight:800;text-underline-offset:3px}
+.faq-page .faq-empty{padding:25px;border:1px dashed #98b3b5;background:#fff;border-radius:14px;margin-top:20px}
+.faq-page .faq-empty[hidden]{display:none!important}
+.faq-page .faq-empty p{margin-top:0;color:#466370}
+.faq-page .faq-empty a{color:#1b6270;font-weight:800}
+.faq-page .faq-legal{margin:35px 0 0;color:#54707c;line-height:1.75;font-size:.87rem}
+.faq-page .faq-next{margin-bottom:75px;padding:clamp(22px,4vw,37px);border:1px solid #c7a777;border-radius:20px;background:linear-gradient(120deg,#123b49,#0c2939);color:#fff}
+.faq-page .faq-next h2{color:#ffe5ba;font:700 clamp(1.5rem,3vw,2rem)/1.2 Georgia,serif}
+.faq-page .faq-next p{color:#d2e1e2;line-height:1.7}
+.faq-page .faq-next>div{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+.faq-page .faq-next a{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:10px 15px;border:1px solid #d9bc91;border-radius:9px;background:#e6c596;color:#142e39;text-decoration:none;font-weight:750}
+.faq-page .faq-next a:not(:first-child){background:transparent;color:#ffe3bc}
+@media(max-width:760px){.faq-page .faq-grid{grid-template-columns:1fr}.faq-page .faq-workspace{padding-top:27px}}
+@media(max-width:510px){.faq-page .faq-filters{gap:6px}.faq-page .faq-filters button{font-size:.79rem;padding:8px 11px}.faq-page .faq-hero-actions{flex-direction:column}.faq-page .faq-next>div{flex-direction:column}.faq-page .faq-next a{width:100%}}
+@media print{.faq-page header,.faq-page footer,.faq-page .faq-hero-actions,.faq-page .faq-filters,.faq-page #faq-search,.faq-page .faq-reset,.faq-page .faq-next{display:none!important}.faq-page .faq-card{break-inside:avoid;box-shadow:none}}

@@ -46,3 +46,6 @@
 @media(max-width:760px){.faq-page .faq-grid{grid-template-columns:1fr}.faq-page .faq-workspace{padding-top:27px}}
 @media(max-width:510px){.faq-page .faq-filters{gap:6px}.faq-page .faq-filters button{font-size:.79rem;padding:8px 11px}.faq-page .faq-hero-actions{flex-direction:column}.faq-page .faq-next>div{flex-direction:column}.faq-page .faq-next a{width:100%}}
 @media print{.faq-page header,.faq-page footer,.faq-page .faq-hero-actions,.faq-page .faq-filters,.faq-page #faq-search,.faq-page .faq-reset,.faq-page .faq-next{display:none!important}.faq-page .faq-card{break-inside:avoid;box-shadow:none}}
+
+/* Anchor links from search results remain visible below the sticky brand bar. */
+.faq-page .faq-card{scroll-margin-top:calc(var(--network-brand-height,70px) + 20px)}

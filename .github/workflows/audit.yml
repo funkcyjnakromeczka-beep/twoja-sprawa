@@ -25,6 +25,8 @@ jobs:
           node --check scripts/test-chat-lead.mjs
           node --check v2/service-navigator.js
           node --check scripts/test-service-navigator.mjs
+          node --check v2/knowledge-hub.js
+          node --check scripts/test-knowledge-hub.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/seo-policy.mjs
@@ -47,6 +49,8 @@ jobs:
         run: node scripts/test-attribution.mjs
       - name: Przetestuj nowy przewodnik wyboru usługi i etapu sprawy
         run: node scripts/test-service-navigator.mjs
+      - name: Testuj wyszukiwarkę i filtry poradników
+        run: node scripts/test-knowledge-hub.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji
         run: node scripts/test-seo-policy.mjs
       - name: Sprawdź pliki HTML i odnośniki

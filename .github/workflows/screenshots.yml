@@ -8,6 +8,12 @@ on:
       - 'scripts/screenshot-preview.mjs'
       - 'scripts/network-brand.mjs'
       - 'v2/network-brand.css'
+      - 'v2/index.html'
+      - 'v2/o-nas.html'
+      - 'v2/portrait-upgrade.css'
+      - 'v2/knowledge-articles.css'
+      - 'v2/wiedza/**'
+      - 'scripts/build.mjs'
 jobs:
   screenshots:
     runs-on: ubuntu-latest

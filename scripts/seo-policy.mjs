@@ -2,6 +2,7 @@
 export function shouldIndexRoute(route) {
   if (typeof route !== "string" || !route.startsWith("/") || route.includes("?") || route.includes("#")) return false;
   if (route === "/404.html") return false; // error pages must never appear in the sitemap
+  if (route === "/szukaj.html") return false; // internal site search and query results are not indexable landing pages
   if (route.startsWith("/narzedzia/")) return false; // internal marketing tools
   if (route.startsWith("/kampanie/")) return false; // paid/organic campaign lead funnels, duplicate content
   if (route === "/polityka-prywatnosci.html") return false;

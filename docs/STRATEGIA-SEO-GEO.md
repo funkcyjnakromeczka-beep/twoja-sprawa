@@ -8,16 +8,16 @@
 
 ## Architektura docelowa
 / — ogólnopolska strona główna
-/uslugi/szkody-gornicze/ — lokalna Lubin/Polkowice
-/uslugi/swiadczenie-wspierajace/
-/uslugi/renty-powypadkowe/
-/uslugi/kredyty-pln/
-/uslugi/sluzebnosc-przesylu/
+/uslugi/szkody-gornicze.html — lokalna Lubin/Polkowice
+/uslugi/swiadczenie-wspierajace.html
+/uslugi/renty-powypadkowe.html
+/uslugi/kredyty-pln.html
+/uslugi/sluzebnosc-przesylu.html
 + 7 podstron usług dodatkowych z obecnego Lovable.
 /wiedza/ — poradniki i aktualizacje z datą publikacji i weryfikacji
-/o-nas/ — transparentny opis roli przedstawiciela
-/kontakt/ — kontakt i informacje o przetwarzaniu danych
-/polityka-prywatnosci/
+/o-nas.html — transparentny opis roli przedstawiciela
+/kontakt.html — kontakt i informacje o przetwarzaniu danych
+/polityka-prywatnosci.html
 
 ## Techniczne SEO
 1. Jedno H1 na stronę, unikalne title i meta description, breadcrumb, wewnętrzne linkowanie usług i artykułów.
@@ -52,3 +52,11 @@ Kliknięcia telefonu i e-maila; poprawne zgłoszenia formularza; leady wg usług
 - **Indeksacja nadal wyłączona celowo** — brak zatwierdzenia prawnego i docelowego hosta. Nie należy przedstawiać obecnej strony jako już pozycjonowanej w Google/ChatGPT.
 - Weryfikacja przed release: status i uprawnienie do użycia marki VOTUM; identyfikacja osób i zgody na zdjęcia; podstawy przetwarzania, dostawcy i retencja danych; weryfikacja zakresu oferty; aktualność danych finansowych i źródeł; rzeczywiste testy mobilne.
 - Kolejność: audyt prawny i treści → decyzja o domenie → osobny build produkcyjny i kanoniczne URL → robots/sitemap → Google Search Console/Bing Webmaster Tools → monitoring zapytań i konwersji.
+
+## Ulepszenia z 10 listopada 2026 — bez gwarancji indeksacji
+- Biblioteka `/wiedza/` zawiera dziesięć poradników i lokalną wyszukiwarkę z kategoriami. Strona domowa prowadzi bezpośrednio do całej biblioteki.
+- Użytkownicy poradników mogą powiększyć tekst, skopiować link lub wydrukować materiał. Nie wymaga to analityki, konta ani zewnętrznego API.
+- Strona kontaktowa pokazuje autentyczne zdjęcia Wojciecha i Pauliny; formularz może wstępnie zaznaczyć usługę na podstawie lokalnego linku.
+- Polityka SEO wyłącza `/404.html`, duplikujące strony kampanii i materiały prywatności z mapy indeksowanych adresów. Szczegóły: `scripts/seo-policy.mjs`.
+- Każda publikacja nadal wymaga zatwierdzeń treści, wizerunków i RODO. `robots.txt` aktualnej wersji podglądowej blokuje indeksację i nie należy uznawać tego za awarię bez decyzji o release.
+- Po wdrożeniu produkcyjnym zweryfikuj fizycznie dostępność `/robots.txt`, `/sitemap.xml`, artykułów i lokalnych zdjęć. Wynik CI sam nie dowodzi skutecznego wdrożenia.

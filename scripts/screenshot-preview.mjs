@@ -36,6 +36,8 @@ try{
   if(!response?.ok())throw Error("HTTP error on "+path);
   const logo=page.locator(".network-brand-bar");
   await logo.waitFor({state:"visible",timeout:10000});
+  // Prioritise the real logos, but text fallbacks must remain legible on slow/offline devices.
+  await page.waitForFunction(()=>[...document.querySelectorAll(".network-brand-logos img")].every(img=>img.complete&&img.naturalWidth>0),undefined,{timeout:5000}).catch(()=>{});
   await page.screenshot({path:"screenshots/"+name+".png",fullPage:true,animations:"disabled"});
   const measured=await page.evaluate(()=>{
     const bar=document.querySelector(".network-brand-bar");
@@ -44,7 +46,11 @@ try{
       viewport:document.documentElement.clientWidth,
       scrollWidth:document.documentElement.scrollWidth,
       barCount:document.querySelectorAll(".network-brand-bar").length,
-      images:imgs.map(x=>({alt:x.alt,loaded:x.complete&&x.naturalWidth>0})),
+      images:imgs.map(x=>({
+        alt:x.alt,loaded:x.complete&&x.naturalWidth>0,
+        fallbackVisible:getComputedStyle(x.parentElement.querySelector(".network-brand-fallback")).visibility==="visible",
+        logoVisible:getComputedStyle(x).visibility==="visible"
+      })),
       sticky:getComputedStyle(bar).position==="sticky",
       oldDuplicate:document.querySelectorAll(".agency-logos-bar").length,
       hasMain:!!document.querySelector("main"),
@@ -56,6 +62,7 @@ try{
   if(measured.scrollWidth>measured.viewport+2)throw Error("Horizontal overflow "+name+": "+JSON.stringify(measured));
   if(measured.barCount!==1||measured.images.length!==2||!measured.sticky||measured.oldDuplicate)throw Error("Partner logo bar failed "+name+": "+JSON.stringify(measured));
   if(measured.images[0].alt!=="Votum Network"||measured.images[1].alt!=="Votum Scale Agency")throw Error("Wrong logos "+name);
+  if(measured.images.some(img=>!(img.loaded&&img.logoVisible)&&!img.fallbackVisible))throw Error("Logo and fallback both invisible "+name);
   if(["/","/kampanie/szkody-gornicze.html","/kampanie/swiadczenie-wspierajace.html","/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html"].includes(path)&&!measured.hasForm)throw Error("Lead form missing "+name);
   if(measured.documentHeight>height+200){
     await page.evaluate(()=>window.scrollTo(0,600));

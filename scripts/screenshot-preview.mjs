@@ -141,6 +141,8 @@ try{
  if(filtered<1||filtered>3)throw Error("Polish article search fails: "+filtered);
  await hubPage.locator("#hub-search").fill("niewystepujace_w_serwisie");
  if(!await hubPage.locator("#hub-empty").isVisible())throw Error("Knowledge hub no-results message missing");
+ await hubPage.locator("[data-hub-reset]").click();
+ if(await hubPage.locator(".hub-card:visible").count()!==10)throw Error("Reset search and filters should restore 10 articles");
  await hubPage.screenshot({path:"screenshots/biblioteka-filtr-telefon.png",fullPage:false,animations:"disabled"});
  console.log("KNOWLEDGE_HUB_OK",JSON.stringify({all:allCount,mining:miningCount,search:filtered,empty:true}));
  await hubPage.goto(origin+"/wiedza/drobne-pekniecia-szkody-gornicze.html",{waitUntil:"domcontentloaded"});

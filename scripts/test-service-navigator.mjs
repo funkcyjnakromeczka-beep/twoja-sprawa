@@ -36,6 +36,7 @@ function run(query){
    form:find(result,n=>n.className==="btn navigator-contact-cta"),
    stage:code=>find(result,n=>n.dataset.stage===code),
    phone:find(result,n=>n.className==="navigator-direct-phone"),
+   plan:find(result,n=>n.className==="btn secondary navigator-plan-cta"),
    result
   };
  };
@@ -53,12 +54,19 @@ for(const [k,v] of Object.entries({utm_source:"facebook",utm_medium:"facebook_gr
 }
 assert.equal(link.hash,"#formularz");
 assert.equal(s.stage("ugoda").attrs["aria-pressed"],"true");
+const printable=new URL(s.plan.href,"https://twoja-sprawa.pages.dev");
+assert.equal(printable.pathname,"/v2/plan-dzialania.html");
+assert.equal(printable.searchParams.get("usluga"),"szkody");
+assert.equal(printable.searchParams.get("etap"),"ugoda");
+assert.equal(printable.searchParams.get("utm_medium"),"facebook_grupa");
+assert.equal(printable.searchParams.get("utm_source"),"facebook");
 let p=result.select("swiadczenie");
 p.stage("odwolanie").events.click();
 link=new URL(p.form.href,"https://twoja-sprawa.pages.dev");
 assert.equal(link.pathname,"/v2/kampanie/swiadczenie-wspierajace.html");
 assert.equal(link.searchParams.get("etap"),"odwolanie");
 assert.equal(p.phone.href,"tel:+48500171531");
+assert.equal(new URL(p.plan.href,"https://twoja-sprawa.pages.dev").searchParams.get("etap"),"odwolanie");
 for(const [key,path] of [["renty","renty"],["skd","skd"],["przesyl","przesyl"]]){
  const choice=result.select(key);
  const u=new URL(choice.form.href,"https://twoja-sprawa.pages.dev");

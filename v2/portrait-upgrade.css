@@ -1,0 +1,80 @@
+/* 2026-11-10: authentic team portraits, visibly accessible on all screen sizes.
+   Photos remain external from user's existing Lovable project until local asset migration. */
+.premium-v2 .team-spotlight{
+  background:linear-gradient(125deg,#f8f6ef 0%,#f0f6f4 55%,#f9f7f0 100%);
+  border-block:1px solid #d9d9d1;padding-top:48px;padding-bottom:52px;
+}
+.premium-v2 .team-spotlight h2{
+  color:#173441;font:700 clamp(1.65rem,3vw,2.5rem)/1.13 Georgia,serif;
+  letter-spacing:-.025em;margin:9px 0 14px;
+}
+.premium-v2 .team-spotlight .team-spotlight-intro{
+  max-width:70ch;color:#415a62;margin:0 0 25px;line-height:1.65;
+}
+.premium-v2 .team-spotlight .team-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2.5vw,26px);
+  margin:0;max-width:1150px;
+}
+.premium-v2 .team-spotlight .team-person{
+  display:grid;grid-template-columns:clamp(94px,12vw,155px) minmax(0,1fr);
+  align-items:center;gap:clamp(13px,2.4vw,26px);
+  min-width:0;text-align:left;min-height:215px;
+  padding:clamp(17px,2.8vw,26px);
+  background:linear-gradient(135deg,#132f3d 0%,#09222f 100%);
+  color:#fff;border-radius:22px;border:1px solid #c9a66e;
+  box-shadow:0 14px 30px rgba(9,39,50,.16);
+}
+.premium-v2 .team-spotlight .team-avatar{
+  position:relative;width:100%;height:auto;aspect-ratio:4/5;margin:0;
+  border:3px solid #dfc18b;border-radius:16px;
+  background:linear-gradient(140deg,#1a4757,#123342);
+  font:700 2rem Georgia,serif;color:#fff;overflow:hidden;
+}
+.premium-v2 .team-spotlight .team-avatar img{
+  display:block;position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 25%;border-radius:12px;
+}
+.premium-v2 .team-spotlight .team-avatar img[hidden]{display:none}
+.premium-v2 .team-spotlight .team-avatar span{font:700 1.6rem system-ui,sans-serif}
+.premium-v2 .team-spotlight .team-person h3{font:700 clamp(1.18rem,2vw,1.55rem)/1.2 Georgia,serif;color:#f8e6be;margin:0 0 7px}
+.premium-v2 .team-spotlight .team-person p{color:#dce6e6;margin:0 0 10px;font-size:.92rem;line-height:1.55}
+.premium-v2 .team-spotlight .team-person a{
+  color:#ffe0aa;display:inline-flex;align-items:center;min-height:37px;
+  padding:5px 9px 5px 0;text-underline-offset:4px;
+  font-weight:750;font-size:.96rem;
+}
+.premium-v2 .team-spotlight .team-person .team-caption{display:block;color:#b5ced1;font-size:.73rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
+.premium-v2 .team-spotlight .team-spotlight-end{margin:18px 0 0}
+.premium-v2 .team-spotlight .team-spotlight-end a{color:#114c62;font-weight:760;text-underline-offset:4px}
+.premium-subpage .team-portrait-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:24px 0;
+}
+.premium-subpage .team-profile-card{
+  background:#0d2c3b;color:#f7f8f5;border-radius:20px;border:1px solid #c8a772;
+  padding:clamp(18px,3vw,28px);display:grid;grid-template-columns:minmax(90px,36%) minmax(0,1fr);
+  align-items:center;gap:clamp(15px,2.5vw,25px);
+}
+.premium-subpage .team-profile-photo{
+  position:relative;aspect-ratio:4/5;border-radius:15px;overflow:hidden;border:2px solid #d2b57c;
+  background:#1c4654;display:grid;place-items:center;color:#fff;font-weight:800;font-size:2rem;
+}
+.premium-subpage .team-profile-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;position:absolute;inset:0}
+.premium-subpage .team-profile-photo img[hidden]{display:none}
+.premium-subpage .team-profile-card h3{color:#f8e3ba;font-size:clamp(1.18rem,2vw,1.6rem);margin:0 0 8px}
+.premium-subpage .team-profile-card p{color:#e1e9e8;line-height:1.58;margin:0 0 13px}
+.premium-subpage .team-profile-card a{color:#f6d49a;font-weight:750;display:inline-block;padding:7px 0}
+.premium-subpage .team-introduction{max-width:72ch}
+.premium-subpage .team-profile-card a:focus-visible,.premium-v2 .team-spotlight a:focus-visible{outline:3px solid #f3d5a4;outline-offset:3px}
+@media(max-width:880px){
+  .premium-v2 .team-spotlight .team-grid{grid-template-columns:1fr}
+  .premium-v2 .team-spotlight .team-person{grid-template-columns:125px minmax(0,1fr);max-width:700px}
+  .premium-subpage .team-portrait-grid{grid-template-columns:1fr}
+}
+@media(max-width:510px){
+  .premium-v2 .team-spotlight{padding:32px 5% 38px}
+  .premium-v2 .team-spotlight .team-person{grid-template-columns:94px minmax(0,1fr);gap:13px;padding:15px;min-height:150px}
+  .premium-v2 .team-spotlight .team-person a{font-size:.9rem;word-break:break-word}
+  .premium-v2 .team-spotlight .team-person h3{font-size:1.18rem}
+  .premium-subpage .team-profile-card{grid-template-columns:100px minmax(0,1fr);gap:13px;padding:15px}
+  .premium-subpage .team-profile-card p{font-size:.9rem}
+}

@@ -18,7 +18,7 @@ async function walk(dir){
    if(!/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i.test(html))throw Error("Source robots tag missing: "+rel);
    html=html.replaceAll("/v2/","/");
    // Bust cached styles on each deployment while preserving the source paths.
-   html=html.replace(/(href="\/premium-v2\.css)(\?[^"]*)?(")/g,`$1?v=20261110-videos12$3`);
+   html=html.replace(/(href="\/premium-v2\.css)(\?[^"]*)?(")/g,`$1?v=20261110-agency13$3`);
       html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
    // Explicit preview-only robots directive in every generated HTML document.
    html=html.replace(/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i,'<meta name="robots" content="noindex,nofollow">');

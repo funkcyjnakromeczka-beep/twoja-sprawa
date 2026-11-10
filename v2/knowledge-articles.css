@@ -23,3 +23,9 @@
 .premium-v2 .editorial-reading a:focus-visible{outline:3px solid #e8bb79;outline-offset:4px}
 @media(max-width:700px){.premium-v2 .editorial-reading{grid-template-columns:1fr}.premium-v2 .editorial-reading a{min-height:142px}.knowledge-article .knowledge-body{padding:32px 5%}}
 @media(prefers-reduced-motion:reduce){.premium-v2 .editorial-reading a:hover{transform:none}}
+
+/* Prominent but concise route from homepage to the full knowledge hub. */
+.premium-v2 .hub-all-link{margin:23px 0 0;text-align:center}
+.premium-v2 .hub-all-link a{display:inline-flex;align-items:center;justify-content:center;min-height:49px;padding:12px 18px;border:1px solid #c9a66f;border-radius:12px;background:#f8ead1;color:#173a48;font-weight:800;text-decoration:none}
+.premium-v2 .hub-all-link a:hover{background:#eed7b1}
+.premium-v2 .hub-all-link a:focus-visible{outline:3px solid #bb8741;outline-offset:4px}

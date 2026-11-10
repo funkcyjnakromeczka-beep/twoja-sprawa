@@ -3898,3 +3898,28 @@ html{scroll-padding-top:16px}
 @media(prefers-reduced-motion:reduce){
  .premium-v2 .hero-priority-grid .hero-support-spotlight{transition:none}
 }
+
+
+/* CHAT-CHECKLIST-20261110: secondary self-service path without visual clutter */
+.chat-assistant .chat-reply-links a.chat-reply-checklist{
+  display:flex;align-items:center;justify-content:center;
+  min-height:43px;padding:10px 13px;
+  border:1.5px solid #b6c6c5;
+  background:#edf2ef;color:#173c49!important;
+  font-size:.87rem;font-weight:770;
+}
+.chat-assistant .chat-reply-links a.chat-reply-checklist:hover,
+.chat-assistant .chat-reply-links a.chat-reply-checklist:focus-visible{
+  background:#dae8e3;border-color:#7b9a91;
+  filter:none;
+}
+.chat-assistant .chat-panel{
+  scroll-padding-block:58px 75px;
+}
+.chat-assistant .chat-stage-answer:focus-visible{
+  outline:3px solid #bb8e58;outline-offset:3px;
+}
+@media(max-width:450px){
+  .chat-assistant .chat-toggle{font-size:.82rem;padding:10px 13px}
+  .chat-assistant .chat-choices button{min-height:46px}
+}

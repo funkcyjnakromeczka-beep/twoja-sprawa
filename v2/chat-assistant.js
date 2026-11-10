@@ -3,7 +3,17 @@
   "use strict";
   const script=document.currentScript;
   const base=script?.getAttribute("data-base")||"/v2/";
-  const params="?utm_source=strona&utm_medium=chatbot&utm_campaign=wybor_uslugi";
+  // Zachowaj źródło kampanii wejściowej, gdy użytkownik przechodzi przez przewodnik.
+  const incoming=new URLSearchParams(window.location.search);
+  const allowedSources=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+  const requestedSource=(incoming.get("utm_source")||"").toLowerCase().trim();
+  const source=allowedSources.has(requestedSource)?requestedSource:"strona";
+  const validAttribution=value=>/^[a-z0-9_-]{1,40}$/.test(value);
+  const requestedCampaign=(incoming.get("utm_campaign")||"").toLowerCase().trim();
+  const campaign=validAttribution(requestedCampaign)?requestedCampaign:"wybor_uslugi";
+  const requestedContent=(incoming.get("utm_content")||"").toLowerCase().trim();
+  const content=validAttribution(requestedContent)?"&utm_content="+encodeURIComponent(requestedContent):"";
+  const params="?utm_source="+encodeURIComponent(source)+"&utm_medium=chatbot&utm_campaign="+encodeURIComponent(campaign)+content;
   const topics=[
     {
       key:"swiadczenie",name:"Świadczenie wspierające",short:"WZON, decyzje, ZUS",phone:"500 171 531",tel:"+48500171531",
@@ -102,8 +112,7 @@
     const el=document.createElement(tag);if(className)el.className=className;
     if(text)el.textContent=text;return el;
   };
-  const destination=topic=>base+(topic.form||"?usluga="+encodeURIComponent(topic.alias||topic.key)+
-    "&utm_source=strona&utm_medium=chatbot&utm_campaign=wybor_uslugi#kontakt");
+  const destination=topic=>base+(topic.form||"?usluga="+encodeURIComponent(topic.alias||topic.key)+"&"+params.slice(1)+"#kontakt");
   const choose=topic=>{
     for(const b of buttons.querySelectorAll("button"))b.setAttribute("aria-pressed",String(b.dataset.topic===topic.key));
     reply.replaceChildren();

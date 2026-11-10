@@ -9,6 +9,7 @@ class Node{
  constructor(textContent="",dataset={}){this.textContent=textContent;this.dataset=dataset;this.events={};this.attrs={};this.value="";this.hidden=false;}
  addEventListener(type,fn){this.events[type]=fn;}
  setAttribute(key,val){this.attrs[key]=val;}
+ focus(){this.focused=true;}
 }
 const cards=[
  new Node("Szkody górnicze — Pęknięcia elewacji", {hubCategory:"szkody"}),
@@ -16,10 +17,10 @@ const cards=[
  new Node("Kredyty PLN SKD umowa", {hubCategory:"skd"}),
  new Node("Renta powypadkowa", {hubCategory:"renty"})
 ];
-const input=new Node(),status=new Node(),empty=new Node();
+const input=new Node(),status=new Node(),empty=new Node(),reset=new Node();
 const filters=["all","szkody","swiadczenie","skd","renty"].map(k=>new Node(k,{hubFilter:k}));
 const hub={
- querySelector:selector=>({"#hub-search":input,"[data-hub-count]":status,"#hub-empty":empty})[selector]||null,
+ querySelector:selector=>({"#hub-search":input,"[data-hub-count]":status,"#hub-empty":empty,"[data-hub-reset]":reset})[selector]||null,
  querySelectorAll:selector=>selector==="[data-hub-filter]"?filters:selector==="[data-hub-category]"?cards:[]
 };
 runInNewContext(js,{document:{querySelector:sel=>sel==="[data-knowledge-hub]"?hub:null},String});
@@ -36,6 +37,12 @@ input.value="NIE MA";
 input.events.input();
 assert.equal(cards.every(x=>x.hidden),true);
 assert.equal(empty.hidden,false);
+assert.equal(reset.hidden,false);
+reset.events.click();
+assert.equal(input.value,"");
+assert.equal(input.focused,true);
+assert.equal(cards.filter(x=>!x.hidden).length,4);
+assert.equal(filters[0].attrs["aria-pressed"],"true");
 input.value="";
 input.events.input();
 filters[0].events.click();

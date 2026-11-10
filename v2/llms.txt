@@ -11,6 +11,9 @@
 - [Kredyty konsumenckie PLN / sankcja kredytu darmowego](https://twoja-sprawa.pages.dev/uslugi/kredyty-pln.html)
 - [Służebność przesyłu](https://twoja-sprawa.pages.dev/uslugi/sluzebnosc-przesylu.html)
 
+## Najczęstsze pytania i odpowiedzi
+- [Baza 24 pytań o szkody górnicze, świadczenie wspierające, renty, SKD, służebność przesyłu i kontakt](https://twoja-sprawa.pages.dev/faq): sześć kategorii, wyszukiwarka bez zbierania danych i bezpośrednie odnośniki do publicznych źródeł ZUS. Odpowiedzi nie zastępują indywidualnej analizy.
+
 ## Artykuły i praktyczne materiały
 - [Drobne pęknięcia ścian i kostka a szkody górnicze](https://twoja-sprawa.pages.dev/wiedza/drobne-pekniecia-szkody-gornicze.html)
 - [Świadczenie wspierające 2026: WZON i ZUS](https://twoja-sprawa.pages.dev/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html)

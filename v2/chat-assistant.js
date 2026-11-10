@@ -79,6 +79,13 @@
     },{threshold:0,rootMargin:"0px 0px -50px 0px"});
     observer.observe(contactArea);
   }
+  const videoArea = document.getElementById("filmy");
+  if (videoArea && "IntersectionObserver" in window) {
+    const videoObserver = new IntersectionObserver(entries=>{
+      root.classList.toggle("is-video-area",Boolean(entries[0]?.isIntersecting));
+    }, {threshold:0,rootMargin:"0px 0px -70px 0px"});
+    videoObserver.observe(videoArea);
+  }
   toggle.addEventListener("click",()=>show(panel.hidden));
   close.addEventListener("click",()=>show(false));
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden)show(false);});

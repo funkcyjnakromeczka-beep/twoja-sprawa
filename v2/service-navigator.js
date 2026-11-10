@@ -69,6 +69,13 @@
   url.hash="formularz";
   return url.pathname+url.search+url.hash;
  };
+ const planLink=(key,stage="")=>{
+  const url=new URL("/v2/plan-dzialania.html",window.location.origin);
+  url.searchParams.set("usluga",key);
+  if(stage)url.searchParams.set("etap",stage);
+  for(const [name,value] of Object.entries(tracking))url.searchParams.set(name,value);
+  return url.pathname+url.search;
+ };
  const element=(tag,className,content)=>{
   const node=document.createElement(tag);
   if(className)node.className=className;
@@ -89,8 +96,10 @@
   details.href="/v2/uslugi/"+data.service;
   const call=element("a","navigator-direct-phone","Zadzwoń: "+data.phone);
   call.href="tel:"+data.tel;
+  const plan=element("a","btn secondary navigator-plan-cta","Przygotuj plan do druku");
+  plan.href=planLink(key);
   const actions=element("div","navigator-result-actions");
-  actions.append(contact,details);
+  actions.append(contact,plan,details);
   const stageGroup=element("div","navigator-stage-group");
   if(data.stages){
    const prompt=element("p","navigator-stage-title","Na jakim etapie jest Twoja sprawa?");
@@ -107,6 +116,7 @@
      tip.textContent=note;
      contact.href=createLink(data.landing||"kontakt.html",key,code);
      contact.textContent="Przejdź do formularza z wybranym etapem";
+     plan.href=planLink(key,code);
     });
     stageButtons.push(b);
     options.append(b);

@@ -29,6 +29,18 @@ const revealTarget=()=>{
   }
   if(changed){requestAnimationFrame(()=>target.scrollIntoView({block:"start"}));}
 };
+// Same-hash links must reopen their disclosure even if the hash itself does not change.
+document.addEventListener("click",event=>{
+  const link=event.target?.closest?.("a[href]");
+  if(!link)return;
+  let destination;
+  try{destination=new URL(link.href,window.location.href);}catch{return;}
+  if(destination.origin===window.location.origin
+     &&destination.pathname===window.location.pathname
+     &&destination.hash===window.location.hash&&destination.hash){
+    revealTarget();
+  }
+},true);
 window.addEventListener("hashchange",revealTarget);
 revealTarget();
 })();

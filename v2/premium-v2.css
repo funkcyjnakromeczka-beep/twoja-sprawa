@@ -3069,3 +3069,55 @@ html{scroll-padding-top:16px}
    transform:none;
  }
 }
+
+
+/* AUTONOMOUS-PASS-08: reliable contrast and comfortable form controls */
+/* Neutral form tone: labels and hints never become white on a pale card. */
+.premium-subpage :is(#formularz,.contact-section) .contact-form{
+  color:#1b3b48!important;
+}
+.premium-subpage :is(#formularz,.contact-section) .contact-form :is(label,legend,small,.contact-field-hint,.form-help,p){
+  color:#2e4c58!important;
+  opacity:1!important;
+}
+.premium-subpage :is(#formularz,.contact-section) .contact-form :is(input:not([type=checkbox]),select,textarea){
+  min-width:0;
+  max-width:100%;
+  color:#183c46!important;
+  background:#fff!important;
+  border:1.5px solid #9eb4b6!important;
+}
+.premium-subpage :is(#formularz,.contact-section) .contact-form :is(input,textarea)::placeholder{
+  color:#576f78!important;
+  opacity:1!important;
+}
+@media(max-width:760px){
+ .premium-v2 #kontakt .lead-panel,
+ .premium-v2 #kontakt .contact-form,
+ .premium-subpage :is(#formularz,.contact-section) .contact-form{
+   min-width:0;
+   max-width:100%;
+   box-sizing:border-box;
+   padding:clamp(17px,5vw,24px);
+ }
+ .premium-v2 #kontakt .contact-form :is(input:not([type=checkbox]),select,textarea),
+ .premium-subpage :is(#formularz,.contact-section) .contact-form :is(input:not([type=checkbox]),select,textarea){
+   width:100%;
+   min-height:49px;
+   font-size:16px;
+ }
+ .premium-v2 #kontakt .contact-form :is(label,legend,small),
+ .premium-subpage :is(#formularz,.contact-section) .contact-form :is(label,legend,small){
+   font-size:.93rem;
+   line-height:1.55;
+   opacity:1!important;
+ }
+ .premium-subpage .article>section{
+   min-width:0;
+   overflow-wrap:anywhere;
+ }
+ .premium-subpage .article>section p{
+   font-size:1rem;
+   line-height:1.75;
+ }
+}

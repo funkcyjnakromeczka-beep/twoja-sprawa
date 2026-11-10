@@ -64,7 +64,7 @@ add("40. Checklista z prawdziwym postępem",()=>assert.ok(plan.includes('checks.
 add("41. Drukowanie planu z poziomu strony",()=>assert.ok(plan.includes('window.print()')&&planPage.includes("Wydrukuj / zapisz PDF")));
 add("42. Reset planu i brak zapisanych danych",()=>assert.ok(plan.includes('resetButton.addEventListener')&&!/localStorage|sessionStorage|indexedDB/.test(plan)));
 add("43. Plan nie wykonuje połączeń sieciowych",()=>assert.ok(!/\bfetch\s*\(|XMLHttpRequest|navigator\.sendBeacon/.test(plan)));
-add("44. Plan przekazuje tylko rozpoznane źródła UTM",()=>assert.ok(plan.includes("allowedSources")&&plan.includes("sanitize(value")));
+add("44. Plan przekazuje tylko rozpoznane źródła UTM",()=>assert.ok(plan.includes("allowedSources")&&plan.includes("if(sanitize(val))")));
 add("45. Generator jasno informuje o prywatności",()=>assert.ok(planPage.includes("bez logowania")&&planPage.includes("Nie wpisujesz tu imienia")));
 add("46. Biblioteka zawiera dziesięć kart",()=>assert.equal((knowledge.match(/class="hub-card/g)||[]).length,10));
 add("47. Biblioteka ma pięć filtrów usług",()=>assert.equal((knowledge.match(/data-hub-filter="(?!all)[^"]+"/g)||[]).length,5));

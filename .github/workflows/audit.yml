@@ -21,6 +21,7 @@ jobs:
           node --check scripts/test-attribution.mjs
           node --check v2/chat-assistant.js
           node --check v2/share-page.js
+          node --check scripts/test-chat-lead.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/seo-policy.mjs
@@ -35,6 +36,8 @@ jobs:
         run: node scripts/test-campaign-links.mjs
       - name: Przetestuj formularz w przeglądarce symulowanej bez wysyłki danych
         run: node scripts/test-contact-client.mjs
+      - name: Przetestuj ścieżki chatbota do formularza z zachowaniem źródła kampanii
+        run: node scripts/test-chat-lead.mjs
       - name: Przetestuj atrybucję kampanii między podstronami
         run: node scripts/test-attribution.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji

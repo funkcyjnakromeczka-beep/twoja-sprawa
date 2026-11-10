@@ -24,7 +24,7 @@ const filters=categories.map(k=>new MockNode(k,{faqFilter:k}));
 const search=new MockNode(),count=new MockNode(),empty=new MockNode(),reset=new MockNode();
 const selectors={"#faq-search":search,"[data-faq-count]":count,"[data-faq-empty]":empty,"[data-faq-reset]":reset};
 const root={querySelector:s=>selectors[s],querySelectorAll:s=>s==="[data-faq-filter]"?filters:s==="[data-faq-category]"?cards:[]};
-runInNewContext(js,{document:{querySelector:s=>s==="[data-faq-hub]"?root:null},String});
+runInNewContext(js,{document:{querySelector:s=>s==="[data-faq-hub]"?root:null},window:{location:{search:"?temat=all"}},String,URLSearchParams});
 assert.equal(count.textContent,"Widoczne: 6 pytań");
 assert.equal(reset.hidden,true);
 filters.find(x=>x.dataset.faqFilter==="szkody").events.click();

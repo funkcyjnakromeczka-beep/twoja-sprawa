@@ -37,5 +37,8 @@
   choose("all");
   search.focus();
  });
- refresh();
+ const requested=(new URLSearchParams(window.location.search).get("temat")||"").toLowerCase().trim();
+ const known=filters.map(button=>button.dataset.faqFilter);
+ if(requested!=="all"&&known.includes(requested))choose(requested);
+ else refresh();
 })();

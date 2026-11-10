@@ -60,11 +60,13 @@ try{
       hasForm:!!document.querySelector(".contact-form"),
       formChoice:document.querySelector(".contact-form select")?.value||"",
       teamImages:[...document.querySelectorAll(".team-spotlight img,.team-portrait-grid img")].map(img=>({alt:img.alt,loaded:img.complete&&img.naturalWidth>0})),
+      personaImages:[...document.querySelectorAll(".service-persona img,.campaign-persona img")].map(img=>({alt:img.alt,loaded:img.complete&&img.naturalWidth>0})),
       documentHeight:document.documentElement.scrollHeight
     };
   });
   if(measured.scrollWidth>measured.viewport+2)throw Error("Horizontal overflow "+name+": "+JSON.stringify(measured));
-  if(["/","/o-nas.html"].includes(path)&&measured.teamImages.length!==2)throw Error("Two authentic profile images missing on "+path+": "+JSON.stringify(measured));
+  if(["/","/o-nas.html"].includes(path)&&(measured.teamImages.length!==2||measured.teamImages.some(img=>!img.loaded)))throw Error("Two authentic profile images not loaded on "+path+": "+JSON.stringify(measured));
+  if(["/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html","/kampanie/szkody-gornicze.html","/kampanie/swiadczenie-wspierajace.html"].includes(path)&&(measured.personaImages.length!==1||!measured.personaImages[0].loaded))throw Error("Contact portrait not loaded on "+path+": "+JSON.stringify(measured));
   if(measured.barCount!==1||measured.images.length!==2||!measured.sticky||measured.oldDuplicate)throw Error("Partner logo bar failed "+name+": "+JSON.stringify(measured));
   if(measured.images[0].alt!=="Votum Network"||measured.images[1].alt!=="Votum Scale Agency")throw Error("Wrong logos "+name);
   if(measured.images.some(img=>!(img.loaded&&img.logoVisible)&&!img.fallbackVisible))throw Error("Logo and fallback both invisible "+name);

@@ -5,7 +5,9 @@ import {readFile} from "node:fs/promises";
 import {runInNewContext} from "node:vm";
 
 class Node {
- constructor(tag="node"){this.tag=tag;this.children=[];this.events={};this.attributes={};this.value="";this.textContent="";this.checked=false;this.style={cssText:""};}
+ constructor(tag="node"){this.tag=tag;this.children=[];this.events={};this.attributes={};this._value=undefined;this.textContent="";this.checked=false;this.style={cssText:""};}
+ get value(){return this._value!==undefined?this._value:(this.tag==="select"?this.children.find(n=>n.selected)?.value??"":"");}
+ set value(next){this._value=next;}
  append(...children){this.children.push(...children);}
  replaceChildren(...children){this.children=[...children];}
  setAttribute(key,value){this.attributes[key]=value;}
@@ -83,4 +85,27 @@ const run=async(error=false)=>{
 };
 await run(false);
 await run(true);
-console.log("OK: email-only leads, callback preference, UTM attribution, network error and mailto fallback (mocked).");
+// Scenario hand-off from chatbot: validate only known stage codes and initial service.
+const stageCase=(service,code,expected)=>{
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?service:""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?etap="+code}};
+ runInNewContext(source,{document,window,URLSearchParams,Math});
+ const form=host.children[0];
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const chosen=visit(form,n=>n.id?.startsWith("cf-service-"));
+ assert.equal(chosen.value,service);
+ assert.equal(stage.value,expected);
+};
+stageCase("Szkody górnicze","ugoda","Otrzymałem/am propozycję ugody");
+stageCase("Szkody górnicze","odmowa","Kopalnia odmówiła");
+stageCase("Świadczenie wspierające","decyzja","Mam decyzję WZON");
+stageCase("Świadczenie wspierające","odwolanie","Chcę przeanalizować decyzję lub odwołanie");
+stageCase("Szkody górnicze","nieznany_kod","");
+console.log("OK: email-only leads, UTM attribution, delivery errors, and five validated chatbot stage preselection cases.");

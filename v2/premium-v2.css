@@ -2969,3 +2969,42 @@ body.premium-subpage.theme-rents #formularz .contact-form{
   .premium-subpage .subhero .service-video-direct{transition:none}
   .premium-subpage .subhero .service-video-direct:hover{transform:none}
 }
+
+
+/* AUTONOMOUS-PASS-06: reliable return-to-top for long service documents */
+.premium-subpage footer .service-back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:45px;
+  margin-bottom:20px;
+  padding:10px 17px;
+  border:1px solid rgba(230,192,131,.45);
+  border-radius:999px;
+  background:rgba(255,255,255,.075);
+  color:#f2d6a9!important;
+  font-size:.84rem;
+  font-weight:800;
+  line-height:1.35;
+  text-decoration:none;
+}
+.premium-subpage footer .service-back-top:hover,
+.premium-subpage footer .service-back-top:focus-visible{
+  background:rgba(255,255,255,.16);
+  border-color:#e2bd7e;
+}
+.premium-subpage footer .service-back-top:focus-visible{
+  outline:3px solid #e6c18c;
+  outline-offset:3px;
+}
+.premium-subpage footer>p,
+.premium-subpage footer>small{
+  max-width:105ch;
+  color:#c6d3d6;
+  font-size:clamp(.73rem,.85vw,.85rem);
+  line-height:1.6;
+}
+html{scroll-padding-top:16px}
+.premium-subpage :is(#formularz,#kontakt,.article section){
+  scroll-margin-top:24px;
+}

@@ -12,6 +12,7 @@ class Node {
  getAttribute(key){return this.attributes[key]??null;}
  addEventListener(key,cb){this.events[key]=cb;}
  insertAdjacentElement(){}
+ setCustomValidity(message){this.validationMessage=message;}
  reportValidity(){return true;}
  reset(){}
 }
@@ -20,6 +21,7 @@ const source=await readFile("v2/contact.js","utf8");
 const run=async(error=false)=>{
  const host=new Node("host");
  const document={
+  body:{classList:{contains:()=>false}},
   currentScript:{getAttribute:()=>""},
   querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
   createElement:tag=>new Node(tag),

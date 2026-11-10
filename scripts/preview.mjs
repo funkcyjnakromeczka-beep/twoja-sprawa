@@ -3,6 +3,7 @@
 import {readdir,readFile,writeFile,mkdir,cp,rm} from "node:fs/promises";
 import {join,relative,dirname} from "node:path";
 const source="v2",dest="dist-preview";
+const buildId="20261110-release19";
 await rm(dest,{recursive:true,force:true});
 await mkdir(dest,{recursive:true});
 let pages=0;
@@ -17,10 +18,12 @@ async function walk(dir){
    let html=await readFile(absolute,"utf8");
    if(!/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i.test(html))throw Error("Source robots tag missing: "+rel);
    html=html.replaceAll("/v2/","/");
-   // Bust cached styles on each deployment while preserving the source paths.
-   html=html.replace(/(href="\/premium-v2\.css)(\?[^"]*)?(")/g,`$1?v=20261110-form18$3`);
-   html=html.replace(/(src="\/contact\.js)(\?[^"]*)?(")/g,`$1?v=20261110-form18$3`);
+   // Refresh every local CSS and JS asset with the same build version.
+   html=html.replace(/(href="\/[^"]+?\.css)(\?[^"]*)?(")/g,`$1?v=${buildId}$3`);
+   html=html.replace(/(src="\/[^"]+?\.js)(\?[^"]*)?(")/g,`$1?v=${buildId}$3`);
       html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
+   // A non-sensitive version marker makes deployment verification possible.
+   html=html.replace("</head>",`<meta name="site-build" content="${buildId}"></head>`);
    // Explicit preview-only robots directive in every generated HTML document.
    html=html.replace(/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i,'<meta name="robots" content="noindex,nofollow">');
    if(!/<meta\s+name="robots"\s+content="noindex,nofollow">/i.test(html)) throw Error("Preview noindex missing: "+rel);

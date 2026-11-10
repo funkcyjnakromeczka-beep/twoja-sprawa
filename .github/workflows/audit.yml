@@ -33,6 +33,9 @@ jobs:
           node --check v2/plan-dzialania.js
           node --check scripts/test-action-plan.mjs
           node --check scripts/test-50-continuations.mjs
+          node --check v2/faq.js
+          node --check scripts/test-faq.mjs
+          node --check scripts/test-50-continuations-iii.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/public-routes.mjs
@@ -71,6 +74,10 @@ jobs:
         run: node scripts/test-action-plan.mjs
       - name: 50 kolejnych kontroli serwisu
         run: node scripts/test-50-continuations.mjs
+      - name: Test wyszukiwarki i filtrowania 24 pytań FAQ
+        run: node scripts/test-faq.mjs
+      - name: Seria III — 50 kolejnych kontroli FAQ, treści, SEO i prywatności
+        run: node scripts/test-50-continuations-iii.mjs
       - name: Sprawdź pliki HTML i odnośniki
         run: node scripts/audit.mjs
       - name: Sprawdź logotypy partnerów na każdej podstronie

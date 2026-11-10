@@ -1,0 +1,44 @@
+/* 2026 — minimalistyczna biblioteka wiedzy; samodzielna, bez bibliotek. */
+.knowledge-hub{background:#f6f6f2;color:#173746;min-height:100vh}
+.knowledge-hub .hub-hero{background:radial-gradient(ellipse at 86% 15%,rgba(206,177,117,.23),transparent 38%),linear-gradient(125deg,#071e2c,#154352);padding:clamp(54px,7vw,105px) max(5%,calc((100vw - 1210px)/2));color:#fff}
+.knowledge-hub .hub-hero .eyebrow{color:#dfbf8d;letter-spacing:.14em;text-transform:uppercase}
+.knowledge-hub .hub-hero h1{color:#fff;font:700 clamp(2.15rem,4.9vw,4.4rem)/1.1 Georgia,serif;letter-spacing:-.035em;max-width:820px;margin:12px 0 20px}
+.knowledge-hub .hub-hero p{color:#e0e9e8;max-width:75ch;line-height:1.75;font-size:clamp(1rem,1.5vw,1.13rem)}
+.knowledge-hub .hub-hero .hub-head-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:23px}
+.knowledge-hub .hub-head-links a{display:inline-flex;align-items:center;min-height:48px;padding:12px 17px;border-radius:10px;border:1px solid #dfba81;background:rgba(255,255,255,.07);color:#f7e5bb;text-decoration:none;font-weight:740}
+.knowledge-hub .hub-head-links a:first-child{background:#e4c38f;color:#102c38}
+.knowledge-hub .hub-body{max-width:1250px;margin:0 auto;padding:38px 4% 74px}
+.knowledge-hub .hub-topline{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap}
+.knowledge-hub .hub-topline h2{font:700 clamp(1.5rem,3vw,2.2rem)/1.2 Georgia,serif;margin:0;color:#143646}
+.knowledge-hub .hub-result-count{font-size:.9rem;color:#506773;margin:0}
+.knowledge-hub .hub-search-label{display:flex;flex-direction:column;gap:9px;font-weight:750;font-size:.95rem;color:#214553}
+.knowledge-hub #hub-search{width:100%;min-height:54px;padding:14px 17px;background:#fff;color:#123343;border:1px solid #adc3c7;border-radius:12px;box-shadow:0 3px 10px rgba(15,57,74,.05);font:500 1rem/1.4 system-ui,sans-serif}
+.knowledge-hub #hub-search:focus-visible{outline:3px solid #cfa76a;outline-offset:3px}
+.knowledge-hub .hub-filters{display:flex;flex-wrap:wrap;gap:9px;margin:19px 0 29px}
+.knowledge-hub .hub-filters button{border:1px solid #bbcdd0;border-radius:100px;background:#fff;color:#224352;padding:10px 16px;min-height:44px;cursor:pointer;font:750 .91rem/1.35 system-ui,sans-serif}
+.knowledge-hub .hub-filters button[aria-pressed="true"]{border-color:#b99355;background:#142f3c;color:#f9e1b9}
+.knowledge-hub .hub-filters button:focus-visible{outline:3px solid #b99355;outline-offset:3px}
+.knowledge-hub .hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px)}
+.knowledge-hub .hub-card{display:flex;flex-direction:column;gap:12px;min-width:0;padding:clamp(20px,2.3vw,28px);background:#fff;border:1px solid #d3dfdf;border-radius:19px;text-decoration:none;color:#1a3e4b;box-shadow:0 10px 27px rgba(12,47,63,.08);transition:transform .2s ease,border-color .2s ease}
+.knowledge-hub .hub-card[hidden]{display:none!important}
+.knowledge-hub .hub-card:hover{transform:translateY(-3px);border-color:#c6a36d}
+.knowledge-hub .hub-card:focus-visible{outline:3px solid #a57431;outline-offset:3px}
+.knowledge-hub .hub-card.featured{background:linear-gradient(133deg,#113441,#0b2838);border-color:#cca86e;color:#f4f6ef}
+.knowledge-hub .hub-category{align-self:flex-start;padding:6px 10px;border-radius:20px;background:#ecf3f0;color:#36616b;font:750 .7rem/1.2 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.knowledge-hub .hub-card.featured .hub-category{color:#eacb95;background:rgba(255,255,255,.11)}
+.knowledge-hub .hub-card h3{font:700 clamp(1.15rem,1.9vw,1.43rem)/1.25 Georgia,serif;letter-spacing:-.018em;margin:0;color:inherit}
+.knowledge-hub .hub-card p{font-size:.93rem;line-height:1.65;margin:0;color:#45616c;flex:1}
+.knowledge-hub .hub-card.featured p{color:#d5e1df}
+.knowledge-hub .hub-card .hub-read{margin-top:auto;color:#986b31;font-weight:800;font-size:.92rem}
+.knowledge-hub .hub-card.featured .hub-read{color:#f5d399}
+.knowledge-hub #hub-empty{background:#fff;padding:23px;border:1px dashed #b6c3c3;border-radius:12px;margin-top:20px;color:#294b58}
+.knowledge-hub #hub-empty[hidden]{display:none!important}
+.knowledge-hub .hub-note{margin:32px 0 0;color:#4c6873;line-height:1.7;font-size:.91rem}
+.knowledge-hub .hub-banner{margin-top:35px;padding:clamp(25px,4vw,43px);border:1px solid #c3a571;border-radius:22px;background:#102f3e;color:#fff}
+.knowledge-hub .hub-banner h2{color:#ffe0ab;font:700 clamp(1.4rem,3vw,2rem)/1.2 Georgia,serif}
+.knowledge-hub .hub-banner p{color:#dce8e9;max-width:75ch}
+.knowledge-hub .hub-banner a{display:inline-flex;align-items:center;justify-content:center;background:#e4bd82;color:#10313e;min-height:46px;padding:12px 18px;border-radius:9px;font-weight:800;text-decoration:none;margin-top:12px}
+@media(max-width:1040px){.knowledge-hub .hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.knowledge-hub .hub-grid{grid-template-columns:1fr}.knowledge-hub .hub-filters{gap:7px}.knowledge-hub .hub-filters button{padding:9px 12px}.knowledge-hub .hub-hero{padding:47px 5% 50px}.knowledge-hub .hub-body{padding:28px 5% 55px}}
+@media(prefers-reduced-motion:reduce){.knowledge-hub .hub-card{transition:none}.knowledge-hub .hub-card:hover{transform:none}}
+@media print{.knowledge-hub .hub-filters,.knowledge-hub #hub-search,.knowledge-hub .hub-banner{display:none!important}.knowledge-hub .hub-grid{display:block}.knowledge-hub .hub-card{break-inside:avoid;box-shadow:none}}

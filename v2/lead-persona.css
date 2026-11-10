@@ -1,0 +1,51 @@
+/* Mini-portrety osób do kontaktu na stronach usług i kampanii.
+   Zamiast anonimowych obietnic: konkretna osoba i bezpośredni numer. */
+.premium-subpage .service-persona,
+.premium-campaign .campaign-persona{
+ display:flex;align-items:center;gap:15px;
+ max-width:560px;margin:22px 0 8px;padding:14px 16px;
+ background:linear-gradient(120deg,rgba(11,40,54,.96),rgba(22,63,72,.94));
+ border:1px solid rgba(226,195,135,.66);border-radius:16px;
+ box-shadow:0 10px 25px rgba(0,0,0,.15);
+ color:#f8f6ed;
+}
+.premium-subpage .service-persona-photo,
+.premium-campaign .campaign-persona-photo{
+ display:grid;place-items:center;position:relative;flex:0 0 76px;
+ width:76px;height:85px;overflow:hidden;
+ border-radius:12px;border:2px solid #e2c68a;
+ background:#20495a;color:#fff;font-weight:800;
+}
+.premium-subpage .service-persona-photo img,
+.premium-campaign .campaign-persona-photo img{
+ position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%;display:block;
+}
+.premium-subpage .service-persona-photo img[hidden],
+.premium-campaign .campaign-persona-photo img[hidden]{display:none}
+.premium-subpage .service-persona-copy,
+.premium-campaign .campaign-persona-copy{display:flex;flex:1;flex-direction:column;min-width:0;gap:3px;line-height:1.35}
+.premium-subpage .service-persona-copy small,
+.premium-campaign .campaign-persona-copy small{color:#e3cba2;font:.72rem/1.45 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.premium-subpage .service-persona-copy strong,
+.premium-campaign .campaign-persona-copy strong{font:700 1.18rem/1.3 Georgia,serif;color:#fff}
+.premium-subpage .service-persona-copy a,
+.premium-campaign .campaign-persona-copy a{display:inline-flex;align-items:center;align-self:flex-start;min-height:32px;padding:4px 6px 4px 0;color:#ffe0a1;text-decoration:underline;text-underline-offset:3px;font-weight:770}
+.premium-subpage .service-persona-copy .persona-about,
+.premium-campaign .campaign-persona-copy .persona-about{color:#d0e2df;font-size:.85rem}
+.premium-subpage.theme-support .service-persona,
+.premium-campaign.campaign-support .campaign-persona{
+ background:linear-gradient(125deg,#0e4138,#164b45);
+ border-color:#a0d4b4;
+}
+.premium-subpage.theme-support .service-persona-photo,
+.premium-campaign.campaign-support .campaign-persona-photo{border-color:#b5dcc4}
+@media(max-width:490px){
+ .premium-subpage .service-persona,
+ .premium-campaign .campaign-persona{padding:11px;gap:12px;margin-top:18px}
+ .premium-subpage .service-persona-photo,
+ .premium-campaign .campaign-persona-photo{flex-basis:61px;width:61px;height:72px}
+ .premium-subpage .service-persona-copy strong,
+ .premium-campaign .campaign-persona-copy strong{font-size:1.05rem}
+ .premium-subpage .service-persona-copy small,
+ .premium-campaign .campaign-persona-copy small{font-size:.66rem}
+}

@@ -5,6 +5,7 @@
  */
 import { readdir, readFile, writeFile, mkdir, cp, rm } from "node:fs/promises";
 import { join, relative, dirname } from "node:path";
+import {withNetworkBrand} from "./network-brand.mjs";
 import { shouldIndexRoute } from "./seo-policy.mjs";
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
@@ -37,7 +38,7 @@ async function walk(dir){
     const target=join(dest,rel);
     await mkdir(dirname(target),{recursive:true});
     if(entry.name.endsWith(".html")){
-      let html=await readFile(absolute,"utf8");
+      let html=withNetworkBrand(await readFile(absolute,"utf8"));
       const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
       const canonical=origin+route;
       const indexable=shouldIndexRoute(route);

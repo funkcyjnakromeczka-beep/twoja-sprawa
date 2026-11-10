@@ -41,6 +41,18 @@ try{
   await logo.waitFor({state:"visible",timeout:10000});
   // Prioritise the real logos, but text fallbacks must remain legible on slow/offline devices.
   await page.waitForFunction(()=>[...document.querySelectorAll(".network-brand-logos img")].every(img=>img.complete&&img.naturalWidth>0),undefined,{timeout:5000}).catch(()=>{});
+  // Lazy-loaded portraits may be below the fold. Ensure the browser requests them
+  // before measuring image status; full-page screenshots alone are not a loading signal.
+  await page.evaluate(()=>{
+    for(const img of document.querySelectorAll(".team-spotlight img,.team-portrait-grid img,.service-persona img,.campaign-persona img")){
+      img.loading="eager";
+    }
+  });
+  await page.waitForFunction(()=>{
+    const portraits=[...document.querySelectorAll(".team-spotlight img,.team-portrait-grid img,.service-persona img,.campaign-persona img")];
+    return portraits.every(img=>img.complete&&img.naturalWidth>0);
+  },undefined,{timeout:15000}).catch(()=>{});
+
   await page.screenshot({path:"screenshots/"+name+".png",fullPage:true,animations:"disabled"});
   const measured=await page.evaluate(()=>{
     const bar=document.querySelector(".network-brand-bar");

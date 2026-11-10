@@ -8,16 +8,16 @@
 
 ## Architektura docelowa
 / — ogólnopolska strona główna
-/uslugi/szkody-gornicze.html — lokalna Lubin/Polkowice
-/uslugi/swiadczenie-wspierajace.html
-/uslugi/renty-powypadkowe.html
-/uslugi/kredyty-pln.html
-/uslugi/sluzebnosc-przesylu.html
+/uslugi/szkody-gornicze — lokalna Lubin/Polkowice
+/uslugi/swiadczenie-wspierajace
+/uslugi/renty-powypadkowe
+/uslugi/kredyty-pln
+/uslugi/sluzebnosc-przesylu
 + 7 podstron usług dodatkowych z obecnego Lovable.
 /wiedza/ — poradniki i aktualizacje z datą publikacji i weryfikacji
-/o-nas.html — transparentny opis roli przedstawiciela
-/kontakt.html — kontakt i informacje o przetwarzaniu danych
-/polityka-prywatnosci.html
+/o-nas — transparentny opis roli przedstawiciela
+/kontakt — kontakt i informacje o przetwarzaniu danych
+/polityka-prywatnosci
 
 ## Techniczne SEO
 1. Jedno H1 na stronę, unikalne title i meta description, breadcrumb, wewnętrzne linkowanie usług i artykułów.
@@ -60,3 +60,8 @@ Kliknięcia telefonu i e-maila; poprawne zgłoszenia formularza; leady wg usług
 - Polityka SEO wyłącza `/404.html`, duplikujące strony kampanii i materiały prywatności z mapy indeksowanych adresów. Szczegóły: `scripts/seo-policy.mjs`.
 - Każda publikacja nadal wymaga zatwierdzeń treści, wizerunków i RODO. `robots.txt` aktualnej wersji podglądowej blokuje indeksację i nie należy uznawać tego za awarię bez decyzji o release.
 - Po wdrożeniu produkcyjnym zweryfikuj fizycznie dostępność `/robots.txt`, `/sitemap.xml`, artykułów i lokalnych zdjęć. Wynik CI sam nie dowodzi skutecznego wdrożenia.
+
+## Adresy kanoniczne Cloudflare Pages — weryfikacja 11.11.2026
+- Publiczne adresy końcowe zweryfikowano w przeglądarce: `/uslugi/szkody-gornicze`, `/wiedza/drobne-pekniecia-szkody-gornicze`, `/kontakt`, `/plan-dzialania` (bez rozszerzenia `.html`).
+- Skrypt `scripts/build.mjs` wykorzystuje `scripts/public-routes.mjs` do ustawienia `rel=canonical`, `og:url`, `WebPage.url` i `sitemap.xml` na docelowe adresy bez przekierowań. Wewnętrzne statyczne linki `href` są normalizowane w produkcyjnym HTML.
+- Podgląd nadal nie jest produkcyjnym release. Potwierdzić docelowe canonical, indeksację i sitemap **po** faktycznym wdrożeniu. Samo pojawienie się strony w przeglądarce nie dowodzi działania indeksacji.

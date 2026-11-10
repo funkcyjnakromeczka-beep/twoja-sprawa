@@ -116,7 +116,8 @@
     if(text)el.textContent=text;return el;
   };
   const destination=(topic,stageCode="")=>{
-    const address=new URL(base+(topic.form||"?usluga="+encodeURIComponent(topic.alias||topic.key)+"&"+params.slice(1)+"#kontakt"),window.location.origin);
+    const target=topic.form ? base+topic.form : base+"kontakt.html"+params+"&usluga="+encodeURIComponent(topic.alias||topic.key)+"#formularz";
+    const address=new URL(target,window.location.origin);
     if(stageCode && (topic.key==="szkody"||topic.key==="swiadczenie"))address.searchParams.set("etap",stageCode);
     return address.pathname+address.search+address.hash;
   };

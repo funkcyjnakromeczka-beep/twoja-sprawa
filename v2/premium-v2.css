@@ -3529,3 +3529,59 @@ html{scroll-padding-top:16px}
 @media(prefers-reduced-motion:reduce){
   .premium-v2 :is(.hero-support-spotlight,#uslugi .primary-card,.home-resource-grid>a){transition:none!important;transform:none!important}
 }
+
+
+/* HOMEPAGE-FORM-FOCUS-20261110: compact accessible intake */
+.premium-v2 #kontakt .contact-steps{display:none}
+.premium-v2 #kontakt .contact-form .contact-people{display:none}
+.premium-v2 #kontakt .contact-form .contact-benefits{display:none}
+.premium-v2 #kontakt .contact-form .contact-case-details{
+  display:block;margin:16px 0 20px;padding:0 0 8px;
+  background:#f9faf8;border:1.5px solid #b9c9c9;border-radius:15px;overflow:hidden;
+}
+.premium-v2 #kontakt .contact-form .contact-case-details>summary{
+  display:block;padding:17px 45px 17px 18px;position:relative;
+  cursor:pointer;background:linear-gradient(125deg,#143b4e,#0b2738);
+  color:#f7ead1!important;font-weight:800;font-size:.95rem;line-height:1.45;list-style:none;
+}
+.premium-v2 #kontakt .contact-form .contact-case-details>summary::-webkit-details-marker{display:none}
+.premium-v2 #kontakt .contact-form .contact-case-details>summary:after{
+  content:"+";position:absolute;right:17px;top:50%;transform:translateY(-50%);
+  color:#e1ca9d;font-size:1.25rem;font-weight:600;
+}
+.premium-v2 #kontakt .contact-form .contact-case-details[open]>summary:after{content:"−"}
+.premium-v2 #kontakt .contact-form .contact-case-details>summary:focus-visible{outline:3px solid #e3b875;outline-offset:-3px}
+.premium-v2 #kontakt .contact-form .contact-case-details>summary:hover{background:#215369}
+.premium-v2 #kontakt .contact-form .contact-case-details[open]{padding-bottom:19px}
+.premium-v2 #kontakt .contact-form .contact-case-details[open]>:not(summary){
+  margin-left:17px;margin-right:17px;
+}
+.premium-v2 #kontakt .contact-form .contact-case-details>label{
+  display:block;margin-top:16px;margin-bottom:8px;font-weight:700;
+  color:#203f4c!important;
+}
+.premium-v2 #kontakt .contact-form .contact-case-details input:not([type=checkbox]),
+.premium-v2 #kontakt .contact-form .contact-case-details select,
+.premium-v2 #kontakt .contact-form .contact-case-details textarea{
+  width:calc(100% - 34px);max-width:calc(100% - 34px);min-height:48px;
+  padding:12px;background:#fff!important;color:#193e49!important;
+  border:1.5px solid #b3c3c6;border-radius:9px;font-size:16px;
+}
+.premium-v2 #kontakt .contact-form .contact-case-details textarea{min-height:102px}
+.premium-v2 #kontakt .contact-form .contact-case-details .contact-stage label{color:#244451!important;font-weight:700}
+.premium-v2 #kontakt .contact-form .contact-case-details .contact-stage select{margin-left:0;width:100%;max-width:100%}
+.premium-v2 #kontakt .contact-form .contact-case-details .contact-optional-details{margin:16px 17px 0!important;background:#fff;border-color:#c5d3d3}
+.premium-v2 #kontakt .contact-form .contact-case-details .contact-optional-details select{margin:0;width:100%;max-width:100%}
+.premium-v2 #kontakt .contact-form .contact-case-details .contact-optional-details label,
+.premium-v2 #kontakt .contact-form .contact-case-details .contact-optional-details small{margin-inline:0!important}
+.premium-v2 #kontakt .lead-panel{margin-top:23px}
+.premium-v2 #kontakt>h2{color:#183d4b}
+@media(max-width:760px){
+  .premium-v2 #kontakt .contact-form .contact-case-details>summary{padding:16px 39px 16px 14px}
+  .premium-v2 #kontakt .contact-form .contact-case-details[open]>:not(summary){margin-left:12px;margin-right:12px}
+  .premium-v2 #kontakt .contact-form .contact-case-details input:not([type=checkbox]),
+  .premium-v2 #kontakt .contact-form .contact-case-details select,
+  .premium-v2 #kontakt .contact-form .contact-case-details textarea{width:calc(100% - 24px);max-width:calc(100% - 24px)}
+  .premium-v2 #kontakt .contact-form .contact-case-details .contact-stage select,
+  .premium-v2 #kontakt .contact-form .contact-case-details .contact-optional-details select{width:100%;max-width:100%}
+}

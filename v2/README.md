@@ -17,12 +17,18 @@
 - Zdjęcia Wojciecha i Pauliny podczas budowy produkcyjnej są pobierane przez `scripts/build.mjs` do `dist/assets/`.
 - Formularz Web3Forms: `v2/contact.js`
 - Styl graficzny: `v2/styles.css` i `v2/premium-v2.css`
+- Biblioteka wiedzy i szybkie wyszukiwanie: `v2/wiedza/index.html`, `v2/knowledge-hub.js`, `v2/knowledge-hub.css`
+- Powiększanie tekstu i druk artykułów: `v2/article-accessibility.js` i `v2/article-accessibility.css`
+- Strona kontaktu ze zdjęciami specjalistów: `v2/kontakt.html` i `v2/contact-hub.css`
 
 ## Testy przed publikacją
 ```sh
 node scripts/audit.mjs
 node scripts/test-chat-lead.mjs
 node scripts/test-service-navigator.mjs
+node scripts/test-knowledge-hub.mjs
+node scripts/test-article-accessibility.mjs
+node scripts/test-release-readiness.mjs
 node scripts/test-contact-client.mjs
 node scripts/test-network-brand.mjs
 node scripts/test-seo-policy.mjs
@@ -40,3 +46,9 @@ Dane przekazywane przez formularz kierowane są do Web3Forms i następnie na `tw
 - Przewodnik rozróżnia m.in. odmowę kopalni, propozycję ugody, decyzję WZON i etap ZUS; wysyła do formularza wyłącznie kody kategorii i etapu oraz bezpieczne oznaczenia kampanii.
 - Na stronie produkcyjnej bezwzględnie należy zweryfikować działanie formularza, licencje materiałów i uprawnienia do wykorzystania wizerunków oraz politykę prywatności.
 - **Nie przełączać `robots.txt` na indeksowanie bez zatwierdzenia zgodnie z `PUBLICATION-CHECKLIST.md`.**
+
+## Biblioteka poradników — stan techniczny
+- Dziesięć artykułów jest dostępnych w `v2/wiedza/index.html` z filtrowaniem według pięciu kategorii, wyszukiwaniem odpornym na polskie znaki oraz przyciskiem resetu.
+- Każdy artykuł w `v2/wiedza/` zawiera narzędzia: większy tekst, druk do PDF przez przeglądarkę i kopiowanie linku. Funkcje nie wymagają rejestracji i nie zapisują wyszukiwań.
+- Strona kontaktu prezentuje Wojciecha i Paulinę ze zdjęciami; przyciski wskazują usługę przed wejściem do formularza.
+- W polityce SEO strona `/404.html` jest wykluczona z indeksacji i mapy witryny.

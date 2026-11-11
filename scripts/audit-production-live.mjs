@@ -111,5 +111,12 @@ assert.ok(leadJS.body.includes('querySelectorAll("[data-stage-option]")'),"WZON 
 assert.ok(leadJS.body.includes('hasOwnProperty.call(stages,code)'),"WZON stage code validation missing");
 assert.ok(personaCSS.body.includes(".campaign-stage-pick"),"WZON stage buttons not styled on live page");
 
+// Stage X: guard against duplicate lead sends and empty/whitespace-only names.
+assert.ok(leadJS.body.includes("if(sending)return;"),"In-flight duplicate-submit guard has not reached Cloudflare");
+assert.ok(leadJS.body.includes("sending=true;button.disabled=true"),"Live form does not disable repeat submission");
+assert.ok(leadJS.body.includes("finally{sending=false;button.disabled=false"),"Live form does not unlock after network failure");
+assert.ok(leadJS.body.includes("Boolean(name.value.trim())"),"Live form accepts whitespace-only names");
+assert.ok(leadJS.body.includes('name.setCustomValidity("")'),"Live form does not clear name validation after success");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

@@ -89,5 +89,6 @@ for(const file of [
  assert.ok(copy.includes("wojciech.obieglo@votum-ds.pl"),"SKD email destination lost: "+file);
 }
 const skdChecklist=await readFile("v2/poradniki/skd-kredyt-pln-lista-kontrolna.html","utf8");
-assert.ok(skdChecklist.includes("tel:+48796441345")&&!skdChecklist.includes("tel:+48500171531"),"SKD checklist phone must direct to Wojciech");
+assert.ok(skdChecklist.includes('class="guide-phone" href="tel:+48796441345"'),"SKD checklist contact CTA must direct to Wojciech");
+assert.ok(!skdChecklist.includes('class="guide-phone" href="tel:+48500171531"'),"SKD checklist contact CTA must not direct to the support advisor");
 console.log("HOME_CLARITY_OK: 6 unique services (2+1+3), SKD third with email and phone CTA.");

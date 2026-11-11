@@ -204,3 +204,10 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - `scripts/screenshot-preview.mjs` sprawdza w Chromium na telefonie 390 px, że otwarcie poradnika i informacji o prywatności tworzy osobne karty, a imię oraz wybrana usługa pozostają w pierwotnym formularzu. Bez wysyłania prawdziwych zgłoszeń.
 - `scripts/audit-production-live.mjs` odczytuje publiczny `contact.js` na Cloudflare i sprawdza obecność nowych ustawień; nie potwierdza dostarczenia rzeczywistej wiadomości do skrzynki.
 - Zero nowych płatnych usług, skryptów śledzących, magazynowania danych klienta czy zależności zewnętrznych.
+
+## Etap XVII — mniej blokujących stylów na stronie głównej (11.11.2026)
+- Strona główna nie pobiera już `/knowledge-articles.css` — osobnego arkusza przeznaczonego głównie dla pełnych artykułów edukacyjnych. Usunięcie to redukuje liczbę żądań CSS na homepage o **jedno**.
+- Niezbędne reguły `.premium-v2 .editorial-reading`, `.premium-v2 .hub-all-link` i `.premium-v2 .faq-explore-all` przeniesiono do już ładowanego arkusza `/home-flow.css`. Nie usunięto stylów z `knowledge-articles.css`, więc artykuły i ich listy kontrolne nadal korzystają z dotychczasowych reguł.
+- Przed zmianą pliki `home-flow.css` oraz `knowledge-articles.css` miały łącznie 12 672 B źródła; po konsolidacji `home-flow.css` ma 11 274 B (pomiar źródeł z tego wdrożenia), tj. około **1,4 KB mniej danych przed kompresją** na samej stronie głównej. Zysk czasowy po kompresji oraz wpływ na wskaźniki Core Web Vitals nie zostały zmierzone dla ruchu użytkowników.
+- `scripts/test-home-clarity.mjs` sprawdza brak zbędnego CSS, obecność stylów trzech sekcji i zachowanie styli artykułów; `scripts/screenshot-preview.mjs` sprawdza rzeczywisty render w Chromium, liczbę pobranych arkuszy i układ kart. Test uwzględnia, że układ przycisków może mieć obie poprawne wartości `display:flex` albo `display:inline-flex`.
+- `scripts/audit-production-live.mjs` kontroluje publiczny HTML i CSS w Cloudflare oraz stronę artykułu, na której dedykowany arkusz powinien pozostać. Nie wykonuje zgłoszeń klientów i nie instaluje płatnych zależności.

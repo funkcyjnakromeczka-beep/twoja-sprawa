@@ -4,9 +4,17 @@ on:
     branches: [main]
     paths:
       - 'v2/cdc63afe4c9cf8e5dade3a9fe8168c328ac5cf74.txt'
+      - 'v2/*.html'
+      - 'v2/**/*.html'
+      - 'scripts/build.mjs'
+      - 'scripts/seo-policy.mjs'
+      - 'scripts/indexnow-routes.mjs'
       - 'scripts/submit-indexnow.mjs'
       - '.github/workflows/indexnow.yml'
   workflow_dispatch:
+concurrency:
+  group: indexnow-twoja-sprawa-main
+  cancel-in-progress: true
 jobs:
   submit:
     runs-on: ubuntu-latest
@@ -20,7 +28,7 @@ jobs:
           node-version: '22'
       - name: Sprawdź składnię zgłaszania
         run: node --check scripts/submit-indexnow.mjs
-      - name: Sprawdź domenę, sitemap i zgłoś 36 kanonicznych stron do IndexNow
+      - name: Sprawdź domenę, aktualną sitemap i zgłoś indeksowalne strony do IndexNow
         env:
           INDEXNOW_SUBMIT: '1'
         run: node scripts/submit-indexnow.mjs

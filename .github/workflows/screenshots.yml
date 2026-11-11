@@ -38,6 +38,8 @@ on:
       - 'v2/plan-dzialania.js'
       - 'v2/plan-dzialania.css'
       - 'v2/contact.js'
+      - 'v2/mobile-service-cta.js'
+      - 'v2/mobile-service-cta.css'
       - 'v2/uslugi/szkody-gornicze.html'
       - 'v2/uslugi/swiadczenie-wspierajace.html'
       - 'v2/kampanie/szkody-gornicze.html'

@@ -1,0 +1,16 @@
+.theme-frank .frank-hero{background:radial-gradient(circle at 85% 15%,rgba(206,174,114,.25),transparent 36%),linear-gradient(120deg,#0b2634,#193f4e);color:#f5f8f8}
+.theme-frank .frank-hero :is(h1,p){color:#f6f8f5}
+.theme-frank .frank-hero .eyebrow{color:#e5c793}
+.theme-frank .frank-back{display:inline-flex;color:#efdbb7;margin:13px 0;text-decoration:underline}
+.theme-frank .frank-disclaimer{font-size:.86rem;line-height:1.65;color:#e2e9e7!important;max-width:80ch}
+.theme-frank .frank-sections{background:#fff;color:#1c3947}
+.theme-frank .frank-sections :is(h2,p,li,summary){color:#173746}
+.theme-frank .frank-steps{display:grid;gap:13px;padding:0;list-style:none;counter-reset:step}
+.theme-frank .frank-steps li{counter-increment:step;padding:17px 19px;border:1px solid #bdcfd3;background:#f3f7f5;border-radius:13px;line-height:1.65}
+.theme-frank .frank-steps li:before{content:counter(step,decimal-leading-zero);color:#866936;font-size:1.25rem;font-weight:800;margin-right:12px}
+.theme-frank .frank-contact{background:#ecf3f1;padding:32px;border:1px solid #bbd1cc;border-radius:15px;margin-block:30px}
+.theme-frank .frank-contact h2,.theme-frank .frank-contact p{color:#163c49}
+.theme-frank .contact-form :is(h3,label,summary,p,small){color:#173746}
+.theme-frank .frank-sections a{color:#185b70;text-underline-offset:3px;font-weight:700}
+.theme-frank :is(.frank-sections a,.frank-hero a,.frank-contact a):focus-visible{outline:3px solid #bf9156;outline-offset:3px}
+@media(max-width:650px){.theme-frank .frank-contact{padding:20px 16px}.theme-frank .frank-steps li{padding:14px}}

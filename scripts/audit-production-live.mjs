@@ -118,5 +118,11 @@ assert.ok(leadJS.body.includes("finally{sending=false;button.disabled=false"),"L
 assert.ok(leadJS.body.includes("Boolean(name.value.trim())"),"Live form accepts whitespace-only names");
 assert.ok(leadJS.body.includes('name.setCustomValidity("")'),"Live form does not clear name validation after success");
 
+// Stage XI: phone data-quality checks are live, even for formatted numbers.
+assert.ok(leadJS.body.includes("const validPhoneNumber=value=>"),"Live contact form lacks phone validation");
+assert.ok(leadJS.body.includes("digits.length>=7&&digits.length<=15"),"Live contact form does not check phone digit count");
+assert.ok(leadJS.body.includes("if(!checkContact())return;"),"Phone/contact validation is not applied at submit");
+assert.ok(leadJS.body.includes('phone.setAttribute("aria-describedby",phoneHint.id)'),"Phone guidance is not connected for screen readers");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, validated contact phone numbers, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

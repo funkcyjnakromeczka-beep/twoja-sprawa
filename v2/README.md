@@ -114,3 +114,12 @@ Dane przekazywane przez formularz kierowane są do Web3Forms i następnie na `tw
 
 Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 
+## Etap VII — metadane udostępniania i bezpłatne polecenia (11.11.2026)
+- `scripts/build.mjs` dodaje do każdej wydanej strony indywidualne `og:title`, `og:description`, `twitter:title` i `twitter:description`, zgodne z jej własnym tytułem i opisem. Wersja źródłowa `v2/` nadal ma `noindex`; publikacja odbywa się tylko przez kontrolowany build.
+- Podgląd społecznościowy korzysta z lokalnych zdjęć `/assets/wojciech-obieglo.jpg` i `/assets/paulina-chandrala.jpg`; dla świadczenia wspierającego i rent wybrano zdjęcie Pauliny, w innych przypadkach Wojciecha. Są to istniejące fotografie kontaktowe, nie nowe autorskie grafiki panoramiczne.
+- Dodatkowo ustawiono `og:image`, `og:image:secure_url`, `og:image:type`, `og:image:alt`, `twitter:image` i `twitter:image:alt`.
+- Stopka `v2/index.html` zawiera dyskretną funkcję „Udostępnij stronę”, obsługiwaną przez istniejący `v2/share-page.js`; bez skryptów śledzących, dodatkowych zgód i usług płatnych.
+- Na telefonie strona główna zachowuje trzy szybkie działania: telefony Wojciecha i Pauliny oraz formularz; pasek chowa się przy aktywnym formularzu albo otwartym przewodniku.
+- `scripts/test-production-bundle.mjs` kontroluje zgodność podglądów wybranych usług i obecność funkcji udostępniania w pakiecie wydania. `scripts/test-home-clarity.mjs` sprawdza mobilny pasek.
+- Zielone audyty: [test wydania](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42954115941), [audyt kodu](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42954158657).
+- **Ograniczenie:** samo zapisanie kodu i ukończenie CI nie oznaczają automatycznie nowej publikacji na Cloudflare ani potwierdzenia wyglądu podglądu w Facebooku, Instagramie czy aplikacjach wiadomości. Dostępne źródła nie potwierdziły nowego wdrożenia. Zmiany są gotowe w gałęzi `main`.

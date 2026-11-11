@@ -51,4 +51,20 @@ assert.ok(shortcutBlock.includes('role="status" aria-live="polite"'),"Selection 
 assert.ok(css.includes("contact-shortcuts-actions")&&css.includes('data-selected="true"'),"Flagship selection styling missing");
 assert.ok(html.includes('<div class="lead-panel"><div data-contact-form></div></div>'),"Shortcuts must reuse the existing homepage form");
 
+// Keep the homepage CSS lean without losing its visible article/FAQ cards.
+assert.ok(!html.includes('href="/v2/knowledge-articles.css"'),"Homepage still downloads long-form article CSS");
+for(const [selector,name] of [
+ [".premium-v2 .editorial-reading","editorial recommendations"],
+ [".premium-v2 .hub-all-link","knowledge hub entry"],
+ [".premium-v2 .faq-explore-all","FAQ entry"]
+]){
+ assert.ok(css.includes(selector),"Homepage lost "+name+" styling during CSS consolidation");
+}
+const articleCSS=await readFile("v2/knowledge-articles.css","utf8");
+assert.ok(articleCSS.includes(".knowledge-article .knowledge-body"),"Do not remove styles needed by article pages");
+const previousHomeBytes=9005,previousArticleBytes=3667;
+const oldTotal=previousHomeBytes+previousArticleBytes;
+const newTotal=Buffer.byteLength(css,"utf8");
+assert.ok(newTotal<oldTotal,"Consolidation should decrease transfer size for homepage");
+
 console.log("HOME_CLARITY_OK: 6 unique service cards (2+4), priority visible, keyboard-friendly navigator, balanced desktop/mobile layout.");

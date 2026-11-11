@@ -241,3 +241,13 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - W materiałach pozostają wyłącznie podstawowe wskazówki bezpieczeństwa: weryfikacja adresu odbiorcy oraz zakaz przesyłania haseł i kodów autoryzacyjnych. Nie potwierdzamy ani nie obiecujemy konkretnego poziomu szyfrowania usługi e-mail, bo nie przeprowadzono takiego audytu.
 - Testy `scripts/test-home-clarity.mjs` i `scripts/test-contact-client.mjs` kontrolują brak starych poleceń zasłaniania danych, obecność służbowego adresu Wojciecha, numer telefonu, treść na stronach SKD i przełączenie wskazówek formularza między SKD a innymi usługami. Audyt produkcyjny porównuje tę treść z faktycznie opublikowanymi plikami Cloudflare; nie przesyła wiadomości ani umów.
 - Stała kolejność wyróżnienia na stronie głównej: świadczenie wspierające (1), szkody górnicze (2), SKD (3). **Koszt dodatkowych usług: 0 zł**.
+
+## Etap XXI — zdjęcia osób kontaktowych na własnym hostingu (11.11.2026)
+
+- Siedem kluczowych stron zostało uniezależnionych od obrazów hostowanych na dawnym projekcie Lovable (`twojasprawa-votum.lovable.app/assets/...`). Portrety są teraz wczytywane bezpośrednio z dwóch zasobów własnej strony Cloudflare: `/assets/wojciech-obieglo.jpg` i `/assets/paulina-chandrala.jpg`.
+- Zakres: `v2/index.html`, `v2/kontakt.html`, `v2/o-nas.html`, podstrony `v2/uslugi/szkody-gornicze.html` i `v2/uslugi/swiadczenie-wspierajace.html` oraz strony kampanijne `v2/kampanie/szkody-gornicze.html` i `v2/kampanie/swiadczenie-wspierajace.html`.
+- Użyto wcześniej istniejących skompresowanych plików JPG w repozytorium (około 70–71 KiB każdy). **Nie przerobiono wyglądu osób**, nie wprowadzono nowych zdjęć ani zależności od zewnętrznego generatora grafiki.
+- Korzyść techniczna: wyłączenie lub przekierowanie dotychczasowej witryny Lovable nie przerwie żądań tych portretów na wskazanych siedmiu stronach. Przeniesienie źródeł nie jest dowodem poprawy metryk Core Web Vitals ani gwarancją dostępności innych zewnętrznych zasobów.
+- `scripts/test-50-continuations.mjs` i `scripts/test-home-clarity.mjs` sprawdzają nowe ścieżki. `scripts/screenshot-preview.mjs` odczytuje rzeczywiste zdjęcia w Chromium na 7 trasach i sprawdza, czy przeglądarka pobiera je z własnego hostingu. `scripts/audit-production-live.mjs` sprawdza publiczne HTML, typ plików oraz brak starych adresów zdjęć.
+- Nie zmieniano formularzy, numerów kontaktowych, kolejności wyróżnionych usług (1. świadczenia, 2. szkody górnicze, 3. SKD), treści porad SKD ani sposobu wysyłania pełnej umowy kredytowej na `wojciech.obieglo@votum-ds.pl`.
+- **Dodatkowy koszt: 0 zł**. Nie wysyłano zgłoszeń do klientów ani danych do usług marketingowych.

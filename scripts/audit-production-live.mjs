@@ -255,12 +255,18 @@ const isSKDPublished=(h,page,css,lead,chat,nav,skdStyles)=>{
   page.includes('id="skd-document-title"')&&
   page.includes("mailto:wojciech.obieglo@votum-ds.pl?subject=")&&
   page.includes("Zostaw numer telefonu w formularzu")&&
+  page.includes('class="skd-mobile-quickbar"')&&
+  page.includes('class="skd-mobile-phone" href="#formularz"')&&
+  page.includes('class="skd-mobile-mail" href="mailto:wojciech.obieglo@votum-ds.pl?subject=')&&
   page.includes("bez zasłaniania danych")&&
   lead.includes("bez zasłaniania danych")&&
   chat.includes("bez zasłaniania danych")&&
   nav.includes("bez zasłaniania danych")&&
   page.includes('href="/skd-contact.css"')&&
   skdStyles.includes(".skd-document-actions")&&
+  skdStyles.includes("Persistent, mobile-only SKD conversion route")&&
+  skdStyles.includes(".chat-assistant")&&
+  skdStyles.includes("env(safe-area-inset-bottom)")&&
   lead.includes('emailLink.href="mailto:wojciech.obieglo@votum-ds.pl?subject=')&&
   chat.includes('key:"skd"')&&chat.includes('phone:"796 441 345",tel:"+48796441345"')&&
   nav.includes('service:"kredyty-pln.html",phone:"796 441 345",tel:"+48796441345"');

@@ -1,0 +1,61 @@
+/* Kontrast i rozmiar identyfikacji marki; bez nadpisywania ciemnych kart i nagłówków. */
+.premium-subpage.theme-support .vws-service-brand{
+ display:flex;align-items:center;flex-wrap:wrap;gap:15px;
+ padding:15px 20px;margin:0 0 26px;
+ background:#ffffff;color:#183d30;border:2px solid #7ea98c;border-radius:15px;
+ box-shadow:0 9px 24px rgba(4,35,22,.19);
+ width:min(100%,600px);
+}
+.premium-subpage.theme-support .vws-service-brand img{
+ width:clamp(210px,27vw,310px);height:auto;max-height:112px;
+ display:block;object-fit:contain;background:#fff;
+}
+.premium-subpage.theme-support .vws-service-brand span{
+ max-width:29ch;color:#234f37;font-size:.9rem;line-height:1.5;font-weight:750;
+}
+.premium-subpage.theme-support .vws-service-brand strong{color:#1f663e;font-size:1.1rem}
+/* Lista kontrolna: zapewnij ciemny tekst na jednolitym jasnym tle. */
+.interactive-checklist,.interactive-checklist p,.interactive-checklist small,
+.interactive-checklist h2,.interactive-checklist .eyebrow,
+.interactive-checklist .checklist-progress,.interactive-checklist .checklist-item,
+.interactive-checklist .checklist-item span{
+ color:#163746!important;
+}
+.interactive-checklist{background:#f9faf7!important}
+.interactive-checklist .checklist-item{background:#fff!important;border-color:#aabebc!important}
+.interactive-checklist .checklist-item:has(input:checked){background:#e9f4eb!important}
+.interactive-checklist .checklist-item input:checked+span{color:#385a54!important}
+.interactive-checklist .checklist-progress{background:#e9f0ed;border-radius:9px;padding:10px 12px}
+.interactive-checklist .checklist-actions .btn{color:#132f40}
+/* Białe formularze i rozwijane check-listy nie mogą dziedziczyć białych liter z hero. */
+.contact-form,.contact-form .contact-case-details,
+.contact-form .contact-optional-details,.contact-form .contact-guide-box,
+.contact-form .contact-context-notice{color:#173746}
+.contact-form :is(label,legend,summary,small,p,.contact-field-hint),
+.contact-form .check,.contact-form .check :is(span,strong),
+.contact-form .contact-case-details :is(label,summary,small),
+.contact-form .contact-optional-details :is(label,summary,small),
+.contact-form .contact-guide-box :is(strong,span),
+.contact-form .contact-context-notice :is(strong,span){
+ color:#173746!important;
+}
+.contact-form .contact-case-details,.contact-form .contact-optional-details{
+ background:#f4f8f6;border:1px solid #bdcfc9;border-radius:12px;
+}
+.contact-form .contact-case-details>summary,.contact-form .contact-optional-details>summary{
+ background:#edf3f0;color:#173746!important;padding:13px 15px;border-radius:10px;cursor:pointer;font-weight:750
+}
+.contact-form :is(input:not([type=checkbox]),select,textarea){
+ background:#fff!important;color:#153644!important;border-color:#95b0b2!important;
+}
+.contact-form :is(input,select,textarea):focus-visible,
+.interactive-checklist :is(input,button,a):focus-visible{
+ outline:3px solid #b28b4e!important;outline-offset:3px;
+}
+/* Przyciski pozostają czytelne także na białym tle. */
+.contact-form button[type=submit]{background:#dfbd82;color:#112f3d!important;font-weight:850}
+@media(max-width:630px){
+ .premium-subpage.theme-support .vws-service-brand{padding:13px 15px;gap:8px}
+ .premium-subpage.theme-support .vws-service-brand img{width:min(100%,285px);max-height:99px}
+}
+@media print{.interactive-checklist,.interactive-checklist .checklist-item{background:#fff!important}}

@@ -273,4 +273,43 @@ for(const code of ["Ściany i elewacja","Kostka i ogrodzenie","Drzwi i okna"]){
  await third;
 }
 
+// Invalid phone strings should not become unusable callbacks or block a valid email-only lead.
+for(const sample of [
+  {phone:"---------",email:"",method:"Dowolny",accepted:false},
+  {phone:"123456",email:"",method:"Telefon",accepted:false},
+  {phone:"1234567",email:"",method:"Telefon",accepted:true},
+  {phone:"+48 796 441 345",email:"",method:"Telefon",accepted:true},
+  {phone:"00442079460123",email:"",method:"Telefon",accepted:true},
+  {phone:"5123+4567",email:"",method:"Telefon",accepted:false},
+  {phone:"1234567890123456",email:"",method:"Telefon",accepted:false},
+  {phone:"",email:"",method:"Dowolny",accepted:false},
+  {phone:"",email:"test@example.com",method:"E-mail",accepted:true},
+  {phone:"",email:"test@example.com",method:"Telefon",accepted:false},
+  {phone:"796 441 345",email:"test@example.com",method:"E-mail",accepted:true}
+]){
+  const host=new Node("host");
+  const document={
+    body:{classList:{contains:()=>false}},
+    currentScript:{getAttribute:key=>key==="data-service"?"Szkody górnicze":""},
+    querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+    createElement:tag=>new Node(tag),
+    createTextNode:text=>({tag:"text",textContent:text})
+  };
+  const window={location:{search:"?utm_source=ulotka"},setTimeout:()=>1,clearTimeout:()=>{}};
+  const payloads=[];
+  const fetch=async(_url,request)=>{payloads.push(JSON.parse(request.body));return {ok:true,json:async()=>({success:true})};};
+  runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+  const form=host.children[0];
+  const name=visit(form,n=>n.autocomplete==="given-name");
+  const phone=visit(form,n=>n.autocomplete==="tel");
+  const email=visit(form,n=>n.autocomplete==="email");
+  const method=visit(form,n=>n.id?.startsWith("cf-method-"));
+  name.value="Test";phone.value=sample.phone;email.value=sample.email;method.value=sample.method;
+  method.events.change();
+  await form.events.submit({preventDefault(){}});
+  assert.equal(payloads.length,sample.accepted?1:0,"Incorrect phone/contact validation: "+JSON.stringify(sample));
+  if(!sample.accepted)assert.ok(phone.focused||email.focused,"Invalid contact field should receive focus");
+  if(sample.accepted)assert.equal(payloads[0].phone,sample.phone);
+}
+
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

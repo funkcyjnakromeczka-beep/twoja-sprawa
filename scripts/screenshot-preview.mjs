@@ -507,6 +507,33 @@ try{
  console.log("SKD_CONTRACT_CONTACT_OK",JSON.stringify({service:selectedService,email:emailHref.slice(0,54),callback:true,buttons:ctaLayout.links.length}));
  await skdPage.close();
 
+ // Team photos must be loaded from Cloudflare's own assets, not the former Lovable host.
+ for(const route of ["/","/kontakt.html","/o-nas.html"]){
+  const portraitsPage=await browser.newPage({viewport:{width:390,height:844}});
+  await portraitsPage.goto(origin+route,{waitUntil:"domcontentloaded"});
+  const portraitSelector=[
+   'img[src="/assets/wojciech-obieglo.jpg"]',
+   'img[src="/assets/paulina-chandrala.jpg"]'
+  ].join(",");
+  const images=portraitsPage.locator(portraitSelector);
+  if(await images.count()!==2)throw Error("Local team portraits missing: "+route);
+  await images.evaluateAll(imgs=>imgs.forEach(img=>img.loading="eager"));
+  await portraitsPage.waitForFunction(()=>[
+   ...document.querySelectorAll('img[src="/assets/wojciech-obieglo.jpg"],img[src="/assets/paulina-chandrala.jpg"]')
+  ].every(img=>img.complete&&img.naturalWidth>0),null,{timeout:15000});
+  const info=await portraitsPage.evaluate(()=>{
+   const imgs=[...document.querySelectorAll('img[src="/assets/wojciech-obieglo.jpg"],img[src="/assets/paulina-chandrala.jpg"]')];
+   return {
+    oldLovableImages:document.querySelectorAll('img[src*="twojasprawa-votum.lovable.app"]').length,
+    portraits:imgs.map(img=>({name:img.alt,src:img.currentSrc,width:img.naturalWidth,height:img.naturalHeight}))
+   };
+  });
+  if(info.oldLovableImages!==0)throw Error("Old Lovable portraits still load: "+route);
+  if(info.portraits.some(p=>!p.src.startsWith(origin+"/assets/")))throw Error("Portraits not from first-party assets: "+JSON.stringify(info));
+  console.log("FIRST_PARTY_PORTRAITS_OK",JSON.stringify({route,count:info.portraits.length,widths:info.portraits.map(p=>p.width)}));
+  await portraitsPage.close();
+ }
+
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

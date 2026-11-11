@@ -302,5 +302,33 @@ for(const [name,body] of [["SKD page",skdPublished.page],["chatbot",skdPublished
 }
 
 
+// Stage XXI: all service-team portraits must be first-party assets.
+// If an old Lovable project is disabled, no client-facing portrait should vanish.
+const portraitRoutes=[
+ ["/",["wojciech-obieglo.jpg","paulina-chandrala.jpg"]],
+ ["/kontakt",["wojciech-obieglo.jpg","paulina-chandrala.jpg"]],
+ ["/o-nas",["wojciech-obieglo.jpg","paulina-chandrala.jpg"]],
+ ["/uslugi/szkody-gornicze",["wojciech-obieglo.jpg"]],
+ ["/uslugi/swiadczenie-wspierajace",["paulina-chandrala.jpg"]],
+ ["/kampanie/szkody-gornicze",["wojciech-obieglo.jpg"]],
+ ["/kampanie/swiadczenie-wspierajace",["paulina-chandrala.jpg"]]
+];
+let portraitStatus=[];
+for(let attempt=0;attempt<8;attempt++){
+ portraitStatus=await Promise.all(portraitRoutes.map(async([route,expected])=>{
+  const html=(await get(route)).body;
+  const own=expected.every(filename=>html.includes('src="/assets/'+filename+'"'));
+  return {route,own,noOldLovable:!html.includes("twojasprawa-votum.lovable.app/assets/")};
+ }));
+ if(portraitStatus.every(status=>status.own&&status.noOldLovable))break;
+ if(attempt!==7)await new Promise(resolve=>setTimeout(resolve,5000));
+}
+for(const item of portraitStatus){
+ assert.ok(item.own,"First-party specialist portrait missing on production: "+item.route);
+ assert.ok(item.noOldLovable,"Old Lovable-hosted portrait still in production: "+item.route);
+}
+assert.ok(portraitA.response.headers.get("content-type")?.startsWith("image/"),"Local Wojciech photo not served as an image");
+assert.ok(portraitB.response.headers.get("content-type")?.startsWith("image/"),"Local Paulina photo not served as an image");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, agency-specific ContactPage/AboutPage/CollectionPage schemas, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+1+3 SKD featured layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, agency-specific ContactPage/AboutPage/CollectionPage schemas, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos, seven locally hosted portrait pages and sharing, homepage 2+1+3 SKD featured layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

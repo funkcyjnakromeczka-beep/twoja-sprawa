@@ -86,7 +86,7 @@ assert.ok(skdPage.includes('class="skd-mobile-quickbar"')&&skdPage.includes('cla
 assert.ok(skdPage.includes('class="skd-mobile-mail" href="mailto:wojciech.obieglo@votum-ds.pl?subject='),"SKD mobile quick bar must link to Wojciech agreement email");
 assert.equal((skdPage.match(/class="skd-mobile-quickbar"/g)||[]).length,1,"SKD mobile quick bar should be present only once");
 assert.ok(skdCSS.includes("@media(max-width:650px)")&&skdCSS.includes(".skd-mobile-quickbar")&&skdCSS.includes("env(safe-area-inset-bottom)"),"Mobile quickbar must honor phone safe area");
-assert.ok(skdCSS.includes(".chat-assistant")&&skdCSS.includes(".contact-form input:focus"),"Mobile quickbar must avoid chatbot and keyboard collisions");
+assert.ok(skdCSS.includes("body.premium-subpage.theme-skd .chat-assistant:not(.is-open)")&&skdCSS.includes(".contact-form input:focus"),"SKD chat offset must override generic subpage :not(.is-open) CSS and avoid keyboard collisions");
 
 assert.ok(skdPage.includes("sprawdź adres odbiorcy")||skdPage.includes("Sprawdź adres odbiorcy"),"SKD email must remind visitors to verify recipient");
 for(const file of [

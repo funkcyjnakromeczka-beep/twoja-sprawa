@@ -87,7 +87,9 @@
   scroll-margin-top:105px;
  }
  /* The chat launcher stays above the quickbar; its open panel is viewport-safe. */
- .premium-subpage.theme-skd .chat-assistant{
+ /* Overrule the later, more-specific :not(.is-open) rule in premium-v2.css. */
+ body.premium-subpage.theme-skd .chat-assistant,
+ body.premium-subpage.theme-skd .chat-assistant:not(.is-open){
   bottom:calc(89px + env(safe-area-inset-bottom));
   right:10px;
  }

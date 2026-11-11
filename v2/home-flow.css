@@ -135,3 +135,48 @@
   opacity:0!important;visibility:hidden!important;pointer-events:none!important;
  }
 }
+
+
+/* Flagship service shortcuts: one tap selects the appropriate contact form topic. */
+.premium-v2 #kontakt .contact-service-shortcuts{
+ max-width:860px;margin:22px auto 5px;padding:18px clamp(14px,2vw,23px);
+ border:1px solid #b9cfc8;border-radius:16px;
+ background:linear-gradient(120deg,#ffffff,#f0f6f1);color:#173747;
+ box-shadow:0 9px 25px rgba(18,51,53,.07);
+}
+.premium-v2 #kontakt .contact-shortcuts-title{
+ display:block;color:#173747;font-weight:800;font-size:1rem;line-height:1.4;
+}
+.premium-v2 #kontakt .contact-shortcuts-actions{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:11px 0 9px;
+}
+.premium-v2 #kontakt .contact-shortcuts-actions a{
+ display:flex;align-items:center;justify-content:center;
+ min-height:48px;padding:11px 16px;
+ border:1px solid #9eaaa7;border-radius:11px;
+ color:#143a43;background:#fff;
+ text-align:center;text-decoration:none;
+ font-weight:800;font-size:.93rem;line-height:1.35;
+}
+.premium-v2 #kontakt .contact-shortcuts-actions a:hover{
+ border-color:#9e7945;background:#fbf6eb;
+}
+.premium-v2 #kontakt .contact-shortcuts-actions a[data-selected="true"]{
+ background:#153f4d;border-color:#153f4d;color:#fff;
+}
+.premium-v2 #kontakt .contact-shortcuts-actions a:focus-visible{
+ outline:3px solid #b58c4f;outline-offset:3px;
+}
+.premium-v2 #kontakt .contact-service-shortcuts>small{
+ display:block;color:#48646a;font-size:.83rem;line-height:1.45;
+}
+.premium-v2 #kontakt [data-contact-shortcut-status]{
+ min-height:0;margin:7px 0 0;color:#204e3f;font-size:.86rem;font-weight:750;
+}
+.premium-v2 #kontakt [data-contact-shortcut-status]:empty{display:none}
+@media(max-width:570px){
+ .premium-v2 #kontakt .contact-service-shortcuts{margin:15px auto 0;padding:14px}
+ .premium-v2 #kontakt .contact-shortcuts-actions{grid-template-columns:minmax(0,1fr);gap:8px}
+ .premium-v2 #kontakt .contact-shortcuts-actions a{min-height:46px}
+}
+@media print{.premium-v2 #kontakt .contact-service-shortcuts{display:none}}

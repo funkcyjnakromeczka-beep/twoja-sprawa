@@ -134,6 +134,51 @@ await run(true);
  assert.ok(!("damage_area" in captured[1]),"Other services must not receive mining damage details");
 }
 
+// Stage selection from the WZON landing: validated choice and no sensitive uploads.
+{
+ const host=new Node("host");
+ const stageButton=new Node("a");
+ stageButton.getAttribute=key=>key==="data-stage-option"?"decyzja":null;
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?"Świadczenie wspierające":""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-stage-option]"?[stageButton]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?utm_source=facebook"},setTimeout:()=>1,clearTimeout:()=>{}};
+ const payloads=[];
+ const fetch=async(_url,options)=>{
+  payloads.push(JSON.parse(options.body));
+  return {ok:true,json:async()=>({success:true})};
+ };
+ runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const name=visit(form,n=>n.autocomplete==="given-name");
+ const email=visit(form,n=>n.autocomplete==="email");
+ assert.equal(service.value,"Świadczenie wspierające");
+ assert.equal(typeof stageButton.events.click,"function","Support stage button should have a click action");
+ stageButton.events.click();
+ assert.equal(stage.value,"Mam decyzję WZON","Support stage choice did not prefill existing select");
+ stageButton.getAttribute=()=>"__proto__";
+ stageButton.events.click();
+ assert.equal(stage.value,"Mam decyzję WZON","Prototype code must not change stage");
+ stageButton.getAttribute=()=>"nieznany";
+ stageButton.events.click();
+ assert.equal(stage.value,"Mam decyzję WZON","Unknown stage must not change selection");
+ name.value="Test";email.value="test@example.com";
+ await form.events.submit({preventDefault(){}});
+ assert.equal(payloads[0].case_stage,"Mam decyzję WZON","Lead must carry the selected WZON stage");
+ assert.ok(!("damage_area" in payloads[0]),"WZON leads must not include mining damage category");
+}
+const supportLanding=await readFile("v2/kampanie/swiadczenie-wspierajace.html","utf8");
+assert.equal((supportLanding.match(/data-stage-option="/g)||[]).length,3,"Support landing must have three stage shortcuts");
+for(const value of ["wniosek","oczekiwanie","decyzja"]){
+ assert.ok(supportLanding.includes('data-stage-option="'+value+'"'),"Missing support stage shortcut: "+value);
+}
+
 // Scenario hand-off from chatbot: validate only known stage codes and initial service.
 const stageCase=(service,code,expected)=>{
  const host=new Node("host");

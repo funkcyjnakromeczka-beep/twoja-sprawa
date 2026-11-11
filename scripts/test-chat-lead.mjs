@@ -47,7 +47,7 @@ const choices=visit(body,n=>n.className==="chat-choices");
 const result=visit(body,n=>n.className==="chat-reply");
 const bottom=visit(body,n=>n.className==="chat-actions");
 assert.ok(choices&&result&&bottom);
-const assertChoice=(topic,stage,expected)=>{
+const assertChoice=(topic,stage,expected,expectedDamage=null)=>{
  const item=choices.children.find(n=>n.dataset.topic===topic);
  assert.ok(item,"Missing chatbot topic "+topic);
  item.events.click();
@@ -64,13 +64,16 @@ const assertChoice=(topic,stage,expected)=>{
  assert.equal(url.searchParams.get("utm_content"),"post_2");
  assert.equal(url.searchParams.get("lead_path"),"chatbot");
  assert.equal(url.searchParams.get("etap"),expected||null);
+ assert.equal(url.searchParams.get("uszkodzenie"),expectedDamage,"Damage category mismatch in chatbot handoff");
  assert.equal(url.hash,"#formularz","Chatbot should send visitors straight to the lead form");
  const footer=bottom.children.find(n=>n.textContent.startsWith("✉"));
  assert.ok(footer.href.endsWith(url.pathname+url.search+url.hash)||footer.href===url.pathname+url.search+url.hash);
 };
+assertChoice("szkody","Widziałem niewielkie pęknięcia","uszkodzenia","sciany");
+assertChoice("szkody","Kostka lub ogrodzenie są uszkodzone","uszkodzenia","kostka");
 assertChoice("szkody","Mam propozycję ugody","ugoda");
 assertChoice("szkody","Otrzymałem odmowę","odmowa");
 assertChoice("swiadczenie","Mam decyzję WZON","decyzja");
 assertChoice("swiadczenie","Chcę sprawdzić odwołanie","odwolanie");
 assertChoice("renty","Mam już rentę",null);
-console.log("OK: five chatbot lead links preserve original social medium and select a safe case stage.");
+console.log("OK: seven chatbot lead links preserve UTM, case stage and only two safe mining damage categories.");

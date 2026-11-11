@@ -9,6 +9,8 @@ on:
       - 'scripts/network-brand.mjs'
       - 'v2/network-brand.css'
       - 'v2/visual-contrast.css'
+      - 'v2/home-flow.css'
+      - 'scripts/screenshot-preview.mjs'
       - 'v2/frankowicze.css'
       - 'v2/uslugi/kredyty-frankowe.html'
       - 'v2/uslugi/kredyty-pln.html'

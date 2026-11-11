@@ -1,7 +1,7 @@
 /* Formularz kontaktowy: Web3Forms; mailto jako wariant awaryjny. */
 (() => {
  "use strict";
- const services = ["Szkody górnicze","Świadczenie wspierające","Renty powypadkowe","Kredyt w PLN / SKD","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
+ const services = ["Szkody górnicze","Świadczenie wspierające","Renty powypadkowe","Kredyt w PLN / SKD","Kredyty frankowe CHF","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
  const current = document.currentScript?.getAttribute("data-service") || "";
  const hosts = document.querySelectorAll("[data-contact-form]");
  const accessKey="80a28b90-b5ac-406e-8512-3d3c1615b73c"; // Publiczny identyfikator formularza Web3Forms, nie hasło.
@@ -29,7 +29,7 @@
    form.append(label,input);return input;
   }
   const label=document.createElement("label");label.textContent="Wybór usługi";const select=document.createElement("select");select.required=true;select.id="cf-service-"+Math.random().toString(36).slice(2,8);label.htmlFor=select.id;const empty=document.createElement("option");empty.value="";empty.textContent="Wybierz usługę";select.append(empty);
-  const serviceAlias={"szkody":"Szkody górnicze","swiadczenie":"Świadczenie wspierające","renty":"Renty powypadkowe","skd":"Kredyt w PLN / SKD","przesyl":"Służebność przesyłu"};
+  const serviceAlias={"szkody":"Szkody górnicze","swiadczenie":"Świadczenie wspierające","renty":"Renty powypadkowe","skd":"Kredyt w PLN / SKD","franki":"Kredyty frankowe CHF","przesyl":"Służebność przesyłu"};
   const serviceFromLink=serviceAlias[(campaignParams.get("usluga")||"").toLowerCase()]||"";
   for(const name of services){const option=document.createElement("option");option.value=name;option.textContent=name;if(name===(current||serviceFromLink))option.selected=true;select.append(option);}
   form.append(label,select);
@@ -46,6 +46,7 @@
    "Świadczenie wspierające":["/v2/poradniki/swiadczenie-wspierajace-pierwsze-kroki.html","Przygotuj etap sprawy WZON lub ZUS oraz daty otrzymanych pism."],
    "Renty powypadkowe":["/v2/poradniki/renta-powypadkowa-dokumenty.html","Sprawdź, jakie informacje o wypadku i jego skutkach warto zebrać."],
    "Kredyt w PLN / SKD":["/v2/poradniki/skd-kredyt-pln-lista-kontrolna.html","Przygotuj umowę kredytu, aneksy i harmonogram, jeśli je posiadasz."],
+   "Kredyty frankowe CHF":["/v2/uslugi/kredyty-frankowe.html","Przygotuj umowę CHF, aneksy i historię spłat, ale nie wysyłaj ich przez formularz."],
    "Służebność przesyłu":["/v2/poradniki/sluzebnosc-przesylu-dzialka.html","Zbierz podstawowe informacje o działce i urządzeniach przesyłowych."]
   };
   const updateGuide=()=>{const item=guidePaths[select.value];guideBox.hidden=!item;if(!item)return;guideLink.href=item[0];guideText.textContent=item[1];};

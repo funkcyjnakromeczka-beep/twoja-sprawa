@@ -2,7 +2,7 @@
 (()=>{
  "use strict";
  const entries=[...(window.TwojaSprawaSearchPages1||[]),...(window.TwojaSprawaSearchPages2||[]),...(window.TwojaSprawaSearchFaq||[])];
- const categories=new Set(["all","szkody","swiadczenie","renty","skd","przesyl","inne"]);
+ const categories=new Set(["all","szkody","swiadczenie","renty","skd","franki","przesyl","inne"]);
  const normalize=value=>String(value||"").toLocaleLowerCase("pl-PL").normalize("NFD").replace(/\p{M}/gu,"").replaceAll("ł","l").replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
  const index=entries.map((entry,i)=>{
   const title=normalize(entry.title),description=normalize(entry.description),keywords=normalize(entry.keywords);

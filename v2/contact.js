@@ -254,7 +254,8 @@
      select.value=chosen;
      updateAdvisor();updateGuide();updateStage();updateDamageArea();updateContextNotice();
      syncShortcuts();
-     host.scrollIntoView?.({behavior:"smooth",block:"start"});
+     const reducedMotion=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;
+     host.scrollIntoView?.({behavior:reducedMotion?"auto":"smooth",block:"start"});
      select.focus?.({preventScroll:true});
     });
    }

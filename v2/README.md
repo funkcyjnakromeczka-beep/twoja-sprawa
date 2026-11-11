@@ -99,3 +99,18 @@ Dane przekazywane przez formularz kierowane są do Web3Forms i następnie na `tw
 - Do pomiaru faktycznej liczby odwiedzin i współczynnika konwersji należy uruchomić Cloudflare Web Analytics i uzyskać dostęp do danych z formularza/Search Console.
 - Własna domena nie została zakupiona ani przełączona. Plan migracji: `docs/DOMENA-WLASNA-I-MIGRACJA.md`.
 
+
+## Etap V — uproszczona droga od usługi do kontaktu (11.11.2026)
+
+- Strona główna prowadzi od dwóch głównych projektów bezpośrednio do sześciu usług, przed rozbudowaną sekcją zespołu.
+- Nowy `v2/home-flow.css`: 2+4 karty na desktopie, dwie kolumny na tablecie, czytelne i niższe kafle pomocnicze na telefonie.
+- Przewodnik `#dobierz-pomoc` rozwija się po kliknięciu odnośnika i po wejściu na adres z kotwicą.
+- `Service` JSON-LD rozróżnia kredyty frankowe CHF od Sankcji Kredytu Darmowego (SKD).
+- **1000/1000 testów sekwencyjnych** (16 kontroli dla każdego z 62 materiałów oraz osiem ogólnych) w automatycznym CI.
+- Chromium: 26 testowanych tras oraz nowa ścieżka wyboru sprawy i siatka 2+4; raport: https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42943695013
+- Audyt produkcyjny Cloudflare: 18 zasobów, 38 adresów sitemap, 24 FAQ; raport: https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42943820709
+- Pomiar realnej liczby odwiedzających i leadów nadal wymaga podłączonych danych analitycznych.
+- Automatyzacja sześciu kolejnych godzin nie została utworzona z powodu limitu 5/5 aktywnych zadań w ChatGPT; wcześniejsze zadania pozostawiono bez zmian.
+
+Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
+

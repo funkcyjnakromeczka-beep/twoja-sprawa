@@ -1,0 +1,63 @@
+/* Dedykowane mobilne wejście z ulotki — bez zewnętrznych fontów, skryptów reklamowych i formularzy. */
+:root{color-scheme:light;--navy:#0d2939;--ink:#19374a;--gold:#b98c50;--paper:#f8f7f3;--support:#164b43;--supportaccent:#b4ead1;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.leaflet-start{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+.leaflet-start a{text-underline-offset:3px}
+.leaflet-start a:focus-visible{outline:3px solid #bb7b23;outline-offset:4px;border-radius:5px}
+.leaflet-skip{position:absolute;left:8px;top:-90px;background:#fff;padding:10px;z-index:100}
+.leaflet-skip:focus{top:8px}
+.leaflet-header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:0 auto;max-width:1100px;padding:18px clamp(16px,4vw,34px);border-bottom:1px solid #d8d5cd}
+.leaflet-logo{text-decoration:none;color:var(--navy);font-weight:900;letter-spacing:.04em;font-size:1.16rem}
+.leaflet-logo span{color:#956532}
+.leaflet-header-note{font-size:.78rem;font-weight:700;color:#435963;text-align:right}
+.leaflet-start main{max-width:1100px;margin:auto;padding:0 clamp(16px,4vw,34px) 38px}
+.leaflet-hero{text-align:center;padding:clamp(25px,5vw,55px) 0 26px}
+.leaflet-eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#795323;font-weight:800}
+.leaflet-hero h1{font:750 clamp(2rem,5vw,3.6rem)/1.13 Georgia,serif;letter-spacing:-.035em;color:var(--navy);margin:12px auto}
+.leaflet-hero p{max-width:64ch;margin:0 auto;color:#3c515d;line-height:1.68}
+.leaflet-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2vw,24px)}
+.leaflet-option{display:flex;flex-direction:column;position:relative;overflow:hidden;border:2px solid #c7a678;border-radius:22px;padding:clamp(20px,3vw,34px);min-width:0;min-height:360px;background:linear-gradient(145deg,#0d3045,#102839 78%);color:#fff;box-shadow:0 16px 44px rgba(9,36,51,.1)}
+.leaflet-option-support{background:linear-gradient(145deg,#154b42,#092f31 80%);border-color:#7bbaa5}
+.leaflet-option .leaflet-label{z-index:1;align-self:flex-start;font-size:.78rem;letter-spacing:.045em;text-transform:uppercase;color:#f3d7a9;font-weight:750}
+.leaflet-option-support .leaflet-label{color:#bdf1da}
+.leaflet-symbol{position:absolute;top:17px;right:24px;font-size:4rem;opacity:.13;line-height:1}
+.leaflet-option h2{font:700 clamp(1.65rem,3vw,2.5rem)/1.18 Georgia,serif;margin:23px 0 10px;color:#fff;letter-spacing:-.02em}
+.leaflet-option p{margin:0 0 23px;color:#e0e9ec;max-width:38ch}
+.leaflet-buttons{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-top:auto}
+.leaflet-main-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 20px;min-height:54px;border-radius:13px;text-decoration:none;background:#f5dbaf;color:#193344;font-weight:850}
+.leaflet-main-btn:hover{background:#fff0d2}
+.leaflet-option-support .leaflet-main-btn{background:#c8f3df;color:#124033}
+.leaflet-option-support .leaflet-main-btn:hover{background:#ecfff4}
+.leaflet-phone{display:flex;justify-content:center;gap:8px;align-items:center;min-height:48px;padding:10px;color:#fff;text-decoration:none;border:1px solid rgba(241,233,217,.45);border-radius:12px}
+.leaflet-phone:hover{background:rgba(255,255,255,.12)}
+.leaflet-phone strong{white-space:nowrap}
+.leaflet-other{margin-top:clamp(23px,4vw,44px);padding:25px clamp(18px,3vw,30px);border:1px solid #e0dbd0;background:#fff;border-radius:20px;box-shadow:0 9px 24px rgba(18,45,58,.05)}
+.leaflet-other h2{font:700 clamp(1.3rem,2.3vw,1.8rem)/1.22 Georgia,serif;color:var(--navy);margin:0 0 7px}
+.leaflet-other p{margin:0 0 18px;color:#3b5160}
+.leaflet-other-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.leaflet-other-links a{display:flex;align-items:center;min-height:50px;padding:12px 16px;text-decoration:none;background:#eff4f3;color:#12394b;border:1px solid #d2dedb;border-radius:11px;font-weight:750}
+.leaflet-other-links a:hover{background:#e0f0ec}
+.leaflet-home-link{display:inline-flex;margin-top:20px;color:#1b4960;font-weight:800;gap:8px}
+.leaflet-confidence{margin:30px 0 18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.leaflet-confidence>div{padding:8px 10px;min-width:0}
+.leaflet-confidence span{display:block;color:#916832;font-size:.8rem;font-weight:850}
+.leaflet-confidence strong{display:block;color:var(--navy);margin:5px 0}
+.leaflet-confidence p{margin:0;color:#4b5c63;font-size:.92rem}
+.leaflet-privacy{font-size:.87rem;line-height:1.65;color:#4c5960;border-top:1px solid #dcd7ca;padding-top:17px;max-width:91ch}
+.leaflet-footer{padding:18px 20px;background:#0c2838;color:#e7e7df;font-size:.78rem;text-align:center}
+.leaflet-footer a{color:#ffe2ab}
+@media(max-width:730px){
+ .leaflet-header{padding:15px 16px}
+ .leaflet-header-note{font-size:.68rem;max-width:170px}
+ .leaflet-hero{padding:24px 0 22px}
+ .leaflet-eyebrow{font-size:.72rem}
+ .leaflet-options{grid-template-columns:minmax(0,1fr)}
+ .leaflet-option{min-height:0;padding:23px 22px;border-radius:18px}
+ .leaflet-option h2{margin:17px 0 9px}
+ .leaflet-option p{margin-bottom:16px}
+ .leaflet-other-links{grid-template-columns:minmax(0,1fr)}
+ .leaflet-confidence{grid-template-columns:minmax(0,1fr);gap:3px}
+ .leaflet-confidence>div{padding:8px 2px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

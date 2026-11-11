@@ -16,6 +16,8 @@ jobs:
       - name: Sprawdź składnię JavaScript
         run: |
           node --check v2/contact.js
+          node --check v2/mobile-service-cta.js
+          node --check scripts/test-mobile-service-cta.mjs
           node --check v2/campaign-links.js
           node --check v2/attribution.js
           node --check scripts/test-attribution.mjs
@@ -61,6 +63,8 @@ jobs:
         run: node scripts/test-campaign-links.mjs
       - name: Przetestuj formularz w przeglądarce symulowanej bez wysyłki danych
         run: node scripts/test-contact-client.mjs
+      - name: Test mobilnej ścieżki kontaktu dwóch usług
+        run: node scripts/test-mobile-service-cta.mjs
       - name: Przetestuj ścieżki chatbota do formularza z zachowaniem źródła kampanii
         run: node scripts/test-chat-lead.mjs
       - name: Przetestuj atrybucję kampanii między podstronami

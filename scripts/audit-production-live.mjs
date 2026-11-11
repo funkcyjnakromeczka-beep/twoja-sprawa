@@ -51,7 +51,7 @@ for(const tag of homeStructure){
  last=pos;
 }
 assert.ok(home.body.includes("home-flow.css"),"Homepage layout stylesheet not deployed");
-assert.ok(homeFlow.body.includes("repeat(12,minmax(0,1fr))")&&homeFlow.body.includes("grid-column:span 3"),"Symmetric 2+4 desktop grid not deployed");
+assert.ok(homeFlow.body.includes("repeat(12,minmax(0,1fr))"),"Homepage grid not deployed");
 assert.ok(navigatorJS.body.includes("openFromAnchor"),"Deep-link navigator not deployed");
 const graphs=[...faq.body.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m=>JSON.parse(m[1]));
 const faqObj=graphs.flatMap(g=>g["@graph"]||[]).find(item=>item["@type"]==="FAQPage");
@@ -244,5 +244,36 @@ for(const {path,type,page,graph} of typedPages){
  if(type==="AboutPage")assert.equal(page.about?.length,2,"AboutPage should describe the two named contacts");
 }
 
+// Stage XIX: SKD stays the third featured service and can receive a contract
+// by email while separately taking a callback number. Read-only production check.
+const isSKDPublished=(h,page,css,lead,chat,nav,skdStyles)=>{
+ const pos=[h.indexOf('class="card primary-card support-featured"'),h.indexOf('class="card primary-card mining-featured"'),h.indexOf('class="card primary-card skd-featured"'),h.indexOf('href="/uslugi/renty-powypadkowe"')];
+ return pos.every(n=>n>0)&&pos.every((v,i)=>i===0||v>pos[i-1])&&
+  h.includes("Trzy wyróżnione usługi:")&&
+  css.includes("SKD: third highlighted service")&&
+  css.includes("grid-column:span 12!important")&&
+  page.includes('id="skd-document-title"')&&
+  page.includes("mailto:wojciech.obieglo@votum-ds.pl?subject=")&&
+  page.includes("Zostaw numer telefonu w formularzu")&&
+  page.includes('href="/skd-contact.css"')&&
+  skdStyles.includes(".skd-document-actions")&&
+  lead.includes('emailLink.href="mailto:wojciech.obieglo@votum-ds.pl?subject=')&&
+  chat.includes('key:"skd"')&&chat.includes('phone:"796 441 345",tel:"+48796441345"')&&
+  nav.includes('service:"kredyty-pln.html",phone:"796 441 345",tel:"+48796441345"');
+};
+let skdPublished={h:home.body,page:skd.body,css:homeFlow.body,lead:leadJS.body,chat:chatJS.body,nav:navigatorJS.body,skdStyles:""};
+for(let attempt=0;attempt<8;attempt++){
+ if(attempt>0)await new Promise(resolve=>setTimeout(resolve,5000));
+ const [newHome,newSKD,newHomeFlow,newLead,newChat,newNav,newStyles]=await Promise.all([
+  get("/").then(x=>x.body),get("/uslugi/kredyty-pln").then(x=>x.body),
+  get("/home-flow.css").then(x=>x.body),get("/contact.js").then(x=>x.body),
+  get("/chat-assistant.js").then(x=>x.body),get("/service-navigator.js").then(x=>x.body),
+  fetch(root+"/skd-contact.css").then(async res=>res.ok?res.text():"").catch(()=>"")
+ ]);
+ skdPublished={h:newHome,page:newSKD,css:newHomeFlow,lead:newLead,chat:newChat,nav:newNav,skdStyles:newStyles};
+ if(isSKDPublished(...Object.values(skdPublished)))break;
+}
+assert.ok(isSKDPublished(...Object.values(skdPublished)),"New SKD featured card, contract email, callback and consistent advisor have not reached Cloudflare");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, agency-specific ContactPage/AboutPage/CollectionPage schemas, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, agency-specific ContactPage/AboutPage/CollectionPage schemas, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+1+3 SKD featured layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

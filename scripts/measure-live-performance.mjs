@@ -3,7 +3,7 @@
 import {chromium} from "playwright";
 import {mkdir,writeFile} from "node:fs/promises";
 const origin="https://twoja-sprawa.pages.dev";
-const routes=["/","/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-pln","/uslugi/kredyty-frankowe"];
+const routes=["/","/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-pln","/uslugi/kredyty-frankowe","/start"];
 const profiles=[{name:"telefon-390",width:390,height:844,mobile:true},{name:"desktop-1440",width:1440,height:900,mobile:false}];
 const results=[];
 let browser;

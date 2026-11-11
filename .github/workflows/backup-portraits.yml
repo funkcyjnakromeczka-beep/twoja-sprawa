@@ -1,0 +1,44 @@
+name: Jednorazowe zabezpieczenie zdjęć zespołu
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/backup-portraits.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zapisz własne zdjęcia z działającej strony Cloudflare
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p v2/assets
+          for filename in wojciech-obieglo.jpg paulina-chandrala.jpg; do
+            url="https://twoja-sprawa.pages.dev/assets/$filename"
+            echo "Zabezpieczam: $url"
+            curl --fail --location --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 55 --silent --show-error "$url" -o "v2/assets/$filename"
+            mime="$(file -b --mime-type "v2/assets/$filename")"
+            size="$(stat -c %s "v2/assets/$filename")"
+            test "$mime" = "image/jpeg" || { echo "::error::Nieoczekiwany format: $mime"; exit 1; }
+            test "$size" -ge 10000 && test "$size" -le 8000000 || { echo "::error::Niepoprawna wielkość zdjęcia: $size"; exit 1; }
+            sha256sum "v2/assets/$filename"
+          done
+      - name: Zapisz zdjęcia w tym samym repozytorium
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f v2/assets/wojciech-obieglo.jpg v2/assets/paulina-chandrala.jpg
+          if git diff --cached --quiet; then
+            echo "BACKUP_PORTRAITS_OK: zdjęcia już są w repozytorium."
+          else
+            git commit -m "Zabezpiecz zdjęcia zespołu we własnym repozytorium, niezależnie od Lovable"
+            git push origin HEAD:main
+            echo "BACKUP_PORTRAITS_OK: zapisano 2 oryginalne obrazy w repozytorium."
+          fi

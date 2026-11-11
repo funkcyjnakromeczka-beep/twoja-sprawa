@@ -16,6 +16,7 @@ class Node {
  insertAdjacentElement(){}
  setCustomValidity(message){this.validationMessage=message;}
  reportValidity(){return true;}
+ focus(){this.focused=true;}
  reset(){}
 }
 const visit=(node,pred)=>{if(pred(node))return node;for(const child of node.children||[]){const found=visit(child,pred);if(found)return found;}return null;};
@@ -231,4 +232,45 @@ assert.equal((miningLanding.match(/data-damage-option="/g)||[]).length,3,"Mining
 for(const code of ["Ściany i elewacja","Kostka i ogrodzenie","Drzwi i okna"]){
  assert.ok(miningLanding.includes('data-damage-option="'+code+'"'),"Campaign category link missing: "+code);
 }
+// Blank names and repeated submit events must never generate bad/duplicate leads.
+{
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?"Szkody górnicze":""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ let requests=0,resolveRequest;
+ const fetch=async()=>{requests++;return await new Promise(resolve=>{resolveRequest=resolve;});};
+ const window={location:{search:"?utm_source=ulotka"},setTimeout:()=>1,clearTimeout:()=>{}};
+ runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0];
+ const name=visit(form,n=>n.autocomplete==="given-name");
+ const phone=visit(form,n=>n.autocomplete==="tel");
+ const submit=event=>form.events.submit(event);
+ phone.value="500000000";
+ name.value="    ";
+ await submit({preventDefault(){}});
+ assert.equal(requests,0,"Whitespace-only names cannot trigger delivery");
+ assert.ok(name.validationMessage.includes("imię")&&name.focused,"Name error must focus the missing input");
+ name.value="Test";
+ if(name.events.input)name.events.input();
+ const first=submit({preventDefault(){}});
+ assert.equal(requests,1,"First valid attempt should start a request");
+ const second=submit({preventDefault(){}});
+ await second;
+ assert.equal(requests,1,"Second submit during in-flight request must be ignored");
+ const sendButton=visit(form,n=>n.type==="submit");
+ assert.equal(sendButton.disabled,true,"Submit button should be disabled while sending");
+ resolveRequest({ok:true,json:async()=>({success:true})});
+ await first;
+ assert.equal(sendButton.disabled,false,"Submit button should recover after completion");
+ const third=submit({preventDefault(){}});
+ assert.equal(requests,2,"New attempt must be possible once the previous request completes");
+ resolveRequest({ok:true,json:async()=>({success:true})});
+ await third;
+}
+
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

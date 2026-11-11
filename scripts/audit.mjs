@@ -155,14 +155,14 @@ try {
  }
  if(!js.includes('selectedChannel.startsWith("facebook_") ? "facebook"')) errors.push("Campaign channel: Facebook source normalization missing");
 } catch(e){errors.push("Campaign channel audit failed: "+e.message);}
-// All five primary cards remain accessible, both featured with matching styles.
+// All six primary cards remain accessible, both featured with matching styles.
 try {
  const home=await readFile(join(root,"index.html"),"utf8");
  const css=await readFile(join(root,"premium-v2.css"),"utf8");
  const start=home.indexOf('id="uslugi"');
  const end=home.indexOf('id="dobierz-pomoc"',start);
  const part=start>=0&&end>start?home.slice(start,end):"";
- if(!part.includes('class="grid primary-services"')||(part.match(/class="card primary-card/g)||[]).length!==5)errors.push("Service cards: expected exactly five");
+ if(!part.includes('class="grid primary-services"')||(part.match(/class="card primary-card/g)||[]).length!==6)errors.push("Service cards: expected exactly six");
  for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","kredyty-pln","sluzebnosc-przesylu"])
   if(!part.includes("/v2/uslugi/"+slug+".html"))errors.push("Service card link missing: "+slug);
  if(!part.includes("support-featured")||!part.includes("mining-featured"))errors.push("Service cards: dual priority missing");
@@ -227,7 +227,7 @@ for (const slug of ["checklista-szkody-gorniczej","swiadczenie-wspierajace-pierw
  } catch(e) { errors.push("Guide "+slug+": "+e.message); }
 }
 console.log("Checked " + files.length + " HTML files, including " + serviceForms.length + " service forms");
-if(serviceForms.length !== 12) errors.push("Expected 12 service pages, found "+serviceForms.length);
+if(serviceForms.length !== 13) errors.push("Expected 13 service pages, found "+serviceForms.length);
 for (const w of warnings) console.log("WARN " + w);
 for (const e of errors) console.error("ERROR " + e);
 if (errors.length) process.exitCode = 1;

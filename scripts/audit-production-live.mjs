@@ -255,6 +255,10 @@ const isSKDPublished=(h,page,css,lead,chat,nav,skdStyles)=>{
   page.includes('id="skd-document-title"')&&
   page.includes("mailto:wojciech.obieglo@votum-ds.pl?subject=")&&
   page.includes("Zostaw numer telefonu w formularzu")&&
+  page.includes("bez zasłaniania danych")&&
+  lead.includes("bez zasłaniania danych")&&
+  chat.includes("bez zasłaniania danych")&&
+  nav.includes("bez zasłaniania danych")&&
   page.includes('href="/skd-contact.css"')&&
   skdStyles.includes(".skd-document-actions")&&
   lead.includes('emailLink.href="mailto:wojciech.obieglo@votum-ds.pl?subject=')&&
@@ -274,6 +278,29 @@ for(let attempt=0;attempt<8;attempt++){
  if(isSKDPublished(...Object.values(skdPublished)))break;
 }
 assert.ok(isSKDPublished(...Object.values(skdPublished)),"New SKD featured card, contract email, callback and consistent advisor have not reached Cloudflare");
+
+const getCompleteContractPages=async()=>{
+ const [checklist,guide]=await Promise.all([
+  get("/poradniki/skd-kredyt-pln-lista-kontrolna").then(x=>x.body),
+  get("/wiedza/kredyt-pln-dokumenty-skd").then(x=>x.body)
+ ]);
+ return {checklist,guide};
+};
+let completeContractPages;
+for(let attempt=0;attempt<8;attempt++){
+ completeContractPages=await getCompleteContractPages();
+ if(completeContractPages.checklist.includes("bez zasłaniania danych")&&
+    completeContractPages.guide.includes("bez zasłaniania danych")&&
+    completeContractPages.checklist.includes("tel:+48796441345"))break;
+ if(attempt!==7)await new Promise(resolve=>setTimeout(resolve,5000));
+}
+assert.ok(completeContractPages.checklist.includes("bez zasłaniania danych"),"SKD checklist still suggests hiding data on the agreement");
+assert.ok(completeContractPages.guide.includes("bez zasłaniania danych"),"SKD article has not published the complete-contract instructions");
+assert.ok(completeContractPages.checklist.includes("tel:+48796441345"),"SKD checklist lacks Wojciech callback number");
+for(const [name,body] of [["SKD page",skdPublished.page],["chatbot",skdPublished.chat],["navigator",skdPublished.nav],["checklist",completeContractPages.checklist],["guide",completeContractPages.guide]]){
+ assert.ok(!/(?:Przed wysyłką zasłoń|Zasłoń zbędne dane|usuń z kopii zbędne dane|zasłonięciu PESEL)/i.test(body),"Obsolete masking instruction still published: "+name);
+}
+
 
 const verified=27;
 console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, agency-specific ContactPage/AboutPage/CollectionPage schemas, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+1+3 SKD featured layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

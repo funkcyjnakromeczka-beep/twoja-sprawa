@@ -11,7 +11,7 @@ for(const p of paths.slice(0,4))runInNewContext(sources[p],{window,Set,Object,St
 const api=window.TwojaSprawaSearch;
 assert.ok(api&&typeof api.search==="function");
 const entries=api.entries;
-const allowed=new Set(["szkody","swiadczenie","renty","skd","przesyl","inne"]);
+const allowed=new Set(["szkody","swiadczenie","renty","skd","franki","przesyl","inne"]);
 const cases=[];
 const add=(description,fn)=>cases.push({description,fn});
 for(const [i,record] of entries.slice(0,60).entries()){ // legacy 500-check baseline; the new CHF entries are tested separately

@@ -256,7 +256,7 @@
      syncShortcuts();
      // Instant scroll avoids competing animations when visitors change topic quickly.
      // It also respects motion-sensitive users without relying on OS detection.
-     host.scrollIntoView?.({behavior:"auto",block:"start"});
+     host.scrollIntoView?.({behavior:"instant",block:"start"});
      select.focus?.({preventScroll:true});
     });
    }

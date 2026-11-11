@@ -19,6 +19,7 @@
 - Styl graficzny: `v2/styles.css` i `v2/premium-v2.css`
 - Biblioteka wiedzy i szybkie wyszukiwanie: `v2/wiedza/index.html`, `v2/knowledge-hub.js`, `v2/knowledge-hub.css`
 - Baza 24 FAQ: `v2/faq.html`, `v2/faq.js`, `v2/faq.css` — sześć kategorii, wyszukiwarka lokalna, odnośniki do oficjalnych źródeł, filtrowanie `?temat=szkody|swiadczenie|renty|skd|przesyl|kontakt`.
+- Wyszukiwarka całej witryny: `v2/szukaj.html`, `v2/site-search.js`, `v2/search-core.js`, `v2/site-search.css` oraz trzy statyczne indeksy `v2/search-pages-1.js`, `v2/search-pages-2.js`, `v2/search-faq-data.js` (36 stron + 24 FAQ).
 - Generator planu pierwszych kroków: `v2/plan-dzialania.html`, `v2/plan-dzialania.js`, `v2/plan-dzialania.css` — pięć usług, etap sprawy, checklista, druk i kontakt bez danych osobowych.
 - Powiększanie tekstu i druk artykułów: `v2/article-accessibility.js` i `v2/article-accessibility.css`
 - Strona kontaktu ze zdjęciami specjalistów: `v2/kontakt.html` i `v2/contact-hub.css`
@@ -35,6 +36,8 @@ node scripts/test-action-plan.mjs
 node scripts/test-50-continuations.mjs
 node scripts/test-faq.mjs
 node scripts/test-50-continuations-iii.mjs
+node scripts/test-500-continuations.mjs
+node scripts/test-search-index-freshness.mjs
 node scripts/test-contact-client.mjs
 node scripts/test-network-brand.mjs
 node scripts/test-seo-policy.mjs
@@ -69,3 +72,9 @@ Dane przekazywane przez formularz kierowane są do Web3Forms i następnie na `tw
 - Skrót na stronie głównej, link z biblioteki poradników i kontekstowe odnośniki z najważniejszych usług. FAQ jest indeksowalne dopiero w zatwierdzonym wydaniu produkcyjnym.
 - 50 sekwencyjnych kontroli treści, bezpieczeństwa i technicznego SEO uruchamia `scripts/test-50-continuations-iii.mjs`; test interakcji filtrów: `scripts/test-faq.mjs`.
 - Dalsze zatwierdzenia prawne, wizerunki, formularz i konfiguracja Cloudflare pozostają oddzielnymi zadaniami. Zaliczenie CI nie oznacza zakończenia publikacji.
+
+## Etap IV — 500 testów i wyszukiwarka globalna (11 listopada 2026)
+- Wyszukiwarka `/szukaj` obejmuje 60 lokalnych materiałów, bez zewnętrznego API, cookies ani zapisu zapytań. Wyniki pytaniowe prowadzą do rozwiniętej odpowiedzi FAQ.
+- Indeks źródłowy jest statyczny. **Po każdej zmianie tytułu, opisu strony, pytania lub odpowiedzi FAQ należy zaktualizować odpowiedni plik `search-pages-*.js` lub `search-faq-data.js`**. Test `scripts/test-search-index-freshness.mjs` wykrywa rozbieżność i nie dopuszcza pomyślnego audytu.
+- Wyniki audytu 500 przypadków i dokładny ich rejestr: `docs/500-KONTYNUACJI-ETAP-IV.md`.
+- `/szukaj` nie jest landingiem SEO. `scripts/seo-policy.mjs` wyklucza ją z indeksacji i mapy witryny także w wydaniu produkcyjnym; oficjalne publikowanie innych stron wymaga osobnych zatwierdzeń.

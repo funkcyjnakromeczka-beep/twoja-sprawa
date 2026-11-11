@@ -13,6 +13,16 @@
 
 **Bieżąca konfiguracja wdrożeniowa:** `node scripts/preview.mjs` na Cloudflare Pages z `CF_PAGES=1` i `CF_PAGES_BRANCH=main` tworzy zatwierdzony wariant produkcyjny w istniejącym katalogu `dist-preview/`. Ten sam skrypt uruchomiony lokalnie lub na innej gałęzi buduje nieindeksowalny podgląd. Nie należy ręcznie przywracać wcześniejszej konfiguracji blokującej roboty.
 
+## Działania SEO/GEO po wdrożeniu — 11 listopada 2026
+- [x] Dane strukturalne `FAQPage` budowane z 24 prawdziwych, widocznych odpowiedzi — test pakietu produkcyjnego pomyślny.
+- [x] Klucz IndexNow dostępny jako publiczny plik TXT na domenie, z potwierdzoną zgodnością treści i nazwy.
+- [x] 36 adresów zgłoszonych do IndexNow; **HTTP 202** oznacza odbiór i oczekującą weryfikację, nie indeksację. Dowód: https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42935600130
+- [x] Rzeczywisty audyt publicznego Cloudflare: **10 zasobów, 36 adresów sitemap, 24 FAQ**, wszystkie krytyczne kontrole pomyślne. Raport: https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42936152727
+- [x] Zaktualizowano `docs/STRATEGIA-SEO-GEO.md`, żeby nie mylić produkcji z dawnym podglądem `noindex`.
+- [ ] Zweryfikować własność witryny w Google Search Console i przesłać `https://twoja-sprawa.pages.dev/sitemap.xml`, następnie sprawdzić raport indeksowania.
+- [ ] Dodać witrynę do Bing Webmaster Tools, sprawdzić raport IndexNow i ewentualną weryfikację klucza po HTTP 202.
+- [ ] Odrębnie ocenić zgodność polityki prywatności i danych dostawców; deklaracja o skutecznym działaniu formularza nie zastępuje analizy prawnej.
+
 ## Historia sprzed publikacji (od 10 listopada) — zachowana dla audytu
 
 ## 1. Ustalony i zweryfikowany stan

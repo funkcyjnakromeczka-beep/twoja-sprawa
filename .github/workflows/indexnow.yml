@@ -1,0 +1,26 @@
+name: IndexNow — zgłoszenie publicznych adresów po publikacji
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'v2/cdc63afe4c9cf8e5dade3a9fe8168c328ac5cf74.txt'
+      - 'scripts/submit-indexnow.mjs'
+      - '.github/workflows/indexnow.yml'
+  workflow_dispatch:
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sprawdź składnię zgłaszania
+        run: node --check scripts/submit-indexnow.mjs
+      - name: Sprawdź domenę, sitemap i zgłoś 36 kanonicznych stron do IndexNow
+        env:
+          INDEXNOW_SUBMIT: '1'
+        run: node scripts/submit-indexnow.mjs

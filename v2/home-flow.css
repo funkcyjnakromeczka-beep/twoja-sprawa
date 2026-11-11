@@ -222,3 +222,26 @@
   pointer-events:none;
  }
 }
+
+/* Home editorial reading styles consolidated from article-only stylesheet (Etap XVII). */
+.premium-v2 .editorial-reading{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:23px}
+.premium-v2 .editorial-reading a{display:flex;flex-direction:column;gap:9px;border:1px solid #d2bd94;border-radius:16px;padding:22px;background:linear-gradient(135deg,#142f3d,#0a2432);color:#fff;text-decoration:none;min-height:180px;box-shadow:0 10px 25px rgba(8,37,49,.12)}
+.premium-v2 .editorial-reading strong{font:700 clamp(1.11rem,1.9vw,1.35rem)/1.2 Georgia,serif;color:#ffe4b3}
+.premium-v2 .editorial-reading small{color:#d8e2e5;font-size:.89rem;line-height:1.5}
+.premium-v2 .editorial-reading em{font-style:normal;font-weight:760;color:#e8bb79;margin-top:auto}
+.premium-v2 .editorial-reading a:hover{border-color:#d7a45e;transform:translateY(-2px)}
+.premium-v2 .editorial-reading a:focus-visible{outline:3px solid #e8bb79;outline-offset:4px}
+@media(max-width:700px){.premium-v2 .editorial-reading{grid-template-columns:1fr}.premium-v2 .editorial-reading a{min-height:142px}}
+@media(prefers-reduced-motion:reduce){.premium-v2 .editorial-reading a:hover{transform:none}}
+
+/* Prominent but concise route from homepage to the full knowledge hub. */
+.premium-v2 .hub-all-link{margin:23px 0 0;text-align:center}
+.premium-v2 .hub-all-link a{display:inline-flex;align-items:center;justify-content:center;min-height:49px;padding:12px 18px;border:1px solid #c9a66f;border-radius:12px;background:#f8ead1;color:#173a48;font-weight:800;text-decoration:none}
+.premium-v2 .hub-all-link a:hover{background:#eed7b1}
+.premium-v2 .hub-all-link a:focus-visible{outline:3px solid #bb8741;outline-offset:4px}
+
+/* CTA do pełnej bazy FAQ bez wydłużania strony głównej. */
+.premium-v2 .faq-explore-all{display:flex;justify-content:center;margin:23px 0 0}
+.premium-v2 .faq-explore-all a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 19px;border:1px solid #be965b;border-radius:12px;background:#f2dfbc;color:#173b4b;text-decoration:none;text-align:center;font-weight:800;line-height:1.4}
+.premium-v2 .faq-explore-all a:hover{background:#e9cca0}
+.premium-v2 .faq-explore-all a:focus-visible{outline:3px solid #b58c4f;outline-offset:3px}

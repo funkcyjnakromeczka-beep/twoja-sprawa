@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Strona główna: 2 projekty priorytetowe, 4 wtórne i widoczna pomoc w wyborze. */
+/** Strona główna: 3 wyróżnione usługi (WZON, szkody, SKD), 3 pozostałe. */
 import assert from "node:assert/strict";
 import {readFile,access} from "node:fs/promises";
 const html=await readFile("v2/index.html","utf8");
@@ -23,12 +23,14 @@ for(const link of links){
  assert.ok(link.startsWith("/v2/uslugi/")&&link.endsWith(".html"),"Bad service path "+link);
  await access(link.slice(1));
 }
-assert.ok(segment.indexOf("support-featured")<segment.indexOf("mining-featured"),"Support and mining order altered");
+assert.ok(segment.indexOf("support-featured")<segment.indexOf("mining-featured")&&segment.indexOf("mining-featured")<segment.indexOf("skd-featured"),"Three flagship priorities must be WZON, mining, SKD");
+assert.ok(links[2].endsWith("/kredyty-pln.html")&&links[3].endsWith("/renty-powypadkowe.html"),"SKD must be the third featured card and precede rents");
+assert.ok(segment.includes("Trzecia wyróżniona usługa • SKD")&&segment.includes("wojciech.obieglo@votum-ds.pl")&&segment.includes("numer telefonu"),"Homepage SKD lacks prominent contract and callback instructions");
 assert.ok(segment.includes("Sankcja Kredytu Darmowego")&&segment.includes("Pomoc frankowiczom"),"Financial areas not shown explicitly");
-assert.ok(html.includes("Dwa główne projekty oraz cztery dodatkowe obszary"),"Homepage description stale");
+assert.ok(html.includes("Trzy wyróżnione usługi:"),"Homepage description must name three featured services");
 assert.ok(html.includes('href="/v2/home-flow.css"'),"Balanced layout CSS missing");
 assert.ok(css.includes("grid-template-columns:repeat(12,minmax(0,1fr))"),"Desktop balanced grid missing");
-assert.ok(css.includes("grid-column:span 6")&&css.includes("grid-column:span 3"),"2+4 desktop layout missing");
+assert.ok(css.includes("grid-column:span 12!important")&&css.includes("grid-column:span 4"),"Desktop grid must support featured SKD and three other areas");
 assert.ok(css.includes("@media(max-width:760px)")&&css.includes("grid-template-columns:minmax(0,1fr)"),"Mobile one-column layout missing");
 assert.ok(navigator.includes('window.location?.hash==="#dobierz-pomoc"'),"Deep link does not open collapsed navigator");
 assert.ok(navigator.includes('root.open=true'),"Navigator not expanded on user action");
@@ -65,6 +67,13 @@ assert.ok(articleCSS.includes(".knowledge-article .knowledge-body"),"Do not remo
 const previousHomeBytes=9005,previousArticleBytes=3667;
 const oldTotal=previousHomeBytes+previousArticleBytes;
 const newTotal=Buffer.byteLength(css,"utf8");
-assert.ok(newTotal<oldTotal,"Consolidation should decrease transfer size for homepage");
+assert.ok(newTotal<18000,"Home-only CSS should remain smaller than the 18KB regression budget");
+assert.ok(oldTotal>0,"Previous home CSS baseline must remain defined");
 
-console.log("HOME_CLARITY_OK: 6 unique service cards (2+4), priority visible, keyboard-friendly navigator, balanced desktop/mobile layout.");
+const skdPage=await readFile("v2/uslugi/kredyty-pln.html","utf8");
+const skdCSS=await readFile("v2/skd-contact.css","utf8");
+assert.ok(skdPage.includes('href="/v2/skd-contact.css"')&&skdPage.includes('id="skd-document-title"'),"Dedicated SKD email CTA styling or section missing");
+assert.ok(skdPage.includes("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD email destination must be Wojciech");
+assert.ok(skdPage.includes("Zostaw numer telefonu w formularzu")&&skdPage.includes("Dodaj załącznik samodzielnie"),"Agreement, callback and attachment instructions required");
+assert.ok(skdPage.includes("PESEL")&&skdCSS.includes(".skd-document-actions"),"Privacy guidance and SKD CTA styles required");
+console.log("HOME_CLARITY_OK: 6 unique services (2+1+3), SKD third with email and phone CTA.");

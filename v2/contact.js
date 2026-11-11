@@ -235,12 +235,13 @@
    const shortcutStatus=document.querySelectorAll("[data-contact-shortcut-status]")[0];
    const pickService=code=>["szkody","swiadczenie"].includes(code)?serviceAlias[code]:"";
    const syncShortcuts=()=>{
-    const active=primaryShortcuts.some(link=>{
+    let active=false;
+    for(const link of primaryShortcuts){
      const chosen=pickService(link.getAttribute("data-contact-shortcut"));
      const current=Boolean(chosen&&select.value===chosen);
      link.setAttribute("data-selected",String(current));
-     return current;
-    });
+     if(current)active=true;
+    }
     if(shortcutStatus)shortcutStatus.textContent=active?"Wybrano: "+select.value+". Uzupełnij dane w formularzu poniżej.":"";
    };
    select.addEventListener("change",syncShortcuts);

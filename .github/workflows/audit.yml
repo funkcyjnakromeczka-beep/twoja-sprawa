@@ -42,6 +42,7 @@ jobs:
           node --check v2/search-core.js
           node --check v2/site-search.js
           node --check scripts/test-500-continuations.mjs
+          node --check scripts/test-search-index-freshness.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/public-routes.mjs
@@ -86,6 +87,8 @@ jobs:
         run: node scripts/test-50-continuations-iii.mjs
       - name: Seria IV — 500 kontroli wyszukiwarki, źródeł i prywatności
         run: node scripts/test-500-continuations.mjs
+      - name: Aktualność źródeł indeksu wyszukiwarki
+        run: node scripts/test-search-index-freshness.mjs
       - name: Sprawdź pliki HTML i odnośniki
         run: node scripts/audit.mjs
       - name: Sprawdź logotypy partnerów na każdej podstronie

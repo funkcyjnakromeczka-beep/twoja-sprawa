@@ -254,8 +254,9 @@
      select.value=chosen;
      updateAdvisor();updateGuide();updateStage();updateDamageArea();updateContextNotice();
      syncShortcuts();
-     const reducedMotion=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;
-     host.scrollIntoView?.({behavior:reducedMotion?"auto":"smooth",block:"start"});
+     // Instant scroll avoids competing animations when visitors change topic quickly.
+     // It also respects motion-sensitive users without relying on OS detection.
+     host.scrollIntoView?.({behavior:"auto",block:"start"});
      select.focus?.({preventScroll:true});
     });
    }

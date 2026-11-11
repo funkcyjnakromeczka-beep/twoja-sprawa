@@ -1,6 +1,19 @@
 # Twoja Sprawa — lista gotowości do oficjalnej publikacji
 
-**Stan przygotowania: 10 listopada 2026.** Katalog źródłowy produkcji: `v2/`. Aktualna domena: `https://twoja-sprawa.pages.dev`.
+**Aktualizacja produkcyjna: 11 listopada 2026 r.** Katalog źródłowy: `v2/`. Produkcja: `https://twoja-sprawa.pages.dev`.
+
+## Obowiązujący stan po publikacji — 11 listopada 2026
+- [x] **Cloudflare Pages publikuje produkcyjny wariant z gałęzi `main`.** Weryfikacja przeglądarkowa: `/robots.txt` ma `Allow: /` i wpis dla `OAI-SearchBot`, `/sitemap.xml` istnieje, plik `/deployment-mode.txt` potwierdza wariant produkcyjny.
+- [x] Działa strona główna, obie główne usługi, FAQ, globalna wyszukiwarka i lokalne pliki obu portretów — potwierdzono na serwisie.
+- [x] **Właściciel potwierdził 11 listopada 2026**, że zgłoszenia formularza dochodzą bez zastrzeżeń. Jest to potwierdzenie użytkownika, a nie osobny test wykonany przez asystenta.
+- [x] **Właściciel oświadczył 11 listopada 2026**, że ma uprawnienia do wykorzystania zdjęć, logotypów i publikowanych treści. Nie przedstawiać oświadczenia jako odrębnej weryfikacji dokumentów licencyjnych.
+- [x] Wydanie produkcyjne zawiera kanoniczne adresy Cloudflare i 36 adresów w sitemap. Skrypt `scripts/test-production-bundle.mjs` sprawdza wydanie.
+- [ ] Potwierdzenie dodania usługi i sitemap w **Google Search Console** oraz **Bing Webmaster Tools**. Dostępność robots i sitemap nie dowodzi indeksacji.
+- [ ] Oddzielny przegląd formalny informacji o prywatności i aktualności przepisów. Zgoda właściciela na publikację nie zastępuje analizy prawnej/RODO.
+
+**Bieżąca konfiguracja wdrożeniowa:** `node scripts/preview.mjs` na Cloudflare Pages z `CF_PAGES=1` i `CF_PAGES_BRANCH=main` tworzy zatwierdzony wariant produkcyjny w istniejącym katalogu `dist-preview/`. Ten sam skrypt uruchomiony lokalnie lub na innej gałęzi buduje nieindeksowalny podgląd. Nie należy ręcznie przywracać wcześniejszej konfiguracji blokującej roboty.
+
+## Historia sprzed publikacji (od 10 listopada) — zachowana dla audytu
 
 ## 1. Ustalony i zweryfikowany stan
 - Repozytorium: `funkcyjnakromeczka-beep/twoja-sprawa`, gałąź `main`.
@@ -10,32 +23,32 @@
 - Testowy serwis publiczny pod adresem `twoja-sprawa.pages.dev` został sprawdzony 10 listopada 2026: `robots.txt` zawierał `Disallow: /`, a `sitemap.xml` zwracał 404. Nie jest to obecnie zaindeksowana wersja produkcyjna.
 
 ## 2. Obowiązkowe kontrole przed przełączeniem na wersję indeksowalną
-- [ ] Potwierdź uprawnienie do publicznego wykorzystania obu portretów, w szczególności zgodę Pauliny.
+- [x] Właściciel oświadczył, że dysponuje uprawnieniami do wykorzystania obu portretów, w tym portretu Pauliny (potwierdzenie użytkownika, bez kontroli dokumentów).
 - [ ] Sprawdź poprawność opisów usług, status współpracy agencyjnej i zgodność użycia znaków graficznych VOTUM Network oraz VOTUM Scale Agency z udzielonymi uprawnieniami.
 - [ ] Zweryfikuj aktualność informacji o WZON, ZUS, szkodach górniczych i SKD oraz brak gwarancji wyników.
 - [ ] Zweryfikuj politykę prywatności (administrator, cele, podstawy prawne, odbiorcy, ewentualne transfery danych, okresy retencji) i sposób obsługi danych przez Web3Forms.
-- [ ] Wykonaj rzeczywisty test formularza, sprawdź skrzynkę `twojasprawa_votum@outlook.com`, pole spam i poprawne prowadzenie statusu błędu. Nie wysyłaj PESEL ani danych medycznych w teście.
+- [x] Właściciel potwierdził rzeczywiste doręczanie zgłoszeń formularza; niezależny test ponownej dostarczalności i ochrony danych pozostaje przydatny przy dalszych zmianach.
 - [ ] Sprawdź telefony 796 441 345 i 500 171 531 oraz kierowanie leadów z obu głównych kampanii i chatbota.
 - [ ] Obejrzyj podgląd mobilny (360/390 px), tablet (768 px) i desktop (1440 px). Sprawdź portrety, czytelność i brak poziomego przewijania.
 - [ ] Potwierdź działanie wszystkich linków, wideo oraz dokumentów.
-- [ ] Potwierdź gotowość do publikacji pod adresem `twoja-sprawa.pages.dev` lub ustawioną własną domeną.
+- [x] Wersja produkcyjna jest publicznie dostępna pod `twoja-sprawa.pages.dev`.
 
 ## 3. Prawidłowe ustawienia Cloudflare Pages po zatwierdzeniu
 W panelu **Workers & Pages → projekt → Settings → Builds**:
 - Git repository: `funkcyjnakromeczka-beep/twoja-sprawa`
 - Production branch: `main`
 - Root directory: katalog główny repozytorium
-- Build output directory: `dist`
-- Wersja testowa: `node scripts/preview.mjs` tworzy `dist-preview` i uniemożliwia indeksację. **Nie zostawiać jej jako produkcyjnej.**
-- Wersja produkcyjna: `SITE_URL=https://twoja-sprawa.pages.dev RELEASE=1 LEGAL_APPROVED=1 CONTENT_APPROVED=1 FORM_APPROVED=1 node scripts/build.mjs`
+- Build output directory: **`dist-preview`** (aktualna konfiguracja Cloudflare, nawet gdy zawartość jest produkcyjna)
+- Aktywne polecenie Cloudflare: **`node scripts/preview.mjs`**. Na gałęzi `main` i w środowisku `CF_PAGES=1` tworzy ono produkcję w `dist-preview`; lokalnie i na innych gałęziach tworzy nieindeksowalny podgląd.
+- Wydanie pomocnicze do walidacji: `SITE_URL=https://twoja-sprawa.pages.dev RELEASE=1 LEGAL_APPROVED=1 CONTENT_APPROVED=1 FORM_APPROVED=1 node scripts/build.mjs` — tworzy `dist/`, nie publikuje samoistnie. Na Cloudflare wywoływany jest poprzez aktywny wrapper.
 
-**Uwaga:** wymienione zmienne zatwierdzające to zabezpieczenia projektu. Nie wolno ustawić ich na `1`, zanim nie przejdą kontrole z punktu 2. Obecnie nie są one potwierdzone i nie zostały przez asystenta ustawione w Cloudflare. Skrypt sam nie publikuje — do publikacji potrzebne jest wdrożenie Cloudflare. Nie przekazuj haseł ani tokenów w czacie.
+**Uwaga (aktualizacja):** publikację i wykorzystanie materiałów właściciel zaakceptował 11.11.2026. Wrapper produkcyjny na gałęzi `main` wybiera zatwierdzony build; audyty jakości nadal działają. Nie należy interpretować tych flag jako niezależnego potwierdzenia zgodności prawnej/RODO. Hasła i tokeny nie mogą trafiać do repozytorium.
 
 ## 4. Testy po skutecznym wdrożeniu
-- [ ] `https://twoja-sprawa.pages.dev/`: nowa sekcja zespołu ze zdjęciami.
-- [ ] `https://twoja-sprawa.pages.dev/assets/wojciech-obieglo.jpg` i `/assets/paulina-chandrala.jpg`: obraz JPEG jest dostępny bez Lovable.
-- [ ] `/robots.txt`: `Allow: /`, zezwolenie na `OAI-SearchBot`, bez `Disallow: /` dla całego serwisu.
-- [ ] `/sitemap.xml`: poprawny XML i adresy istniejących, indeksowalnych stron.
+- [x] `https://twoja-sprawa.pages.dev/`: nowa sekcja zespołu ze zdjęciami.
+- [x] `https://twoja-sprawa.pages.dev/assets/wojciech-obieglo.jpg` i `/assets/paulina-chandrala.jpg`: obraz JPEG jest dostępny bez Lovable.
+- [x] `/robots.txt`: `Allow: /`, zezwolenie na `OAI-SearchBot`, bez `Disallow: /` dla całego serwisu.
+- [x] `/sitemap.xml`: poprawny XML i adresy istniejących, indeksowalnych stron.
 - [ ] `/uslugi/szkody-gornicze.html`, `/uslugi/swiadczenie-wspierajace.html` i nowe `/wiedza/...`: odpowiedzi 200, poprawne title/H1/canonical, brak `noindex`.
 - [ ] Podstrony kampanii `/kampanie/...` nadal powinny mieć `noindex,follow` ze względu na duplikację treści.
 - [ ] `/llms.txt`: pomocniczy plik informacyjny, bez obietnic wpływu na ranking.

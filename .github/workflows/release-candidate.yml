@@ -1,0 +1,44 @@
+name: Kandydat produkcyjny — test bez wdrożenia
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'v2/**'
+      - 'scripts/build.mjs'
+      - 'scripts/public-routes.mjs'
+      - 'scripts/seo-policy.mjs'
+      - 'scripts/test-production-bundle.mjs'
+      - '.github/workflows/release-candidate.yml'
+  workflow_dispatch:
+jobs:
+  release-candidate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sprawdź składnię i pliki wydania
+        run: |
+          node --check scripts/build.mjs
+          node --check scripts/test-production-bundle.mjs
+      - name: Zbuduj i przetestuj kandydata wydania (bez publikacji)
+        env:
+          SITE_URL: https://twoja-sprawa.pages.dev
+          RELEASE: '1'
+          LEGAL_APPROVED: '1'
+          CONTENT_APPROVED: '1'
+          FORM_APPROVED: '1'
+        run: |
+          node scripts/build.mjs
+          node scripts/test-production-bundle.mjs
+      - name: Zapisz tymczasowy pakiet wydania do pobrania
+        uses: actions/upload-artifact@v4
+        with:
+          name: twoja-sprawa-kandydat-produkcji
+          path: dist/
+          retention-days: 2
+          if-no-files-found: error

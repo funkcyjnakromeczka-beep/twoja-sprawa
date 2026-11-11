@@ -52,7 +52,7 @@
       ]
     },
     {
-      key:"skd",name:"Kredyty PLN / SKD",short:"Sprawdzenie umowy kredytowej",phone:"500 171 531",tel:"+48500171531",
+      key:"skd",name:"Sankcja Kredytu Darmowego (SKD)",short:"Sprawdzenie umowy kredytowej",phone:"500 171 531",tel:"+48500171531",
       service:"kredyty-pln.html",checklist:"skd-kredyt-pln-lista-kontrolna.html",alias:"skd",
       intro:"Analiza może dotyczyć wybranych umów kredytu konsumenckiego w PLN. Nie każdy kredyt podlega sankcji kredytu darmowego.",
       stages:[

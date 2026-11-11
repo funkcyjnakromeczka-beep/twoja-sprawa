@@ -106,6 +106,9 @@ try{
     if(Math.abs(top)>2)throw Error("Partner strip not sticky after scroll: "+name+" top "+top);
   }
   if(path==="/"&&width<=650){
+    // Earlier sticky-header test scrolls 600px; restore the initial viewport first.
+    await page.evaluate(()=>window.scrollTo(0,0));
+    await page.waitForTimeout(180);
     const headerGeometry=await page.evaluate(()=>{
       const mark=document.querySelector(".network-brand-bar")?.getBoundingClientRect();
       const head=document.querySelector(".site-header")?.getBoundingClientRect();

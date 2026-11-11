@@ -40,6 +40,21 @@ for(const file of ["search-pages-1.js","search-pages-2.js","search-faq-data.js"]
  const src=await read(file);
  assert.ok(!src.includes('"/v2/'),"old source links in production search index: "+file);
 }
+const faqPage=await read("faq.html");
+const faqScripts=[...faqPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+const faqGraphs=faqScripts.map(([,raw])=>JSON.parse(raw));
+const faqSchema=faqGraphs.flatMap(g=>g["@graph"]||[]).find(item=>item["@type"]==="FAQPage");
+assert.ok(faqSchema,"missing structured FAQPage on published FAQ");
+assert.equal(faqSchema.mainEntity.length,24,"FAQ schema must cover 24 visible questions");
+for(const item of faqSchema.mainEntity){
+ assert.equal(item["@type"],"Question");
+ assert.equal(item.acceptedAnswer?.["@type"],"Answer");
+ assert.ok(item.name.length>15&&item.acceptedAnswer.text.length>60);
+ assert.ok(faqPage.includes("<summary>"+item.name.replaceAll("&","&amp;")+"</summary>")||faqPage.includes("<summary>"+item.name+"</summary>"),"structured question not visible: "+item.name);
+}
+const miningPage=await read("uslugi/szkody-gornicze.html");
+assert.ok(!miningPage.includes('"@type":"FAQPage"'),"FAQ schema should not be duplicated on other routes");
+
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");
 const urlTags=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);

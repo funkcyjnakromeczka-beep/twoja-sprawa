@@ -315,4 +315,51 @@ for(const sample of [
   if(sample.accepted)assert.equal(payloads[0].phone,sample.phone);
 }
 
+// The two homepage shortcuts change an existing form; no third-party request occurs.
+{
+ const host=new Node("host");
+ const mining=new Node("a"),support=new Node("a"),feedback=new Node("p");
+ const makeKey=(node,key)=>{node.getAttribute=name=>name==="data-contact-shortcut"?key:(node.attributes[name]??null);};
+ makeKey(mining,"szkody");makeKey(support,"swiadczenie");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:()=>""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-contact-shortcut]"?[mining,support]:selector==="[data-contact-shortcut-status]"?[feedback]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?utm_source=organiczne"}};
+ runInNewContext(source,{document,window,URLSearchParams,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const advisor=visit(form,n=>n.className==="contact-advisor");
+ const damage=visit(form,n=>n.className==="contact-damage-area");
+ assert.equal(service.value,"","Homepage starts with no service preselected");
+ assert.equal(mining.attributes["data-selected"],"false");
+ assert.equal(support.attributes["data-selected"],"false");
+ let prevented=false;
+ mining.events.click({preventDefault(){prevented=true;}});
+ assert.equal(prevented,true,"A functional shortcut should prevent the anchor jump");
+ assert.equal(service.value,"Szkody górnicze");
+ assert.equal(damage.hidden,false,"Choosing mining reveals its damage area");
+ assert.equal(mining.attributes["data-selected"],"true");
+ assert.equal(support.attributes["data-selected"],"false");
+ assert.ok(feedback.textContent.includes("Szkody górnicze"));
+ assert.equal(service.focused,true,"Shortcut should move focus to the service field");
+ support.events.click({preventDefault(){}});
+ assert.equal(service.value,"Świadczenie wspierające");
+ assert.equal(damage.hidden,true,"Support must hide mining qualifier");
+ assert.equal(mining.attributes["data-selected"],"false","Previous shortcut must be deselected");
+ assert.equal(support.attributes["data-selected"],"true");
+ assert.ok(feedback.textContent.includes("Świadczenie wspierające"));
+ assert.ok(advisor.children.some(n=>(n.textContent||"").includes("Paulina Chandrała")));
+ service.value="Renty powypadkowe";service.events.change();
+ assert.equal(mining.attributes["data-selected"],"false");
+ assert.equal(support.attributes["data-selected"],"false");
+ assert.equal(feedback.textContent,"","Other services should not show stale shortcut feedback");
+ makeKey(mining,"__proto__");
+ mining.events.click({preventDefault(){throw Error("Unknown shortcut should not intercept navigation");}});
+ assert.equal(service.value,"Renty powypadkowe","Unexpected shortcut code must not change selection");
+}
+
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

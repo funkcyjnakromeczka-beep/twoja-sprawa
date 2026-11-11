@@ -1,0 +1,45 @@
+/* SKD: precise first-contact CTA; deliberately no document upload in the website form. */
+.premium-subpage.theme-skd .skd-document-cta{
+ position:relative;isolation:isolate;overflow:hidden;
+ margin:30px auto 42px;padding:clamp(22px,4vw,42px);
+ border:2px solid #cfad72;border-radius:20px;
+ background:linear-gradient(116deg,#102e3b,#144e51 84%,#195c4b);
+ box-shadow:0 16px 38px rgba(13,40,48,.17);color:#fffdf7;
+}
+.premium-subpage.theme-skd .skd-document-cta .eyebrow{color:#ffe1a7;font-size:.82rem;font-weight:800}
+.premium-subpage.theme-skd .skd-document-cta h2{
+ color:#fffdf7;font-size:clamp(1.55rem,3vw,2.25rem);line-height:1.2;
+ margin:11px 0 15px;max-width:22ch;
+}
+.premium-subpage.theme-skd .skd-document-cta p{
+ max-width:77ch;font-size:clamp(.97rem,1.25vw,1.08rem);
+ line-height:1.68;color:#f2f7f1;
+}
+.premium-subpage.theme-skd .skd-document-cta strong{color:#fff0c7;overflow-wrap:anywhere}
+.premium-subpage.theme-skd .skd-document-actions{
+ display:flex;flex-wrap:wrap;gap:12px;margin:20px 0 15px;
+}
+.premium-subpage.theme-skd .skd-document-actions a{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:52px;padding:12px 19px;border-radius:12px;
+ border:2px solid #e9c386;text-align:center;
+ font-weight:800;font-size:1rem;line-height:1.4;
+ text-decoration:none;overflow-wrap:anywhere;
+}
+.premium-subpage.theme-skd .skd-email-action{background:#ffe6b8;color:#143341}
+.premium-subpage.theme-skd .skd-phone-action{background:#113644;color:#fffaf0}
+.premium-subpage.theme-skd .skd-document-actions a:hover{filter:brightness(1.09)}
+.premium-subpage.theme-skd .skd-document-actions a:focus-visible{
+ outline:3px solid #fff;outline-offset:4px;
+}
+.premium-subpage.theme-skd .skd-document-security{
+ border-top:1px solid rgba(252,232,193,.45);
+ padding-top:16px;margin:12px 0 0;
+ font-size:.9rem!important;color:#e5eee9!important;
+}
+@media(max-width:580px){
+ .premium-subpage.theme-skd .skd-document-cta{margin:20px auto 30px;padding:20px 16px}
+ .premium-subpage.theme-skd .skd-document-actions{flex-direction:column}
+ .premium-subpage.theme-skd .skd-document-actions a{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.premium-subpage.theme-skd .skd-document-actions a{scroll-behavior:auto}}

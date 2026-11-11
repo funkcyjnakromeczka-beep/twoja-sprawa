@@ -42,4 +42,13 @@ assert.ok(css.includes(':focus-within')&&css.includes('.chat-assistant.is-open')
 assert.ok(html.includes("data-share-page")&&html.includes("data-share-feedback"),"Share control has no user feedback");
 assert.ok(html.includes('src="/v2/share-page.js"'),"Share control script missing");
 
+// The homepage offers only two concise, accessible shortcuts to the same form.
+const shortcutBlock=html.match(/<div class="contact-service-shortcuts"[\s\S]*?<\/div><div class="lead-panel"/)?.[0]||"";
+assert.equal((shortcutBlock.match(/data-contact-shortcut="/g)||[]).length,2,"Exactly two flagship contact shortcuts required");
+assert.ok(shortcutBlock.includes('data-contact-shortcut="szkody"'),"Mining shortcut missing");
+assert.ok(shortcutBlock.includes('data-contact-shortcut="swiadczenie"'),"Support shortcut missing");
+assert.ok(shortcutBlock.includes('role="status" aria-live="polite"'),"Selection feedback should be accessible");
+assert.ok(css.includes("contact-shortcuts-actions")&&css.includes('data-selected="true"'),"Flagship selection styling missing");
+assert.ok(html.includes('<div class="lead-panel"><div data-contact-form></div></div>'),"Shortcuts must reuse the existing homepage form");
+
 console.log("HOME_CLARITY_OK: 6 unique service cards (2+4), priority visible, keyboard-friendly navigator, balanced desktop/mobile layout.");

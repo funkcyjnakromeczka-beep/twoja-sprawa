@@ -97,3 +97,27 @@
 .premium-campaign.campaign-support .vws-service-brand:has(img[hidden]) strong{
  font-size:1.22rem;line-height:1.4;
 }
+
+
+/* Etap VIII — krótka kwalifikacja zauważonych szkód, bez wnioskowania o przyczynie. */
+.contact-form .contact-damage-area[hidden]{display:none!important}
+.contact-form .contact-damage-area:not([hidden]){
+ display:grid;gap:8px;min-width:0;
+ margin:12px 0 18px;padding:16px 17px;
+ border:1px solid #b5cbbd;border-left:4px solid #b7965f;
+ border-radius:12px;background:#eff6f1;color:#173746;
+}
+.contact-form .contact-damage-area label{
+ margin:0;color:#173746!important;font-weight:800;line-height:1.45;
+}
+.contact-form .contact-damage-area select{
+ width:100%;min-width:0;max-width:100%;min-height:48px;
+ border:1px solid #94afa3;border-radius:9px;background:#fff!important;
+ color:#173746!important;padding:10px 12px;
+}
+.contact-form .contact-damage-area .contact-field-hint{
+ margin:0;line-height:1.5;color:#31534b!important;font-size:.84rem;
+}
+@media(max-width:650px){
+ .contact-form .contact-damage-area:not([hidden]){padding:13px 14px}
+}

@@ -105,6 +105,33 @@ try{
     const top=await logo.evaluate(el=>el.getBoundingClientRect().top);
     if(Math.abs(top)>2)throw Error("Partner strip not sticky after scroll: "+name+" top "+top);
   }
+  if(path==="/"&&width<=650){
+    const headerGeometry=await page.evaluate(()=>{
+      const mark=document.querySelector(".network-brand-bar")?.getBoundingClientRect();
+      const head=document.querySelector(".site-header")?.getBoundingClientRect();
+      const bot=document.querySelector(".chat-assistant");
+      return {gap:Math.round((head?.top??0)-(mark?.bottom??0)),
+        headerPosition:getComputedStyle(document.querySelector(".site-header")).position,
+        idleChatVisible:bot?getComputedStyle(bot).visibility!=="hidden":false,
+        heroIntersecting:!!document.querySelector(".chat-assistant.is-hero-area")};
+    });
+    if(Math.abs(headerGeometry.gap)>3)throw Error("Mobile homepage has blank spacer under network logos: "+JSON.stringify(headerGeometry));
+    if(headerGeometry.heroIntersecting&&headerGeometry.idleChatVisible)throw Error("Mobile idle chat obstructs hero CTAs: "+JSON.stringify(headerGeometry));
+    console.log("MOBILE_HERO_REFINEMENT_OK",JSON.stringify(headerGeometry));
+  }
+  if(path==="/kampanie/swiadczenie-wspierajace.html"){
+    const logoStatus=await page.locator(".vws-service-brand").evaluate(card=>{
+      const img=card.querySelector("img");
+      const visibleText=card.querySelector("strong");
+      return {loaded:img?.complete&&img.naturalWidth>0,
+        imageHidden:img?.hidden, imageDisplay:img?getComputedStyle(img).display:null,
+        cardHeight:Math.round(card.getBoundingClientRect().height),
+        visibleText:!!visibleText&&getComputedStyle(visibleText).display!=="none"};
+    });
+    if(!logoStatus.loaded && (!logoStatus.imageHidden||logoStatus.imageDisplay!=="none"||!logoStatus.visibleText||logoStatus.cardHeight>120))
+      throw Error("Unavailable logo should have compact text fallback: "+JSON.stringify(logoStatus));
+    console.log("SUPPORT_LOGO_FALLBACK_OK",JSON.stringify(logoStatus));
+  }
   if(width<=650&&["/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html"].includes(path)){
     const quick=page.locator(".mobile-service-cta");
     if(!await quick.isVisible())throw Error("Mobile contact bar not visible: "+path);

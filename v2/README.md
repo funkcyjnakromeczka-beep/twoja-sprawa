@@ -176,3 +176,11 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - `scripts/screenshot-preview.mjs` zachowuje pełny test dwóch kolejnych kliknięć na ekranie 390 px i w razie przyszłej regresji raportuje stan widocznego formularza, zaznaczeń, aktywnego pola i przewinięcia.
 - **Potwierdzenie:** [test Chromium: 28 widoków i scenariuszy, w tym HOME_SHORTCUT_UI_OK](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/43064424017). W ramach testu nie wysyłano leadów; sprawdzono też odczyt zdjęć oraz logotypów.
 - `scripts/audit-production-live.mjs` sprawdza obecność nowego przewijania i marginesu na publicznym Cloudflare, bez jakichkolwiek modyfikacji danych klientów.
+
+## Etap XIV — krótsza strona główna na telefonie (11.11.2026)
+
+- W `v2/home-flow.css` dodano styl wyłącznie dla szerokości do 760 px: **dwie flagowe usługi** nadal mają duże karty z opisem, a **cztery dodatkowe** są wyświetlane jako zwarta lista kart z pełną nazwą i odnośnikiem do szczegółów.
+- Na telefonie krótsze karty nie powtarzają wstępnych opisów i oznaczeń, które są dostępne na docelowych podstronach. Wszystkie sześć podstron pozostaje połączonych z homepage; na dużych ekranach zachowany jest dotychczasowy układ 2+4.
+- `scripts/screenshot-preview.mjs` sprawdza w Chromium układ na ekranie 390 px: obecność sześciu kart, zachowanie pełnych opisów dwóch głównych projektów, wysokość kart dodatkowych oraz widoczność nagłówków i wezwań do działania. Zapisuje obraz `screenshots/home-uslugi-zwarta-lista-telefon.png`. Nie wysyła danych klientów.
+- Weryfikacja kodu opublikowanego na Cloudflare: [audyt produkcyjny](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/43065501623). Udana kontrola kodu nie zastępuje testu wizualnego.
+- Zmiana nie usuwa żadnej usługi, poradnika, podstrony ani formularza; bez dodatkowych opłat i zewnętrznych usług.

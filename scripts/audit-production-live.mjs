@@ -189,5 +189,17 @@ for(let attempt=0;attempt<8&&!readyGuidedDamage(publishedChat,publishedLead);att
 }
 assert.ok(readyGuidedDamage(publishedChat,publishedLead),"Safe chatbot mining-category preselection has not reached public Cloudflare");
 
+// Stage XVI: external reading must leave an in-progress lead form in its tab.
+const safeReadingLinks=body=>
+ body.includes('guideLink.target="_blank";guideLink.rel="noopener noreferrer"')&&
+ body.includes('privacy.target="_blank";privacy.rel="noopener noreferrer"')&&
+ body.includes('privacy.textContent="Informacje o prywatności (nowa karta)"');
+let readLinksJS=publishedLead;
+for(let attempt=0;attempt<8&&!safeReadingLinks(readLinksJS);attempt++){
+ await new Promise(resolve=>setTimeout(resolve,5000));
+ readLinksJS=(await get("/contact.js")).body;
+}
+assert.ok(safeReadingLinks(readLinksJS),"Checklist and privacy links may still replace a partially completed lead form");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

@@ -1,0 +1,46 @@
+name: Kontrola przekierowania starego Lovable
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/lovable-redirect-check.yml'
+  workflow_dispatch:
+jobs:
+  redirect-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 7
+    steps:
+      - name: Sprawdź przekierowanie starej strony do Cloudflare
+        shell: bash
+        run: |
+          set -euo pipefail
+          old="https://twojasprawa-votum.lovable.app"
+          new="https://twoja-sprawa.pages.dev/"
+          echo "Publiczny adres docelowy: $new"
+          for path in "/" "/uslugi/szkody-gornicze" "/polityka-prywatnosci" "/dowolny-stary-adres"; do
+            echo "TEST: $old$path"
+            headers="$(mktemp)"
+            status="$(curl --connect-timeout 10 --max-time 30 --retry 2 --retry-delay 2 --silent --show-error --output /dev/null --dump-header "$headers" --write-out '%{http_code}' "$old$path")"
+            location="$(grep -i '^location:' "$headers" | tail -1 | tr -d '\r' | cut -d' ' -f2- || true)"
+            echo "HTTP_STATUS=$status"
+            echo "LOCATION=$location"
+            echo "HEADERS:"
+            sed -n '1,18p' "$headers"
+            if [[ "$status" != "301" && "$status" != "308" ]]; then
+              echo "::error::Oczekiwano 301/308 na $path, otrzymano HTTP $status"
+              exit 1
+            fi
+            if [[ "$location" != "$new" ]]; then
+              echo "::error::Niepoprawny Location dla $path: $location"
+              exit 1
+            fi
+          done
+          final="$(curl --connect-timeout 10 --max-time 35 --silent --show-error --location --output /dev/null --write-out '%{http_code} %{url_effective}' "$old/")"
+          echo "REDIRECT_CHAIN=$final"
+          if [[ "$final" != "200 $new" ]]; then
+            echo "::error::Przekierowanie nie kończy się na dostępnej stronie Cloudflare"
+            exit 1
+          fi
+          echo "LOVABLE_REDIRECT_LIVE_OK: 4 legacy URLs return permanent redirect to Cloudflare, final HTTP 200"

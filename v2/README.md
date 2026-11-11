@@ -251,3 +251,12 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - `scripts/test-50-continuations.mjs` i `scripts/test-home-clarity.mjs` sprawdzają nowe ścieżki. `scripts/screenshot-preview.mjs` odczytuje rzeczywiste zdjęcia w Chromium na 7 trasach i sprawdza, czy przeglądarka pobiera je z własnego hostingu. `scripts/audit-production-live.mjs` sprawdza publiczne HTML, typ plików oraz brak starych adresów zdjęć.
 - Nie zmieniano formularzy, numerów kontaktowych, kolejności wyróżnionych usług (1. świadczenia, 2. szkody górnicze, 3. SKD), treści porad SKD ani sposobu wysyłania pełnej umowy kredytowej na `wojciech.obieglo@votum-ds.pl`.
 - **Dodatkowy koszt: 0 zł**. Nie wysyłano zgłoszeń do klientów ani danych do usług marketingowych.
+
+## Etap XXII — mobilna belka szybkiego kontaktu SKD (11.11.2026)
+
+- `v2/uslugi/kredyty-pln.html` otrzymała dwa szybkie przyciski widoczne u dołu ekranu **wyłącznie na telefonach do 650 px**: „Umowa e-mailem” i „Zostaw telefon”. Pierwszy otwiera istniejącą, przygotowaną wiadomość do `wojciech.obieglo@votum-ds.pl`; drugi przechodzi do `#formularz`. Nie ma automatycznej wysyłki wiadomości ani uploadu dokumentów na serwer strony.
+- `v2/skd-contact.css`: wyraźne kontrastowe pola dotykowe o wysokości minimum 48 px, uwzględnienie bezpiecznego marginesu ekranu `env(safe-area-inset-bottom)`, rezerwa miejsca pod treścią i właściwy odstęp od otwartego chatbota. Podczas wpisywania danych w formularzu pasek znika, aby nie zasłaniał klawiatury ani pól.
+- Na ekranach ponad 650 px pasek jest ukryty; na dużych ekranach pozostają dotychczasowe przyciski przy opisie SKD. Kolejność usług na stronie głównej jest nadal **1. świadczenie wspierające, 2. szkody górnicze, 3. SKD**.
+- `scripts/test-home-clarity.mjs` pilnuje poprawnego adresu e-mail, kotwicy formularza i styli bezpieczeństwa mobilnego. `scripts/screenshot-preview.mjs` testuje w Chromium ekran 390 px, wymiary przycisków, brak kolizji z chatbotem, reakcję na skupienie pola telefonu oraz ukrycie paska na desktopie.
+- `scripts/audit-production-live.mjs` weryfikuje obecność kodu HTML i CSS w publicznych zasobach Cloudflare. Potwierdzenie wymaga **zielonego wyniku akcji**; samo zapisanie zmian do repozytorium nie oznacza wyniku audytu ani faktycznej publikacji.
+- Pełna umowa SKD może być przesłana bez zasłaniania danych, ale odwiedzający nadal musi samodzielnie dodać załącznik do e-maila i może alternatywnie pozostawić tylko numer telefonu. **Koszt dodatkowych usług: 0 zł**.

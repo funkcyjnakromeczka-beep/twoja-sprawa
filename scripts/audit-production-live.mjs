@@ -159,8 +159,8 @@ assert.ok(liveHomeCSS.includes('data-selected="true"'),"Flagship choice state st
 // Stage XII follow-up: reset consistency and reduced-motion behaviour.
 assert.ok(liveContactJS.includes("refreshShortcutState=syncShortcuts;"),"Homepage form reset does not update selected shortcut state");
 assert.ok(liveContactJS.includes("refreshShortcutState();"),"Form success does not clear shortcut feedback");
-assert.ok(liveContactJS.includes("prefers-reduced-motion: reduce"),"Home shortcut ignores reduced-motion preference");
-assert.ok(liveHomeCSS.includes("#kontakt .lead-panel{scroll-margin-top:"),"Homepage form anchor can hide below sticky partner header");
+assert.ok(liveContactJS.includes('host.scrollIntoView?.({behavior:"instant",block:"start"})'),"Home shortcut must use stable nonanimated form scroll");
+assert.ok(liveHomeCSS.includes("#kontakt [data-contact-form]{scroll-margin-top:"),"Actual form scroll target may hide below sticky partner header");
 
 const verified=27;
 console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, validated contact phone numbers, two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

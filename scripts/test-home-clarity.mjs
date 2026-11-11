@@ -24,6 +24,11 @@ for(const link of links){
  await access(link.slice(1));
 }
 assert.ok(segment.indexOf("support-featured")<segment.indexOf("mining-featured")&&segment.indexOf("mining-featured")<segment.indexOf("skd-featured"),"Three flagship priorities must be WZON, mining, SKD");
+const headerNav=html.slice(html.indexOf('<nav id="site-main-nav"'),html.indexOf("</nav>",html.indexOf('<nav id="site-main-nav"')));
+const priorityNav=[...headerNav.matchAll(/class="nav-(support|mining|skd)-priority"/g)].map(x=>x[1]);
+assert.deepEqual(priorityNav,["support","mining","skd"],"Main navigation must expose WZON, mining, SKD as the top three projects");
+assert.ok(headerNav.includes('class="nav-skd-priority" href="/v2/uslugi/kredyty-pln.html"'),"SKD navigation route missing");
+assert.ok(css.includes(".nav-skd-priority"),"SKD main navigation contrast styles missing");
 assert.ok(links[2].endsWith("/kredyty-pln.html")&&links[3].endsWith("/renty-powypadkowe.html"),"SKD must be the third featured card and precede rents");
 assert.ok(segment.includes("Trzecia wyróżniona usługa • SKD")&&segment.includes("wojciech.obieglo@votum-ds.pl")&&segment.includes("numer telefonu"),"Homepage SKD lacks prominent contract and callback instructions");
 assert.ok(segment.includes("Sankcja Kredytu Darmowego")&&segment.includes("Pomoc frankowiczom"),"Financial areas not shown explicitly");

@@ -287,3 +287,20 @@
  .premium-v2 #uslugi .primary-services>.skd-featured .more{margin-top:auto}
  .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured):not(.skd-featured) p{display:none}
 }
+
+/* A third clear direct navigation path, without replacing the full services index. */
+.premium-v2 .site-header .main-nav>a.nav-skd-priority{
+ color:#fff3cf!important;background:rgba(125,102,47,.22);
+ border:1px solid rgba(241,207,141,.74)!important;
+ border-radius:999px;font-weight:850;letter-spacing:.025em;
+}
+.premium-v2 .site-header .main-nav>a.nav-skd-priority:hover,
+.premium-v2 .site-header .main-nav>a.nav-skd-priority:focus-visible{
+ background:#745b31;color:#fff!important;
+}
+@media(max-width:760px){
+ .premium-v2 .site-header .main-nav.nav-open>a.nav-skd-priority{
+  background:#213f48;color:#ffebbf!important;
+  border:1px solid #c8a76b!important;
+ }
+}

@@ -567,6 +567,23 @@ try{
  if(await skdDesktop.locator(".skd-mobile-quickbar").isVisible())throw Error("SKD mobile quick bar should not appear on desktop");
  await skdDesktop.close();
 
+ // The third featured service must also be reachable as the third primary nav item.
+ const navMobile=await browser.newPage({viewport:{width:390,height:844}});
+ await navMobile.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ const skdNavigation=navMobile.locator(".main-nav>a.nav-skd-priority");
+ if(await skdNavigation.count()!==1)throw Error("Third SKD navigation item missing");
+ await navMobile.locator(".mobile-menu-toggle").click();
+ if(!await skdNavigation.isVisible())throw Error("SKD item inaccessible when mobile menu opens");
+ await skdNavigation.click();
+ if(!navMobile.url().includes("/uslugi/kredyty-pln.html"))throw Error("Mobile SKD menu points to wrong page");
+ console.log("SKD_NAV_MOBILE_OK",JSON.stringify({menu:true,selected:"skd",visible:true}));
+ await navMobile.close();
+ const navDesktop=await browser.newPage({viewport:{width:1440,height:900}});
+ await navDesktop.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ const navOverflow=await navDesktop.evaluate(()=>({width:document.documentElement.clientWidth,content:document.documentElement.scrollWidth,skd:!!document.querySelector('.main-nav>a.nav-skd-priority')}));
+ if(!navOverflow.skd||navOverflow.content>navOverflow.width+2)throw Error("Desktop SKD navigation causes overflow: "+JSON.stringify(navOverflow));
+ await navDesktop.close();
+
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

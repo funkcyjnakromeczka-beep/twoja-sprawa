@@ -10,6 +10,9 @@ on:
       - 'scripts/test-production-bundle.mjs'
       - '.github/workflows/release-candidate.yml'
   workflow_dispatch:
+concurrency:
+  group: twoja-sprawa-release-candidate-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   release-candidate:
     runs-on: ubuntu-latest

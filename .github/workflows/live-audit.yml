@@ -6,6 +6,9 @@ on:
       - '.github/workflows/live-audit.yml'
       - 'scripts/audit-production-live.mjs'
   workflow_dispatch:
+concurrency:
+  group: twoja-sprawa-live-audit-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   live-production:
     runs-on: ubuntu-latest

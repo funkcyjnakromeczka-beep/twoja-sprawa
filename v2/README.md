@@ -260,3 +260,10 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - `scripts/test-home-clarity.mjs` pilnuje poprawnego adresu e-mail, kotwicy formularza i styli bezpieczeństwa mobilnego. `scripts/screenshot-preview.mjs` testuje w Chromium ekran 390 px, wymiary przycisków, brak kolizji z chatbotem, reakcję na skupienie pola telefonu oraz ukrycie paska na desktopie.
 - `scripts/audit-production-live.mjs` weryfikuje obecność kodu HTML i CSS w publicznych zasobach Cloudflare. Potwierdzenie wymaga **zielonego wyniku akcji**; samo zapisanie zmian do repozytorium nie oznacza wyniku audytu ani faktycznej publikacji.
 - Pełna umowa SKD może być przesłana bez zasłaniania danych, ale odwiedzający nadal musi samodzielnie dodać załącznik do e-maila i może alternatywnie pozostawić tylko numer telefonu. **Koszt dodatkowych usług: 0 zł**.
+
+## Etap XXIII — trzy projekty w menu i kontrola kolejki testów (12.11.2026)
+
+- W głównej nawigacji obok priorytetowych pozycji „Świadczenie wspierające” i „Szkody górnicze” dodano trzecią: **SKD**, prowadzącą bezpośrednio do podstrony kredytów PLN. Nie zastępuje ona odnośnika do wszystkich sześciu usług. `v2/home-flow.css` zapewnia odrębny kontrast i dostępność odnośnika również w menu telefonu.
+- `scripts/test-home-clarity.mjs` sprawdza rzeczywistą kolejność tych trzech odnośników i obecność stylu; `scripts/screenshot-preview.mjs` otwiera menu mobilne w Chromium, klika SKD i sprawdza poprawność podstrony oraz brak poziomego przewijania na komputerze.
+- W workflow GitHub Actions `audit.yml`, `live-audit.yml`, `release-candidate.yml` wprowadzono `concurrency` z `cancel-in-progress: true`, aby **kolejne uruchomienia tego samego workflow na tej samej gałęzi** anulowały starsze. `screenshots.yml` miało już analogiczny mechanizm. Zmiana ogranicza narastanie nowych kolejek, ale nie dowodzi anulowania historycznych uruchomień utworzonych przed zmianą ani sukcesu testów.
+- Zachowana kolejność kart na homepage: WZON (1), szkody górnicze (2), SKD (3), trzy dodatkowe usługi niżej. Bez zmiany zasad przesyłania pełnych umów SKD na `wojciech.obieglo@votum-ds.pl`; nadal można zostawić sam numer telefonu. Bez płatnych zależności.

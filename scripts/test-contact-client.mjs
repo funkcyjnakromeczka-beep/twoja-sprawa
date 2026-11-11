@@ -104,6 +104,28 @@ const run=async(error=false)=>{
 };
 await run(false);
 await run(true);
+// SKD inquiries should point to Wojciech for contract review and callback.
+{
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?"Kredyt w PLN / SKD":""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?utm_source=ulotka"}};
+ runInNewContext(source,{document,window,URLSearchParams,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const advisor=visit(form,n=>n.className==="contact-advisor");
+ const guide=visit(form,n=>n.className==="contact-guide-box");
+ assert.equal(service.value,"Kredyt w PLN / SKD");
+ assert.ok(advisor.children.some(n=>n.textContent==="Twoja osoba do kontaktu: Wojciech Obiegło"),"SKD advisor must be Wojciech");
+ assert.ok(advisor.children.some(n=>n.href?.startsWith("mailto:wojciech.obieglo@votum-ds.pl")),"SKD email destination missing");
+ assert.ok(advisor.children.some(n=>n.href==="tel:+48796441345"),"SKD callback uses a different phone");
+ assert.ok(guide.children.some(n=>n.textContent?.includes("wojciech.obieglo@votum-ds.pl")),"SKD checklist guidance must invite contract email");
+}
 // Qualification of an observed property issue, without inferring a mining cause.
 {
  const host=new Node("host");

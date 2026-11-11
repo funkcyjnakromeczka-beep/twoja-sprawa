@@ -201,5 +201,21 @@ for(let attempt=0;attempt<8&&!safeReadingLinks(readLinksJS);attempt++){
 }
 assert.ok(safeReadingLinks(readLinksJS),"Checklist and privacy links may still replace a partially completed lead form");
 
+// Stage XVII: homepage should not fetch long-article CSS. Editorial and FAQ
+// components retain the same rules in existing home-flow.css instead.
+const leanHomepage=(html,css)=>
+ !html.includes('href="/knowledge-articles.css"')&&
+ css.includes(".premium-v2 .editorial-reading")&&
+ css.includes(".premium-v2 .hub-all-link")&&
+ css.includes(".premium-v2 .faq-explore-all");
+let leanHTML=liveHome,leanCSS=compactCSS;
+for(let attempt=0;attempt<8&&!leanHomepage(leanHTML,leanCSS);attempt++){
+ await new Promise(resolve=>setTimeout(resolve,5000));
+ [leanHTML,leanCSS]=await Promise.all([get("/").then(x=>x.body),get("/home-flow.css").then(x=>x.body)]);
+}
+assert.ok(leanHomepage(leanHTML,leanCSS),"Homepage still loads article CSS or has lost editorial/FAQ styling");
+const article=(await get("/wiedza/drobne-pekniecia-szkody-gornicze")).body;
+assert.ok(article.includes('href="/knowledge-articles.css"'),"Long-form article must retain its dedicated stylesheet");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

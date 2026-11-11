@@ -36,8 +36,13 @@ assert.ok(skd.body.includes("Sankcja Kredytu Darmowego"),"Full SKD title missing
 assert.ok(support.body.includes("Votum-Wsparcie-poziom_zielone.png"),"Official Votum Wsparcie logo missing");
 assert.ok(contrastCSS.body.includes(".interactive-checklist")&&contrastCSS.body.includes(".contact-form"),"Contrast protection missing");
 
-const homeStructure=["<section id=\\"uslugi\\"","<details id=\\"dobierz-pomoc\\"","<section class=\\"wrap team-spotlight","<section id=\\"kontakt\\""];
-let last=-1;for(const tag of homeStructure){const pos=home.body.indexOf(tag.replaceAll("\\\\",""));assert.ok(pos>last,"Homepage order not deployed: "+tag);last=pos;}
+const homeStructure=['<section id="uslugi"','<details id="dobierz-pomoc"','<section class="wrap team-spotlight','<section id="kontakt"'];
+let last=-1;
+for(const tag of homeStructure){
+ const pos=home.body.indexOf(tag);
+ assert.ok(pos>last,"Homepage order not deployed: "+tag);
+ last=pos;
+}
 assert.ok(home.body.includes("home-flow.css"),"Homepage layout stylesheet not deployed");
 assert.ok(homeFlow.body.includes("repeat(12,minmax(0,1fr))")&&homeFlow.body.includes("grid-column:span 3"),"Symmetric 2+4 desktop grid not deployed");
 assert.ok(navigatorJS.body.includes("openFromAnchor"),"Deep-link navigator not deployed");

@@ -183,3 +183,42 @@
  .premium-v2 #kontakt .contact-shortcuts-actions a{min-height:46px}
 }
 @media print{.premium-v2 #kontakt .contact-service-shortcuts{display:none}}
+
+
+/* Homepage mobile density: keep both flagship cards expansive, compact the four
+   secondary service links to make the contact path substantially shorter. */
+@media(max-width:760px){
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured){
+  min-height:136px;
+  padding:15px 18px;
+  justify-content:center;
+ }
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) .project-number{
+  font-size:.75rem;line-height:1.2;margin:0 0 3px;
+ }
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) .project-symbol,
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) .overline,
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) p{
+  display:none;
+ }
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) h3{
+  font-size:clamp(1.08rem,4.25vw,1.3rem);
+  line-height:1.26;
+  margin:3px 0 7px;
+  padding-right:56px;
+ }
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) .more{
+  margin:4px 0 0;
+  padding:6px 9px;
+  font-size:.79rem;
+  line-height:1.35;
+ }
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured)::before{
+  width:83px;
+  height:80px;
+  top:8px;
+  right:5px;
+  opacity:.32;
+  pointer-events:none;
+ }
+}

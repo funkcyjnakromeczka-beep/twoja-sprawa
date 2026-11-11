@@ -215,7 +215,7 @@ try{
  await faqPage.screenshot({path:"screenshots/faq-swiadczenie-telefon.png",fullPage:false,animations:"disabled"});
  console.log("FAQ_UI_OK",JSON.stringify({total:24,mining:faqInitial,search:faqSearch,support:6}));
  await faqPage.close();
- // Global search — 60 local records and deep linking into the relevant expanded FAQ.
+ // Global search — 62 local records and deep linking into the relevant expanded FAQ.
  const searchPage=await browser.newPage({viewport:{width:390,height:844}});
  await searchPage.goto(origin+"/szukaj.html?q=PEKNIECIE&temat=szkody",{waitUntil:"domcontentloaded"});
  const found=await searchPage.locator(".site-search-card").count();
@@ -235,7 +235,7 @@ try{
  await searchPage.locator("[data-search-reset]").click();
  const afterReset=await searchPage.locator(".site-search-card").count();
  if(afterReset!==18)throw Error("Search reset should restore the first 18 cards: "+afterReset);
- console.log("GLOBAL_SEARCH_OK",JSON.stringify({sourceCount:60,cracks:found,faqDeepLink:true,wzon:true,reset:afterReset}));
+ console.log("GLOBAL_SEARCH_OK",JSON.stringify({sourceCount:62,cracks:found,faqDeepLink:true,wzon:true,reset:afterReset}));
  await searchPage.close();
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{

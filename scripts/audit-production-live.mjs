@@ -8,10 +8,10 @@ const get=async(path)=>{
  assert.ok(response.ok,"Live "+path+" HTTP "+response.status);
  return {response,body:await response.text()};
 };
-const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd,homeFlow,navigatorJS,leaflet,leafletCSS,shareJS,brandCSS,chatJS,leadJS,miningLanding,personaCSS]=await Promise.all([
+const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd,homeFlow,navigatorJS,leaflet,leafletCSS,shareJS,brandCSS,chatJS,leadJS,miningLanding,personaCSS,supportLanding]=await Promise.all([
  get("/robots.txt"),get("/sitemap.xml"),get("/"),get("/uslugi/szkody-gornicze"),
  get("/uslugi/swiadczenie-wspierajace"),get("/faq"),get("/szukaj"),get("/deployment-mode.txt"),
- get("/assets/wojciech-obieglo.jpg"),get("/assets/paulina-chandrala.jpg"),get("/mobile-service-cta.js"),get("/mobile-service-cta.css"),get("/uslugi/kredyty-frankowe"),get("/poradniki/frankowicze-lista-kontrolna"),get("/visual-contrast.css"),get("/uslugi/kredyty-pln"),get("/home-flow.css"),get("/service-navigator.js"),get("/start"),get("/ulotka-start.css"),get("/share-page.js"),get("/network-brand.css"),get("/chat-assistant.js"),get("/contact.js"),get("/kampanie/szkody-gornicze"),get("/lead-persona.css")
+ get("/assets/wojciech-obieglo.jpg"),get("/assets/paulina-chandrala.jpg"),get("/mobile-service-cta.js"),get("/mobile-service-cta.css"),get("/uslugi/kredyty-frankowe"),get("/poradniki/frankowicze-lista-kontrolna"),get("/visual-contrast.css"),get("/uslugi/kredyty-pln"),get("/home-flow.css"),get("/service-navigator.js"),get("/start"),get("/ulotka-start.css"),get("/share-page.js"),get("/network-brand.css"),get("/chat-assistant.js"),get("/contact.js"),get("/kampanie/szkody-gornicze"),get("/lead-persona.css"),get("/kampanie/swiadczenie-wspierajace")
 ]);
 assert.ok(robots.body.includes("Allow: /")&&!robots.body.includes("Disallow: /"),"Production robots unexpectedly blocked");
 assert.ok(robots.body.includes("OAI-SearchBot"),"OAI-SearchBot directive missing");
@@ -103,5 +103,13 @@ for(const category of ["Ściany i elewacja","Kostka i ogrodzenie","Drzwi i okna"
 assert.ok(personaCSS.body.includes(".campaign-damage-pick"),"Campaign category buttons are unstyled in production");
 assert.ok(contrastCSS.body.includes(".contact-damage-area:not([hidden])"),"Damage qualifier contrast rules not deployed");
 
-const verified=26;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, quick mining damage qualification, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+// Stage IX: support campaign cards must select known WZON stages, no health data.
+for(const stage of ["wniosek","oczekiwanie","decyzja"]){
+ assert.ok(supportLanding.body.includes('data-stage-option="'+stage+'"'),"Support stage shortcut not live: "+stage);
+}
+assert.ok(leadJS.body.includes('querySelectorAll("[data-stage-option]")'),"WZON stage handoff missing in contact script");
+assert.ok(leadJS.body.includes('hasOwnProperty.call(stages,code)'),"WZON stage code validation missing");
+assert.ok(personaCSS.body.includes(".campaign-stage-pick"),"WZON stage buttons not styled on live page");
+
+const verified=27;
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

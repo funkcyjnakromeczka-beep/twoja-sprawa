@@ -6,7 +6,7 @@ Stan: 11.11.2026. **Nie przełączono domeny.** Obowiązujący adres: https://tw
 
 Własna domena `.pl` jest korzystniejsza do materiałów drukowanych, wiarygodności marki i krótkiego podawania adresu przez telefon. Sprawdzić dostępność `twoja-sprawa.pl`; jeżeli zajęta lub koliduje z istniejącą marką, rozważyć `twojasprawa-pomoc.pl` albo `twoja-sprawa-online.pl`. Nie ma potwierdzonej dostępności, ceny ani praw do któregokolwiek z tych adresów. Nie używać `votum` w domenie bez odrębnej decyzji właściciela znaku.
 
-Cloudflare Pages **nie wymaga płatnego hostingu przy podłączeniu własnej domeny**, choć rejestracja domeny i odnowienie zwykle są płatne u rejestratora. Można zachować GitHub, formularze i aktualny mechanizm publikacji. Jeśli koszt domeny jest dziś problemem, zostawić `pages.dev`; nie zmieniać SEO tylko dla kosmetycznej zmiany subdomeny.
+Cloudflare Pages **nie wymaga płatnego hostingu przy podłączeniu własnej domeny**, choć rejestracja domeny i odnowienie zwykle są płatne u rejestratora. Przykładowy aktualny cennik OVHcloud dla zwykłej domeny `.pl`: **20,53 zł brutto za pierwszy rok i 72,56 zł brutto za odnowienie na rok** (oferta rejestratora, nie wycena ani potwierdzenie dostępności `twoja-sprawa.pl`; https://www.ovhcloud.com/pl/domains/tld/pl/). Można zachować GitHub, formularze i aktualny mechanizm publikacji. Jeśli koszt domeny jest dziś problemem, zostawić `pages.dev`; nie zmieniać SEO tylko dla kosmetycznej zmiany subdomeny.
 
 ## Czego nie robić teraz
 

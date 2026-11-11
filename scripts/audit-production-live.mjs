@@ -162,5 +162,16 @@ assert.ok(liveContactJS.includes("refreshShortcutState();"),"Form success does n
 assert.ok(liveContactJS.includes('host.scrollIntoView?.({behavior:"instant",block:"start"})'),"Home shortcut must use stable nonanimated form scroll");
 assert.ok(liveHomeCSS.includes("#kontakt [data-contact-form]{scroll-margin-top:"),"Actual form scroll target may hide below sticky partner header");
 
+// Stage XIV: secondary service cards keep a short, accessible mobile layout.
+const compactServiceLayout=css=>css.includes("Homepage mobile density:")&&
+ css.includes("min-height:136px")&&css.includes("justify-content:center")&&
+ css.includes(".primary-card:not(.support-featured):not(.mining-featured) h3");
+let compactCSS=liveHomeCSS;
+for(let attempt=0;attempt<8&&!compactServiceLayout(compactCSS);attempt++){
+ await new Promise(resolve=>setTimeout(resolve,5000));
+ compactCSS=(await get("/home-flow.css")).body;
+}
+assert.ok(compactServiceLayout(compactCSS),"Compact mobile layout for four secondary services has not reached Cloudflare");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, validated contact phone numbers, two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

@@ -105,6 +105,17 @@ for(const [path,markup] of [
  }
  assert.ok(!markup.includes("twojasprawa-votum.lovable.app/assets/"),"Old Lovable portrait CDN must not serve team photos: "+path);
 }
+// Specialist portraits on high-intent service/campaign pages must also be owned locally.
+for(const [path,filename] of [
+ ["v2/uslugi/szkody-gornicze.html","wojciech-obieglo.jpg"],
+ ["v2/uslugi/swiadczenie-wspierajace.html","paulina-chandrala.jpg"],
+ ["v2/kampanie/szkody-gornicze.html","wojciech-obieglo.jpg"],
+ ["v2/kampanie/swiadczenie-wspierajace.html","paulina-chandrala.jpg"]
+]){
+ const source=await readFile(path,"utf8");
+ assert.ok(source.includes('src="/v2/assets/'+filename+'"'),"Campaign/service portrait not on own hosting: "+path);
+ assert.ok(!source.includes("twojasprawa-votum.lovable.app/assets/"),"Old Lovable portrait request still present: "+path);
+}
 await access("v2/assets/wojciech-obieglo.jpg");
 await access("v2/assets/paulina-chandrala.jpg");
 

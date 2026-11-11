@@ -382,7 +382,10 @@ try{
  if(await miningShortcut.getAttribute("data-selected")!=="true")throw Error("Home mining shortcut not visibly selected");
  await supportShortcut.click();
  flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
- if(flagshipSelection!=="Świadczenie wspierające")throw Error("Home support shortcut failed to select service");
+ if(flagshipSelection!=="Świadczenie wspierające"){
+   const state=await flagshipPage.evaluate(()=>({url:location.href,hash:location.hash,scrollY:scrollY,service:document.querySelector('#kontakt .contact-form select[id^="cf-service-"]')?.value,selected:[...document.querySelectorAll("[data-contact-shortcut]")].map(x=>({topic:x.getAttribute("data-contact-shortcut"),selected:x.getAttribute("data-selected")})),activeElement:document.activeElement?.id}));
+   throw Error("Home support shortcut failed to select service: "+JSON.stringify(state));
+ }
  if(await miningShortcut.getAttribute("data-selected")!=="false"||await supportShortcut.getAttribute("data-selected")!=="true")throw Error("Home shortcut state remains stale after switching");
  const message=await flagshipPage.locator("[data-contact-shortcut-status]").textContent();
  if(!message.includes("Świadczenie wspierające"))throw Error("Homepage shortcut selection lacks accessible feedback");

@@ -28,8 +28,8 @@ add("04. Priorytet świadczenia w nawigacji",()=>assert.ok(home.includes('nav-su
 add("05. Priorytet szkód w nawigacji",()=>assert.ok(home.includes('nav-mining-priority')));
 add("06. Zidentyfikowana osoba Wojciech",()=>assert.ok(home.includes("Wojciech Obiegło")));
 add("07. Zidentyfikowana osoba Paulina",()=>assert.ok(home.includes("Paulina Chandrała")));
-add("08. Portret Wojciecha na stronie głównej",()=>assert.ok(home.includes("wojciech-CIUxrQ8A.jpg")));
-add("09. Portret Pauliny na stronie głównej",()=>assert.ok(home.includes("paulina-B6guxyXQ.jpg")));
+add("08. Portret Wojciecha na stronie głównej",()=>assert.ok(home.includes('src="/v2/assets/wojciech-obieglo.jpg"')));
+add("09. Portret Pauliny na stronie głównej",()=>assert.ok(home.includes('src="/v2/assets/paulina-chandrala.jpg"')));
 add("10. Formularz na stronie głównej",()=>assert.ok(home.includes('data-contact-form')));
 add("11. FAQ na stronie głównej",()=>assert.ok(home.includes('class="home-faq-grid"')));
 add("12. Link do generatora planu",()=>assert.ok(home.includes('href="/v2/plan-dzialania.html"')));
@@ -41,7 +41,7 @@ add("17. Podstrona świadczenia z własnym tytułem",()=>assert.ok(support.inclu
 add("18. Plan ze strony szkód",()=>assert.ok(mining.includes("plan-dzialania.html?usluga=szkody")));
 add("19. Plan ze strony świadczenia",()=>assert.ok(support.includes("plan-dzialania.html?usluga=swiadczenie")));
 add("20. Formularze na obu głównych podstronach",()=>assert.ok(mining.includes("data-contact-form")&&support.includes("data-contact-form")));
-add("21. Zdjęcia osób na dwóch podstronach",()=>assert.ok(mining.includes("wojciech-CIUxrQ8A.jpg")&&support.includes("paulina-B6guxyXQ.jpg")));
+add("21. Zdjęcia osób na dwóch podstronach",()=>assert.ok(mining.includes('src="/v2/assets/wojciech-obieglo.jpg"')&&support.includes('src="/v2/assets/paulina-chandrala.jpg"')));
 add("22. Dwie karty kontaktu z wizerunkami",()=>assert.equal((contactPage.match(/class="contact-specialist"/g)||[]).length,2));
 add("23. Rozróżnienie tematów przez formularz",()=>assert.ok(form.includes('"Szkody górnicze"')&&form.includes('"Świadczenie wspierające"')));
 add("24. Formularz obsługiwany przez Web3Forms",()=>assert.ok(form.includes("https://api.web3forms.com/submit")));

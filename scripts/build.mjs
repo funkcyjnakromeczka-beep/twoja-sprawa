@@ -75,7 +75,16 @@ const structured = (route,canonical,title,markup) => {
   };
   const site={"@type":"WebSite","@id":origin+"/#website",name:"Twoja Sprawa",url:origin+"/",publisher:{"@id":organization["@id"]},inLanguage:"pl-PL"};
   const page={"@type":"WebPage","@id":canonical+"#webpage",url:canonical,name:title,isPartOf:{"@id":site["@id"]},inLanguage:"pl-PL"};
-  if(route==="/o-nas.html")page.about=[{"@id":owner["@id"]},{"@id":colleague["@id"]}];
+  // Use Schema.org's specific WebPage subtypes on their matching visible pages.
+  if(route==="/kontakt.html"){
+    page["@type"]="ContactPage";
+    page.mainEntity={"@id":organization["@id"]};
+  }
+  if(route==="/o-nas.html"){
+    page["@type"]="AboutPage";
+    page.about=[{"@id":owner["@id"]},{"@id":colleague["@id"]}];
+  }
+  if(route==="/wiedza/")page["@type"]="CollectionPage";
 
   if(route==="/faq.html"){
     const visible=[...markup.matchAll(/<article class="faq-card"[^>]*>[\s\S]*?<summary>([^<]+)<\/summary><div class="faq-answer"><p>([^<]+)<\/p>/g)];

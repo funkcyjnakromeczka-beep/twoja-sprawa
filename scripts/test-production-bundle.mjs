@@ -30,6 +30,27 @@ for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampani
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="noindex,follow"'),"excluded page accidentally indexable: "+path);
 }
+// Every shared URL should have a specific title, accessible same-origin photo,
+// and a description sourced from its own page rather than a generic homepage.
+for(const [page,photo] of [
+  ["index.html","wojciech-obieglo.jpg"],
+  ["uslugi/swiadczenie-wspierajace.html","paulina-chandrala.jpg"],
+  ["uslugi/szkody-gornicze.html","wojciech-obieglo.jpg"],
+  ["uslugi/renty-powypadkowe.html","paulina-chandrala.jpg"],
+  ["uslugi/kredyty-frankowe.html","wojciech-obieglo.jpg"]
+]){
+  const html=await read(page);
+  const title=html.match(/<title>([^<]+)<\/title>/)?.[1];
+  const description=html.match(/<meta name="description" content="([^"]+)"/)?.[1];
+  assert.ok(title&&description,"missing social metadata source: "+page);
+  assert.ok(html.includes('<meta property="og:title" content="'+title+'">'),"social title not page-specific: "+page);
+  assert.ok(html.includes('<meta name="twitter:title" content="'+title+'">'),"Twitter title not page-specific: "+page);
+  assert.ok(html.includes('<meta property="og:description" content="'+description+'">'),"social description not page-specific: "+page);
+  assert.ok(html.includes('<meta property="og:image" content="'+origin+'/assets/'+photo+'">'),"social portrait incorrect: "+page);
+  assert.ok(html.includes('<meta name="twitter:image" content="'+origin+'/assets/'+photo+'">'),"Twitter portrait incorrect: "+page);
+  assert.ok(html.includes('<meta property="og:image:alt" content="'),"missing accessible preview label: "+page);
+}
+
 const leaflet=await read("start.html");
 assert.ok(leaflet.includes('name="robots" content="noindex,follow"'),"Flyer entry must not compete with public service SEO");
 assert.ok(leaflet.includes('rel="canonical" href="'+origin+'/start"'),"Flyer entry missing stable canonical");

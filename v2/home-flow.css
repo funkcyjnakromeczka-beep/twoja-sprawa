@@ -97,3 +97,32 @@
   .premium-v2 .mobile-contact-bar a strong{font-size:.74rem}
 }
 @media print{.premium-v2 .mobile-contact-bar{display:none!important}}
+
+
+/* Diskretne, bezpłatne polecanie strony; lokalny Web Share API lub kopiowanie linku. */
+.premium-v2 footer .footer-share{
+ display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;
+ max-width:1050px;margin:0 0 26px;padding:18px clamp(16px,2vw,26px);
+ border:1px solid rgba(212,178,121,.45);border-radius:16px;
+ background:rgba(255,255,255,.045);
+}
+.premium-v2 footer .footer-share>div:first-child{display:grid;gap:5px;flex:1 1 280px}
+.premium-v2 footer .footer-share strong{font-size:1.01rem;color:#f9e9cd}
+.premium-v2 footer .footer-share span{font-size:.89rem;line-height:1.45;color:#e0e8e9}
+.premium-v2 footer .footer-share-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;flex:1 1 230px}
+.premium-v2 footer .footer-share button{
+ cursor:pointer;min-height:47px;padding:11px 17px;border-radius:10px;
+ border:1px solid #e5c38c;background:#e5c38c;color:#142e3b;
+ font:800 .9rem/1.2 system-ui,sans-serif;white-space:normal;
+}
+.premium-v2 footer .footer-share button:hover{background:#f4dbac}
+.premium-v2 footer .footer-share button:focus-visible{
+ outline:3px solid #fff;outline-offset:3px
+}
+.premium-v2 footer [data-share-feedback]:empty{display:none}
+@media(max-width:580px){
+ .premium-v2 footer .footer-share{align-items:stretch}
+ .premium-v2 footer .footer-share-actions{display:grid;flex-basis:100%}
+ .premium-v2 footer .footer-share button{width:100%}
+}
+@media print{.premium-v2 footer .footer-share{display:none}}

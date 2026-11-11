@@ -534,6 +534,39 @@ try{
   await portraitsPage.close();
  }
 
+
+ // The third flagship project gets two persistent, accessible mobile actions.
+ const skdQuick=await browser.newPage({viewport:{width:390,height:844}});
+ await skdQuick.goto(origin+"/uslugi/kredyty-pln.html",{waitUntil:"domcontentloaded"});
+ const skdQuickBar=skdQuick.locator(".skd-mobile-quickbar");
+ if(!await skdQuickBar.isVisible())throw Error("Mobile SKD sticky lead bar missing");
+ const skdMail=skdQuickBar.locator(".skd-mobile-mail");
+ const skdPhone=skdQuickBar.locator(".skd-mobile-phone");
+ if(!(await skdMail.getAttribute("href"))?.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"))throw Error("Mobile SKD contract CTA has wrong email");
+ if(await skdPhone.getAttribute("href")!=="#formularz")throw Error("Mobile SKD callback CTA does not link to contact form");
+ const barMetrics=await skdQuickBar.evaluate(el=>{
+   const rect=el.getBoundingClientRect();
+   return {bottom:Math.round(rect.bottom),height:Math.round(rect.height),
+    links:[...el.querySelectorAll("a")].map(a=>Math.round(a.getBoundingClientRect().height)),
+    chatBottom:Math.round(document.querySelector(".chat-toggle")?.getBoundingClientRect().bottom||0),
+    viewHeight:innerHeight,overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+2};
+ });
+ if(barMetrics.links.some(h=>h<44)||barMetrics.bottom>845||barMetrics.height>125||barMetrics.overflow)throw Error("Mobile SKD sticky bar geometry invalid: "+JSON.stringify(barMetrics));
+ if(barMetrics.chatBottom>barMetrics.viewHeight-barMetrics.height+1)throw Error("SKD mobile bar overlaps chat launcher: "+JSON.stringify(barMetrics));
+ await skdPhone.click();
+ if(!skdQuick.url().endsWith("#formularz"))throw Error("SKD mobile callback did not reach form");
+ const skdInput=skdQuick.locator('.contact-form input[type="tel"]');
+ await skdInput.focus();
+ if(await skdQuickBar.isVisible())throw Error("SKD sticky bar covers active phone input");
+ await skdInput.blur();
+ await skdQuick.screenshot({path:"screenshots/skd-szybki-kontakt-telefon.png",fullPage:false,animations:"disabled"});
+ console.log("SKD_MOBILE_QUICKBAR_OK",JSON.stringify(barMetrics));
+ await skdQuick.close();
+ const skdDesktop=await browser.newPage({viewport:{width:1440,height:900}});
+ await skdDesktop.goto(origin+"/uslugi/kredyty-pln.html",{waitUntil:"domcontentloaded"});
+ if(await skdDesktop.locator(".skd-mobile-quickbar").isVisible())throw Error("SKD mobile quick bar should not appear on desktop");
+ await skdDesktop.close();
+
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

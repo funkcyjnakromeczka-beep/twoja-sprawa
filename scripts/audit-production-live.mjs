@@ -136,5 +136,25 @@ assert.ok(currentLead.includes("digits.length>=7&&digits.length<=15"),"Live cont
 assert.ok(currentLead.includes("if(!checkContact())return;"),"Phone/contact validation is not applied at submit");
 assert.ok(currentLead.includes('phone.setAttribute("aria-describedby",phoneHint.id)'),"Phone guidance is not connected for screen readers");
 
+// Stage XII: check the *public* homepage and script together. Cloudflare
+// can take a moment to publish after push; make that lag observable.
+const readyHomeShortcut=(html,css,js)=>
+ html.includes('data-contact-shortcut="szkody"')&&
+ html.includes('data-contact-shortcut="swiadczenie"')&&
+ html.includes("data-contact-shortcut-status")&&
+ css.includes("contact-shortcuts-actions")&&
+ js.includes('querySelectorAll("[data-contact-shortcut]")');
+let liveHome=home.body,liveHomeCSS=homeFlow.body,liveContactJS=currentLead;
+for(let attempt=0;attempt<8&&!readyHomeShortcut(liveHome,liveHomeCSS,liveContactJS);attempt++){
+ await new Promise(resolve=>setTimeout(resolve,5000));
+ [liveHome,liveHomeCSS,liveContactJS]=await Promise.all([
+  get("/").then(x=>x.body),get("/home-flow.css").then(x=>x.body),get("/contact.js").then(x=>x.body)
+ ]);
+}
+assert.ok(readyHomeShortcut(liveHome,liveHomeCSS,liveContactJS),"Two flagship homepage contact shortcuts have not reached Cloudflare");
+assert.equal((liveHome.match(/data-contact-shortcut="/g)||[]).length,2,"Homepage flagship shortcut count mismatch");
+assert.ok(liveContactJS.includes("updateAdvisor();updateGuide();updateStage();updateDamageArea();updateContextNotice();"),"Home shortcut not wired to all form state updates");
+assert.ok(liveHomeCSS.includes('data-selected="true"'),"Flagship choice state styling not published");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, validated contact phone numbers, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, validated contact phone numbers, two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

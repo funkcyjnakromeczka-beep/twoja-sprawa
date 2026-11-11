@@ -138,7 +138,8 @@
 
 
 /* Keep the form below sticky partner branding after a quick topic selection. */
-.premium-v2 #kontakt .lead-panel{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
+.premium-v2 #kontakt .lead-panel,
+.premium-v2 #kontakt [data-contact-form]{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
 /* Flagship service shortcuts: one tap selects the appropriate contact form topic. */
 .premium-v2 #kontakt .contact-service-shortcuts{
  max-width:860px;margin:22px auto 5px;padding:18px clamp(14px,2vw,23px);

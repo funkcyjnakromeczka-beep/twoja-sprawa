@@ -267,6 +267,7 @@ const isSKDPublished=(h,page,css,lead,chat,nav,skdStyles)=>{
   page.includes('href="/skd-contact.css"')&&
   skdStyles.includes(".skd-document-actions")&&
   skdStyles.includes("Persistent, mobile-only SKD conversion route")&&
+  skdStyles.includes("body.premium-subpage.theme-skd .chat-assistant:not(.is-open)")&&
   skdStyles.includes(".chat-assistant")&&
   skdStyles.includes("env(safe-area-inset-bottom)")&&
   lead.includes('emailLink.href="mailto:wojciech.obieglo@votum-ds.pl?subject=')&&

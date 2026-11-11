@@ -43,6 +43,17 @@ W panelu **Workers & Pages → projekt → Settings → Builds**:
 - [ ] Google Search Console: zweryfikuj domenę i prześlij `/sitemap.xml`; monitoruj stan indeksacji. Dodatkowo Bing Webmaster Tools.
 - [ ] Sprawdź dostępność dla `Googlebot`, `Bingbot` i `OAI-SearchBot` także przez WAF/ochronę botów Cloudflare.
 
+## Etap IV — globalna wyszukiwarka i 500 kontroli
+- [x] Utworzono wyszukiwarkę 60 istniejących materiałów (36 stron i 24 pytania FAQ).
+- [x] Dodano wyszukiwanie po polsku (także bez polskich znaków), filtry, wyniki dostępne klawiaturą i komunikaty czytnika ekranu.
+- [x] Zintegrowano wyniki FAQ z automatycznym rozwinięciem właściwego pytania.
+- [x] Dodano link do wyszukiwarki w kluczowych miejscach nawigacji.
+- [x] Sprawdzono 500 odrębnych przypadków testowych oraz testy Chromium na PC i telefonie.
+- [x] Dodano kontrolę aktualności danych wyszukiwarki względem źródłowych stron i FAQ.
+- [x] Wykluczono stronę wewnętrznego wyszukiwania z sitemap i indeksacji także po release.
+- [ ] Po kolejnych edycjach treści utrzymuj indeks wyszukiwarki zgodny ze stronami (test świeżości).
+- [ ] Przed oficjalną publikacją wykonaj audyt RODO, zgód na wizerunki i logotypy, treści ofert oraz rzeczywisty test Web3Forms.
+
 ## Seria III — baza FAQ i kontrola jakości
 - [x] Nowa baza 24 pytań i odpowiedzi, z oficjalnymi odnośnikami w częściach dotyczących ZUS.
 - [x] Sześć filtrów i wyszukiwanie bez polskich znaków, reset, brak cookies oraz zapisywania zapytań.

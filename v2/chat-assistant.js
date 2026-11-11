@@ -35,8 +35,8 @@
       service:"szkody-gornicze.html",checklist:"checklista-szkody-gorniczej.html",form:"kampanie/szkody-gornicze.html"+params,
       intro:"Analizujemy m.in. pęknięcia ścian, elewacji i nierówności kostki w rejonie Lubina i Polkowic. Sama lokalizacja nie przesądza o przyczynie uszkodzeń.",
       stages:[
-        ["Widziałem niewielkie pęknięcia","Zrób zdjęcie z bliska i ujęcie całej ściany. Zapisz, kiedy po raz pierwszy zauważono uszkodzenie.","uszkodzenia"],
-        ["Kostka lub ogrodzenie są uszkodzone","Zrób fotografie nierówności, ogrodzenia i otoczenia oraz zanotuj, czy zmiany postępują.","uszkodzenia"],
+        ["Widziałem niewielkie pęknięcia","Zrób zdjęcie z bliska i ujęcie całej ściany. Zapisz, kiedy po raz pierwszy zauważono uszkodzenie.","uszkodzenia","sciany"],
+        ["Kostka lub ogrodzenie są uszkodzone","Zrób fotografie nierówności, ogrodzenia i otoczenia oraz zanotuj, czy zmiany postępują.","uszkodzenia","kostka"],
         ["Zgłosiłem szkodę do kopalni","Zachowaj zgłoszenie, potwierdzenie i odpowiedzi przedsiębiorcy górniczego. Przydadzą się do indywidualnej analizy.","zgloszona"],
         ["Mam propozycję ugody","Nie zakładaj, że propozycja obejmuje wszystkie szkody. Przed podpisaniem warto dokładnie przeanalizować jej zakres i skutki.","ugoda"],
         ["Otrzymałem odmowę","Zachowaj treść odmowy, wcześniejszą korespondencję i zdjęcia. Można przeanalizować argumentację oraz dostępne możliwości działania.","odmowa"]
@@ -125,10 +125,11 @@
     const el=document.createElement(tag);if(className)el.className=className;
     if(text)el.textContent=text;return el;
   };
-  const destination=(topic,stageCode="")=>{
+  const destination=(topic,stageCode="",damageCode="")=>{
     const target=topic.form ? base+topic.form+"#formularz" : base+"kontakt.html"+params+"&usluga="+encodeURIComponent(topic.alias||topic.key)+"#formularz";
     const address=new URL(target,window.location.origin);
     if(stageCode && (topic.key==="szkody"||topic.key==="swiadczenie"))address.searchParams.set("etap",stageCode);
+    if(topic.key==="szkody"&&["sciany","kostka"].includes(damageCode))address.searchParams.set("uszkodzenie",damageCode);
     return address.pathname+address.search+address.hash;
   };
   const choose=topic=>{
@@ -140,15 +141,15 @@
     const stages=mk("div","chat-stage-choices");
     const answer=mk("p","chat-stage-answer","Wybierz sytuację, aby zobaczyć ogólną wskazówkę.");
     answer.setAttribute("role","status");
-    for(const [question,text,stageCode] of topic.stages){
+    for(const [question,text,stageCode,damageCode] of topic.stages){
       const btn=mk("button","chat-stage-choice",question);btn.type="button";
       btn.setAttribute("aria-pressed","false");
       btn.addEventListener("click",()=>{
         for(const item of stages.querySelectorAll("button"))item.setAttribute("aria-pressed",String(item===btn));
         answer.textContent=text;
-        form.href=destination(topic,stageCode);
+        form.href=destination(topic,stageCode,damageCode);
         form.textContent="Przejdź do formularza z wybranym etapem ↗";
-        contact.href=destination(topic,stageCode);
+        contact.href=destination(topic,stageCode,damageCode);
         contact.textContent="✉ Zostaw kontakt — etap wybrany";
         answer.scrollIntoView({block:"nearest",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
       });

@@ -163,6 +163,18 @@
    status.textContent="Otwieram aplikację pocztową. Sprawdź przygotowaną wiadomość i wyślij ją samodzielnie.";
    window.location.href="mailto:twojasprawa_votum@outlook.com?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
   });
+  // Jedno kliknięcie z karty uszkodzenia ustawia tylko dozwoloną opcję w formularzu.
+  // Link #formularz pozostaje natywnym, dostępnym odnośnikiem bez JavaScript.
+  for(const trigger of document.querySelectorAll("[data-damage-option]")){
+   trigger.addEventListener("click",()=>{
+    const choice=trigger.getAttribute("data-damage-option");
+    if(![...damageArea.children].some(option=>option.value===choice))return;
+    if(select.value!=="Szkody górnicze"){
+     select.value="Szkody górnicze";updateAdvisor();updateGuide();updateStage();updateContextNotice();
+    }
+    updateDamageArea();damageArea.value=choice;
+   });
+  }
   host.replaceChildren(form);
  }
 })();

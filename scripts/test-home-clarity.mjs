@@ -75,5 +75,19 @@ const skdCSS=await readFile("v2/skd-contact.css","utf8");
 assert.ok(skdPage.includes('href="/v2/skd-contact.css"')&&skdPage.includes('id="skd-document-title"'),"Dedicated SKD email CTA styling or section missing");
 assert.ok(skdPage.includes("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD email destination must be Wojciech");
 assert.ok(skdPage.includes("Zostaw numer telefonu w formularzu")&&skdPage.includes("Dodaj załącznik samodzielnie"),"Agreement, callback and attachment instructions required");
-assert.ok(skdPage.includes("PESEL")&&skdCSS.includes(".skd-document-actions"),"Privacy guidance and SKD CTA styles required");
+assert.ok(skdPage.includes("bez zasłaniania danych")&&skdCSS.includes(".skd-document-actions"),"Unredacted SKD contract policy and CTA styles required");
+assert.ok(skdPage.includes("sprawdź adres odbiorcy")||skdPage.includes("Sprawdź adres odbiorcy"),"SKD email must remind visitors to verify recipient");
+for(const file of [
+ "v2/uslugi/kredyty-pln.html",
+ "v2/chat-assistant.js",
+ "v2/service-navigator.js",
+ "v2/poradniki/skd-kredyt-pln-lista-kontrolna.html",
+ "v2/wiedza/kredyt-pln-dokumenty-skd.html"
+]){
+ const copy=await readFile(file,"utf8");
+ assert.ok(!/(?:Zasłoń zbędne dane|Przed wysyłką zasłoń|zasłonięciu PESEL|usuń z kopii zbędne dane)/i.test(copy),"Obsolete masking instruction remains: "+file);
+ assert.ok(copy.includes("wojciech.obieglo@votum-ds.pl"),"SKD email destination lost: "+file);
+}
+const skdChecklist=await readFile("v2/poradniki/skd-kredyt-pln-lista-kontrolna.html","utf8");
+assert.ok(skdChecklist.includes("tel:+48796441345")&&!skdChecklist.includes("tel:+48500171531"),"SKD checklist phone must direct to Wojciech");
 console.log("HOME_CLARITY_OK: 6 unique services (2+1+3), SKD third with email and phone CTA.");

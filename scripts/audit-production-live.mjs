@@ -8,10 +8,10 @@ const get=async(path)=>{
  assert.ok(response.ok,"Live "+path+" HTTP "+response.status);
  return {response,body:await response.text()};
 };
-const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd]=await Promise.all([
+const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd,homeFlow,navigatorJS]=await Promise.all([
  get("/robots.txt"),get("/sitemap.xml"),get("/"),get("/uslugi/szkody-gornicze"),
  get("/uslugi/swiadczenie-wspierajace"),get("/faq"),get("/szukaj"),get("/deployment-mode.txt"),
- get("/assets/wojciech-obieglo.jpg"),get("/assets/paulina-chandrala.jpg"),get("/mobile-service-cta.js"),get("/mobile-service-cta.css"),get("/uslugi/kredyty-frankowe"),get("/poradniki/frankowicze-lista-kontrolna"),get("/visual-contrast.css"),get("/uslugi/kredyty-pln")
+ get("/assets/wojciech-obieglo.jpg"),get("/assets/paulina-chandrala.jpg"),get("/mobile-service-cta.js"),get("/mobile-service-cta.css"),get("/uslugi/kredyty-frankowe"),get("/poradniki/frankowicze-lista-kontrolna"),get("/visual-contrast.css"),get("/uslugi/kredyty-pln"),get("/home-flow.css"),get("/service-navigator.js")
 ]);
 assert.ok(robots.body.includes("Allow: /")&&!robots.body.includes("Disallow: /"),"Production robots unexpectedly blocked");
 assert.ok(robots.body.includes("OAI-SearchBot"),"OAI-SearchBot directive missing");
@@ -36,6 +36,11 @@ assert.ok(skd.body.includes("Sankcja Kredytu Darmowego"),"Full SKD title missing
 assert.ok(support.body.includes("Votum-Wsparcie-poziom_zielone.png"),"Official Votum Wsparcie logo missing");
 assert.ok(contrastCSS.body.includes(".interactive-checklist")&&contrastCSS.body.includes(".contact-form"),"Contrast protection missing");
 
+const homeStructure=["<section id=\\"uslugi\\"","<details id=\\"dobierz-pomoc\\"","<section class=\\"wrap team-spotlight","<section id=\\"kontakt\\""];
+let last=-1;for(const tag of homeStructure){const pos=home.body.indexOf(tag.replaceAll("\\\\",""));assert.ok(pos>last,"Homepage order not deployed: "+tag);last=pos;}
+assert.ok(home.body.includes("home-flow.css"),"Homepage layout stylesheet not deployed");
+assert.ok(homeFlow.body.includes("repeat(12,minmax(0,1fr))")&&homeFlow.body.includes("grid-column:span 3"),"Symmetric 2+4 desktop grid not deployed");
+assert.ok(navigatorJS.body.includes("openFromAnchor"),"Deep-link navigator not deployed");
 const graphs=[...faq.body.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m=>JSON.parse(m[1]));
 const faqObj=graphs.flatMap(g=>g["@graph"]||[]).find(item=>item["@type"]==="FAQPage");
 assert.ok(faqObj&&faqObj.mainEntity?.length===24,"Live FAQ schema missing or incomplete");
@@ -51,5 +56,5 @@ for(const [page,kind] of [[mining.body,"szkody"],[support.body,"swiadczenie"]]){
 }
 assert.ok(mobileJS.body.includes("mobile-service-cta")&&mobileJS.body.includes("+48796441345")&&mobileJS.body.includes("+48500171531"),"Mobile CTA source outdated");
 assert.ok(mobileCSS.body.includes(".mobile-service-cta")&&mobileCSS.body.includes("chat-assistant"),"Mobile CTA CSS missing chat overlap protection");
-const verified=16;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+const verified=18;
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

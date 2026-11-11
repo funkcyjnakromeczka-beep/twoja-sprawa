@@ -93,10 +93,12 @@ await run(true);
 // Qualification of an observed property issue, without inferring a mining cause.
 {
  const host=new Node("host");
+ const quick=new Node("a");
+ quick.getAttribute=key=>key==="data-damage-option"?"Kostka i ogrodzenie":null;
  const document={
   body:{classList:{contains:()=>false}},
   currentScript:{getAttribute:key=>key==="data-service"?"Szkody górnicze":""},
-  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-damage-option]"?[quick]:[],
   createElement:tag=>new Node(tag),
   createTextNode:text=>({tag:"text",textContent:text})
  };
@@ -115,8 +117,13 @@ await run(true);
  const phone=visit(form,n=>n.autocomplete==="tel");
  assert.ok(damage&&damageWrap&&!damageWrap.hidden,"Mining form should show optional damage categories");
  assert.equal(damage.children.length,6,"Damage categories should be a closed, fixed list");
+ assert.equal(typeof quick.events.click,"function","Campaign link must be connected to lead form");
+ quick.events.click();
+ assert.equal(damage.value,"Kostka i ogrodzenie","One-click campaign selection must prefill the lead");
+ quick.getAttribute=()=>"<script>untrusted</script>";
+ quick.events.click();
+ assert.equal(damage.value,"Kostka i ogrodzenie","Unknown category must not overwrite a valid choice");
  name.value="Test";phone.value="500000000";
- damage.value="Kostka i ogrodzenie";
  await form.events.submit({preventDefault(){}});
  assert.equal(captured[0].damage_area,"Kostka i ogrodzenie");
  assert.equal(captured[0].service,"Szkody górnicze");
@@ -174,4 +181,9 @@ stageCase("Szkody górnicze","nieznany_kod","");
  assert.ok(context.children.some(n=>n.textContent==="Otrzymałem/am propozycję ugody"));
 }
 
+const miningLanding=await readFile("v2/kampanie/szkody-gornicze.html","utf8");
+assert.equal((miningLanding.match(/data-damage-option="/g)||[]).length,3,"Mining campaign should provide exactly three one-tap categories");
+for(const code of ["Ściany i elewacja","Kostka i ogrodzenie","Drzwi i okna"]){
+ assert.ok(miningLanding.includes('data-damage-option="'+code+'"'),"Campaign category link missing: "+code);
+}
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

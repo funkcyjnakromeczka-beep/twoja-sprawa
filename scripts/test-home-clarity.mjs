@@ -32,4 +32,14 @@ assert.ok(css.includes("grid-column:span 6")&&css.includes("grid-column:span 3")
 assert.ok(css.includes("@media(max-width:760px)")&&css.includes("grid-template-columns:minmax(0,1fr)"),"Mobile one-column layout missing");
 assert.ok(navigator.includes('window.location?.hash==="#dobierz-pomoc"'),"Deep link does not open collapsed navigator");
 assert.ok(navigator.includes('root.open=true'),"Navigator not expanded on user action");
+// Contact must remain easy to reach on smaller phones, with a direct form option.
+const bar=html.match(/<aside class="mobile-contact-bar"[\s\S]*?<\/aside>/)?.[0]||"";
+assert.ok(bar.includes('tel:+48796441345')&&bar.includes('tel:+48500171531'),"Both phone actions missing");
+assert.ok(bar.includes('class="mobile-form-link" href="#kontakt"'),"Missing direct form shortcut");
+assert.equal((bar.match(/<a\b/g)||[]).length,3,"Mobile contact bar must have exactly three actions");
+assert.ok(css.includes('grid-template-columns:repeat(3,minmax(0,1fr))'),"Three actions are not fitted to a narrow screen");
+assert.ok(css.includes(':focus-within')&&css.includes('.chat-assistant.is-open'),"Sticky contact bar can cover an active form or chat");
+assert.ok(html.includes("data-share-page")&&html.includes("data-share-feedback"),"Share control has no user feedback");
+assert.ok(html.includes('src="/v2/share-page.js"'),"Share control script missing");
+
 console.log("HOME_CLARITY_OK: 6 unique service cards (2+4), priority visible, keyboard-friendly navigator, balanced desktop/mobile layout.");

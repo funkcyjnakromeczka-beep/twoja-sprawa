@@ -5,6 +5,16 @@
  "use strict";
  const root=document.querySelector("#dobierz-pomoc");
  if(!root)return;
+ // A deep link to a closed <details> should reveal its content, not merely scroll
+ // to an unusable panel. Keep the native disclosure semantics and keyboard access.
+ const openFromAnchor=()=>{
+  if(window.location?.hash==="#dobierz-pomoc")root.open=true;
+ };
+ for(const link of document.querySelectorAll('a[href="#dobierz-pomoc"]')){
+  link.addEventListener("click",()=>{root.open=true;});
+ }
+ window.addEventListener?.("hashchange",openFromAnchor);
+ openFromAnchor();
  const result=root.querySelector("#navigator-result");
  if(!result)return;
  const items={

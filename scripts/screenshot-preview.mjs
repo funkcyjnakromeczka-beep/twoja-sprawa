@@ -436,6 +436,31 @@ try{
  console.log("HOME_SHORTCUT_UI_OK",JSON.stringify({choices:2,selection:flagshipSelection,feedback:true}));
  await flagshipPage.close();
 
+
+ // Do not discard a partially completed lead when the visitor reads a checklist
+ // or the privacy notice. Both resources must open in a separate browser tab.
+ const preservedForm=await browser.newPage({viewport:{width:390,height:844}});
+ await preservedForm.goto(origin+"/?utm_source=ulotka",{waitUntil:"domcontentloaded"});
+ await preservedForm.locator('[data-contact-shortcut="swiadczenie"]').click();
+ const savedName=preservedForm.locator('.contact-form input[autocomplete="given-name"]');
+ await savedName.fill("Testowy klient");
+ const guideURL=preservedForm.locator('.contact-form .contact-guide-box a');
+ if(await guideURL.getAttribute("target")!=="_blank")throw Error("Checklist link must open a new tab");
+ const [guidePopup]=await Promise.all([preservedForm.waitForEvent("popup"),guideURL.click()]);
+ await guidePopup.waitForLoadState("domcontentloaded");
+ if(!new URL(guidePopup.url()).pathname.includes("swiadczenie-wspierajace-pierwsze-kroki"))throw Error("Checklist popup goes to wrong page");
+ await guidePopup.close();
+ const privacyURL=preservedForm.locator('.contact-form a[href*="polityka-prywatnosci"]');
+ if(await privacyURL.getAttribute("target")!=="_blank")throw Error("Privacy link must open a new tab");
+ const [privacyPopup]=await Promise.all([preservedForm.waitForEvent("popup"),privacyURL.click()]);
+ await privacyPopup.waitForLoadState("domcontentloaded");
+ if(!new URL(privacyPopup.url()).pathname.includes("polityka-prywatnosci"))throw Error("Privacy popup goes to wrong page");
+ await privacyPopup.close();
+ if(await savedName.inputValue()!=="Testowy klient")throw Error("Draft contact name disappeared after opening guidance and privacy");
+ if(await preservedForm.locator('.contact-form select[id^="cf-service-"]').inputValue()!=="Świadczenie wspierające")throw Error("Service choice disappeared after reading guidance");
+ console.log("CONTACT_DRAFT_PRESERVED_OK",JSON.stringify({checklist:true,privacy:true,namePreserved:true,servicePreserved:true}));
+ await preservedForm.close();
+
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

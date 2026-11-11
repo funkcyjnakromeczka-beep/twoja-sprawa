@@ -64,6 +64,7 @@ const assertChoice=(topic,stage,expected)=>{
  assert.equal(url.searchParams.get("utm_content"),"post_2");
  assert.equal(url.searchParams.get("lead_path"),"chatbot");
  assert.equal(url.searchParams.get("etap"),expected||null);
+ assert.equal(url.hash,"#formularz","Chatbot should send visitors straight to the lead form");
  const footer=bottom.children.find(n=>n.textContent.startsWith("✉"));
  assert.ok(footer.href.endsWith(url.pathname+url.search+url.hash)||footer.href===url.pathname+url.search+url.hash);
 };

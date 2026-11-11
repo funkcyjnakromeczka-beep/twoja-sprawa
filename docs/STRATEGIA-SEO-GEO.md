@@ -1,4 +1,17 @@
-# Strategia SEO / GEO — Twoja Sprawa
+## Aktualizacja — 11 listopada 2026: sześć usług, kontrast, logotypy i wyniki
+
+- Strona https://twoja-sprawa.pages.dev/ zawiera **6 głównych usług**, w tym nową pomoc frankowiczom (aktywne i spłacone kredyty CHF) i link do checklisty.
+- Tytuły Sankcji Kredytu Darmowego (SKD) na podstronie, w karcie głównej i menu zostały rozwinięte.
+- Logo Votum Wsparcie jest wyróżnione na stronie świadczenia i w kampanii świadczenia wspierającego; partnerzy Votum Network i Votum Scale Agency mają większe oznaczenia na wspólnym pasku.
+- Osobny arkusz `v2/visual-contrast.css` poprawia ciemną czcionkę na jasnych formularzach, kartach i interaktywnych checklistach.
+- Produkcyjny audyt: **16 zasobów, 38 adresów w sitemap, 24 odpowiedzi FAQ**, dostępność nowej usługi i logo. https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42941776579
+- Testy Chromium na 26 trasach potwierdziły m.in. kontrast tekstu 10,1:1 do 12,58:1 w wybranych elementach, brak poziomego przewijania i ładowanie logo Votum Wsparcie.
+- Pomiar syntetyczny Chromium, 5 tras × 2 ekrany: mediana FCP telefon 364 ms, desktop 168 ms; mediana zaobserwowanego LCP telefon 404 ms, desktop 188 ms. To nie są dane rzeczywistych użytkowników. https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42941074955
+- Zgłoszono 38 aktualnych adresów przez IndexNow, przyjęcie HTTP 200; nie gwarantuje indeksacji.
+- Do pomiaru faktycznej liczby odwiedzin i współczynnika konwersji należy uruchomić Cloudflare Web Analytics i uzyskać dostęp do danych z formularza/Search Console.
+- Własna domena nie została zakupiona ani przełączona. Plan migracji: `docs/DOMENA-WLASNA-I-MIGRACJA.md`.
+
+\n# Strategia SEO / GEO — Twoja Sprawa
 
 ## Aktualny stan produkcyjny — 11 listopada 2026
 - Strona produkcyjna: **https://twoja-sprawa.pages.dev/**. Potwierdzono publiczne `robots.txt` (`Allow: /`), `sitemap.xml`, działanie kluczowych podstron i obu lokalnych portretów.

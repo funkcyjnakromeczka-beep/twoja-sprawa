@@ -16,6 +16,8 @@ on:
       - 'v2/assets/*.jpg'
       - 'scripts/screenshot-preview.mjs'
       - 'v2/frankowicze.css'
+      - 'v2/skd-contact.css'
+      - 'v2/chat-assistant.js'
       - 'v2/uslugi/kredyty-frankowe.html'
       - 'v2/uslugi/kredyty-pln.html'
       - 'v2/poradniki/frankowicze-lista-kontrolna.html'

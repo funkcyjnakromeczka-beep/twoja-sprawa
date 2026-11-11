@@ -1,0 +1,47 @@
+/* Twoja Sprawa — home information hierarchy: two featured projects, four equally balanced services. */
+.premium-v2 #uslugi{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
+.premium-v2 #uslugi .section-lead{max-width:72ch;line-height:1.7}
+.premium-v2 #uslugi .primary-card{min-width:0}
+.premium-v2 #uslugi .primary-card:focus-visible{
+ outline:3px solid #d5a85c;outline-offset:4px;
+}
+.premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) h3{
+ font-size:clamp(1.15rem,1.35vw,1.43rem);line-height:1.27;
+ text-wrap:balance;overflow-wrap:break-word;
+}
+@media(min-width:1100px){
+ .premium-v2 #uslugi .primary-services{
+  display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:clamp(12px,1.45vw,21px);
+ }
+ .premium-v2 #uslugi .primary-card.support-featured,
+ .premium-v2 #uslugi .primary-card.mining-featured{
+  grid-column:span 6;min-height:275px;
+ }
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured){
+  grid-column:span 3;min-height:255px;
+ }
+}
+@media(min-width:761px) and (max-width:1099px){
+ .premium-v2 #uslugi .primary-services{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+ }
+ .premium-v2 #uslugi .primary-services>.primary-card{
+  grid-column:auto!important;
+ }
+}
+@media(max-width:760px){
+ .premium-v2 #uslugi .primary-services{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:12px;
+ }
+ .premium-v2 #uslugi .primary-services>.primary-card{
+  grid-column:auto!important;
+ }
+ .premium-v2 #uslugi .section-lead{font-size:.96rem;line-height:1.64}
+}
+/* Once a topic is picked, the team is introduced without a second enormous hero. */
+.premium-v2 #zespol{margin-top:clamp(30px,5vw,58px)}
+.premium-v2 #zespol .team-grid{align-items:stretch}
+.premium-v2 #dobierz-pomoc{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
+.premium-v2 #dobierz-pomoc:focus-within{outline-offset:4px}

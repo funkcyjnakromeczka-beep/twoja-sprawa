@@ -508,7 +508,7 @@ try{
  await skdPage.close();
 
  // Team photos must be loaded from Cloudflare's own assets, not the former Lovable host.
- for(const route of ["/","/kontakt.html","/o-nas.html"]){
+ for(const [route,expectedCount] of [["/",2],["/kontakt.html",2],["/o-nas.html",2],["/uslugi/szkody-gornicze.html",1],["/uslugi/swiadczenie-wspierajace.html",1],["/kampanie/szkody-gornicze.html",1],["/kampanie/swiadczenie-wspierajace.html",1]]){
   const portraitsPage=await browser.newPage({viewport:{width:390,height:844}});
   await portraitsPage.goto(origin+route,{waitUntil:"domcontentloaded"});
   const portraitSelector=[
@@ -516,7 +516,7 @@ try{
    'img[src="/assets/paulina-chandrala.jpg"]'
   ].join(",");
   const images=portraitsPage.locator(portraitSelector);
-  if(await images.count()!==2)throw Error("Local team portraits missing: "+route);
+  if(await images.count()!==expectedCount)throw Error("Local team portraits missing: "+route);
   await images.evaluateAll(imgs=>imgs.forEach(img=>img.loading="eager"));
   await portraitsPage.waitForFunction(()=>[
    ...document.querySelectorAll('img[src="/assets/wojciech-obieglo.jpg"],img[src="/assets/paulina-chandrala.jpg"]')

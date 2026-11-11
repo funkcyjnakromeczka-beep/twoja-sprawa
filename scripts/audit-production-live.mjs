@@ -173,5 +173,21 @@ for(let attempt=0;attempt<8&&!compactServiceLayout(compactCSS);attempt++){
 }
 assert.ok(compactServiceLayout(compactCSS),"Compact mobile layout for four secondary services has not reached Cloudflare");
 
+// Stage XV: preselected defects are safe, bounded codes; never collect extra details.
+const readyGuidedDamage=(chat,lead)=>
+ chat.includes('["sciany","kostka"].includes(damageCode)')&&
+ chat.includes('address.searchParams.set("uszkodzenie",damageCode)')&&
+ lead.includes('const damageFromLink={sciany:"Ściany i elewacja",kostka:"Kostka i ogrodzenie"}')&&
+ lead.includes('Object.prototype.hasOwnProperty.call(damageFromLink,requestedDamage)');
+let publishedChat=chatJS.body,publishedLead=currentLead;
+for(let attempt=0;attempt<8&&!readyGuidedDamage(publishedChat,publishedLead);attempt++){
+ await new Promise(resolve=>setTimeout(resolve,5000));
+ [publishedChat,publishedLead]=await Promise.all([
+  get("/chat-assistant.js").then(x=>x.body),
+  get("/contact.js").then(x=>x.body)
+ ]);
+}
+assert.ok(readyGuidedDamage(publishedChat,publishedLead),"Safe chatbot mining-category preselection has not reached public Cloudflare");
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

@@ -99,6 +99,23 @@ try{
     const top=await logo.evaluate(el=>el.getBoundingClientRect().top);
     if(Math.abs(top)>2)throw Error("Partner strip not sticky after scroll: "+name+" top "+top);
   }
+  if(width<=650&&["/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html"].includes(path)){
+    const quick=page.locator(".mobile-service-cta");
+    if(!await quick.isVisible())throw Error("Mobile contact bar not visible: "+path);
+    const call=await quick.locator(".mobile-service-call").getAttribute("href");
+    const wanted=path.includes("swiadczenie")?"tel:+48500171531":"tel:+48796441345";
+    if(call!==wanted)throw Error("Wrong service contact number on "+path+": "+call);
+    const rect=await page.evaluate(()=>{
+      const a=document.querySelector(".chat-assistant .chat-toggle")?.getBoundingClientRect();
+      const b=document.querySelector(".mobile-service-cta")?.getBoundingClientRect();
+      return {chatBottom:a?.bottom,barTop:b?.top};
+    });
+    if(!rect.chatBottom||!rect.barTop||rect.chatBottom>rect.barTop+2)throw Error("Mobile CTA overlaps chatbot: "+JSON.stringify(rect));
+    await quick.locator(".mobile-service-lead").click();
+    await page.locator("#formularz").scrollIntoViewIfNeeded();
+    await quick.waitFor({state:"hidden",timeout:6000});
+    console.log("MOBILE_CTA_UI_OK",JSON.stringify({path,phone:call,overlap:false,hiddenNearForm:true}));
+  }
   console.log("VISUAL_OK",name,JSON.stringify(measured));
   checks.push({name,...measured});
   await page.close();

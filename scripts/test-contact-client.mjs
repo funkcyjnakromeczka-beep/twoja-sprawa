@@ -51,10 +51,14 @@ const run=async(error=false)=>{
  const callback=visit(form,n=>n.id?.startsWith("cf-time-"));
  const select=visit(form,n=>n.id?.startsWith("cf-service-"));
  assert.ok(firstName&&location&&phone&&email&&method&&callback&&select);
+ const advisor=visit(form,n=>n.className==="contact-advisor");
+ assert.ok(advisor&&advisor.hidden===true,"Before choosing service no specialist should appear selected");
  firstName.value="Test";location.value="Lubin";phone.value="";
  email.value="test@example.com";method.value="E-mail";method.events.change();
  callback.value="Po południu";select.value="Świadczenie wspierające";
  if(select.events.change)select.events.change();
+ assert.equal(advisor.hidden,false,"Specialist is visible after choosing service");
+ assert.ok(advisor.children.some(node=>(node.textContent||"").includes("Paulina Chandrała")),"Support cases should show Paulina");
  assert.equal(phone.required,false);
  assert.equal(email.required,true);
  const submit=form.events.submit;

@@ -43,3 +43,62 @@
  .premium-subpage.theme-skd .skd-document-actions a{width:100%}
 }
 @media(prefers-reduced-motion:reduce){.premium-subpage.theme-skd .skd-document-actions a{scroll-behavior:auto}}
+
+
+/* Persistent, mobile-only SKD conversion route. No JavaScript and no analytics. */
+.premium-subpage.theme-skd .skd-mobile-quickbar{display:none}
+@media(max-width:650px){
+ .premium-subpage.theme-skd{
+  padding-bottom:calc(87px + env(safe-area-inset-bottom));
+ }
+ .premium-subpage.theme-skd .skd-mobile-quickbar{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:120;
+  gap:9px;
+  padding:9px 10px calc(9px + env(safe-area-inset-bottom));
+  border-top:1px solid #c49d64;
+  background:#0b2939;
+  box-shadow:0 -7px 20px rgba(4,20,31,.22);
+ }
+ .premium-subpage.theme-skd .skd-mobile-quickbar a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:48px;
+  padding:9px 6px;
+  text-align:center;
+  border:2px solid #e7c58b;
+  border-radius:11px;
+  text-decoration:none;
+  font:800 .88rem/1.3 system-ui,sans-serif;
+ }
+ .premium-subpage.theme-skd .skd-mobile-mail{color:#102c3d;background:#ffe6b8}
+ .premium-subpage.theme-skd .skd-mobile-phone{color:#fffaf0;background:#19505a}
+ .premium-subpage.theme-skd .skd-mobile-quickbar a:focus-visible{
+  outline:3px solid #fff;outline-offset:2px;
+ }
+ .premium-subpage.theme-skd #formularz{
+  scroll-margin-top:105px;
+ }
+ /* The chat launcher stays above the quickbar; its open panel is viewport-safe. */
+ .premium-subpage.theme-skd .chat-assistant{
+  bottom:calc(89px + env(safe-area-inset-bottom));
+  right:10px;
+ }
+ .premium-subpage.theme-skd .chat-panel{
+  max-height:min(58dvh,calc(100dvh - 190px));
+ }
+ /* Keep the keyboard and form fields clear while a visitor enters contact data. */
+ .premium-subpage.theme-skd:has(.contact-form input:focus) .skd-mobile-quickbar,
+ .premium-subpage.theme-skd:has(.contact-form textarea:focus) .skd-mobile-quickbar,
+ .premium-subpage.theme-skd:has(.contact-form select:focus) .skd-mobile-quickbar{
+  display:none;
+ }
+}
+@media print{.premium-subpage.theme-skd .skd-mobile-quickbar{display:none!important}}

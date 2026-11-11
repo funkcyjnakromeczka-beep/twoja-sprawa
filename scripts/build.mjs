@@ -19,29 +19,42 @@ const origin=url.replace(/\/$/,"");
 if(!release || !legalApproved || !contentApproved || !formApproved) throw new Error("Release blocked. Requires RELEASE=1, LEGAL_APPROVED=1, CONTENT_APPROVED=1 and FORM_APPROVED=1 after verified sign-off.");
 await rm(dest,{recursive:true,force:true});
 await mkdir(dest,{recursive:true});
-// Source portraits are existing, owner-supplied images from the prior Lovable project.
- // Copy them into the final release so public pages do not depend on the old Lovable host.
+// Owner-provided team portraits are stored inside v2/assets whenever possible.
+// A one-time Cloudflare fallback allows safe transition without relying on Lovable,
+// which now permanently redirects and no longer serves its former image files.
 const portraits=[
- {source:"https://twojasprawa-votum.lovable.app/assets/wojciech-CIUxrQ8A.jpg",output:"assets/wojciech-obieglo.jpg"},
- {source:"https://twojasprawa-votum.lovable.app/assets/paulina-B6guxyXQ.jpg",output:"assets/paulina-chandrala.jpg"}
+ {legacy:"https://twojasprawa-votum.lovable.app/assets/wojciech-CIUxrQ8A.jpg",output:"assets/wojciech-obieglo.jpg"},
+ {legacy:"https://twojasprawa-votum.lovable.app/assets/paulina-B6guxyXQ.jpg",output:"assets/paulina-chandrala.jpg"}
 ];
-const localizePortraits=markup=>portraits.reduce((html,item)=>html.replaceAll(item.source,"/"+item.output),markup);
+const localizePortraits=markup=>portraits.reduce((html,item)=>html.replaceAll(item.legacy,"/"+item.output),markup);
+const validatePortrait=(data,output)=>{
+ if(data.length<10000 || data.length>8_000_000 || data[0]!==0xff || data[1]!==0xd8){
+  throw new Error("Invalid local JPEG: "+output);
+ }
+};
 async function fetchPortraits(){
-  for(const item of portraits){
-    const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),20000);
-    try{
-      const response=await fetch(item.source,{signal:controller.signal});
-      if(!response.ok || !(response.headers.get("content-type")||"").startsWith("image/jpeg")){
-        throw new Error("Invalid image response: "+response.status+" "+item.source);
-      }
-      const data=new Uint8Array(await response.arrayBuffer());
-      if(data.length<10000 || data.length>8_000_000 || data[0]!==0xff || data[1]!==0xd8){
-        throw new Error("Invalid JPEG bytes: "+item.output);
-      }
-      await writeFile(join(dest,item.output),data);
-    }finally{clearTimeout(timer);}
+ for(const item of portraits){
+  let data;
+  try{
+   data=new Uint8Array(await readFile(join(source,item.output)));
+  }catch(error){
+   if(error.code!=="ENOENT")throw error;
+   // Bootstrap fallback: previously published portrait on this project's own Cloudflare.
+   const controller=new AbortController();
+   const timer=setTimeout(()=>controller.abort(),20000);
+   try{
+    const safeURL="https://twoja-sprawa.pages.dev/"+item.output;
+    const response=await fetch(safeURL,{signal:controller.signal});
+    if(!response.ok || !(response.headers.get("content-type")||"").startsWith("image/jpeg")){
+     throw new Error("Missing project portrait; backup HTTP "+response.status+" "+safeURL);
+    }
+    data=new Uint8Array(await response.arrayBuffer());
+   }finally{clearTimeout(timer);}
   }
+  validatePortrait(data,item.output);
+  await mkdir(dirname(join(dest,item.output)),{recursive:true});
+  await writeFile(join(dest,item.output),data);
+ }
 }
 const pages=[];
 const structured = (route,canonical,title,markup) => {

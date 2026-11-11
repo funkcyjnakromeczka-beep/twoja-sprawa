@@ -250,6 +250,8 @@ const isSKDPublished=(h,page,css,lead,chat,nav,skdStyles)=>{
  const pos=[h.indexOf('class="card primary-card support-featured"'),h.indexOf('class="card primary-card mining-featured"'),h.indexOf('class="card primary-card skd-featured"'),h.indexOf('href="/uslugi/renty-powypadkowe"')];
  return pos.every(n=>n>0)&&pos.every((v,i)=>i===0||v>pos[i-1])&&
   h.includes("Trzy wyróżnione usługi:")&&
+  h.includes('class="nav-skd-priority" href="/uslugi/kredyty-pln"')&&
+  css.includes(".nav-skd-priority")&&
   css.includes("SKD: third highlighted service")&&
   css.includes("grid-column:span 12!important")&&
   page.includes('id="skd-document-title"')&&

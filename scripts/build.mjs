@@ -111,6 +111,37 @@ const structured = (route,canonical,title,markup) => {
   }
   return JSON.stringify({"@context":"https://schema.org","@graph":graph}).replaceAll("<","\\u003c");
 };
+// Same-origin social previews for every public route; existing project photos only.
+function upsertSocialMetadata(markup,route,origin){
+  const metaTag=(field,key)=>new RegExp('<meta\\b(?=[^>]*\\b'+field+'="'+key+'")[^>]*>','i');
+  const getContent=(field,key)=>{
+    const tag=markup.match(metaTag(field,key))?.[0]||"";
+    return tag.match(/\bcontent="([^"]*)"/i)?.[1]||"";
+  };
+  const setContent=(field,key,value)=>{
+    const tag='<meta '+field+'="'+key+'" content="'+value+'">';
+    const pattern=metaTag(field,key);
+    markup=pattern.test(markup)?markup.replace(pattern,tag):markup.replace("</head>",tag+"</head>");
+  };
+  const title=(markup.match(/<title>([^<]+)<\/title>/i)?.[1]||"Twoja Sprawa").trim();
+  const description=getContent("name","description");
+  const usePaulina=/swiadczenie-wspierajace|renty-powypadkowe/.test(route);
+  const person=usePaulina?"Paulina Chandrała":"Wojciech Obiegło";
+  const image=origin+"/assets/"+(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg");
+  setContent("property","og:title",title);
+  if(description)setContent("property","og:description",description);
+  setContent("property","og:image",image);
+  setContent("property","og:image:secure_url",image);
+  setContent("property","og:image:type","image/jpeg");
+  setContent("property","og:image:alt",person+" — osoba do pierwszego kontaktu, Twoja Sprawa");
+  setContent("name","twitter:card","summary");
+  setContent("name","twitter:title",title);
+  if(description)setContent("name","twitter:description",description);
+  setContent("name","twitter:image",image);
+  setContent("name","twitter:image:alt",person+" — Twoja Sprawa");
+  return markup;
+}
+
 async function walk(dir){
   for(const entry of await readdir(dir,{withFileTypes:true})){
     const absolute=join(dir,entry.name);
@@ -139,6 +170,7 @@ async function walk(dir){
       const ogUrl=/<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i;
       if(ogUrl.test(html)) html=html.replace(ogUrl,'<meta property="og:url" content="'+canonical+'">');
       else html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');
+      html=upsertSocialMetadata(html,route,origin);
       if(!html.includes('<meta name="robots" content="'+robots+'">')) throw new Error("Incorrect release robots tag: "+rel);
       html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze",html)+'</script></head>');
       await writeFile(target,html);

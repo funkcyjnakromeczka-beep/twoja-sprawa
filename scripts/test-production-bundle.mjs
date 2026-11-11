@@ -5,6 +5,7 @@ import {readFile,stat,readdir} from "node:fs/promises";
 const origin="https://twoja-sprawa.pages.dev";
 const read=path=>readFile("dist/"+path,"utf8");
 const home=await read("index.html");
+assert.ok(home.includes("data-share-page")&&home.includes("data-share-feedback")&&home.includes('src="/share-page.js"'),"privacy-safe share control missing on published homepage");
 const robots=await read("robots.txt");
 const sitemap=await read("sitemap.xml");
 const headers=await read("_headers");

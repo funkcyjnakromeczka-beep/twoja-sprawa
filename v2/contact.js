@@ -175,6 +175,22 @@
     updateDamageArea();damageArea.value=choice;
    });
   }
+  // Karty na stronie kampanii świadczenia wskazują wyłącznie jedną ze znanych
+  // faz WZON. Nie przyjmujemy tekstów wejściowych ani danych medycznych z linków.
+  for(const trigger of document.querySelectorAll("[data-stage-option]")){
+   trigger.addEventListener("click",()=>{
+    const code=trigger.getAttribute("data-stage-option");
+    const chosen=stageCodes["Świadczenie wspierające"][code];
+    if(!chosen)return;
+    if(select.value!=="Świadczenie wspierające"){
+     select.value="Świadczenie wspierające";
+     updateAdvisor();updateGuide();updateStage();updateDamageArea();
+    }
+    if(stageWrap.hidden)return;
+    stage.value=chosen;
+    updateContextNotice();
+   });
+  }
   host.replaceChildren(form);
  }
 })();

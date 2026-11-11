@@ -181,7 +181,11 @@
   // On narrow screens, the form should remain unobstructed while the assistant is closed.
   const contactArea=document.getElementById("formularz")||document.getElementById("kontakt");
   const videoArea=document.getElementById("filmy");
-  for(const [target,className] of [[contactArea,"is-contact-area"],[videoArea,"is-video-area"]]){
+  // The homepage hero already contains two prominent service paths and a mobile
+  // contact bar. Hide the idle chat bubble there to avoid blocking the cards.
+  const homeHero=document.querySelector?.("body.premium-v2 .hero-glamour");
+  if(homeHero)root.classList.toggle("is-hero-area",true);
+  for(const [target,className] of [[contactArea,"is-contact-area"],[videoArea,"is-video-area"],[homeHero,"is-hero-area"]]){
     if(!target||!("IntersectionObserver" in window))continue;
     const observer=new IntersectionObserver(entries=>{
       root.classList.toggle(className,Boolean(entries[0]?.isIntersecting));

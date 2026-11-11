@@ -44,7 +44,10 @@ async function fetchPortraits(){
   }
 }
 const pages=[];
-const structured = (route,canonical,title) => {
+const structured = (route,canonical,title,markup) => {
+  // FAQPage reflects only answers visibly published on /faq; no invented recommendations.
+  const decodeEntities=value=>value.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">");
+
   // This graph describes SuccessTree's own agency site, never VOTUM as the publisher.
   const owner={"@type":"Person","@id":origin+"/#wojciech-obieglo",name:"Wojciech Obiegło",url:origin+"/o-nas#wojciech",image:origin+"/assets/wojciech-obieglo.jpg"};
   const colleague={"@type":"Person","@id":origin+"/#paulina-chandrala",name:"Paulina Chandrała",url:origin+"/o-nas#paulina",image:origin+"/assets/paulina-chandrala.jpg"};
@@ -60,6 +63,18 @@ const structured = (route,canonical,title) => {
   const site={"@type":"WebSite","@id":origin+"/#website",name:"Twoja Sprawa",url:origin+"/",publisher:{"@id":organization["@id"]},inLanguage:"pl-PL"};
   const page={"@type":"WebPage","@id":canonical+"#webpage",url:canonical,name:title,isPartOf:{"@id":site["@id"]},inLanguage:"pl-PL"};
   if(route==="/o-nas.html")page.about=[{"@id":owner["@id"]},{"@id":colleague["@id"]}];
+
+  if(route==="/faq.html"){
+    const visible=[...markup.matchAll(/<article class="faq-card"[^>]*>[\s\S]*?<summary>([^<]+)<\/summary><div class="faq-answer"><p>([^<]+)<\/p>/g)];
+    if(visible.length!==24)throw new Error("FAQ structured data out of sync with 24 visible questions");
+    page["@type"]="FAQPage";
+    page.mainEntity=visible.map(([,question,answer])=>({
+      "@type":"Question",
+      name:decodeEntities(question),
+      acceptedAnswer:{"@type":"Answer",text:decodeEntities(answer)}
+    }));
+  }
+
   const graph=[owner,colleague,organization,site,page];
   if(route.startsWith("/uslugi/")||route.startsWith("/lokalnie/")){
     graph.push({
@@ -112,7 +127,7 @@ async function walk(dir){
       if(ogUrl.test(html)) html=html.replace(ogUrl,'<meta property="og:url" content="'+canonical+'">');
       else html=html.replace("</head>",'<meta property="og:url" content="'+canonical+'"></head>');
       if(!html.includes('<meta name="robots" content="'+robots+'">')) throw new Error("Incorrect release robots tag: "+rel);
-      html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze")+'</script></head>');
+      html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze",html)+'</script></head>');
       await writeFile(target,html);
       if(indexable) pages.push(publicRoute);
     } else if (rel.endsWith(".css")) {

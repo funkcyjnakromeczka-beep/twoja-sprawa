@@ -61,6 +61,16 @@
       ]
     },
     {
+      key:"franki",name:"Pomoc frankowiczom — CHF",short:"Kredyty frankowe, ugody z bankiem",phone:"796 441 345",tel:"+48796441345",
+      service:"kredyty-frankowe.html",checklist:"frankowicze-lista-kontrolna.html",alias:"franki",
+      intro:"Wstępna analiza aktywnych i spłaconych kredytów indeksowanych lub denominowanych do CHF. Możliwości działania zależą od treści umowy i indywidualnych okoliczności.",
+      stages:[
+        ["Nadal spłacam kredyt CHF","Zachowaj umowę, aneksy i harmonogram. Warto zebrać historię spłat i korespondencję z bankiem."],
+        ["Kredyt CHF został spłacony","Przygotuj dokumenty spłaty i umowę. Samo zakończenie kredytu nie przesądza o możliwości dochodzenia roszczeń."],
+        ["Bank proponuje ugodę","Przed podpisaniem poznaj skutki rozliczenia, saldo i ewentualne zrzeczenie się innych roszczeń."]
+      ]
+    },
+    {
       key:"przesyl",name:"Służebność przesyłu",short:"Urządzenia na działce",phone:"796 441 345",tel:"+48796441345",
       service:"sluzebnosc-przesylu.html",checklist:"sluzebnosc-przesylu-dzialka.html",alias:"przesyl",
       intro:"Pomoc zaczyna się od sprawdzenia, z jakiej podstawy przedsiębiorca korzysta z nieruchomości. Obecność urządzeń nie oznacza automatycznie należnego wynagrodzenia.",

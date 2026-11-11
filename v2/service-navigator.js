@@ -48,7 +48,7 @@
   },
   skd:{
    title:"Sankcja Kredytu Darmowego (SKD)",short:"Sprawdzenie umowy",
-   desc:"Wyślij kopię umowy kredytowej na wojciech.obieglo@votum-ds.pl i zostaw numer telefonu. Zasłoń zbędne dane identyfikacyjne. Zastosowanie SKD wymaga indywidualnej analizy i terminów.",
+   desc:"Wyślij kopię umowy kredytowej na wojciech.obieglo@votum-ds.pl i zostaw numer telefonu. Możesz przesłać pełną umowę bez zasłaniania danych. Zastosowanie SKD wymaga indywidualnej analizy i oceny terminów.",
    service:"kredyty-pln.html",phone:"796 441 345",tel:"+48796441345"
   },
   franki:{

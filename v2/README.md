@@ -151,3 +151,11 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - `scripts/test-contact-client.mjs` sprawdza, że puste imię nie inicjuje żądania, druga wysyłka w toku jest ignorowana, przycisk jest zablokowany podczas żądania i po jego zakończeniu dopuszcza nowe zgłoszenie. Testy używają atrap API, bez przekazywania danych klienta.
 - `scripts/audit-production-live.mjs` sprawdza opublikowaną na Cloudflare obecność tych zabezpieczeń, ale nie wysyła formularzy ani nie sprawdza dostarczenia maila.
 - **Zakres ochrony:** blokada zapobiega podwójnemu rozpoczęciu równoległego żądania w tej samej karcie. Nie daje gwarancji deduplikacji żądań po błędzie, odświeżeniu strony ani na poziomie serwera. Wysyłkę rzeczywistą należy przetestować osobno.
+
+## Etap XI — jakość danych kontaktowych (11.11.2026)
+
+- Formularz `v2/contact.js` sprawdza liczbę cyfr w numerze telefonu (7–15), a nie tylko długość całego ciągu z odstępami i myślnikami. Odrzuca też przypadkowe znaki, źle umieszczone plusy i zbyt długie ciągi. Obsługuje zapis z prefiksem międzynarodowym, bez zakładania numeru polskiego.
+- `checkContact()` weryfikuje istnienie co najmniej jednego kontaktu i respektuje wybór „Telefon” lub „E-mail”. Klient może pozostawić sam prawidłowy e-mail, bez podawania numeru telefonu. Gdy podano numer błędny, formularz prosi o poprawkę przed wysłaniem.
+- Podpowiedź o 7–15 cyfrach jest powiązana z polem telefonu za pomocą `aria-describedby`, dzięki czemu mogą ją odczytać narzędzia wspomagające. Nie dodano kolejnego pola ani obowiązku podawania informacji wrażliwych.
+- `scripts/test-contact-client.mjs`: 11 scenariuszy numerów polskich/zagranicznych, znaków niepoprawnych, błędnego wyboru sposobu kontaktu oraz zgłoszeń wyłącznie e-mailowych, plus test dostępności opisu. Testy mają podstawione API i **nie wysyłają prawdziwych leadów**.
+- `scripts/audit-production-live.mjs` weryfikuje obecność opublikowanej walidacji na Cloudflare. To kontrola kodu zwróconego przez serwer, nie dowód dostarczenia wiadomości do skrzynki ani pomiar liczby zapytań.

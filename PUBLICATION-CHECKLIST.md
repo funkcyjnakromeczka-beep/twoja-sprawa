@@ -13,6 +13,18 @@
 
 **Bieżąca konfiguracja wdrożeniowa:** `node scripts/preview.mjs` na Cloudflare Pages z `CF_PAGES=1` i `CF_PAGES_BRANCH=main` tworzy zatwierdzony wariant produkcyjny w istniejącym katalogu `dist-preview/`. Ten sam skrypt uruchomiony lokalnie lub na innej gałęzi buduje nieindeksowalny podgląd. Nie należy ręcznie przywracać wcześniejszej konfiguracji blokującej roboty.
 
+## Optymalizacja kontaktu i automatyzacji — 11 listopada 2026
+
+- [x] Formularz na stronie głównej **nie wskazuje przypadkowego konsultanta** przed wybraniem usługi; po wyborze wskazuje właściwą osobę i numer.
+- [x] Na mobilnych podstronach szkód górniczych oraz świadczenia wspierającego działa pasek z numerem właściwego specjalisty i przejściem do istniejącego formularza.
+- [x] Pasek jest ukrywany po przejściu do formularza, a pozycjonowanie chatbota nie powoduje nakładania elementów.
+- [x] Testy mobilne sprawdziły oba numery, brak kolizji i zachowanie przejścia do formularza. Raport: https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42937496017
+- [x] Testy jednostkowe formularza i mobilnego paska są częścią automatycznego audytu GitHub Actions.
+- [x] IndexNow uruchamia się po publikacji/aktualizacji plików HTML na gałęzi `main`, zamiast wymagać ręcznego uruchomienia po każdej zmianie.
+- [x] IndexNow dynamicznie sprawdza listę dopuszczonych adresów przeciwko **aktualnej produkcyjnej sitemap**, a nie sztywnej liczbie 36 adresów; poprzednie uruchomienia są zastępowane nowszymi.
+- [x] Ostatnie zgłoszenie IndexNow: **HTTP 200, 36 adresów**. Raport: https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42938052776
+- [ ] Dalsza poprawa konwersji wymaga danych o liczbie odwiedzin i zgłoszeń (np. Search Console oraz pomiar zgodny z RODO); testy funkcjonalności nie dowodzą wzrostu liczby leadów.
+
 ## Działania SEO/GEO po wdrożeniu — 11 listopada 2026
 - [x] Dane strukturalne `FAQPage` budowane z 24 prawdziwych, widocznych odpowiedzi — test pakietu produkcyjnego pomyślny.
 - [x] Klucz IndexNow dostępny jako publiczny plik TXT na domenie, z potwierdzoną zgodnością treści i nazwy.

@@ -37,7 +37,7 @@
    service:"renty-powypadkowe.html",phone:"500 171 531",tel:"+48500171531"
   },
   skd:{
-   title:"Kredyt konsumencki PLN / SKD",short:"Sprawdzenie umowy",
+   title:"Sankcja Kredytu Darmowego (SKD)",short:"Sprawdzenie umowy",
    desc:"Warto zachować umowę kredytu, aneksy i historię spłat. Możliwość skorzystania z sankcji wymaga zbadania konkretnej umowy i właściwych terminów.",
    service:"kredyty-pln.html",phone:"500 171 531",tel:"+48500171531"
   },

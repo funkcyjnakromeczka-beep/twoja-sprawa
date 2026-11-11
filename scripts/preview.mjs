@@ -35,6 +35,9 @@ async function walk(dir){
    let html=withNetworkBrand(await readFile(absolute,"utf8"));
    if(!/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i.test(html))throw Error("Source robots tag missing: "+rel);
    html=html.replaceAll("/v2/","/");
+   // Render team portraits from repository assets, not the redirected Lovable host.
+   html=html.replaceAll("https://twojasprawa-votum.lovable.app/assets/wojciech-CIUxrQ8A.jpg","/assets/wojciech-obieglo.jpg");
+   html=html.replaceAll("https://twojasprawa-votum.lovable.app/assets/paulina-B6guxyXQ.jpg","/assets/paulina-chandrala.jpg");
    // Refresh every local CSS and JS asset with the same build version.
    html=html.replace(/(href="\/[^"]+?\.css)(\?[^"]*)?(")/g,`$1?v=${buildId}$3`);
    html=html.replace(/(src="\/[^"]+?\.js)(\?[^"]*)?(")/g,`$1?v=${buildId}$3`);

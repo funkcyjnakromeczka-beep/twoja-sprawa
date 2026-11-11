@@ -228,6 +228,36 @@
     updateContextNotice();
    });
   }
+  // Home only: prominent flagship links select the same existing form, without
+  // creating duplicate lead forms or collecting data before explicit submission.
+  const primaryShortcuts=[...document.querySelectorAll("[data-contact-shortcut]")];
+  if(primaryShortcuts.length){
+   const shortcutStatus=document.querySelectorAll("[data-contact-shortcut-status]")[0];
+   const pickService=code=>["szkody","swiadczenie"].includes(code)?serviceAlias[code]:"";
+   const syncShortcuts=()=>{
+    const active=primaryShortcuts.some(link=>{
+     const chosen=pickService(link.getAttribute("data-contact-shortcut"));
+     const current=Boolean(chosen&&select.value===chosen);
+     link.setAttribute("data-selected",String(current));
+     return current;
+    });
+    if(shortcutStatus)shortcutStatus.textContent=active?"Wybrano: "+select.value+". Uzupełnij dane w formularzu poniżej.":"";
+   };
+   select.addEventListener("change",syncShortcuts);
+   for(const link of primaryShortcuts){
+    link.addEventListener("click",event=>{
+     const chosen=pickService(link.getAttribute("data-contact-shortcut"));
+     if(!chosen)return;
+     event.preventDefault();
+     select.value=chosen;
+     updateAdvisor();updateGuide();updateStage();updateDamageArea();updateContextNotice();
+     syncShortcuts();
+     host.scrollIntoView?.({behavior:"smooth",block:"start"});
+     select.focus?.({preventScroll:true});
+    });
+   }
+   syncShortcuts();
+  }
   host.replaceChildren(form);
  }
 })();

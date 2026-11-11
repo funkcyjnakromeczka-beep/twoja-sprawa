@@ -159,3 +159,12 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - Podpowiedź o 7–15 cyfrach jest powiązana z polem telefonu za pomocą `aria-describedby`, dzięki czemu mogą ją odczytać narzędzia wspomagające. Nie dodano kolejnego pola ani obowiązku podawania informacji wrażliwych.
 - `scripts/test-contact-client.mjs`: 11 scenariuszy numerów polskich/zagranicznych, znaków niepoprawnych, błędnego wyboru sposobu kontaktu oraz zgłoszeń wyłącznie e-mailowych, plus test dostępności opisu. Testy mają podstawione API i **nie wysyłają prawdziwych leadów**.
 - `scripts/audit-production-live.mjs` weryfikuje obecność opublikowanej walidacji na Cloudflare. To kontrola kodu zwróconego przez serwer, nie dowód dostarczenia wiadomości do skrzynki ani pomiar liczby zapytań.
+
+## Etap XII — szybka droga z głównej strony do zgłoszenia (11.11.2026)
+- Przy istniejącym formularzu na `v2/index.html` są dwa kompaktowe wybory: „Szkody górnicze” oraz „Świadczenie wspierające”. To **skróty do jednego formularza**, nie dwa osobne formularze. Bez JavaScript linki prowadzą do sekcji `#kontakt`.
+- `v2/contact.js` po wyborze ustawia właściwą usługę i aktualizuje dotychczasowe elementy (osobę kontaktową, odnośnik do poradnika, etap sprawy i opcjonalną kategorię szkody); nie wysyła zgłoszenia. Wybór innej usługi z listy usuwa podświetlenie skrótów; po poprawnej wysyłce reset formularza przywraca właściwy stan wyboru.
+- `v2/home-flow.css` odpowiada za małe, wyraźne przyciski ze stanem wyboru, wygodny dotyk na telefonie oraz margines pod przyklejonym paskiem logotypów. Przejście do formularza respektuje `prefers-reduced-motion`.
+- `scripts/test-home-clarity.mjs` pilnuje dokładnie dwóch skrótów i jednej wersji formularza. `scripts/test-contact-client.mjs` sprawdza mapowanie usług, atrybuty wizualne, stan dostępnego komunikatu, zmianę usługi, blokadę nieznanych kodów i reset po pomyślnym teście z atrapą operatora.
+- `scripts/screenshot-preview.mjs` zawiera test zachowania w Chromium na ekranie 390 px i zapisuje podgląd `screenshots/home-dwa-wybory-formularz-telefon.png`. Weryfikacja nie wysyła leadów.
+- `scripts/audit-production-live.mjs` sprawdza odpowiednie elementy i logikę na publicznej wersji Cloudflare (same odczyty, bez wysyłania zgłoszeń).
+- **Ograniczenie:** sukces testów i publikacji nie jest pomiarem konwersji, dostarczenia wiadomości Web3Forms ani widoczności w Google. Nie uruchomiono płatnych usług.

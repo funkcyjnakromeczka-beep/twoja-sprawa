@@ -10,7 +10,7 @@
  const openFromAnchor=()=>{
   if(window.location?.hash==="#dobierz-pomoc")root.open=true;
  };
- for(const link of document.querySelectorAll('a[href="#dobierz-pomoc"]')){
+ for(const link of document.querySelectorAll?.('a[href="#dobierz-pomoc"]')||[]){
   link.addEventListener("click",()=>{root.open=true;});
  }
  window.addEventListener?.("hashchange",openFromAnchor);

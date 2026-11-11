@@ -63,6 +63,16 @@ const run=async(error=false)=>{
  if(select.events.change)select.events.change();
  assert.equal(advisor.hidden,false,"Specialist is visible after choosing service");
  assert.ok(advisor.children.some(node=>(node.textContent||"").includes("Paulina Chandrała")),"Support cases should show Paulina");
+ // Opening a checklist or privacy information must not replace the filled form.
+ const guide=visit(form,n=>n.tag==="a"&&n.textContent?.startsWith("Otwórz listę kontrolną"));
+ const privacy=visit(form,n=>n.tag==="a"&&n.href==="/v2/polityka-prywatnosci.html");
+ assert.ok(guide?.href.includes("swiadczenie-wspierajace-pierwsze-kroki.html"),"Correct checklist must be linked for support");
+ for(const a of [guide,privacy]){
+  assert.equal(a?.target,"_blank","Guide/privacy pages must open in a separate tab");
+  assert.equal(a?.rel,"noopener noreferrer","New-tab links must not expose the original page context");
+  assert.ok(a.textContent.includes("nowa karta"),"The visitor should be told a new tab will open");
+ }
+
  assert.equal(phone.required,false);
  assert.equal(email.required,true);
  const submit=form.events.submit;

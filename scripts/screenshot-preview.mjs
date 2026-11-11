@@ -257,6 +257,28 @@ try{
  if(picked!=="Otrzymałem/am propozycję ugody")throw Error("Form stage was not preselected: "+picked);
  console.log("FUNNEL_OK",JSON.stringify({url:chosen.pathname+chosen.search,stage:picked}));
  await page.close();
+
+ // One-tap guidance for cracks vs uneven paving must reach distinct form choices.
+ for(const [label,slug,expected] of [
+  ["Widziałem niewielkie pęknięcia","sciany","Ściany i elewacja"],
+  ["Kostka lub ogrodzenie są uszkodzone","kostka","Kostka i ogrodzenie"]
+ ]){
+  const guided=await browser.newPage({viewport:{width:390,height:844}});
+  await guided.goto(origin+"/uslugi/szkody-gornicze.html?utm_source=ulotka&utm_medium=qr",{waitUntil:"domcontentloaded"});
+  await guided.locator(".chat-toggle").click();
+  await guided.locator('[data-topic="szkody"]').click();
+  await guided.locator(".chat-stage-choice",{hasText:label}).click();
+  const targetLink=await guided.locator(".chat-reply-contact").getAttribute("href");
+  const url=new URL(targetLink,origin);
+  if(url.searchParams.get("uszkodzenie")!==slug||url.searchParams.get("etap")!=="uszkodzenia")throw Error("Mining chatbot lost safe defect category: "+targetLink);
+  await guided.goto(origin+url.pathname+url.search+url.hash,{waitUntil:"domcontentloaded"});
+  const prefilled=await guided.locator('.contact-form select[id^="cf-damage-"]').inputValue();
+  const stageFromChat=await guided.locator('.contact-form select[id^="cf-stage-"]').inputValue();
+  if(prefilled!==expected||stageFromChat!=="Zauważyłem/am uszkodzenia")throw Error("Damage and stage not carried from chatbot: "+JSON.stringify({label,prefilled,stageFromChat}));
+  console.log("MINING_CHAT_DAMAGE_OK",JSON.stringify({code:slug,choice:prefilled,stage:stageFromChat}));
+  await guided.close();
+ }
+
  // Verify that the standalone three-step guide really prepares the correct contact form.
  const guidePage=await browser.newPage({viewport:{width:390,height:844}});
  await guidePage.goto(origin+"/?utm_source=facebook&utm_medium=grupa&utm_campaign=szkody_lubin",{waitUntil:"domcontentloaded"});

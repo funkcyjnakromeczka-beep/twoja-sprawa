@@ -133,3 +133,13 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - Kontrola w prawdziwej przeglądarce: `scripts/screenshot-preview.mjs` sprawdza kategorię kostki brukowej, zaznaczenie w formularzu i kotwicę. Nie wysyła rzeczywistych zgłoszeń.
 - Audyt HTTP działającej publikacji: [GitHub Actions — wynik produkcji](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/43051431068).
 - **Ograniczenia:** zielony audyt produkcyjny potwierdza obecność odpowiedniego kodu i elementów HTML/CSS, ale nie potwierdza otrzymania wiadomości e-mail przez adresata ani wzrostu konwersji. Odbiór zgłoszeń wymaga osobnego testu za zgodą właściciela.
+
+## Etap IX — jednoklikowy wybór etapu WZON i stabilniejszy test wizualny (11.11.2026)
+
+- Na `v2/kampanie/swiadczenie-wspierajace.html` trzy karty mają odnośniki „Wybieram ten etap”: pierwszy wniosek, oczekiwanie na decyzję i otrzymana decyzja. Link prowadzi do `#formularz` nawet bez JavaScript.
+- `v2/contact.js` przepisuje tylko zatwierdzone kody (`wniosek`, `oczekiwanie`, `decyzja`) na istniejące etapy formularza. Nie pobiera z odnośników tekstu dowolnego ani danych dotyczących zdrowia; używa sprawdzenia `hasOwnProperty`, aby odrzucić również nazwy właściwości prototypu.
+- Wybór etapu nie wysyła zgłoszenia. Telefon/e-mail i zgoda pozostają do wypełnienia przez użytkownika. Po zatwierdzeniu formularz może przekazać wybraną fazę jako `case_stage`, tak jak wcześniej.
+- `v2/lead-persona.css` zapewnia zielone przyciski o minimalnej wysokości 44 px i kontrastowym tekście. Test klienta w `scripts/test-contact-client.mjs` kontroluje mapowanie, odmowę nieznanych kodów i poprawną treść *symulowanego* zgłoszenia.
+- `scripts/screenshot-preview.mjs` rozszerzono o test trzeciej karty na ekranie 390 px, przejścia do `#formularz` i wyboru „Mam decyzję WZON” — bez wysyłania kontaktu. `scripts/audit-production-live.mjs` sprawdza publikację odpowiednich elementów.
+- Historia nieudanego testu screenów: GitHub runner `ubuntu-latest` próbował instalować biblioteki przez serwery `archive.ubuntu.com` / `security.ubuntu.com`; w logach występował `Temporary failure resolving`. W `.github/workflows/screenshots.yml` wskazano jawnie `ubuntu-24.04`, aby ograniczyć zależność od zmiany obrazu systemowego. To nie jest dowód naprawy — potwierdza ją dopiero zielony test screenów.
+- **Bezpieczeństwo danych:** brak nowych formularzy, przesyłania dokumentacji medycznej, serwerów pośrednich i płatnych usług. Nie zmieniano konfiguracji dostawcy Web3Forms.

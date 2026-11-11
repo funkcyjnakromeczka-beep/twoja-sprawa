@@ -217,10 +217,10 @@ try{
  await clarityDesktop.goto(origin+"/",{waitUntil:"domcontentloaded"});
  const gridGeometry=await clarityDesktop.locator("#uslugi .primary-services>.primary-card").evaluateAll(nodes=>nodes.map(el=>({top:Math.round(el.getBoundingClientRect().top),left:Math.round(el.getBoundingClientRect().left)})));
  if(gridGeometry.length!==6)throw Error("Expected 6 service cards, got "+gridGeometry.length);
- if(gridGeometry[0].top!==gridGeometry[1].top||gridGeometry.slice(2).some(el=>el.top!==gridGeometry[2].top))throw Error("2+4 symmetric homepage grid failed: "+JSON.stringify(gridGeometry));
- if(new Set(gridGeometry.slice(2).map(el=>el.left)).size!==4)throw Error("Four additional services should occupy four columns");
+ if(gridGeometry[0].top!==gridGeometry[1].top||gridGeometry[2].top<=gridGeometry[1].top||gridGeometry[3].top<=gridGeometry[2].top||gridGeometry.slice(3).some(el=>el.top!==gridGeometry[3].top))throw Error("2+1+3 homepage priority grid failed: "+JSON.stringify(gridGeometry));
+ if(new Set(gridGeometry.slice(3).map(el=>el.left)).size!==3)throw Error("Three secondary services should occupy three columns");
  await clarityDesktop.screenshot({path:"screenshots/home-clarity-services-desktop.png",fullPage:false,animations:"disabled"});
- console.log("HOME_CLARITY_UI_OK",JSON.stringify({order:positions,franki:true,grid:6,layout:"2+4"}));
+ console.log("HOME_CLARITY_UI_OK",JSON.stringify({order:positions,franki:true,grid:6,layout:"2+1+3",skdThird:true}));
 
  // Performance cleanup: ensure the rendered home knowledge/FAQ cards retain
  // styling after dropping the unrelated article stylesheet.
@@ -242,7 +242,7 @@ try{
  console.log("HOME_STYLE_BUDGET_OK",JSON.stringify(homeStyleAudit));
 
 
- // Ensure only the four secondary services are denser on phone screens.
+ // Ensure only the three secondary services are denser on phone screens.
  const serviceDensityPage=await browser.newPage({viewport:{width:390,height:844}});
  await serviceDensityPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
  const cardDensity=await serviceDensityPage.locator("#uslugi .primary-services>.primary-card").evaluateAll(nodes=>nodes.map(node=>{
@@ -254,12 +254,17 @@ try{
    titleWithin:!!title&&title.bottom<=rect.bottom+2,actionWithin:!!action&&action.bottom<=rect.bottom+2};
  }));
  if(cardDensity.length!==6)throw Error("Mobile density should still show all six service cards");
- if(cardDensity.slice(0,2).some(x=>x.description==="none"))throw Error("The two flagship projects lost their full descriptions");
- if(cardDensity.slice(2).some(x=>x.description!=="none"||x.height>195||!x.titleWithin||!x.actionWithin)){
+ if(cardDensity.slice(0,3).some(x=>x.description==="none"))throw Error("One of the three flagship projects lost its description");
+ if(cardDensity.slice(3).some(x=>x.description!=="none"||x.height>195||!x.titleWithin||!x.actionWithin)){
   throw Error("Secondary mobile cards are not compact and legible: "+JSON.stringify(cardDensity));
  }
  await serviceDensityPage.locator("#uslugi").screenshot({path:"screenshots/home-uslugi-zwarta-lista-telefon.png",animations:"disabled"});
  console.log("MOBILE_SERVICE_DENSITY_OK",JSON.stringify(cardDensity));
+ // SKD must remain the third distinguished service and retain its full mobile summary.
+ const ordered=await serviceDensityPage.locator("#uslugi .primary-services>.primary-card").evaluateAll(nodes=>nodes.map(node=>({href:node.getAttribute("href"),featured:node.classList.contains("skd-featured")})));
+ if(!ordered[2]?.featured||!ordered[2].href.includes("kredyty-pln"))throw Error("SKD lost third featured card position: "+JSON.stringify(ordered));
+ if(cardDensity[2].height<215)throw Error("SKD promoted card is too compact to display its full CTA");
+
  await serviceDensityPage.close();
 
  await clarityDesktop.close();
@@ -480,6 +485,27 @@ try{
  if(await preservedForm.locator('.contact-form select[id^="cf-service-"]').inputValue()!=="Świadczenie wspierające")throw Error("Service choice disappeared after reading guidance");
  console.log("CONTACT_DRAFT_PRESERVED_OK",JSON.stringify({checklist:true,privacy:true,namePreserved:true,servicePreserved:true}));
  await preservedForm.close();
+
+ // SKD email CTA and callback must work on a phone without uploading a contract into the site.
+ const skdPage=await browser.newPage({viewport:{width:390,height:844}});
+ await skdPage.goto(origin+"/uslugi/kredyty-pln.html",{waitUntil:"domcontentloaded"});
+ const skdBox=skdPage.locator(".skd-document-cta");
+ if(!await skdBox.isVisible())throw Error("SKD email/callback CTA missing");
+ const emailHref=await skdBox.locator('a.skd-email-action').getAttribute("href");
+ if(!emailHref?.startsWith("mailto:wojciech.obieglo@votum-ds.pl?")||!emailHref.includes("body="))throw Error("SKD email message is not ready: "+emailHref);
+ const callbackHref=await skdBox.locator("a.skd-phone-action").getAttribute("href");
+ if(callbackHref!=="#formularz")throw Error("SKD callback must lead to the visible form");
+ const fields=skdPage.locator(".contact-form");
+ if(!await fields.isVisible())throw Error("SKD contact form missing");
+ const selectedService=await fields.locator('select[id^="cf-service-"]').inputValue();
+ if(selectedService!=="Kredyt w PLN / SKD")throw Error("SKD service not preselected in form");
+ const advisor=await fields.locator(".contact-advisor").innerText();
+ if(!advisor.includes("Wojciech")||!advisor.includes("wojciech.obieglo@votum-ds.pl"))throw Error("SKD form shows inconsistent advisor: "+advisor);
+ const ctaLayout=await skdBox.locator(".skd-document-actions").evaluate(el=>({width:el.getBoundingClientRect().width,links:[...el.querySelectorAll("a")].map(a=>({width:a.getBoundingClientRect().width,height:a.getBoundingClientRect().height}))}));
+ if(ctaLayout.links.some(a=>a.height<44))throw Error("SKD mobile email/contact buttons too small");
+ await skdBox.screenshot({path:"screenshots/skd-umowa-i-telefon-390.png",animations:"disabled"});
+ console.log("SKD_CONTRACT_CONTACT_OK",JSON.stringify({service:selectedService,email:emailHref.slice(0,54),callback:true,buttons:ctaLayout.links.length}));
+ await skdPage.close();
 
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{

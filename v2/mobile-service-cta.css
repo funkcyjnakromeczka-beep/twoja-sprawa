@@ -1,0 +1,32 @@
+/* Mobilny kontakt tylko na dwóch flagowych podstronach; brak pop-upu i cookies. */
+.mobile-service-cta{display:none}
+@media(max-width:650px){
+ body:has(.mobile-service-cta){padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+ .mobile-service-cta:not([hidden]){
+  position:fixed;inset:auto 0 0;z-index:150;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
+  gap:9px;padding:9px 10px calc(9px + env(safe-area-inset-bottom));
+  background:linear-gradient(115deg,#0c2937,#153f4d);color:#fff;
+  border-top:2px solid #b99158;box-shadow:0 -7px 24px rgba(5,26,39,.23);
+ }
+ .mobile-service-cta[hidden]{display:none!important}
+ .mobile-service-cta a{
+  display:flex;align-items:center;justify-content:center;
+  min-width:0;min-height:49px;border-radius:10px;padding:8px 9px;
+  border:1px solid #d9ba85;background:#e5c895;color:#123240;
+  text-decoration:none;font:800 .87rem/1.3 system-ui,sans-serif;text-align:center;
+ }
+ .mobile-service-cta .mobile-service-call{
+  flex-direction:column;gap:1px;border-color:#8ca8aa;background:transparent;color:#fff;
+  font-size:.71rem;font-weight:650;
+ }
+ .mobile-service-call strong{font-size:1rem;font-variant-numeric:tabular-nums;font-weight:850}
+ .mobile-service-cta a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+ body:has(.mobile-service-cta) .chat-assistant{
+  bottom:calc(89px + env(safe-area-inset-bottom));right:10px;z-index:145;
+ }
+ body:has(.mobile-service-cta) .chat-assistant .chat-panel{max-height:min(60dvh,530px)}
+ body:has(.chat-assistant.is-open) .mobile-service-cta{visibility:hidden;pointer-events:none}
+}
+@media(prefers-reduced-motion:reduce){.mobile-service-cta a{scroll-behavior:auto}}
+@media print{.mobile-service-cta{display:none!important}body:has(.mobile-service-cta){padding-bottom:0!important}}

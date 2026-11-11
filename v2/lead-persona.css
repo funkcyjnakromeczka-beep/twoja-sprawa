@@ -57,3 +57,22 @@
 .premium-subpage .faq-service-link a{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:11px 16px;border-radius:10px;background:#143c4a;color:#fff;text-decoration:none;font-weight:750}
 .premium-subpage .faq-service-link a:focus-visible{outline:3px solid #ba9250;outline-offset:3px}
 @media(max-width:580px){.premium-subpage .faq-service-link{margin-inline:14px}.premium-subpage .faq-service-link a{width:100%}}
+
+
+/* Szybkie przejście od przykładu uszkodzenia do formularza bez utraty UTM. */
+.premium-campaign.campaign-mining .campaign-damage-pick{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:44px;margin-top:12px;padding:10px 13px;
+ background:#153c4b;color:#fff!important;text-decoration:none;
+ border:1px solid #215368;border-radius:10px;
+ font:750 .87rem/1.35 system-ui,sans-serif;
+}
+.premium-campaign.campaign-mining .campaign-damage-pick:hover{
+ background:#26546a;border-color:#bd9d63;
+}
+.premium-campaign.campaign-mining .campaign-damage-pick:focus-visible{
+ outline:3px solid #a87d3f;outline-offset:3px;
+}
+@media(max-width:570px){
+ .premium-campaign.campaign-mining .campaign-damage-pick{display:flex;width:100%}
+}

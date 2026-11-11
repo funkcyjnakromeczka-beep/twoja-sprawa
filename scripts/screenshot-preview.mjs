@@ -222,6 +222,26 @@ try{
  await clarityDesktop.screenshot({path:"screenshots/home-clarity-services-desktop.png",fullPage:false,animations:"disabled"});
  console.log("HOME_CLARITY_UI_OK",JSON.stringify({order:positions,franki:true,grid:6,layout:"2+4"}));
 
+ // Performance cleanup: ensure the rendered home knowledge/FAQ cards retain
+ // styling after dropping the unrelated article stylesheet.
+ const homeStyleAudit=await clarityDesktop.evaluate(()=>{
+  const editorial=document.querySelector(".editorial-reading");
+  const hub=document.querySelector(".hub-all-link a");
+  const faq=document.querySelector(".faq-explore-all a");
+  return {
+   stylesheetLinks:[...document.querySelectorAll('link[rel="stylesheet"]')].map(x=>x.getAttribute("href")),
+   resources:performance.getEntriesByType("resource").filter(x=>x.name.includes("knowledge-articles.css")).length,
+   editorialLayout:editorial?getComputedStyle(editorial).display:null,
+   editorialColumns:editorial?getComputedStyle(editorial).gridTemplateColumns:null,
+   hubButton:hub?getComputedStyle(hub).display:null,
+   faqButton:faq?getComputedStyle(faq).display:null
+  };
+ });
+ if(homeStyleAudit.stylesheetLinks.some(x=>x.includes("knowledge-articles.css"))||homeStyleAudit.resources)throw Error("Home still loads long-form article CSS: "+JSON.stringify(homeStyleAudit));
+ if(homeStyleAudit.editorialLayout!=="grid"||homeStyleAudit.hubButton!=="inline-flex"||homeStyleAudit.faqButton!=="inline-flex")throw Error("Home editorial styling lost: "+JSON.stringify(homeStyleAudit));
+ console.log("HOME_STYLE_BUDGET_OK",JSON.stringify(homeStyleAudit));
+
+
  // Ensure only the four secondary services are denser on phone screens.
  const serviceDensityPage=await browser.newPage({viewport:{width:390,height:844}});
  await serviceDensityPage.goto(origin+"/",{waitUntil:"domcontentloaded"});

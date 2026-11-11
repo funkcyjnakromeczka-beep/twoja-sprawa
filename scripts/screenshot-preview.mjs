@@ -355,6 +355,21 @@ try{
  console.log("MINING_DAMAGE_UI_OK",JSON.stringify({category:selectedDamage,atForm:true,visible:damageVisibility}));
  await damagePage.close();
 
+
+ // Support campaign: one tap must preselect the WZON stage without sending a lead.
+ const supportStagePage=await browser.newPage({viewport:{width:390,height:844}});
+ await supportStagePage.goto(origin+"/kampanie/swiadczenie-wspierajace.html?utm_source=facebook&utm_medium=grupa",{waitUntil:"domcontentloaded"});
+ const supportStageButtons=supportStagePage.locator(".campaign-stage-pick");
+ if(await supportStageButtons.count()!==3)throw Error("Three WZON stage buttons must be visible");
+ await supportStageButtons.nth(2).click();
+ const supportStage=await supportStagePage.locator('.contact-form select[id^="cf-stage-"]').inputValue();
+ if(supportStage!=="Mam decyzję WZON")throw Error("Support campaign did not preselect WZON decision stage: "+supportStage);
+ if(new URL(supportStagePage.url()).hash!=="#formularz")throw Error("WZON stage picker must scroll to the form");
+ if(!await supportStagePage.locator(".contact-stage").isVisible())throw Error("WZON stage field should be visible on campaign form");
+ await supportStagePage.screenshot({path:"screenshots/swiadczenie-wybierz-etap-telefon.png",fullPage:false,animations:"disabled"});
+ console.log("SUPPORT_STAGE_UI_OK",JSON.stringify({stage:supportStage,atForm:true}));
+ await supportStagePage.close();
+
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

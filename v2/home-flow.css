@@ -54,5 +54,46 @@
 .premium-v2 #zespol .team-grid{align-items:stretch}
 .premium-v2 #dobierz-pomoc{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
 .premium-v2 #dobierz-pomoc:focus-within{outline-offset:4px}
-\n/* Anchor targets remain visible below sticky partner branding on all viewports. */
+
+/* Anchor targets remain visible below sticky partner branding on all viewports. */
 .premium-v2 #kontakt,.premium-v2 #zespol,.premium-v2 #pytania,.premium-v2 #poradniki{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
+
+
+/* Etap VI: trzy równorzędne drogi kontaktu na telefonie.
+   Przycisk formularza nie zasłania pól podczas wpisywania. */
+@media (max-width:650px){
+  .premium-v2 .mobile-contact-bar{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+  .premium-v2 .mobile-contact-bar a{
+    min-width:0;
+    padding-inline:4px;
+    line-height:1.2;
+    font-size:.74rem;
+  }
+  .premium-v2 .mobile-contact-bar a strong{
+    white-space:nowrap;
+    font-size:clamp(.74rem,2.7vw,.94rem);
+    letter-spacing:-.025em;
+  }
+  .premium-v2 .mobile-contact-bar a.mobile-form-link{
+    background:#dcefe3;
+    border:1px solid #a7cdb3;
+    color:#153b2d;
+  }
+  .premium-v2 .mobile-contact-bar a:focus-visible{
+    outline:3px solid #fff3d0;
+    outline-offset:-3px;
+  }
+  body.premium-v2:has(#kontakt .contact-form:focus-within) .mobile-contact-bar,
+  body.premium-v2:has(.chat-assistant.is-open) .mobile-contact-bar{
+    visibility:hidden;
+    pointer-events:none;
+  }
+}
+@media (max-width:370px){
+  .premium-v2 .mobile-contact-bar a{font-size:.7rem}
+  .premium-v2 .mobile-contact-bar a strong{font-size:.74rem}
+}
+@media print{.premium-v2 .mobile-contact-bar{display:none!important}}

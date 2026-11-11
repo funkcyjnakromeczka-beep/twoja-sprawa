@@ -90,6 +90,43 @@ const run=async(error=false)=>{
 };
 await run(false);
 await run(true);
+// Qualification of an observed property issue, without inferring a mining cause.
+{
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?"Szkody górnicze":""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?utm_source=ulotka"},setTimeout:()=>1,clearTimeout:()=>{}};
+ const captured=[];
+ const fetch=async(_url,options)=>{
+  captured.push(JSON.parse(options.body));
+  return {ok:true,json:async()=>({success:true})};
+ };
+ runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const damage=visit(form,n=>n.id?.startsWith("cf-damage-"));
+ const damageWrap=visit(form,n=>n.className==="contact-damage-area");
+ const name=visit(form,n=>n.autocomplete==="given-name");
+ const phone=visit(form,n=>n.autocomplete==="tel");
+ assert.ok(damage&&damageWrap&&!damageWrap.hidden,"Mining form should show optional damage categories");
+ assert.equal(damage.children.length,6,"Damage categories should be a closed, fixed list");
+ name.value="Test";phone.value="500000000";
+ damage.value="Kostka i ogrodzenie";
+ await form.events.submit({preventDefault(){}});
+ assert.equal(captured[0].damage_area,"Kostka i ogrodzenie");
+ assert.equal(captured[0].service,"Szkody górnicze");
+ service.value="Świadczenie wspierające";service.events.change();
+ assert.equal(damageWrap.hidden,true,"Other service should hide mining questions");
+ assert.equal(damage.value,"","Switching services must clear an old damage selection");
+ await form.events.submit({preventDefault(){}});
+ assert.ok(!("damage_area" in captured[1]),"Other services must not receive mining damage details");
+}
+
 // Scenario hand-off from chatbot: validate only known stage codes and initial service.
 const stageCase=(service,code,expected)=>{
  const host=new Node("host");

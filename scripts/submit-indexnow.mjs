@@ -5,8 +5,11 @@
  */
 import assert from "node:assert/strict";
 import {readdir,readFile} from "node:fs/promises";
+import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 const origin="https://twoja-sprawa.pages.dev";
 const host="twoja-sprawa.pages.dev";
+const expectedRoutes=await collectIndexableRoutes("v2");
+if(expectedRoutes.length<10||expectedRoutes.length>200)throw Error("Unexpected number of indexable pages: "+expectedRoutes.length);
 if(process.env.INDEXNOW_SUBMIT!=="1"||process.env.GITHUB_REF!=="refs/heads/main"){
  throw Error("IndexNow submission blocked unless explicitly triggered on production main branch.");
 }
@@ -41,8 +44,9 @@ for(let attempt=1;attempt<=16;attempt++){
 }
 assert.ok(seen);
 const urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1].replaceAll("&amp;","&"));
-assert.equal(urls.length,36,"Expected 36 approved indexable pages, got "+urls.length);
+assert.equal(urls.length,expectedRoutes.length,"Production sitemap does not yet match the "+expectedRoutes.length+" current pages");
 assert.equal(new Set(urls).size,urls.length,"Duplicate URLs in live sitemap");
+assert.deepEqual(urls.map(uri=>new URL(uri).pathname).sort(),expectedRoutes,"Live sitemap is stale or has unexpected routes; submission postponed");
 for(const uri of urls){
  const url=new URL(uri);
  assert.equal(url.origin,origin,"Out-of-domain IndexNow URL");

@@ -558,7 +558,7 @@ try{
  const skdInput=skdQuick.locator('.contact-form input[type="tel"]');
  await skdInput.focus();
  if(await skdQuickBar.isVisible())throw Error("SKD sticky bar covers active phone input");
- await skdInput.blur();
+ await skdInput.evaluate(input=>input.blur());
  await skdQuick.screenshot({path:"screenshots/skd-szybki-kontakt-telefon.png",fullPage:false,animations:"disabled"});
  console.log("SKD_MOBILE_QUICKBAR_OK",JSON.stringify(barMetrics));
  await skdQuick.close();

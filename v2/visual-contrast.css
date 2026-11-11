@@ -77,3 +77,23 @@
 .premium-campaign.campaign-support .vws-service-brand strong{
  display:block;color:#1f633d;font-weight:850;font-size:1.05rem;
 }
+
+
+/* Gdy serwer partnera nie zwróci logo: pokaż czytelną nazwę zamiast pustej ramki.
+   Atrybut hidden musi mieć pierwszeństwo przed autorskim img{display:block}. */
+.premium-subpage.theme-support .vws-service-brand img[hidden],
+.premium-campaign.campaign-support .vws-service-brand img[hidden]{
+ display:none!important;
+}
+.premium-subpage.theme-support .vws-service-brand:has(img[hidden]),
+.premium-campaign.campaign-support .vws-service-brand:has(img[hidden]){
+ gap:0;min-height:0;padding:12px 16px;
+}
+.premium-subpage.theme-support .vws-service-brand:has(img[hidden]) span,
+.premium-campaign.campaign-support .vws-service-brand:has(img[hidden]) span{
+ max-width:none;font-size:.94rem;line-height:1.45;
+}
+.premium-subpage.theme-support .vws-service-brand:has(img[hidden]) strong,
+.premium-campaign.campaign-support .vws-service-brand:has(img[hidden]) strong{
+ font-size:1.22rem;line-height:1.4;
+}

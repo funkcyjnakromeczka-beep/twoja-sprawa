@@ -31,7 +31,7 @@
   const label=document.createElement("label");label.textContent="Wybór usługi";const select=document.createElement("select");select.required=true;select.id="cf-service-"+Math.random().toString(36).slice(2,8);label.htmlFor=select.id;const empty=document.createElement("option");empty.value="";empty.textContent="Wybierz usługę";select.append(empty);
   const serviceAlias={"szkody":"Szkody górnicze","swiadczenie":"Świadczenie wspierające","renty":"Renty powypadkowe","skd":"Kredyt w PLN / SKD","franki":"Kredyty frankowe CHF","przesyl":"Służebność przesyłu"};
   const serviceFromLink=serviceAlias[(campaignParams.get("usluga")||"").toLowerCase()]||"";
-  for(const name of services){const option=document.createElement("option");option.value=name;option.textContent=name;if(name===(current||serviceFromLink))option.selected=true;select.append(option);}
+  for(const name of services){const option=document.createElement("option");option.value=name;option.textContent=name==="Kredyt w PLN / SKD"?"Sankcja Kredytu Darmowego (SKD) — kredyt PLN":name;if(name===(current||serviceFromLink))option.selected=true;select.append(option);}
   form.append(label,select);
   const people=document.createElement("p");people.className="contact-people";people.innerHTML='Kontakt telefoniczny: <a href="tel:+48796441345">Wojciech Obiegło — 796 441 345</a> · <a href="tel:+48500171531">Paulina Chandrała — 500 171 531</a>';form.append(people);
   const advisor=document.createElement("div");advisor.className="contact-advisor";advisor.setAttribute("aria-live","polite");form.append(advisor);

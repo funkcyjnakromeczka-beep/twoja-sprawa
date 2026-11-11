@@ -1,0 +1,23 @@
+name: Audyt działającej produkcji — Cloudflare Pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/live-audit.yml'
+      - 'scripts/audit-production-live.mjs'
+  workflow_dispatch:
+jobs:
+  live-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Składnia audytu
+        run: node --check scripts/audit-production-live.mjs
+      - name: Kontrola publicznych adresów, sitemap, JSON-LD, robots i zdjęć
+        run: node scripts/audit-production-live.mjs

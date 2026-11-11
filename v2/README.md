@@ -123,3 +123,13 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - `scripts/test-production-bundle.mjs` kontroluje zgodność podglądów wybranych usług i obecność funkcji udostępniania w pakiecie wydania. `scripts/test-home-clarity.mjs` sprawdza mobilny pasek.
 - Zielone audyty: [test wydania](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42954115941), [audyt kodu](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/42954158657).
 - **Ograniczenie:** samo zapisanie kodu i ukończenie CI nie oznaczają automatycznie nowej publikacji na Cloudflare ani potwierdzenia wyglądu podglądu w Facebooku, Instagramie czy aplikacjach wiadomości. Dostępne źródła nie potwierdziły nowego wdrożenia. Zmiany są gotowe w gałęzi `main`.
+
+## Etap VIII — kwalifikacja zgłoszeń szkód górniczych (11.11.2026)
+- Formularz `v2/contact.js` pokazuje wyłącznie dla usługi „Szkody górnicze” **opcjonalne** pole `Co zostało uszkodzone?`: ściany/elewacja, wnętrza, kostka/ogrodzenie, drzwi/okna lub kilka miejsc/inne. Nie oznacza to stwierdzenia przyczyny uszkodzeń.
+- Zgłoszenie Web3Forms zawiera pole `damage_area` tylko dla szkód górniczych, jeśli wybrano kategorię. Fallback e-mail zawiera to samo oznaczenie, jeśli dotyczy. Przy zmianie usługi wybór jest czyszczony; nie przesyłamy zdjęć ani załączników.
+- Na `v2/kampanie/szkody-gornicze.html` trzy przyciski w kartach uszkodzeń prowadzą do `#formularz` i ustawiają bezpieczną wartość pola bez automatycznego wysłania zgłoszenia i bez utraty parametrów UTM.
+- Styl wybranego pola: `v2/visual-contrast.css`; przycisków: `v2/lead-persona.css`.
+- Testy jednostkowe `scripts/test-contact-client.mjs` sprawdzają przełączanie usług, niedozwolone dane wejściowe, zawartość zgłoszeń i funkcje 3 skrótów.
+- Kontrola w prawdziwej przeglądarce: `scripts/screenshot-preview.mjs` sprawdza kategorię kostki brukowej, zaznaczenie w formularzu i kotwicę. Nie wysyła rzeczywistych zgłoszeń.
+- Audyt HTTP działającej publikacji: [GitHub Actions — wynik produkcji](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/43051431068).
+- **Ograniczenia:** zielony audyt produkcyjny potwierdza obecność odpowiedniego kodu i elementów HTML/CSS, ale nie potwierdza otrzymania wiadomości e-mail przez adresata ani wzrostu konwersji. Odbiór zgłoszeń wymaga osobnego testu za zgodą właściciela.

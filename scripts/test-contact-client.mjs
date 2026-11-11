@@ -328,8 +328,9 @@ for(const sample of [
   createElement:tag=>new Node(tag),
   createTextNode:text=>({tag:"text",textContent:text})
  };
- const window={location:{search:"?utm_source=organiczne"}};
- runInNewContext(source,{document,window,URLSearchParams,Math});
+ const window={location:{search:"?utm_source=organiczne"},setTimeout:()=>1,clearTimeout:()=>{}};
+ const fetch=async()=>({ok:true,json:async()=>({success:true})});
+ runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  const service=visit(form,n=>n.id?.startsWith("cf-service-"));
  const advisor=visit(form,n=>n.className==="contact-advisor");
@@ -360,6 +361,16 @@ for(const sample of [
  makeKey(mining,"__proto__");
  mining.events.click({preventDefault(){throw Error("Unknown shortcut should not intercept navigation");}});
  assert.equal(service.value,"Renty powypadkowe","Unexpected shortcut code must not change selection");
+ makeKey(support,"swiadczenie");
+ support.events.click({preventDefault(){}});
+ const name=visit(form,n=>n.autocomplete==="given-name");
+ const email=visit(form,n=>n.autocomplete==="email");
+ name.value="Test";email.value="test@example.com";
+ form.reset=()=>{service.value="";}; // browser reset restores the unselected home service
+ await form.events.submit({preventDefault(){}});
+ assert.equal(mining.attributes["data-selected"],"false");
+ assert.equal(support.attributes["data-selected"],"false","Successful send should clear the selected shortcut");
+ assert.equal(feedback.textContent,"","Shortcut confirmation must clear when the form resets");
 }
 
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

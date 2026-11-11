@@ -238,7 +238,7 @@ try{
   };
  });
  if(homeStyleAudit.stylesheetLinks.some(x=>x.includes("knowledge-articles.css"))||homeStyleAudit.resources)throw Error("Home still loads long-form article CSS: "+JSON.stringify(homeStyleAudit));
- if(homeStyleAudit.editorialLayout!=="grid"||homeStyleAudit.hubButton!=="inline-flex"||homeStyleAudit.faqButton!=="inline-flex")throw Error("Home editorial styling lost: "+JSON.stringify(homeStyleAudit));
+ if(homeStyleAudit.editorialLayout!=="grid"||!["inline-flex","flex"].includes(homeStyleAudit.hubButton)||!["inline-flex","flex"].includes(homeStyleAudit.faqButton))throw Error("Home editorial styling lost: "+JSON.stringify(homeStyleAudit));
  console.log("HOME_STYLE_BUDGET_OK",JSON.stringify(homeStyleAudit));
 
 

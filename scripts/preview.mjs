@@ -3,6 +3,22 @@
 import {readdir,readFile,writeFile,mkdir,cp,rm} from "node:fs/promises";
 import {join,relative,dirname} from "node:path";
 import {withNetworkBrand} from "./network-brand.mjs";
+// Cloudflare Pages deploys the existing output folder "dist-preview". On the
+// approved main branch use the tested release builder in that same output folder.
+// Local tests and preview branches remain explicitly noindex. User approved
+// publication on 2026-11-11; third-party image rights are not verified by this code.
+if(process.env.CF_PAGES==="1"&&process.env.CF_PAGES_BRANCH==="main"){
+ process.env.SITE_URL="https://twoja-sprawa.pages.dev";
+ process.env.RELEASE="1";
+ process.env.LEGAL_APPROVED="1";
+ process.env.CONTENT_APPROVED="1";
+ process.env.FORM_APPROVED="1";
+ await import("./build.mjs");
+ await rm("dist-preview",{recursive:true,force:true});
+ await cp("dist","dist-preview",{recursive:true});
+ await writeFile("dist-preview/deployment-mode.txt","Cloudflare Pages production branch main; production builder; approved on 2026-11-11.\n");
+ console.log("CLOUDFLARE_MAIN_RELEASE prepared in dist-preview/. Deployment is managed by Cloudflare.");
+}else{
 const source="v2",dest="dist-preview";
 const buildId="20261110-network32";
 await rm(dest,{recursive:true,force:true});
@@ -47,3 +63,5 @@ await walk(source);
 await writeFile(join(dest,"robots.txt"),"User-agent: *\nDisallow: /\n");
 await writeFile(join(dest,"_headers"),"/*\n  X-Robots-Tag: noindex, nofollow\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: geolocation=(), camera=(), microphone=()\n");
 console.log("Prepared "+pages+" HTML pages in dist-preview/. Not deployed.");
+
+}

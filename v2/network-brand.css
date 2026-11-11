@@ -94,3 +94,9 @@ body:has(.network-brand-bar) .skip-link:focus{
  .network-brand-logos img{transform:scale(1.22)}
 }
 @media(max-width:370px){:root{--network-brand-height:68px}.network-brand-logos a{height:56px}}
+
+/* Mobile home: the header switches from sticky to relative below 960px.
+   Offsetting a relative header by the brand height created an empty white strip. */
+@media(max-width:960px){
+ body.premium-v2:has(.network-brand-bar) .site-header{top:0!important}
+}

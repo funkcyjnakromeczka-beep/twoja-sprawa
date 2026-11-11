@@ -106,6 +106,13 @@
   damageWrap.append(damageLabel,damageArea,damageHint);form.append(damageWrap);
   const updateDamageArea=()=>{damageWrap.hidden=select.value!=="Szkody górnicze";if(damageWrap.hidden)damageArea.value="";};
   select.addEventListener("change",updateDamageArea);updateDamageArea();
+  // Only two enumerated property conditions may be preselected from a link.
+  // Never use arbitrary text from the URL as a value or as user-provided evidence.
+  const requestedDamage=(campaignParams.get("uszkodzenie")||"").toLowerCase().trim();
+  const damageFromLink={sciany:"Ściany i elewacja",kostka:"Kostka i ogrodzenie"};
+  if(select.value==="Szkody górnicze"&&Object.prototype.hasOwnProperty.call(damageFromLink,requestedDamage)){
+   damageArea.value=damageFromLink[requestedDamage];
+  }
   const requestedLeadPath=(campaignParams.get("lead_path")||"").toLowerCase().trim();   const leadPath=["chatbot","navigator","plan"].includes(requestedLeadPath)?requestedLeadPath:"formularz";
   // Dyskretny komunikat dla osób, które wybrały konkretną sytuację w przewodniku.
   const contextNotice=document.createElement("div");contextNotice.className="contact-context-notice";

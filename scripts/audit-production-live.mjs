@@ -8,10 +8,10 @@ const get=async(path)=>{
  assert.ok(response.ok,"Live "+path+" HTTP "+response.status);
  return {response,body:await response.text()};
 };
-const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd,homeFlow,navigatorJS,leaflet,leafletCSS,shareJS]=await Promise.all([
+const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd,homeFlow,navigatorJS,leaflet,leafletCSS,shareJS,brandCSS,chatJS]=await Promise.all([
  get("/robots.txt"),get("/sitemap.xml"),get("/"),get("/uslugi/szkody-gornicze"),
  get("/uslugi/swiadczenie-wspierajace"),get("/faq"),get("/szukaj"),get("/deployment-mode.txt"),
- get("/assets/wojciech-obieglo.jpg"),get("/assets/paulina-chandrala.jpg"),get("/mobile-service-cta.js"),get("/mobile-service-cta.css"),get("/uslugi/kredyty-frankowe"),get("/poradniki/frankowicze-lista-kontrolna"),get("/visual-contrast.css"),get("/uslugi/kredyty-pln"),get("/home-flow.css"),get("/service-navigator.js"),get("/start"),get("/ulotka-start.css"),get("/share-page.js")
+ get("/assets/wojciech-obieglo.jpg"),get("/assets/paulina-chandrala.jpg"),get("/mobile-service-cta.js"),get("/mobile-service-cta.css"),get("/uslugi/kredyty-frankowe"),get("/poradniki/frankowicze-lista-kontrolna"),get("/visual-contrast.css"),get("/uslugi/kredyty-pln"),get("/home-flow.css"),get("/service-navigator.js"),get("/start"),get("/ulotka-start.css"),get("/share-page.js"),get("/network-brand.css"),get("/chat-assistant.js")
 ]);
 assert.ok(robots.body.includes("Allow: /")&&!robots.body.includes("Disallow: /"),"Production robots unexpectedly blocked");
 assert.ok(robots.body.includes("OAI-SearchBot"),"OAI-SearchBot directive missing");
@@ -88,5 +88,10 @@ assert.ok(home.body.includes("data-share-page")&&home.body.includes("data-share-
 assert.ok(home.body.includes('src="/share-page.js"'),"Homepage share script tag not live");
 assert.ok(shareJS.body.includes("navigator.share")&&shareJS.body.includes('url.search=""'),"No-tracking sharing script missing/stale");
 
-const verified=21;
+assert.ok(brandCSS.body.includes('body.premium-v2:has(.network-brand-bar) .site-header{top:0!important}'),"Mobile header white-space fix not live");
+assert.ok(contrastCSS.body.includes('.vws-service-brand img[hidden]')||contrastCSS.body.includes('.vws-service-brand img[hidden],'),"Support image fallback styling not live");
+assert.ok(homeFlow.body.includes("chat-assistant.is-hero-area:not(.is-open)"),"Mobile hero chat suppression not live");
+assert.ok(chatJS.body.includes('is-hero-area'),"Chatbot hero visibility update not live");
+
+const verified=23;
 console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

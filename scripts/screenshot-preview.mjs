@@ -221,6 +221,27 @@ try{
  if(new Set(gridGeometry.slice(2).map(el=>el.left)).size!==4)throw Error("Four additional services should occupy four columns");
  await clarityDesktop.screenshot({path:"screenshots/home-clarity-services-desktop.png",fullPage:false,animations:"disabled"});
  console.log("HOME_CLARITY_UI_OK",JSON.stringify({order:positions,franki:true,grid:6,layout:"2+4"}));
+
+ // Ensure only the four secondary services are denser on phone screens.
+ const serviceDensityPage=await browser.newPage({viewport:{width:390,height:844}});
+ await serviceDensityPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ const cardDensity=await serviceDensityPage.locator("#uslugi .primary-services>.primary-card").evaluateAll(nodes=>nodes.map(node=>{
+  const rect=node.getBoundingClientRect();
+  const title=node.querySelector("h3")?.getBoundingClientRect();
+  const action=node.querySelector(".more")?.getBoundingClientRect();
+  const desc=node.querySelector("p");
+  return {height:Math.round(rect.height),description:desc?getComputedStyle(desc).display:"",
+   titleWithin:!!title&&title.bottom<=rect.bottom+2,actionWithin:!!action&&action.bottom<=rect.bottom+2};
+ }));
+ if(cardDensity.length!==6)throw Error("Mobile density should still show all six service cards");
+ if(cardDensity.slice(0,2).some(x=>x.description==="none"))throw Error("The two flagship projects lost their full descriptions");
+ if(cardDensity.slice(2).some(x=>x.description!=="none"||x.height>195||!x.titleWithin||!x.actionWithin)){
+  throw Error("Secondary mobile cards are not compact and legible: "+JSON.stringify(cardDensity));
+ }
+ await serviceDensityPage.locator("#uslugi").screenshot({path:"screenshots/home-uslugi-zwarta-lista-telefon.png",animations:"disabled"});
+ console.log("MOBILE_SERVICE_DENSITY_OK",JSON.stringify(cardDensity));
+ await serviceDensityPage.close();
+
  await clarityDesktop.close();
  // Playwright interaction verification: chatbot maps scenario to corresponding form.
  const page=await browser.newPage({viewport:{width:390,height:844}});

@@ -1,4 +1,4 @@
-/* Aktualny indeks tytułów i opisów serwisu. */
+/* Statyczne rekordy wyszukiwania: strony 1/2. */
 window.TwojaSprawaSearchPages1=[
  {
   "id": "page:v2/faq.html",
@@ -20,7 +20,7 @@ window.TwojaSprawaSearchPages1=[
   "id": "page:v2/kontakt.html",
   "href": "/v2/kontakt.html",
   "title": "Kontakt — Wojciech Obiegło i Paulina Chandrała",
-  "description": "Skontaktuj się z Wojciechem Obiegło lub Pauliną Chandrałą, SuccessTree. Szkody górnicze Lubin i Polkowice, świadczenie wspierające, renty powypadkowe, SKD, służebność przesyłu. Telefon 796 441 345.",
+  "description": "Skontaktuj się z Wojciechem Obiegło lub Pauliną Chandrałą, SuccessTree. Szkody górnicze Lubin i Polkowice, świadczenie wspierające, renty powypadkowe, Sankcja Kredytu Darmowego (SKD), kredyty frankowe CHF, służebność przesyłu. Telefon 796 441 345.",
   "category": "inne",
   "keywords": "Porozmawiajmy o Twojej sprawie. v2 kontakt html Kontakt — Wojciech Obiegło i Paulina Chandrała"
  },

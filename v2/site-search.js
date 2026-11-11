@@ -11,7 +11,7 @@
  const reset=host.querySelector("[data-search-reset]");
  const tabs=[...host.querySelectorAll("[data-search-category]")];
  if(!input||!results||!counter||!empty||!reset||!tabs.length)return;
- const labels={szkody:"Szkody górnicze",swiadczenie:"Świadczenie wspierające",renty:"Renty i wypadki",skd:"Kredyty PLN / SKD",przesyl:"Służebność przesyłu",inne:"Pozostałe materiały"};
+ const labels={szkody:"Szkody górnicze",swiadczenie:"Świadczenie wspierające",renty:"Renty i wypadki",skd:"Sankcja Kredytu Darmowego (SKD)",franki:"Pomoc frankowiczom — CHF",przesyl:"Służebność przesyłu",inne:"Pozostałe materiały"};
  let category="all";
  const params=new URLSearchParams(window.location.search);
  const initial=(params.get("q")||"").slice(0,120);

@@ -23,6 +23,8 @@ try{
   ["telefon-390","/",390,844],
   ["tablet-768","/",768,1024],
   ["desktop-1440","/",1440,900],
+  ["ulotka-start-telefon","/start.html",390,844],
+  ["ulotka-start-desktop","/start.html",1440,900],
   ["kampania-szkody-telefon","/kampanie/szkody-gornicze.html",390,844],
   ["kampania-swiadczenie-telefon","/kampanie/swiadczenie-wspierajace.html",390,844],
   ["usluga-szkody-telefon","/uslugi/szkody-gornicze.html",390,844],
@@ -145,6 +147,25 @@ try{
   checks.push({name,...measured});
   await page.close();
  }
+ // Leaflet entrypoint: no extra form, direct choice to two existing qualified forms.
+ const flyerPage=await browser.newPage({viewport:{width:390,height:844}});
+ await flyerPage.goto(origin+"/start.html",{waitUntil:"domcontentloaded"});
+ if(await flyerPage.locator(".leaflet-option").count()!==2)throw Error("Leaflet page must show exactly two flagship paths");
+ if(await flyerPage.locator('[data-contact-form]').count())throw Error("Leaflet page must not duplicate the lead form");
+ for(const [card,service,contact] of [
+  [".leaflet-option-support","swiadczenie-wspierajace","Świadczenie wspierające"],
+  [".leaflet-option-mining","szkody-gornicze","Szkody górnicze"]
+ ]){
+  await flyerPage.goto(origin+"/start.html",{waitUntil:"domcontentloaded"});
+  await flyerPage.locator(card+" .leaflet-main-btn").click();
+  await flyerPage.waitForURL(new RegExp("/kampanie/"+service+"\\.html"));
+  const value=await flyerPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
+  if(value!==contact)throw Error("Leaflet handoff must preselect contact form: "+service+" got "+value);
+  const url=new URL(flyerPage.url());
+  if(url.searchParams.get("utm_source")!=="ulotka"||url.searchParams.get("utm_medium")!=="druk"||url.hash!=="#formularz")throw Error("Leaflet attribution/form anchor missing: "+url.href);
+ }
+ console.log("LEAFLET_UI_OK: two flagship funnels, correct service in both forms, UTM ulotka/druk, no duplicate form");
+ await flyerPage.close();
  // New homepage information architecture: services first, real disclosure after CTA.
  const clarityMobile=await browser.newPage({viewport:{width:390,height:844}});
  await clarityMobile.goto(origin+"/",{waitUntil:"domcontentloaded"});

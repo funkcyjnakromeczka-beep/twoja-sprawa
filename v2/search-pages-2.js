@@ -1,4 +1,4 @@
-/* Statyczny indeks rzeczywistych stron Twoja Sprawa (część 2). */
+/* Aktualny indeks tytułów i opisów serwisu. */
 window.TwojaSprawaSearchPages2=[
  {
   "id": "page:v2/uslugi/sluzebnosc-przesylu.html",
@@ -145,19 +145,19 @@ window.TwojaSprawaSearchPages2=[
   "keywords": "Wypadek przy pracy — jakie dokumenty przygotować? v2 wiedza wypadek przy pracy pierwsze kroki html Wypadek Przy Pracy Pierwsze Kroki"
  },
  {
- "id": "page:v2/uslugi/kredyty-frankowe.html",
- "href": "/v2/uslugi/kredyty-frankowe.html",
- "title": "Pomoc frankowiczom — analiza umowy kredytu CHF",
- "description": "Pomoc frankowiczom: analiza aktywnych i spłaconych kredytów we frankach CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny.",
- "category": "franki",
- "keywords": "Frankowicze CHF umowa kredytu frankowego bank ugoda indeksowany denominowany rozliczenie sprawa sądowa"
-},
+  "id": "page:v2/uslugi/kredyty-frankowe.html",
+  "href": "/v2/uslugi/kredyty-frankowe.html",
+  "title": "Pomoc frankowiczom — analiza umowy kredytu CHF",
+  "description": "Pomoc frankowiczom: analiza aktywnych i spłaconych kredytów we frankach CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny.",
+  "category": "franki",
+  "keywords": "Frankowicze CHF umowa kredytu frankowego bank ugoda indeksowany denominowany rozliczenie sprawa sądowa"
+ },
  {
- "id": "page:v2/poradniki/frankowicze-lista-kontrolna.html",
- "href": "/v2/poradniki/frankowicze-lista-kontrolna.html",
- "title": "Kredyt frankowy CHF — lista dokumentów i pierwsze kroki",
- "description": "Przygotuj dokumenty dotyczące kredytu frankowego CHF: umowę, aneksy, historię spłat i ugody. Praktyczna checklista bez przesyłania danych.",
- "category": "franki",
- "keywords": "frankowicze CHF lista kontrolna checklista dokumenty kredyt frankowy historia spłat"
-}
+  "id": "page:v2/poradniki/frankowicze-lista-kontrolna.html",
+  "href": "/v2/poradniki/frankowicze-lista-kontrolna.html",
+  "title": "Kredyt frankowy CHF — lista dokumentów i pierwsze kroki",
+  "description": "Przygotuj dokumenty dotyczące kredytu frankowego CHF: umowę, aneksy, historię spłat i ugody. Praktyczna checklista bez przesyłania danych.",
+  "category": "franki",
+  "keywords": "frankowicze CHF lista kontrolna checklista dokumenty kredyt frankowy historia spłat"
+ }
 ];

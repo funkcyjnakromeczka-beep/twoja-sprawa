@@ -126,3 +126,12 @@
  .premium-v2 footer .footer-share button{width:100%}
 }
 @media print{.premium-v2 footer .footer-share{display:none}}
+
+
+/* On narrow screens the idle assistant must not obscure the two flagship cards.
+   It reappears after scrolling beyond the hero; an opened panel stays visible. */
+@media(max-width:650px){
+ body.premium-v2 .chat-assistant.is-hero-area:not(.is-open){
+  opacity:0!important;visibility:hidden!important;pointer-events:none!important;
+ }
+}

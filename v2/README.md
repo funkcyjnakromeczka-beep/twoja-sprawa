@@ -78,3 +78,10 @@ Dane przekazywane przez formularz kierowane są do Web3Forms i następnie na `tw
 - Indeks źródłowy jest statyczny. **Po każdej zmianie tytułu, opisu strony, pytania lub odpowiedzi FAQ należy zaktualizować odpowiedni plik `search-pages-*.js` lub `search-faq-data.js`**. Test `scripts/test-search-index-freshness.mjs` wykrywa rozbieżność i nie dopuszcza pomyślnego audytu.
 - Wyniki audytu 500 przypadków i dokładny ich rejestr: `docs/500-KONTYNUACJI-ETAP-IV.md`.
 - `/szukaj` nie jest landingiem SEO. `scripts/seo-policy.mjs` wyklucza ją z indeksacji i mapy witryny także w wydaniu produkcyjnym; oficjalne publikowanie innych stron wymaga osobnych zatwierdzeń.
+
+## Ulepszenia konwersji i SEO — 11 listopada 2026
+- `v2/mobile-service-cta.js` + `v2/mobile-service-cta.css`: mobilny pasek połączenia i formularza tylko dla dwóch głównych usług, bez przechowywania danych. Zostaje ukryty, gdy formularz pojawi się w widoku; pozycja chatbota jest przesunięta ponad pasek.
+- `v2/contact.js`: dopóki odwiedzający nie wybierze usługi, formularz nie pokazuje żadnego konsultanta jako domyślnego. Po wybraniu tematu aktualizuje nazwę, opis i numer do kontaktu.
+- Testy: `scripts/test-mobile-service-cta.mjs` (mock DOM) i `scripts/test-contact-client.mjs`; Chromium `scripts/screenshot-preview.mjs` sprawdza położenie przycisków oraz kliknięcie bez nakładania elementów.
+- `scripts/indexnow-routes.mjs` określa rzeczywiste indeksowalne ścieżki na podstawie aktualnego kodu; `scripts/submit-indexnow.mjs` nie zgłasza przestarzałej sitemap. `.github/workflows/indexnow.yml` automatycznie reaguje na zmiany treści HTML. Zgłoszenie IndexNow nie oznacza, że Bing czy Google na pewno pokaże adresy.
+- Test zasad zgłaszania: `scripts/test-indexnow-routes.mjs`. Pozostają obowiązujące zgody właściciela na materiały i brak gwarancji uzyskania roszczeń/świadczeń.

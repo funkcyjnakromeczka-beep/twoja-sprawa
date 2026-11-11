@@ -1,4 +1,4 @@
-/* Statyczny indeks rzeczywistych stron Twoja Sprawa (część 1). */
+/* Aktualny indeks tytułów i opisów serwisu. */
 window.TwojaSprawaSearchPages1=[
  {
   "id": "page:v2/faq.html",
@@ -12,7 +12,7 @@ window.TwojaSprawaSearchPages1=[
   "id": "page:v2/index.html",
   "href": "/v2/",
   "title": "Twoja Sprawa — analiza roszczeń i świadczeń w całej Polsce",
-  "description": "Twoja Sprawa: szkody górnicze Lubin i Polkowice, świadczenie wspierające, waloryzacja rent powypadkowych, SKD i służebność przesyłu. SuccessTree — współpraca z VOTUM.",
+  "description": "Twoja Sprawa: szkody górnicze, świadczenie wspierające, renty, Sankcja Kredytu Darmowego (SKD), pomoc frankowiczom i służebność przesyłu. SuccessTree — współpraca z VOTUM.",
   "category": "inne",
   "keywords": "Szkody górnicze? Świadczenie wspierające? v2 index html Twoja Sprawa — strona główna"
  },
@@ -75,7 +75,7 @@ window.TwojaSprawaSearchPages1=[
  {
   "id": "page:v2/poradniki/skd-kredyt-pln-lista-kontrolna.html",
   "href": "/v2/poradniki/skd-kredyt-pln-lista-kontrolna.html",
-  "title": "Kredyt w PLN i SKD — co sprawdzić w umowie?",
+  "title": "Sankcja Kredytu Darmowego (SKD) — lista kontrolna umowy kredytu PLN",
   "description": "Praktyczna lista kontrolna kredytu konsumenckiego i sankcji kredytu darmowego (SKD).",
   "category": "skd",
   "keywords": "Kredyt w PLN i SKD — co sprawdzić w umowie? v2 poradniki skd kredyt pln lista kontrolna html SKD Kredyt PLN Lista Kontrolna"
@@ -107,7 +107,7 @@ window.TwojaSprawaSearchPages1=[
  {
   "id": "page:v2/uslugi/kredyty-pln.html",
   "href": "/v2/uslugi/kredyty-pln.html",
-  "title": "Kredyty w PLN — Sankcja Kredytu Darmowego i rozliczenie kosztów",
+  "title": "Sankcja Kredytu Darmowego (SKD) — kredyty konsumenckie w PLN",
   "description": "Sankcja Kredytu Darmowego (SKD): sprawdź kredyt konsumencki w PLN, koszty, RRSO, możliwe naruszenia i termin z art. 45. Bezpłatny pierwszy kontakt.",
   "category": "skd",
   "keywords": "Kredyty w PLN — Sankcja Kredytu Darmowego i rozliczenie kosztów v2 uslugi kredyty pln html Kredyty PLN"

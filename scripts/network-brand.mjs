@@ -21,7 +21,7 @@ export function withNetworkBrand(sourceHtml){
  let html=removeLegacyLogoStrip(sourceHtml);
  if(html.includes('class="network-brand-bar"'))return html;
  if(!html.includes("</head>"))throw Error("HTML head missing");
- html=html.replace("</head>",'<link rel="stylesheet" href="/v2/network-brand.css"><script src="/v2/network-brand.js" defer></script></head>');
+ html=html.replace("</head>",'<link rel="stylesheet" href="/v2/network-brand.css"><link rel="stylesheet" href="/v2/visual-contrast.css"><script src="/v2/network-brand.js" defer></script></head>');
  if(/<header\b/i.test(html))html=html.replace(/<header\b/i,strip+"<header");
  else{
    const skip=html.match(/<a\b[^>]*class="skip-link"[^>]*>[\s\S]*?<\/a>/i);

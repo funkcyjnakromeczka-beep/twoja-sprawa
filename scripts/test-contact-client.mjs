@@ -52,6 +52,8 @@ const run=async(error=false)=>{
  const callback=visit(form,n=>n.id?.startsWith("cf-time-"));
  const select=visit(form,n=>n.id?.startsWith("cf-service-"));
  assert.ok(firstName&&location&&phone&&email&&method&&callback&&select);
+ const phoneHelp=visit(form,n=>n.id?.startsWith("cf-phone-help-"));
+ assert.ok(phoneHelp&&phone.getAttribute("aria-describedby")===phoneHelp.id,"Phone guidance must be connected for screen readers");
  const advisor=visit(form,n=>n.className==="contact-advisor");
  assert.ok(advisor&&advisor.hidden===true,"Before choosing service no specialist should appear selected");
  firstName.value="Test";location.value="Lubin";phone.value="";

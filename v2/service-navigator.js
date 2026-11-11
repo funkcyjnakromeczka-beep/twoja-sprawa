@@ -48,8 +48,8 @@
   },
   skd:{
    title:"Sankcja Kredytu Darmowego (SKD)",short:"Sprawdzenie umowy",
-   desc:"Warto zachować umowę kredytu, aneksy i historię spłat. Możliwość skorzystania z sankcji wymaga zbadania konkretnej umowy i właściwych terminów.",
-   service:"kredyty-pln.html",phone:"500 171 531",tel:"+48500171531"
+   desc:"Wyślij kopię umowy kredytowej na wojciech.obieglo@votum-ds.pl i zostaw numer telefonu. Zasłoń zbędne dane identyfikacyjne. Zastosowanie SKD wymaga indywidualnej analizy i terminów.",
+   service:"kredyty-pln.html",phone:"796 441 345",tel:"+48796441345"
   },
   franki:{
    title:"Pomoc frankowiczom — kredyty CHF",short:"Aktywny lub spłacony kredyt frankowy",

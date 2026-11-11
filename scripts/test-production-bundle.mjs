@@ -11,14 +11,14 @@ const headers=await read("_headers");
 assert.ok(robots.includes("Allow: /")&&!robots.includes("Disallow: /"),"production robots not enabled");
 assert.ok(robots.includes("Sitemap: "+origin+"/sitemap.xml"),"production sitemap not announced");
 assert.ok(sitemap.includes("<urlset")&&sitemap.includes("<loc>"+origin+"/</loc>"),"sitemap invalid");
-for(const route of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/wiedza/","/faq","/plan-dzialania"]){
+for(const route of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-frankowe","/wiedza/","/faq","/plan-dzialania"]){
  assert.ok(sitemap.includes("<loc>"+origin+route+"</loc>"),"required SEO route missing: "+route);
 }
 for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/polityka-prywatnosci"]){
  assert.ok(!sitemap.includes("<loc>"+origin+route+"</loc>"),"nonindex route leaked into sitemap: "+route);
 }
 assert.ok(!headers.includes("X-Robots-Tag: noindex"),"preview response headers leaked");
-for(const path of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","wiedza/index.html","faq.html","plan-dzialania.html"]){
+for(const path of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","uslugi/kredyty-frankowe.html","uslugi/kredyty-pln.html","wiedza/index.html","faq.html","plan-dzialania.html"]){
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="index,follow"'),"still noindex: "+path);
  assert.ok(html.includes('rel="canonical" href="'+origin),"missing canonical: "+path);
@@ -52,6 +52,10 @@ for(const item of faqSchema.mainEntity){
  assert.ok(item.name.length>15&&item.acceptedAnswer.text.length>60);
  assert.ok(faqPage.includes("<summary>"+item.name.replaceAll("&","&amp;")+"</summary>")||faqPage.includes("<summary>"+item.name+"</summary>"),"structured question not visible: "+item.name);
 }
+const frank=await read("uslugi/kredyty-frankowe.html");
+assert.ok(frank.includes('src="/contact.js" data-service="Kredyty frankowe CHF"'),"CHF conversion form missing or not selected");
+assert.ok(frank.includes('href="/poradniki/frankowicze-lista-kontrolna"'),"CHF checklist link missing");
+assert.ok(frank.includes("Pomoc frankowiczom"),"Frankowicz service missing visible heading");
 const miningPage=await read("uslugi/szkody-gornicze.html");
 assert.ok(!miningPage.includes('"@type":"FAQPage"'),"FAQ schema should not be duplicated on other routes");
 

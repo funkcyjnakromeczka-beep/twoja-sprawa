@@ -56,6 +56,10 @@ on:
       - 'v2/uslugi/swiadczenie-wspierajace.html'
       - 'v2/kampanie/szkody-gornicze.html'
       - 'v2/kampanie/swiadczenie-wspierajace.html'
+# Avoid redundant concurrent browser downloads and wasted runner minutes.
+concurrency:
+  group: twoja-sprawa-screenshots-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   screenshots:
     # Stable image: ubuntu-latest used resolute, apt repositories failed DNS resolution.
@@ -73,7 +77,7 @@ jobs:
       - name: Zainstaluj przeglądarkę testową
         run: |
           npm install --no-save --no-package-lock playwright
-          npx playwright install --with-deps chromium
+          npx playwright install chromium --only-shell
       - name: Wykonaj zrzuty ekranu
         run: node scripts/screenshot-preview.mjs
       - name: Udostępnij obrazy do kontroli, również przy błędach

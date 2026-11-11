@@ -58,7 +58,8 @@ on:
       - 'v2/kampanie/swiadczenie-wspierajace.html'
 jobs:
   screenshots:
-    runs-on: ubuntu-latest
+    # Stable image: ubuntu-latest used resolute, apt repositories failed DNS resolution.
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     timeout-minutes: 20

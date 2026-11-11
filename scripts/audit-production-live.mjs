@@ -8,10 +8,10 @@ const get=async(path)=>{
  assert.ok(response.ok,"Live "+path+" HTTP "+response.status);
  return {response,body:await response.text()};
 };
-const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd,homeFlow,navigatorJS]=await Promise.all([
+const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd,homeFlow,navigatorJS,leaflet,leafletCSS]=await Promise.all([
  get("/robots.txt"),get("/sitemap.xml"),get("/"),get("/uslugi/szkody-gornicze"),
  get("/uslugi/swiadczenie-wspierajace"),get("/faq"),get("/szukaj"),get("/deployment-mode.txt"),
- get("/assets/wojciech-obieglo.jpg"),get("/assets/paulina-chandrala.jpg"),get("/mobile-service-cta.js"),get("/mobile-service-cta.css"),get("/uslugi/kredyty-frankowe"),get("/poradniki/frankowicze-lista-kontrolna"),get("/visual-contrast.css"),get("/uslugi/kredyty-pln"),get("/home-flow.css"),get("/service-navigator.js")
+ get("/assets/wojciech-obieglo.jpg"),get("/assets/paulina-chandrala.jpg"),get("/mobile-service-cta.js"),get("/mobile-service-cta.css"),get("/uslugi/kredyty-frankowe"),get("/poradniki/frankowicze-lista-kontrolna"),get("/visual-contrast.css"),get("/uslugi/kredyty-pln"),get("/home-flow.css"),get("/service-navigator.js"),get("/start"),get("/ulotka-start.css")
 ]);
 assert.ok(robots.body.includes("Allow: /")&&!robots.body.includes("Disallow: /"),"Production robots unexpectedly blocked");
 assert.ok(robots.body.includes("OAI-SearchBot"),"OAI-SearchBot directive missing");
@@ -28,6 +28,13 @@ for(const route of ["/","/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspieraja
  assert.ok(hit.includes('rel="canonical" href="'+root+route+'"'),"Canonical missing/mismatched: "+route);
 }
 assert.ok(search.body.includes('name="robots" content="noindex,follow"'),"Internal search must remain noindex");
+assert.ok(leaflet.body.includes('name="robots" content="noindex,follow"'),"Flyer entry should be noindex");
+assert.ok(leaflet.body.includes('rel="canonical" href="'+root+'/start"'),"Flyer entry canonical missing");
+assert.ok(!urls.includes(root+"/start"),"Flyer entry must not appear in SEO sitemap");
+assert.ok(leaflet.body.includes('href="/kampanie/swiadczenie-wspierajace?utm_source=ulotka'),"Flyer support link broken");
+assert.ok(leaflet.body.includes('href="/kampanie/szkody-gornicze?utm_source=ulotka'),"Flyer mining link broken");
+assert.ok(leaflet.body.includes('href="tel:+48500171531"')&&leaflet.body.includes('href="tel:+48796441345"'),"Flyer phone numbers mismatch");
+assert.ok(leafletCSS.body.includes(".leaflet-option-support")&&leafletCSS.body.includes("@media(max-width:730px)"),"Flyer mobile layout missing");
 assert.ok(frank.body.includes('name="robots" content="index,follow"'),"CHF page is not indexable");
 assert.ok(frank.body.includes('href="/poradniki/frankowicze-lista-kontrolna"'),"CHF checklist link missing");
 assert.ok(frank.body.includes('data-service="Kredyty frankowe CHF"'),"CHF form should select correct service");
@@ -61,5 +68,5 @@ for(const [page,kind] of [[mining.body,"szkody"],[support.body,"swiadczenie"]]){
 }
 assert.ok(mobileJS.body.includes("mobile-service-cta")&&mobileJS.body.includes("+48796441345")&&mobileJS.body.includes("+48500171531"),"Mobile CTA source outdated");
 assert.ok(mobileCSS.body.includes(".mobile-service-cta")&&mobileCSS.body.includes("chat-assistant"),"Mobile CTA CSS missing chat overlap protection");
-const verified=18;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+const verified=20;
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

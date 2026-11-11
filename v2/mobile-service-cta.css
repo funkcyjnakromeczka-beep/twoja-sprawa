@@ -22,8 +22,9 @@
  }
  .mobile-service-call strong{font-size:1rem;font-variant-numeric:tabular-nums;font-weight:850}
  .mobile-service-cta a:focus-visible{outline:3px solid #fff;outline-offset:3px}
- body:has(.mobile-service-cta) .chat-assistant{
-  bottom:calc(89px + env(safe-area-inset-bottom));right:10px;z-index:145;
+ body.premium-subpage:has(.mobile-service-cta) .chat-assistant,
+ body.premium-subpage:has(.mobile-service-cta) .chat-assistant:not(.is-open){
+  bottom:calc(90px + env(safe-area-inset-bottom))!important;right:10px;z-index:145;
  }
  body:has(.mobile-service-cta) .chat-assistant .chat-panel{max-height:min(60dvh,530px)}
  body:has(.chat-assistant.is-open) .mobile-service-cta{visibility:hidden;pointer-events:none}

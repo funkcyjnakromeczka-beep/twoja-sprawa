@@ -82,7 +82,7 @@ for(const [path,type] of [
  ["wiedza/index.html","CollectionPage"]
 ]){
  const html=await read(path);
- const scripts=[...html.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)];
+ const scripts=[...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
  const graphs=scripts.map(x=>JSON.parse(x[1])).flatMap(x=>x["@graph"]||[]);
  const page=graphs.find(x=>x["@type"]===type);
  assert.ok(page,"Expected Schema.org "+type+" on "+path);

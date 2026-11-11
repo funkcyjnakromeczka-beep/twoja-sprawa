@@ -339,6 +339,22 @@ try{
  if(afterReset!==18)throw Error("Search reset should restore the first 18 cards: "+afterReset);
  console.log("GLOBAL_SEARCH_OK",JSON.stringify({sourceCount:62,cracks:found,faqDeepLink:true,wzon:true,reset:afterReset}));
  await searchPage.close();
+
+ // Mining campaign: choosing an example should prepare the form, not submit a lead.
+ const damagePage=await browser.newPage({viewport:{width:390,height:844}});
+ await damagePage.goto(origin+"/kampanie/szkody-gornicze.html?utm_source=ulotka&utm_medium=qr",{waitUntil:"domcontentloaded"});
+ const damageLinks=damagePage.locator(".campaign-damage-pick");
+ if(await damageLinks.count()!==3)throw Error("Mining campaign quick selectors missing");
+ await damageLinks.nth(1).click();
+ const selectedDamage=await damagePage.locator('.contact-form select[id^="cf-damage-"]').inputValue();
+ if(selectedDamage!=="Kostka i ogrodzenie")throw Error("Campaign category did not preselect damage type: "+selectedDamage);
+ if(new URL(damagePage.url()).hash!=="#formularz")throw Error("Quick damage action did not scroll to lead form");
+ const damageVisibility=await damagePage.locator(".contact-damage-area").isVisible();
+ if(!damageVisibility)throw Error("Mining damage qualifier must be visible on campaign form");
+ await damagePage.screenshot({path:"screenshots/szkody-szybki-wybor-telefon.png",fullPage:false,animations:"disabled"});
+ console.log("MINING_DAMAGE_UI_OK",JSON.stringify({category:selectedDamage,atForm:true,visible:damageVisibility}));
+ await damagePage.close();
+
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

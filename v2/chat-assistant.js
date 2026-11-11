@@ -54,7 +54,7 @@
     {
       key:"skd",name:"Sankcja Kredytu Darmowego (SKD)",short:"Sprawdzenie umowy kredytowej",phone:"796 441 345",tel:"+48796441345",
       service:"kredyty-pln.html",checklist:"skd-kredyt-pln-lista-kontrolna.html",alias:"skd",
-      intro:"Wyślij kopię umowy kredytowej na wojciech.obieglo@votum-ds.pl i pozostaw numer telefonu. Nie każdy kredyt podlega sankcji kredytu darmowego. Zasłoń zbędne dane identyfikacyjne w załączniku.",
+      intro:"Wyślij kopię umowy kredytowej na wojciech.obieglo@votum-ds.pl i pozostaw numer telefonu. Nie każdy kredyt podlega sankcji kredytu darmowego. Możesz dołączyć pełną umowę bez zasłaniania danych; przed wysłaniem sprawdź adres odbiorcy.",
       stages:[
         ["Mam umowę kredytu","Zachowaj umowę, aneksy i harmonogram. Istotne mogą być rodzaj kredytu, koszty i daty."],
         ["Kredyt został spłacony","Zachowaj umowę i potwierdzenia spłaty. Możliwości działania zależą od rodzaju umowy i obowiązujących terminów."]

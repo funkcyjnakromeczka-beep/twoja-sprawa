@@ -59,3 +59,21 @@
  .premium-subpage.theme-support .vws-service-brand img{width:min(100%,285px);max-height:99px}
 }
 @media print{.interactive-checklist,.interactive-checklist .checklist-item{background:#fff!important}}
+
+/* Odmiana kampanijna Votum Wsparcie: duży znak na białym tle. */
+.premium-campaign.campaign-support .vws-service-brand{
+ display:flex;align-items:center;flex-wrap:wrap;gap:12px;
+ width:min(100%,580px);padding:12px 17px;margin-bottom:23px;
+ background:#fff;border:2px solid #86ab93;border-radius:13px;
+ box-shadow:0 8px 23px rgba(4,34,24,.16);color:#1d4833
+}
+.premium-campaign.campaign-support .vws-service-brand img{
+ width:clamp(180px,27vw,285px);height:auto;max-height:100px;
+ object-fit:contain;background:#fff;
+}
+.premium-campaign.campaign-support .vws-service-brand span{
+ color:#24523a;font-size:.86rem;font-weight:700;line-height:1.5;
+}
+.premium-campaign.campaign-support .vws-service-brand strong{
+ display:block;color:#1f633d;font-weight:850;font-size:1.05rem;
+}

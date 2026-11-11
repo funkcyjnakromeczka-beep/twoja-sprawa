@@ -23,7 +23,7 @@ jobs:
         run: |
           npm install --no-save --no-package-lock playwright
           npx playwright install --with-deps chromium
-      - name: Zmierz 5 rzeczywistych podstron na 2 szerokościach ekranu
+      - name: Zmierz 6 podstron, w tym start QR z ulotki na 2 szerokościach ekranu
         run: node scripts/measure-live-performance.mjs
       - name: Udostępnij JSON i raport Markdown
         if: always()

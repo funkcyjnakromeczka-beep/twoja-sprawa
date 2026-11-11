@@ -145,6 +145,32 @@ try{
   checks.push({name,...measured});
   await page.close();
  }
+ // New homepage information architecture: services first, real disclosure after CTA.
+ const clarityMobile=await browser.newPage({viewport:{width:390,height:844}});
+ await clarityMobile.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ const positions=await clarityMobile.evaluate(()=>{
+  const top=id=>{const el=document.querySelector(id);return el?.getBoundingClientRect().top+window.scrollY;};
+  return {services:top("#uslugi"),team:top("#zespol"),contact:top("#kontakt")};
+ });
+ if(!(positions.services<positions.team&&positions.team<positions.contact))throw Error("Homepage sections out of expected order: "+JSON.stringify(positions));
+ const disclosure=clarityMobile.locator("#dobierz-pomoc");
+ if(await disclosure.evaluate(el=>el.open))throw Error("Homepage navigator initially should be compact");
+ await clarityMobile.locator('a[href="#dobierz-pomoc"]').first().click();
+ if(!await disclosure.evaluate(el=>el.open))throw Error("Anchor to navigator failed to open its details element");
+ await clarityMobile.locator('[data-navigator="franki"]').click();
+ const frankCTA=await clarityMobile.locator(".navigator-contact-cta").getAttribute("href");
+ if(!frankCTA||!frankCTA.includes("usluga=franki"))throw Error("Frankowicze selection does not prefill appropriate contact: "+frankCTA);
+ await clarityMobile.screenshot({path:"screenshots/home-clarity-navigator-mobile.png",fullPage:false,animations:"disabled"});
+ await clarityMobile.close();
+ const clarityDesktop=await browser.newPage({viewport:{width:1440,height:900}});
+ await clarityDesktop.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ const gridGeometry=await clarityDesktop.locator("#uslugi .primary-services>.primary-card").evaluateAll(nodes=>nodes.map(el=>({top:Math.round(el.getBoundingClientRect().top),left:Math.round(el.getBoundingClientRect().left)})));
+ if(gridGeometry.length!==6)throw Error("Expected 6 service cards, got "+gridGeometry.length);
+ if(gridGeometry[0].top!==gridGeometry[1].top||gridGeometry.slice(2).some(el=>el.top!==gridGeometry[2].top))throw Error("2+4 symmetric homepage grid failed: "+JSON.stringify(gridGeometry));
+ if(new Set(gridGeometry.slice(2).map(el=>el.left)).size!==4)throw Error("Four additional services should occupy four columns");
+ await clarityDesktop.screenshot({path:"screenshots/home-clarity-services-desktop.png",fullPage:false,animations:"disabled"});
+ console.log("HOME_CLARITY_UI_OK",JSON.stringify({order:positions,franki:true,grid:6,layout:"2+4"}));
+ await clarityDesktop.close();
  // Playwright interaction verification: chatbot maps scenario to corresponding form.
  const page=await browser.newPage({viewport:{width:390,height:844}});
  await page.goto(origin+"/uslugi/szkody-gornicze.html?utm_source=facebook&utm_medium=grupa&utm_campaign=lokalna",{waitUntil:"domcontentloaded"});

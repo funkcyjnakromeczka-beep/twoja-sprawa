@@ -39,9 +39,20 @@
   grid-column:auto!important;
  }
  .premium-v2 #uslugi .section-lead{font-size:.96rem;line-height:1.64}
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured){
+  min-height:168px;padding:18px 20px;
+ }
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) .project-symbol{
+  font-size:1.7rem;opacity:.75;
+ }
+ .premium-v2 #uslugi .primary-card:not(.support-featured):not(.mining-featured) p{
+  margin-top:6px;line-height:1.5;
+ }
 }
 /* Once a topic is picked, the team is introduced without a second enormous hero. */
 .premium-v2 #zespol{margin-top:clamp(30px,5vw,58px)}
 .premium-v2 #zespol .team-grid{align-items:stretch}
 .premium-v2 #dobierz-pomoc{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
 .premium-v2 #dobierz-pomoc:focus-within{outline-offset:4px}
+\n/* Anchor targets remain visible below sticky partner branding on all viewports. */
+.premium-v2 #kontakt,.premium-v2 #zespol,.premium-v2 #pytania,.premium-v2 #poradniki{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}

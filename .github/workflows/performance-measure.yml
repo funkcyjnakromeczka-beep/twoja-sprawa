@@ -1,0 +1,35 @@
+name: Pomiar wydajności produkcji — telefon i desktop
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/measure-live-performance.mjs'
+      - '.github/workflows/performance-measure.yml'
+  workflow_dispatch:
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sprawdź składnię pomiaru
+        run: node --check scripts/measure-live-performance.mjs
+      - name: Zainstaluj środowisko Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Zmierz 5 rzeczywistych podstron na 2 szerokościach ekranu
+        run: node scripts/measure-live-performance.mjs
+      - name: Udostępnij JSON i raport Markdown
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: twoja-sprawa-raport-wydajnosci
+          path: reports/
+          retention-days: 30
+          if-no-files-found: warn

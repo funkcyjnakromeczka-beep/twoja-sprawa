@@ -219,7 +219,7 @@ assert.ok(article.includes('href="/knowledge-articles.css"'),"Long-form article 
 
 // Stage XVIII: verify public JSON-LD describes this agency's own pages,
 // not the affiliated capital group and not fictitious offices or outcomes.
-const getSchema=markup=>[...markup.matchAll(/<script\\b[^>]*type="application\\/ld\\+json"[^>]*>([\\s\\S]*?)<\\/script>/g)]
+const getSchema=markup=>[...markup.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
  .flatMap(match=>{try{return JSON.parse(match[1])["@graph"]||[];}catch{return [];}});
 const schemaRoutes=[
  ["/kontakt","ContactPage"],

@@ -76,3 +76,22 @@
 @media(max-width:570px){
  .premium-campaign.campaign-mining .campaign-damage-pick{display:flex;width:100%}
 }
+
+
+/* Etap IX: dostępny wybór etapu WZON w kampanii świadczenia wspierającego. */
+.premium-campaign.campaign-support .campaign-stage-pick{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:44px;margin-top:12px;padding:10px 13px;
+ background:#145449;color:#fff!important;text-decoration:none;
+ border:1px solid #16685b;border-radius:10px;
+ font:750 .87rem/1.35 system-ui,sans-serif;
+}
+.premium-campaign.campaign-support .campaign-stage-pick:hover{
+ background:#216b5e;border-color:#9ad3b5;
+}
+.premium-campaign.campaign-support .campaign-stage-pick:focus-visible{
+ outline:3px solid #237960;outline-offset:3px;
+}
+@media(max-width:570px){
+ .premium-campaign.campaign-support .campaign-stage-pick{display:flex;width:100%}
+}

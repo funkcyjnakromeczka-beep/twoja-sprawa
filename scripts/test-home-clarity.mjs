@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+/** Strona główna: 2 projekty priorytetowe, 4 wtórne i widoczna pomoc w wyborze. */
+import assert from "node:assert/strict";
+import {readFile,access} from "node:fs/promises";
+const html=await readFile("v2/index.html","utf8");
+const css=await readFile("v2/home-flow.css","utf8");
+const navigator=await readFile("v2/service-navigator.js","utf8");
+const marks=["<section class=\"hero hero-glamour\"","<section id=\"uslugi\"","<details id=\"dobierz-pomoc\"","<section class=\"wrap team-spotlight","<section id=\"kontakt\""];
+let last=-1;
+for(const mark of marks){
+ const i=html.indexOf(mark);
+ assert.ok(i>=0&&i>last,"Homepage order/missing section: "+mark);
+ last=i;
+}
+const beg=html.indexOf('class="grid primary-services"');
+const end=html.indexOf('<details class="service-extra"',beg);
+assert.ok(beg>=0&&end>beg,"Homepage services area missing");
+const segment=html.slice(beg,end);
+const links=[...segment.matchAll(/class="card primary-card[^"]*" href="([^"]+)"/g)].map(m=>m[1]);
+assert.equal(links.length,6,"Should show six distinct service cards");
+assert.equal(new Set(links).size,6,"Duplicated service links");
+for(const link of links){
+ assert.ok(link.startsWith("/v2/uslugi/")&&link.endsWith(".html"),"Bad service path "+link);
+ await access(link.slice(1));
+}
+assert.ok(segment.indexOf("support-featured")<segment.indexOf("mining-featured"),"Support and mining order altered");
+assert.ok(segment.includes("Sankcja Kredytu Darmowego")&&segment.includes("Pomoc frankowiczom"),"Financial areas not shown explicitly");
+assert.ok(html.includes("Dwa główne projekty oraz cztery dodatkowe obszary"),"Homepage description stale");
+assert.ok(html.includes('href="/v2/home-flow.css"'),"Balanced layout CSS missing");
+assert.ok(css.includes("grid-template-columns:repeat(12,minmax(0,1fr))"),"Desktop balanced grid missing");
+assert.ok(css.includes("grid-column:span 6")&&css.includes("grid-column:span 3"),"2+4 desktop layout missing");
+assert.ok(css.includes("@media(max-width:760px)")&&css.includes("grid-template-columns:minmax(0,1fr)"),"Mobile one-column layout missing");
+assert.ok(navigator.includes('window.location?.hash==="#dobierz-pomoc"'),"Deep link does not open collapsed navigator");
+assert.ok(navigator.includes('root.open=true'),"Navigator not expanded on user action");
+console.log("HOME_CLARITY_OK: 6 unique service cards (2+4), priority visible, keyboard-friendly navigator, balanced desktop/mobile layout.");

@@ -31,6 +31,7 @@ jobs:
           node --check v2/service-navigator.js
           node --check scripts/test-service-navigator.mjs
           node --check scripts/test-home-clarity.mjs
+          node --check scripts/test-1000-regressions.mjs
           node --check v2/knowledge-hub.js
           node --check scripts/test-knowledge-hub.mjs
           node --check v2/article-accessibility.js
@@ -79,6 +80,8 @@ jobs:
         run: node scripts/test-service-navigator.mjs
       - name: Sprawdź hierarchię strony głównej i siatkę 2+4 usług
         run: node scripts/test-home-clarity.mjs
+      - name: Seria V — 1000 sekwencyjnych kontroli 62 materiałów i ścieżek
+        run: node scripts/test-1000-regressions.mjs
       - name: Testuj wyszukiwarkę i filtry poradników
         run: node scripts/test-knowledge-hub.mjs
       - name: Testuj narzędzia czytania we wszystkich poradnikach

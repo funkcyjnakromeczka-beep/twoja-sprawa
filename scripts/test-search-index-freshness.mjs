@@ -9,7 +9,7 @@ for(const file of ["v2/search-pages-1.js","v2/search-pages-2.js","v2/search-faq-
 }
 const pages=[...(window.TwojaSprawaSearchPages1||[]),...(window.TwojaSprawaSearchPages2||[])];
 const faq=window.TwojaSprawaSearchFaq||[];
-assert.equal(pages.length,36);
+assert.equal(pages.length,38);
 assert.equal(faq.length,24);
 let verifiedDescriptions=0;
 for(const entry of pages){
@@ -36,4 +36,4 @@ for(const entry of faq){
  assert.equal(entry.title,question,"FAQ question stale: "+id);
  assert.equal(entry.description,answer?.slice(0,250),"FAQ answer stale: "+id);
 }
-console.log("SEARCH_INDEX_FRESHNESS_OK: 36 stron, "+verifiedDescriptions+" opisów SEO oraz 24 pytania FAQ odpowiadają aktualnemu kodowi.");
+console.log("SEARCH_INDEX_FRESHNESS_OK: 38 stron, "+verifiedDescriptions+" opisów SEO oraz 24 pytania FAQ odpowiadają aktualnemu kodowi.");

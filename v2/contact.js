@@ -129,11 +129,41 @@
   const checkName=()=>{const valid=Boolean(name.value.trim());name.setCustomValidity(valid?"":"Wpisz imię, abyśmy mogli się do Ciebie zwrócić.");return valid;};
   name.addEventListener("input",()=>{if(name.value.trim())name.setCustomValidity("");});
   const city=field("Miejscowość (opcjonalnie)","text",false,100,"address-level2");
-  const phone=field("Telefon kontaktowy (telefon lub e-mail wystarczy)","tel",false,30,"tel");phone.pattern="[+0-9()\\s-]{7,30}";phone.title="Podaj numer telefonu (co najmniej 7 znaków)";phone.inputMode="tel";
+  const phone=field("Telefon kontaktowy (telefon lub e-mail wystarczy)","tel",false,30,"tel");phone.pattern="[+0-9()\\s-]{7,30}";phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";
   const email=field("Adres e-mail (opcjonalnie, jeśli podasz telefon)","email",false,150,"email");
-  const phoneHint=document.createElement("small");phoneHint.className="contact-field-hint";phoneHint.textContent="Podaj telefon lub e-mail. Wybór „Telefon lub e-mail” pozwala podać tylko jeden z nich. Nie wpisuj numeru PESEL ani danych dokumentów.";phone.insertAdjacentElement("afterend",phoneHint);
+  const phoneHint=document.createElement("small");phoneHint.className="contact-field-hint";phoneHint.textContent="Wystarczy telefon lub e-mail. Numer telefonu powinien zawierać 7–15 cyfr (spacje i myślniki są dozwolone). Nie wpisuj numeru PESEL ani danych dokumentów.";phone.insertAdjacentElement("afterend",phoneHint);
   const methodLabel=document.createElement("label");methodLabel.textContent="Preferowany sposób kontaktu";const method=document.createElement("select");method.id="cf-method-"+Math.random().toString(36).slice(2,8);methodLabel.htmlFor=method.id;for(const [value,title] of [["Dowolny","Telefon lub e-mail"],["Telefon","Telefon"],["E-mail","E-mail"]]){const option=document.createElement("option");option.value=value;option.textContent=title;method.append(option);}form.append(methodLabel,method);
-  const syncContactPreference=()=>{const prefer=method.value;const hasPhone=Boolean(phone.value.trim());const hasEmail=Boolean(email.value.trim());phone.required=prefer==="Telefon"||(prefer==="Dowolny"&&!hasEmail);email.required=prefer==="E-mail"||(prefer==="Dowolny"&&!hasPhone);phone.setCustomValidity(prefer==="Dowolny"&&!hasPhone&&!hasEmail?"Podaj telefon lub adres e-mail.":"");phone.setAttribute("aria-required",String(phone.required));email.setAttribute("aria-required",String(email.required));};
+  // Nie pozwalaj, by sam znak +, myślniki albo krótki ciąg znaków zastępowały numer.
+  // Obsługujemy również numery zagraniczne, bez zakładania polskiego prefiksu.
+  const validPhoneNumber=value=>{
+    const raw=value.trim();
+    const digits=raw.replace(/\D/g,"");
+    return /^(?:\+|\(\+|[0-9(])[0-9()\s-]*$/.test(raw)&&digits.length>=7&&digits.length<=15;
+  };
+  const syncContactPreference=()=>{
+    const prefer=method.value;
+    const hasPhone=Boolean(phone.value.trim());
+    const hasEmail=Boolean(email.value.trim());
+    phone.required=prefer==="Telefon"||(prefer==="Dowolny"&&!hasEmail);
+    email.required=prefer==="E-mail"||(prefer==="Dowolny"&&!hasPhone);
+    const invalidPhone=hasPhone&&!validPhoneNumber(phone.value);
+    const missingBoth=!hasPhone&&!hasEmail;
+    phone.setCustomValidity(invalidPhone?"Numer telefonu musi zawierać od 7 do 15 cyfr. Usuń błędne znaki.":missingBoth&&prefer!=="E-mail"?"Podaj telefon lub adres e-mail.":"");
+    email.setCustomValidity(missingBoth&&prefer==="E-mail"?"Podaj adres e-mail.":"");
+    phone.setAttribute("aria-required",String(phone.required));
+    email.setAttribute("aria-required",String(email.required));
+  };
+  const checkContact=()=>{
+    syncContactPreference();
+    const phonePresent=Boolean(phone.value.trim()), emailPresent=Boolean(email.value.trim());
+    let focus=null;
+    if(phonePresent&&!validPhoneNumber(phone.value))focus=phone;
+    else if(method.value==="Telefon"&&!phonePresent)focus=phone;
+    else if(method.value==="E-mail"&&!emailPresent)focus=email;
+    else if(!phonePresent&&!emailPresent)focus=method.value==="E-mail"?email:phone;
+    if(focus){focus.reportValidity();focus.focus();return false;}
+    return true;
+  };
   method.addEventListener("change",syncContactPreference);phone.addEventListener("input",syncContactPreference);email.addEventListener("input",syncContactPreference);syncContactPreference();
   const callbackLabel=document.createElement("label");callbackLabel.textContent="Dogodna pora kontaktu (opcjonalnie)";const callback=document.createElement("select");callback.id="cf-time-"+Math.random().toString(36).slice(2,8);callbackLabel.htmlFor=callback.id;for(const value of ["Bez preferencji","Przed południem","Po południu","Wieczorem"]){const option=document.createElement("option");option.value=value;option.textContent=value;callback.append(option);}form.append(callbackLabel,callback);
   const callbackHint=document.createElement("small");callbackHint.className="contact-field-hint";callbackHint.textContent="To jedynie preferencja; nie jest rezerwacją terminu rozmowy.";form.append(callbackHint);
@@ -156,6 +186,7 @@
   form.addEventListener("submit",async event=>{
    event.preventDefault();if(sending)return;
    if(!checkName()){name.reportValidity();name.focus();return;}
+   if(!checkContact())return;
    if(!form.reportValidity())return;
    if(automatic){
     if(honeypot.value){status.textContent="Nie udało się zweryfikować formularza.";return;}

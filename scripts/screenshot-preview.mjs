@@ -370,6 +370,26 @@ try{
  console.log("SUPPORT_STAGE_UI_OK",JSON.stringify({stage:supportStage,atForm:true}));
  await supportStagePage.close();
 
+ // Homepage flagship shortcuts must work by keyboard/touch on a small phone.
+ const flagshipPage=await browser.newPage({viewport:{width:390,height:844}});
+ await flagshipPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ const miningShortcut=flagshipPage.locator('[data-contact-shortcut="szkody"]');
+ const supportShortcut=flagshipPage.locator('[data-contact-shortcut="swiadczenie"]');
+ if(await flagshipPage.locator("[data-contact-shortcut]").count()!==2)throw Error("Homepage should have two flagship shortcut buttons");
+ await miningShortcut.click();
+ let flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
+ if(flagshipSelection!=="Szkody górnicze")throw Error("Home mining shortcut failed to select service");
+ if(await miningShortcut.getAttribute("data-selected")!=="true")throw Error("Home mining shortcut not visibly selected");
+ await supportShortcut.click();
+ flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
+ if(flagshipSelection!=="Świadczenie wspierające")throw Error("Home support shortcut failed to select service");
+ if(await miningShortcut.getAttribute("data-selected")!=="false"||await supportShortcut.getAttribute("data-selected")!=="true")throw Error("Home shortcut state remains stale after switching");
+ const message=await flagshipPage.locator("[data-contact-shortcut-status]").textContent();
+ if(!message.includes("Świadczenie wspierające"))throw Error("Homepage shortcut selection lacks accessible feedback");
+ await flagshipPage.screenshot({path:"screenshots/home-dwa-wybory-formularz-telefon.png",fullPage:false,animations:"disabled"});
+ console.log("HOME_SHORTCUT_UI_OK",JSON.stringify({choices:2,selection:flagshipSelection,feedback:true}));
+ await flagshipPage.close();
+
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

@@ -33,7 +33,7 @@ for(let attempt=1;attempt<=16;attempt++){
   assert.ok(robots.includes("Allow: /")&&!robots.includes("Disallow: /"),"Robots blocks production indexing");
   assert.ok(marker.includes("Cloudflare Pages production branch main"),"Production mode not active");
   assert.ok(xml.includes("<urlset")&&xml.includes("</urlset>"),"Live sitemap not ready");
-  const livePaths=[...xml.matchAll(/<loc>([^<]+)<\\/loc>/g)].map(match=>new URL(match[1].replaceAll("&amp;","&")).pathname).sort();
+  const livePaths=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>new URL(match[1].replaceAll("&amp;","&")).pathname).sort();
   assert.deepEqual(livePaths,expectedRoutes,"Cloudflare has not published the newest sitemap yet");
   sitemap=xml;
   seen=true;

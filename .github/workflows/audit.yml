@@ -30,6 +30,7 @@ jobs:
           node --check scripts/test-chat-lead.mjs
           node --check v2/service-navigator.js
           node --check scripts/test-service-navigator.mjs
+          node --check scripts/test-home-clarity.mjs
           node --check v2/knowledge-hub.js
           node --check scripts/test-knowledge-hub.mjs
           node --check v2/article-accessibility.js
@@ -76,6 +77,8 @@ jobs:
         run: node scripts/test-attribution.mjs
       - name: Przetestuj nowy przewodnik wyboru usługi i etapu sprawy
         run: node scripts/test-service-navigator.mjs
+      - name: Sprawdź hierarchię strony głównej i siatkę 2+4 usług
+        run: node scripts/test-home-clarity.mjs
       - name: Testuj wyszukiwarkę i filtry poradników
         run: node scripts/test-knowledge-hub.mjs
       - name: Testuj narzędzia czytania we wszystkich poradnikach

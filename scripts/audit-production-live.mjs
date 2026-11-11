@@ -217,5 +217,32 @@ assert.ok(leanHomepage(leanHTML,leanCSS),"Homepage still loads article CSS or ha
 const article=(await get("/wiedza/drobne-pekniecia-szkody-gornicze")).body;
 assert.ok(article.includes('href="/knowledge-articles.css"'),"Long-form article must retain its dedicated stylesheet");
 
+// Stage XVIII: verify public JSON-LD describes this agency's own pages,
+// not the affiliated capital group and not fictitious offices or outcomes.
+const getSchema=markup=>[...markup.matchAll(/<script\\b[^>]*type="application\\/ld\\+json"[^>]*>([\\s\\S]*?)<\\/script>/g)]
+ .flatMap(match=>{try{return JSON.parse(match[1])["@graph"]||[];}catch{return [];}});
+const schemaRoutes=[
+ ["/kontakt","ContactPage"],
+ ["/o-nas","AboutPage"],
+ ["/wiedza/","CollectionPage"]
+];
+const typedPages=await Promise.all(schemaRoutes.map(async([path,type])=>{
+ let last=[];
+ for(let attempt=0;attempt<8;attempt++){
+  last=getSchema((await get(path)).body);
+  const page=last.find(node=>node["@type"]===type);
+  if(page)return {path,type,page,graph:last};
+  if(attempt!==7)await new Promise(resolve=>setTimeout(resolve,5000));
+ }
+ throw new Error("Schema.org page type not deployed: "+path+" ("+type+")");
+}));
+for(const {path,type,page,graph} of typedPages){
+ const agency=graph.find(node=>node["@type"]==="Organization");
+ assert.ok(agency?.name==="SuccessTree OBIEGŁO WOJCIECH","Agency publisher mismatch: "+path);
+ assert.ok(page.isPartOf?.["@id"]===root+"/#website","Site linkage missing: "+path);
+ if(type==="ContactPage")assert.equal(page.mainEntity?.["@id"],agency["@id"],"ContactPage should identify SuccessTree, not VOTUM");
+ if(type==="AboutPage")assert.equal(page.about?.length,2,"AboutPage should describe the two named contacts");
+}
+
 const verified=27;
-console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");
+console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, agency-specific ContactPage/AboutPage/CollectionPage schemas, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos and sharing, homepage 2+4 layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

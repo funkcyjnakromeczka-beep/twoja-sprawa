@@ -194,3 +194,13 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - Potwierdzenie prawdziwą przeglądarką: [zielony test 28 ścieżek Chromium](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/43066559294) obejmuje `MINING_CHAT_DAMAGE_OK` dla `sciany` i `kostka`, wraz z podglądem mobilnym. Symulacje nie przekazują prawdziwych zgłoszeń.
 - `scripts/audit-production-live.mjs` sprawdza publiczne pliki `chat-assistant.js` i `contact.js` na Cloudflare, z krótkim ponawianiem odczytu na czas aktualizacji CDN. Sam audyt nie jest dowodem odbioru e-maili ani skuteczności konwersji.
 - **Koszt nowych usług: 0 zł.** Bez nowego formularza, pośrednika, zapisu osobowych danych z przewodnika lub zewnętrznej analityki.
+
+## Etap XVI — bezpieczne korzystanie z poradników podczas wypełniania formularza (11.11.2026)
+
+- W `v2/contact.js` link „Otwórz listę kontrolną” i link „Informacje o prywatności” otwierają się teraz w nowej karcie, dzięki `target="_blank"` i `rel="noopener noreferrer"`. W widocznej etykiecie zawarto tekst „(nowa karta)”, aby użytkownik, także korzystający z czytnika ekranu, wiedział o otwarciu kolejnej karty.
+- Dotychczasowa karta z nieukończonym formularzem pozostaje otwarta. **Nie zapisujemy danych w przeglądarce ani na serwerze jako wersji roboczej**; zmiana nie chroni danych przed zamknięciem, przeładowaniem lub automatycznym odrzuceniem karty przez przeglądarkę.
+- Link do poradnika nadal dobierany jest do wybranej usługi i nie przenosi do innego formularza ani nie wysyła danych osobowych.
+- `scripts/test-contact-client.mjs` kontroluje kierowanie do odpowiedniego poradnika, tekst informujący o nowej karcie oraz `noopener noreferrer` obu linków.
+- `scripts/screenshot-preview.mjs` sprawdza w Chromium na telefonie 390 px, że otwarcie poradnika i informacji o prywatności tworzy osobne karty, a imię oraz wybrana usługa pozostają w pierwotnym formularzu. Bez wysyłania prawdziwych zgłoszeń.
+- `scripts/audit-production-live.mjs` odczytuje publiczny `contact.js` na Cloudflare i sprawdza obecność nowych ustawień; nie potwierdza dostarczenia rzeczywistej wiadomości do skrzynki.
+- Zero nowych płatnych usług, skryptów śledzących, magazynowania danych klienta czy zależności zewnętrznych.

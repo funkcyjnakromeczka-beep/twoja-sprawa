@@ -74,6 +74,25 @@ for(const file of ["search-pages-1.js","search-pages-2.js","search-faq-data.js"]
  const src=await read(file);
  assert.ok(!src.includes('"/v2/'),"old source links in production search index: "+file);
 }
+// Structured data matches each page's actual purpose, without inventing
+// ratings, results, office addresses or affiliation with VOTUM as the publisher.
+for(const [path,type] of [
+ ["kontakt.html","ContactPage"],
+ ["o-nas.html","AboutPage"],
+ ["wiedza/index.html","CollectionPage"]
+]){
+ const html=await read(path);
+ const scripts=[...html.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)];
+ const graphs=scripts.map(x=>JSON.parse(x[1])).flatMap(x=>x["@graph"]||[]);
+ const page=graphs.find(x=>x["@type"]===type);
+ assert.ok(page,"Expected Schema.org "+type+" on "+path);
+ assert.ok(page["@id"]?.endsWith("#webpage")&&page.isPartOf?.["@id"]===origin+"/#website","Invalid structured page reference: "+path);
+ const agency=graphs.find(x=>x["@type"]==="Organization");
+ assert.ok(agency&&agency.name==="SuccessTree OBIEGŁO WOJCIECH","Agency ownership incorrectly represented on "+path);
+ if(type==="ContactPage")assert.equal(page.mainEntity?.["@id"],agency["@id"],"ContactPage must refer to agency, not VOTUM");
+ if(type==="AboutPage")assert.equal(page.about?.length,2,"About page must identify actual two contact people");
+}
+
 const faqPage=await read("faq.html");
 const faqScripts=[...faqPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
 const faqGraphs=faqScripts.map(([,raw])=>JSON.parse(raw));

@@ -183,6 +183,36 @@ for(const value of ["wniosek","oczekiwanie","decyzja"]){
  assert.ok(supportLanding.includes('data-stage-option="'+value+'"'),"Missing support stage shortcut: "+value);
 }
 
+// A chatbot may pass only an enumerated type of visible property damage.
+for(const sample of [
+ {service:"Szkody górnicze",slug:"sciany",expected:"Ściany i elewacja"},
+ {service:"Szkody górnicze",slug:"kostka",expected:"Kostka i ogrodzenie"},
+ {service:"Szkody górnicze",slug:"nieznana",expected:""},
+ {service:"Szkody górnicze",slug:"__proto__",expected:""},
+ {service:"Świadczenie wspierające",slug:"sciany",expected:""}
+]){
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?sample.service:""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?uszkodzenie="+encodeURIComponent(sample.slug)+"&etap=uszkodzenia&lead_path=chatbot"}};
+ runInNewContext(source,{document,window,URLSearchParams,Math});
+ const form=host.children[0];
+ const damage=visit(form,n=>n.id?.startsWith("cf-damage-"));
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ assert.equal(damage.value,sample.expected,"Mining category prefilling must be allowlisted: "+sample.slug);
+ if(sample.service==="Szkody górnicze"){
+  assert.equal(stage.value,"Zauważyłem/am uszkodzenia");
+  service.value="Świadczenie wspierające";service.events.change();
+  assert.equal(damage.value,"","Service switch must not retain unrelated mining damage");
+ }else assert.equal(damage.hidden,true);
+}
+
 // Scenario hand-off from chatbot: validate only known stage codes and initial service.
 const stageCase=(service,code,expected)=>{
  const host=new Node("host");

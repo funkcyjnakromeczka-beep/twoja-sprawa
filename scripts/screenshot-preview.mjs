@@ -27,6 +27,10 @@ try{
   ["kampania-swiadczenie-telefon","/kampanie/swiadczenie-wspierajace.html",390,844],
   ["usluga-szkody-telefon","/uslugi/szkody-gornicze.html",390,844],
   ["usluga-swiadczenie-telefon","/uslugi/swiadczenie-wspierajace.html",390,844],
+  ["usluga-frankowicze-telefon","/uslugi/kredyty-frankowe.html",390,844],
+  ["usluga-frankowicze-desktop","/uslugi/kredyty-frankowe.html",1440,900],
+  ["checklista-frankowicze-telefon","/poradniki/frankowicze-lista-kontrolna.html",390,844],
+  ["checklista-skd-telefon","/poradniki/skd-kredyt-pln-lista-kontrolna.html",390,844],
   ["poradnik-telefon","/poradniki/checklista-szkody-gorniczej.html",390,844],
   ["zespol-o-nas-telefon","/o-nas.html",390,844],
   ["kontakt-telefon","/kontakt.html",390,844],
@@ -115,6 +119,27 @@ try{
     await page.locator("#formularz").scrollIntoViewIfNeeded();
     await quick.waitFor({state:"hidden",timeout:6000});
     console.log("MOBILE_CTA_UI_OK",JSON.stringify({path,phone:call,overlap:false,hiddenNearForm:true}));
+  }
+  if(path.includes("swiadczenie-wspierajace")&&path.startsWith("/uslugi/")){
+    const brand=await page.locator(".vws-service-brand img").evaluate(img=>({loaded:img.complete&&img.naturalWidth>0,width:img.getBoundingClientRect().width}));
+    if(!brand.loaded||brand.width<200)throw Error("Votum Wsparcie logo should be visible and at least 200px: "+JSON.stringify(brand));
+    console.log("VOTUM_WSPARCIE_LOGO_OK",JSON.stringify(brand));
+  }
+  if(["/poradniki/skd-kredyt-pln-lista-kontrolna.html","/poradniki/frankowicze-lista-kontrolna.html","/"].includes(path)){
+    const selector=path==="/"?'.contact-form .check':'.interactive-checklist .checklist-item span';
+    const contrast=await page.locator(selector).first().evaluate(el=>{
+     const rgb=value=>{const m=value.match(/rgba?\\(([^)]+)\\)/);return m?m[1].split(",").slice(0,3).map(v=>Number(v.trim())):null;};
+     const lin=c=>{const x=c/255;return x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4)};
+     const lum=c=>.2126*lin(c[0])+.7152*lin(c[1])+.0722*lin(c[2]);
+     const fg=rgb(getComputedStyle(el).color);
+     let node=el,bg=null;
+     while(node&&!bg){const x=getComputedStyle(node).backgroundColor;if(x&&!x.includes("0, 0, 0, 0")&&!x.includes("0,0,0,0")&&!x.includes("transparent"))bg=rgb(x);node=node.parentElement;}
+     bg=bg||[255,255,255];
+     const a=lum(fg),b=lum(bg);
+     return {ratio:Math.round((Math.max(a,b)+.05)/(Math.min(a,b)+.05)*100)/100,foreground:fg,background:bg};
+    });
+    if(contrast.ratio<4.5)throw Error("Checklist/form contrast below WCAG 4.5: "+JSON.stringify({path,contrast}));
+    console.log("TEXT_CONTRAST_OK",JSON.stringify({path,...contrast}));
   }
   console.log("VISUAL_OK",name,JSON.stringify(measured));
   checks.push({name,...measured});

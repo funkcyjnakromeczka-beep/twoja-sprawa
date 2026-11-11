@@ -14,7 +14,7 @@ assert.ok(sitemap.includes("<urlset")&&sitemap.includes("<loc>"+origin+"/</loc>"
 for(const route of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-frankowe","/wiedza/","/faq","/plan-dzialania"]){
  assert.ok(sitemap.includes("<loc>"+origin+route+"</loc>"),"required SEO route missing: "+route);
 }
-for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/polityka-prywatnosci"]){
+for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/polityka-prywatnosci","/start"]){
  assert.ok(!sitemap.includes("<loc>"+origin+route+"</loc>"),"nonindex route leaked into sitemap: "+route);
 }
 assert.ok(!headers.includes("X-Robots-Tag: noindex"),"preview response headers leaked");
@@ -26,14 +26,26 @@ for(const path of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczeni
  assert.ok(html.includes('class="network-brand-bar"'),"missing agency branding: "+path);
  assert.ok(!html.includes('href="/v2/')&&!html.includes('src="/v2/'),"source path leaked into HTML: "+path);
 }
-for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampanie/szkody-gornicze.html","kampanie/swiadczenie-wspierajace.html"]){
+for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampanie/szkody-gornicze.html","kampanie/swiadczenie-wspierajace.html","start.html"]){
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="noindex,follow"'),"excluded page accidentally indexable: "+path);
 }
+const leaflet=await read("start.html");
+assert.ok(leaflet.includes('name="robots" content="noindex,follow"'),"Flyer entry must not compete with public service SEO");
+assert.ok(leaflet.includes('rel="canonical" href="'+origin+'/start"'),"Flyer entry missing stable canonical");
+assert.ok(leaflet.includes('href="/kampanie/swiadczenie-wspierajace?utm_source=ulotka'),"Support CTA missing from printed QR destination");
+assert.ok(leaflet.includes('href="/kampanie/szkody-gornicze?utm_source=ulotka'),"Mining CTA missing from printed QR destination");
+assert.ok(leaflet.includes('href="/ulotka-start.css'),"Responsive flyer CSS missing");
+assert.ok(leaflet.includes('class="network-brand-bar"'),"Agency branding missing from flyer entry");
+assert.ok(!leaflet.includes('href="/v2/'),"Source paths leaked into flyer entry");
+const flyerCSS=await read("ulotka-start.css");
+assert.ok(flyerCSS.includes("@media(max-width:730px)"),"Mobile styles missing on flyer entry");
 const assets=["assets/wojciech-obieglo.jpg","assets/paulina-chandrala.jpg"];
 for(const path of assets){
  const file=await readFile("dist/"+path);
  assert.ok(file.length>=10000&&file.length<=8000000&&file[0]===0xff&&file[1]===0xd8,"portrait missing/invalid: "+path);
+ const archived=await readFile("v2/"+path);
+ assert.equal(Buffer.compare(file,archived),0,"Portrait output must exactly match archived source: "+path);
 }
 assert.ok(home.includes("/assets/wojciech-obieglo.jpg")&&home.includes("/assets/paulina-chandrala.jpg"),"portraits not localized");
 for(const file of ["search-pages-1.js","search-pages-2.js","search-faq-data.js"]){

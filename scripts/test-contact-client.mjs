@@ -203,6 +203,7 @@ for(const sample of [
  runInNewContext(source,{document,window,URLSearchParams,Math});
  const form=host.children[0];
  const damage=visit(form,n=>n.id?.startsWith("cf-damage-"));
+ const damageWrap=visit(form,n=>n.className==="contact-damage-area");
  const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
  const service=visit(form,n=>n.id?.startsWith("cf-service-"));
  assert.equal(damage.value,sample.expected,"Mining category prefilling must be allowlisted: "+sample.slug);
@@ -210,7 +211,7 @@ for(const sample of [
   assert.equal(stage.value,"Zauważyłem/am uszkodzenia");
   service.value="Świadczenie wspierające";service.events.change();
   assert.equal(damage.value,"","Service switch must not retain unrelated mining damage");
- }else assert.equal(damage.hidden,true);
+ }else assert.equal(damageWrap.hidden,true,"Support must hide the mining category control");
 }
 
 // Scenario hand-off from chatbot: validate only known stage codes and initial service.

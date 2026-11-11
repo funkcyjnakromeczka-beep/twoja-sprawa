@@ -125,6 +125,13 @@ await run(true);
  assert.ok(advisor.children.some(n=>n.href?.startsWith("mailto:wojciech.obieglo@votum-ds.pl")),"SKD email destination missing");
  assert.ok(advisor.children.some(n=>n.href==="tel:+48796441345"),"SKD callback uses a different phone");
  assert.ok(guide.children.some(n=>n.textContent?.includes("wojciech.obieglo@votum-ds.pl")),"SKD checklist guidance must invite contract email");
+ assert.ok(advisor.children.some(n=>n.textContent?.includes("bez zasłaniania danych")),"SKD advisor must accept full, unredacted agreement");
+ const benefits=visit(form,n=>n.className==="contact-benefits");
+ assert.ok(benefits.children.some(n=>n.textContent?.includes("pełną umowę e-mailem")),"SKD lead must not discourage sending the contract");
+ service.value="Świadczenie wspierające";service.events.change();
+ assert.ok(benefits.children.every(n=>!n.textContent?.includes("pełną umowę e-mailem")),"Non-SKD leads must not show contract upload guidance");
+ service.value="Kredyt w PLN / SKD";service.events.change();
+ assert.ok(benefits.children.some(n=>n.textContent?.includes("pełną umowę e-mailem")),"Returning to SKD must restore complete agreement guidance");
 }
 // Qualification of an observed property issue, without inferring a mining cause.
 {

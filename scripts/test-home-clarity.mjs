@@ -76,6 +76,13 @@ assert.ok(skdPage.includes('href="/v2/skd-contact.css"')&&skdPage.includes('id="
 assert.ok(skdPage.includes("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD email destination must be Wojciech");
 assert.ok(skdPage.includes("Zostaw numer telefonu w formularzu")&&skdPage.includes("Dodaj załącznik samodzielnie"),"Agreement, callback and attachment instructions required");
 assert.ok(skdPage.includes("bez zasłaniania danych")&&skdCSS.includes(".skd-document-actions"),"Unredacted SKD contract policy and CTA styles required");
+
+assert.ok(skdPage.includes('class="skd-mobile-quickbar"')&&skdPage.includes('class="skd-mobile-phone" href="#formularz"'),"SKD mobile quick bar must provide direct callback form");
+assert.ok(skdPage.includes('class="skd-mobile-mail" href="mailto:wojciech.obieglo@votum-ds.pl?subject='),"SKD mobile quick bar must link to Wojciech agreement email");
+assert.equal((skdPage.match(/class="skd-mobile-quickbar"/g)||[]).length,1,"SKD mobile quick bar should be present only once");
+assert.ok(skdCSS.includes("@media(max-width:650px)")&&skdCSS.includes(".skd-mobile-quickbar")&&skdCSS.includes("env(safe-area-inset-bottom)"),"Mobile quickbar must honor phone safe area");
+assert.ok(skdCSS.includes(".chat-assistant")&&skdCSS.includes(".contact-form input:focus"),"Mobile quickbar must avoid chatbot and keyboard collisions");
+
 assert.ok(skdPage.includes("sprawdź adres odbiorcy")||skdPage.includes("Sprawdź adres odbiorcy"),"SKD email must remind visitors to verify recipient");
 for(const file of [
  "v2/uslugi/kredyty-pln.html",

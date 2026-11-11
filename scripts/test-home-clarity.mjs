@@ -91,4 +91,21 @@ for(const file of [
 const skdChecklist=await readFile("v2/poradniki/skd-kredyt-pln-lista-kontrolna.html","utf8");
 assert.ok(skdChecklist.includes('class="guide-phone" href="tel:+48796441345"'),"SKD checklist contact CTA must direct to Wojciech");
 assert.ok(!skdChecklist.includes('class="guide-phone" href="tel:+48500171531"'),"SKD checklist contact CTA must not direct to the support advisor");
+// The independent Cloudflare site must own both specialist portraits.
+// The old Lovable instance might be removed or redirected in future.
+for(const [path,markup] of [
+ ["v2/index.html",html],
+ ["v2/kontakt.html",await readFile("v2/kontakt.html","utf8")],
+ ["v2/o-nas.html",await readFile("v2/o-nas.html","utf8")]
+]){
+ for(const filename of ["wojciech-obieglo.jpg","paulina-chandrala.jpg"]){
+  const src="/v2/assets/"+filename;
+  assert.ok(markup.includes('src="'+src+'"'),"Own portrait missing in "+path+": "+src);
+  assert.equal((markup.match(new RegExp('src="'+src.replaceAll(".","\\.")+'"',"g"))||[]).length,1,"Unexpected duplicate portrait in "+path);
+ }
+ assert.ok(!markup.includes("twojasprawa-votum.lovable.app/assets/"),"Old Lovable portrait CDN must not serve team photos: "+path);
+}
+await access("v2/assets/wojciech-obieglo.jpg");
+await access("v2/assets/paulina-chandrala.jpg");
+
 console.log("HOME_CLARITY_OK: 6 unique services (2+1+3), SKD third with email and phone CTA.");

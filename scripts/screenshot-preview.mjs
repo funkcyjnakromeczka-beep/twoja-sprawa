@@ -128,7 +128,7 @@ try{
   if(["/poradniki/skd-kredyt-pln-lista-kontrolna.html","/poradniki/frankowicze-lista-kontrolna.html","/"].includes(path)){
     const selector=path==="/"?'.contact-form .check':'.interactive-checklist .checklist-item span';
     const contrast=await page.locator(selector).first().evaluate(el=>{
-     const rgb=value=>{const m=value.match(/rgba?\\(([^)]+)\\)/);return m?m[1].split(",").slice(0,3).map(v=>Number(v.trim())):null;};
+     const rgb=value=>{const m=value.match(/rgba?\(([^)]+)\)/);return m?m[1].split(",").slice(0,3).map(v=>Number(v.trim())):null;};
      const lin=c=>{const x=c/255;return x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4)};
      const lum=c=>.2126*lin(c[0])+.7152*lin(c[1])+.0722*lin(c[2]);
      const fg=rgb(getComputedStyle(el).color);

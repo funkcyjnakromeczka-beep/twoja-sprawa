@@ -180,7 +180,8 @@
   for(const trigger of document.querySelectorAll("[data-stage-option]")){
    trigger.addEventListener("click",()=>{
     const code=trigger.getAttribute("data-stage-option");
-    const chosen=stageCodes["Świadczenie wspierające"][code];
+    const stages=stageCodes["Świadczenie wspierające"];
+    const chosen=Object.prototype.hasOwnProperty.call(stages,code)?stages[code]:"";
     if(!chosen)return;
     if(select.value!=="Świadczenie wspierające"){
      select.value="Świadczenie wspierające";

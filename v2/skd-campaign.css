@@ -1,0 +1,22 @@
+/* SKD campaign: mobile-friendly email and callback conversion, no uploads or trackers. */
+.campaign-skd .campaign-hero{background:radial-gradient(circle at 12% 12%,rgba(239,199,124,.15),transparent 36%),linear-gradient(125deg,#092a38,#154c55)}
+.campaign-skd .campaign-copy>p strong{color:#ffebbd;overflow-wrap:anywhere}
+.campaign-skd .campaign-skd-actions{display:grid;gap:10px;margin:22px 0 13px}
+.campaign-skd .campaign-skd-email{display:flex;min-height:52px;justify-content:center;text-align:center;align-items:center}
+.campaign-skd .campaign-skd-secondary{display:flex;min-height:49px;align-items:center;justify-content:center;text-align:center;border:2px solid #dfc18c;border-radius:12px;padding:10px 16px;color:#fff9ec!important;font-weight:800;text-decoration:none}
+.campaign-skd .campaign-skd-secondary:hover{background:rgba(255,255,255,.12)}
+.campaign-skd .campaign-skd-actions a:focus-visible,.campaign-skd .campaign-skd-copy button:focus-visible{outline:3px solid #ffe2a2;outline-offset:3px}
+.campaign-skd .campaign-skd-note{color:#e6f2ef!important;font-size:.89rem!important;line-height:1.58}
+.campaign-skd .campaign-skd-copy{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:13px 0}
+.campaign-skd .campaign-skd-copy span{color:#fff5e1;overflow-wrap:anywhere;font-weight:780;font-size:.91rem}
+.campaign-skd .campaign-skd-copy button:not([hidden]){min-height:44px;border:2px solid #ebc682;border-radius:10px;padding:8px 12px;background:#fff0c8;color:#17394c;font-weight:780;cursor:pointer}
+.campaign-skd .campaign-skd-copy button[hidden]{display:none!important}
+.campaign-skd .campaign-skd-copy-status{margin:4px 0;color:#ffdeaa;font-size:.88rem}
+.campaign-skd .campaign-process-list a{color:#17485a;overflow-wrap:anywhere}
+@media(max-width:700px){
+ .campaign-skd .campaign-skd-actions a{width:100%}
+ .campaign-skd:has(.contact-form input:focus) .campaign-mobile-actions,
+ .campaign-skd:has(.contact-form select:focus) .campaign-mobile-actions,
+ .campaign-skd:has(.contact-form textarea:focus) .campaign-mobile-actions{display:none}
+}
+@media print{.campaign-skd .campaign-mobile-actions{display:none!important}}

@@ -37,3 +37,24 @@ for(const entry of faq){
  assert.equal(entry.description,answer?.slice(0,250),"FAQ answer stale: "+id);
 }
 console.log("SEARCH_INDEX_FRESHNESS_OK: 38 stron, "+verifiedDescriptions+" opisów SEO oraz 24 pytania FAQ odpowiadają aktualnemu kodowi.");
+
+// Real questions from potential clients used to return zero results because every
+// word (including question words and inflected verb forms) was mandatory.
+runInNewContext(await readFile("v2/search-core.js","utf8"),{window,Set,Object,String});
+const engine=window.TwojaSprawaSearch;
+for(const [phrase,expected] of [
+ ["Jak uzyskać świadczenie wspierające?","swiadczenie"],
+ ["Co zrobić, jeśli mam pęknięcia na ścianie?","szkody"],
+ ["Jak przygotować umowę do SKD?","skd"],
+ ["Czy mogę dostać odszkodowanie za szkody górnicze?","szkody"],
+ ["Mam decyzję WZON i nie wiem co robić","swiadczenie"],
+ ["Chcę sprawdzić, czy należy mi się renta po wypadku","renty"]
+]){
+ const results=engine.search(phrase,"all",15);
+ assert.ok(results.length>0,"Natural Polish question has no results: "+phrase);
+ assert.ok(results.some(item=>item.category===expected),"Question does not surface the relevant service: "+phrase);
+ assert.ok(results.some(item=>item.similar===true),"Natural question should be marked as approximate matching: "+phrase);
+}
+assert.deepEqual(engine.search("zupełnie nieistniejące xxyzzq xxxpq", "all",10),[],"Unknown query should not fabricate relevant results");
+assert.ok(engine.search("Świadczenie wspierające","swiadczenie",10).some(x=>!x.similar),"Literal search should retain its original strict behavior");
+console.log("SEARCH_NATURAL_POLISH_OK: six natural client questions find domain content, no-result state and strict lookup preserved.");

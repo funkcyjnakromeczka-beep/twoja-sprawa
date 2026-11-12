@@ -417,6 +417,26 @@ try{
  console.log("GLOBAL_SEARCH_OK",JSON.stringify({sourceCount:62,cracks:found,faqDeepLink:true,wzon:true,reset:afterReset}));
  await searchPage.close();
 
+ // Natural Polish questions should provide genuine existing material, not an
+ // empty screen. The fallback is explicitly labelled as similar matches.
+ const naturalSearch=await browser.newPage({viewport:{width:390,height:844}});
+ await naturalSearch.goto(origin+"/szukaj.html",{waitUntil:"domcontentloaded"});
+ for(const [query,category] of [
+  ["Jak uzyskać świadczenie wspierające?","Świadczenie wspierające"],
+  ["Co zrobić, jeśli mam pęknięcia na ścianie?","Szkody górnicze"],
+  ["Jak przygotować umowę do SKD?","Sankcja Kredytu Darmowego (SKD)"]
+ ]){
+  await naturalSearch.locator("#site-search-input").fill(query);
+  const state=await naturalSearch.locator("[data-search-count]").innerText();
+  if(!state.startsWith("Podobne materiały: "))throw Error("Natural question should disclose relaxed search: "+query+" / "+state);
+  const tags=await naturalSearch.locator(".site-search-tag").allTextContents();
+  if(!tags.some(tag=>tag.trim()===category))throw Error("Natural question omitted relevant topic: "+query);
+ }
+ await naturalSearch.locator("#site-search-input").fill("zupelnie-nieistniejace xxyzzq xxxpq");
+ if(!await naturalSearch.locator("[data-search-empty]").isVisible())throw Error("Gibberish should still show no results");
+ console.log("NATURAL_SEARCH_UI_OK",JSON.stringify({questions:3,relatedMatchesLabelled:true,unknownQueriesEmpty:true,actualLeadsSent:0}));
+ await naturalSearch.close();
+
  // Mining campaign: choosing an example should prepare the form, not submit a lead.
  const damagePage=await browser.newPage({viewport:{width:390,height:844}});
  await damagePage.goto(origin+"/kampanie/szkody-gornicze.html?utm_source=ulotka&utm_medium=qr",{waitUntil:"domcontentloaded"});

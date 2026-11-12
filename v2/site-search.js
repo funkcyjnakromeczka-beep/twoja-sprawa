@@ -23,7 +23,7 @@
   const matched=engine.search(phrase,category,100);
   const visible=matched.slice(0,phrase?30:18);
   const suffix=matched.length===1?"wynik":matched.length>=2&&matched.length<=4?"wyniki":"wyników";
-  counter.textContent="Znaleziono: "+matched.length+" "+suffix+(matched.length>visible.length?" · pokazano pierwsze "+visible.length:"");
+  counter.textContent=(matched.some(item=>item.similar)?"Podobne materiały: ":"Znaleziono: ")+matched.length+" "+suffix+(matched.length>visible.length?" · pokazano pierwsze "+visible.length:"");
   results.replaceChildren();
   for(const item of visible){
    const card=document.createElement("a");

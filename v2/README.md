@@ -274,3 +274,11 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - W `v2/skd-contact.css` użyto specyficznego selektora `body.premium-subpage.theme-skd .chat-assistant:not(.is-open)` i identycznego odstępu dla wariantu otwartego, dzięki czemu chatbot powinien znajdować się powyżej stałego paska. Nie przesuwano chatbota na innych podstronach.
 - `scripts/test-home-clarity.mjs` zabezpiecza wymagany selektor, a `scripts/screenshot-preview.mjs` już mierzy dolne krawędzie obu elementów na telefonie i kończy test błędem przy nakładaniu się. Sam test kodu CSS nie zastępuje ponownej kontroli wizualnej w Chromium.
 - Funkcje i wygląd trzeciej wyróżnionej usługi SKD, kontakt `wojciech.obieglo@votum-ds.pl`, pełne umowy bez wymogu zasłaniania danych oraz pasek z przyciskami pozostają bez zmian. Dodatkowe koszty: **0 zł**.
+
+## Etap XXV — numer kontaktowy w formularzu SKD (12.11.2026)
+
+- W `v2/contact.js` wymagany numer telefonu jest stosowany **tylko przy wybranej usłudze „Kredyt w PLN / SKD”**, w zgodzie z celem zbierania numerów do oddzwonienia po analizie umowy. Klient może dodatkowo wskazać e-mail i preferować odpowiedź e-mailową, ale nie może pominąć numeru telefonu przy SKD.
+- Po zmianie usługi na świadczenie wspierające, szkody górnicze lub inne obszary przywracamy wcześniejszą możliwość pozostawienia samego adresu e-mail. Podpowiedź przy telefonie zmienia się wraz z usługą, a wymaganie nie jest sztywno wpisane do wszystkich formularzy.
+- Nie zmieniono przetwarzania danych Web3Forms ani układu formularza, nie dodano pól do przesyłania dokumentów. Pełną umowę SKD można nadal przesłać samodzielnie na `wojciech.obieglo@votum-ds.pl` bez wymogu zasłaniania danych.
+- `scripts/test-contact-client.mjs`: test pola wymaganego, wyboru preferencji e-mail, blokady zgłoszenia SKD bez numeru oraz powrotu do elastycznych zasad innych usług. `scripts/screenshot-preview.mjs`: rzeczywiste sprawdzenie w Chromium, bez wysyłania danych. `scripts/audit-production-live.mjs`: kontrola kodu opublikowanego w Cloudflare.
+- Wdrożenie nie jest równoważne z potwierdzeniem skutecznego odbioru wiadomości ani z uzyskaniem określonej liczby leadów. Bez nowych usług i opłat.

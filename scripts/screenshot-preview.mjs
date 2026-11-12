@@ -584,6 +584,27 @@ try{
  if(!navOverflow.skd||navOverflow.content>navOverflow.width+2)throw Error("Desktop SKD navigation causes overflow: "+JSON.stringify(navOverflow));
  await navDesktop.close();
 
+
+ // No submission: validate SKD callback phone as required, even when email is provided.
+ const skdPhoneForm=await browser.newPage({viewport:{width:390,height:844}});
+ await skdPhoneForm.goto(origin+"/uslugi/kredyty-pln.html",{waitUntil:"domcontentloaded"});
+ const skdPhoneField=skdPhoneForm.locator('.contact-form input[type="tel"]');
+ const skdEmailField=skdPhoneForm.locator('.contact-form input[type="email"]');
+ const skdPref=skdPhoneForm.locator('.contact-form select[id^="cf-method-"]');
+ const skdType=skdPhoneForm.locator('.contact-form select[id^="cf-service-"]');
+ if(!await skdPhoneField.evaluate(el=>el.required))throw Error("SKD callback phone must be required");
+ await skdEmailField.fill("test@example.com");
+ await skdPref.selectOption("E-mail");
+ if(!await skdPhoneField.evaluate(el=>el.required))throw Error("SKD email-only route bypassed phone requirement");
+ const missingSKDPhone=await skdPhoneField.evaluate(el=>({valid:el.validity.valid,message:el.validationMessage}));
+ if(missingSKDPhone.valid||!missingSKDPhone.message.includes("SKD"))throw Error("SKD required-phone guidance not shown: "+JSON.stringify(missingSKDPhone));
+ await skdPhoneField.fill("796 441 345");
+ if(!await skdPhoneField.evaluate(el=>el.validity.valid))throw Error("Valid callback phone rejected by SKD form");
+ await skdType.selectOption("Świadczenie wspierające");
+ await skdPhoneField.fill("");
+ if(await skdPhoneField.evaluate(el=>el.required))throw Error("Other services must retain email-only contact option");
+ console.log("SKD_CALLBACK_VALIDATION_OK",JSON.stringify({skdPhoneRequired:true,otherServicesFlexible:true,realMessagesSent:0}));
+ await skdPhoneForm.close();
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

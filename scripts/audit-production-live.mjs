@@ -339,5 +339,18 @@ for(const item of portraitStatus){
 assert.ok(portraitA.response.headers.get("content-type")?.startsWith("image/"),"Local Wojciech photo not served as an image");
 assert.ok(portraitB.response.headers.get("content-type")?.startsWith("image/"),"Local Paulina photo not served as an image");
 
+// Stage XXV: real public form code demands the callback number only for SKD.
+const skdPhoneValidationLive=body=>
+ body.includes('const isSKD=select.value==="Kredyt w PLN / SKD"')&&
+ body.includes('phone.required=isSKD||prefer==="Telefon"')&&
+ body.includes('select.addEventListener("change",syncContactPreference)')&&
+ body.includes('W sprawie SKD podaj numer telefonu do kontaktu.');
+let publishedPhoneValidator=leadJS.body;
+for(let attempt=0;attempt<8&&!skdPhoneValidationLive(publishedPhoneValidator);attempt++){
+ await new Promise(resolve=>setTimeout(resolve,5000));
+ publishedPhoneValidator=(await get("/contact.js")).body;
+}
+assert.ok(skdPhoneValidationLive(publishedPhoneValidator),"Cloudflare has not deployed SKD callback-phone validation");
+
 const verified=27;
 console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, agency-specific ContactPage/AboutPage/CollectionPage schemas, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos, seven locally hosted portrait pages and sharing, homepage 2+1+3 SKD featured layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

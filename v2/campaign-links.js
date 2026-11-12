@@ -31,7 +31,7 @@
       text: "Po wypadku ponosisz dodatkowe koszty lub zmieniły się Twoje możliwości zarobkowania? Sprawdź, jakie informacje mogą być potrzebne do indywidualnej analizy roszczenia o rentę powypadkową. Pierwszy kontakt nie zobowiązuje do zawarcia umowy."
     },
     skd: {
-      path: "/uslugi/kredyty-pln.html",
+      path: "/kampanie/skd.html",
       title: "Kredyty PLN — sankcja kredytu darmowego",
       text: "Masz kredyt konsumencki w PLN? Warunki umowy i rozliczenie kosztów można poddać indywidualnej analizie pod kątem sankcji kredytu darmowego. Nie każda umowa daje podstawę do roszczenia. Skontaktuj się, aby poznać możliwe następne kroki."
     },

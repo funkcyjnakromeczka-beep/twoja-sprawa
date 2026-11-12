@@ -15,7 +15,7 @@ assert.ok(sitemap.includes("<urlset")&&sitemap.includes("<loc>"+origin+"/</loc>"
 for(const route of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-frankowe","/wiedza/","/faq","/plan-dzialania"]){
  assert.ok(sitemap.includes("<loc>"+origin+route+"</loc>"),"required SEO route missing: "+route);
 }
-for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/polityka-prywatnosci","/start"]){
+for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/kampanie/skd","/polityka-prywatnosci","/start"]){
  assert.ok(!sitemap.includes("<loc>"+origin+route+"</loc>"),"nonindex route leaked into sitemap: "+route);
 }
 assert.ok(!headers.includes("X-Robots-Tag: noindex"),"preview response headers leaked");
@@ -27,7 +27,7 @@ for(const path of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczeni
  assert.ok(html.includes('class="network-brand-bar"'),"missing agency branding: "+path);
  assert.ok(!html.includes('href="/v2/')&&!html.includes('src="/v2/'),"source path leaked into HTML: "+path);
 }
-for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampanie/szkody-gornicze.html","kampanie/swiadczenie-wspierajace.html","start.html"]){
+for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampanie/szkody-gornicze.html","kampanie/swiadczenie-wspierajace.html","kampanie/skd.html","start.html"]){
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="noindex,follow"'),"excluded page accidentally indexable: "+path);
 }
@@ -52,6 +52,16 @@ for(const [page,photo] of [
   assert.ok(html.includes('<meta property="og:image:alt" content="'),"missing accessible preview label: "+page);
 }
 
+const skdLanding=await read("kampanie/skd.html");
+assert.ok(skdLanding.includes('src="/contact.js" data-service="Kredyt w PLN / SKD"'),"SKD lead form must be selected");
+assert.ok(skdLanding.includes("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD contract email missing");
+assert.ok(skdLanding.includes("M%C3%B3j%20numer%20telefonu"),"SKD email must request phone");
+assert.ok(skdLanding.includes('href="tel:+48796441345"'),"SKD campaign phone missing");
+assert.ok(!skdLanding.includes("500 171 531"),"SKD must not route visitors to Paulina");
+assert.ok(skdLanding.includes('class="network-brand-bar"'),"SKD landing partner logos missing");
+assert.ok(skdLanding.includes('href="/skd-campaign.css"'),"SKD landing CSS missing");
+const skdCss=await read("skd-campaign.css");
+assert.ok(skdCss.includes(".campaign-skd"),"SKD campaign styles not built");
 const leaflet=await read("start.html");
 assert.ok(leaflet.includes('name="robots" content="noindex,follow"'),"Flyer entry must not compete with public service SEO");
 assert.ok(leaflet.includes('rel="canonical" href="'+origin+'/start"'),"Flyer entry missing stable canonical");

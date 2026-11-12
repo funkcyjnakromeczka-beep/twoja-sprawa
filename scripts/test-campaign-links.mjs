@@ -49,7 +49,7 @@ const check=(service,path,phone)=>{
 check("szkody","/kampanie/szkody-gornicze.html","796 441 345");
 check("swiadczenie","/kampanie/swiadczenie-wspierajace.html","500 171 531");
 check("renty","/uslugi/renty-powypadkowe.html","500 171 531");
-check("skd","/uslugi/kredyty-pln.html","796 441 345");
+check("skd","/kampanie/skd.html","796 441 345");
 assert.ok(post.value.includes("wojciech.obieglo@votum-ds.pl"),"SKD message must offer VOTUM contract mailbox");
 assert.ok(!post.value.includes("500 171 531"),"SKD message must not send visitors to benefit hotline");
 check("przesyl","/uslugi/sluzebnosc-przesylu.html","796 441 345");

@@ -27,6 +27,8 @@ try{
   ["ulotka-start-desktop","/start.html",1440,900],
   ["kampania-szkody-telefon","/kampanie/szkody-gornicze.html",390,844],
   ["kampania-swiadczenie-telefon","/kampanie/swiadczenie-wspierajace.html",390,844],
+  ["kampania-skd-telefon","/kampanie/skd.html",390,844],
+  ["kampania-skd-desktop","/kampanie/skd.html",1440,900],
   ["usluga-szkody-telefon","/uslugi/szkody-gornicze.html",390,844],
   ["usluga-swiadczenie-telefon","/uslugi/swiadczenie-wspierajace.html",390,844],
   ["usluga-frankowicze-telefon","/uslugi/kredyty-frankowe.html",390,844],
@@ -93,12 +95,12 @@ try{
   });
   if(measured.scrollWidth>measured.viewport+2)throw Error("Horizontal overflow "+name+": "+JSON.stringify(measured));
   if(["/","/o-nas.html"].includes(path)&&(measured.teamImages.length!==2||measured.teamImages.some(img=>!img.loaded)))throw Error("Two authentic profile images not loaded on "+path+": "+JSON.stringify(measured));
-  if(["/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html","/kampanie/szkody-gornicze.html","/kampanie/swiadczenie-wspierajace.html"].includes(path)&&(measured.personaImages.length!==1||!measured.personaImages[0].loaded))throw Error("Contact portrait not loaded on "+path+": "+JSON.stringify(measured));
+  if(["/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html","/kampanie/szkody-gornicze.html","/kampanie/swiadczenie-wspierajace.html","/kampanie/skd.html"].includes(path)&&(measured.personaImages.length!==1||!measured.personaImages[0].loaded))throw Error("Contact portrait not loaded on "+path+": "+JSON.stringify(measured));
   if(path==="/kontakt.html"&&(measured.personaImages.length!==2||measured.personaImages.some(x=>!x.loaded)))throw Error("Both contact portraits missing "+name+": "+JSON.stringify(measured));
   if(measured.barCount!==1||measured.images.length!==2||!measured.sticky||measured.oldDuplicate)throw Error("Partner logo bar failed "+name+": "+JSON.stringify(measured));
   if(measured.images[0].alt!=="Votum Network"||measured.images[1].alt!=="Votum Scale Agency")throw Error("Wrong logos "+name);
   if(measured.images.some(img=>!(img.loaded&&img.logoVisible)&&!img.fallbackVisible))throw Error("Logo and fallback both invisible "+name);
-  if(["/","/kampanie/szkody-gornicze.html","/kampanie/swiadczenie-wspierajace.html","/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html"].includes(path)&&!measured.hasForm)throw Error("Lead form missing "+name);
+  if(["/","/kampanie/szkody-gornicze.html","/kampanie/swiadczenie-wspierajace.html","/kampanie/skd.html","/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html"].includes(path)&&!measured.hasForm)throw Error("Lead form missing "+name);
   if(measured.documentHeight>height+200){
     await page.evaluate(()=>window.scrollTo(0,600));
     await page.waitForTimeout(140);
@@ -617,6 +619,22 @@ try{
  if(!navOverflow.skd||navOverflow.content>navOverflow.width+2)throw Error("Desktop SKD navigation causes overflow: "+JSON.stringify(navOverflow));
  await navDesktop.close();
 
+
+ // Campaign SKD: direct agreement email and phone-required callback, no external form submission.
+ const skdCampaign=await browser.newPage({viewport:{width:390,height:844}});
+ await skdCampaign.goto(origin+"/kampanie/skd.html?utm_source=facebook&utm_medium=post",{waitUntil:"domcontentloaded"});
+ const skdCampaignService=await skdCampaign.locator('.contact-form select[id^="cf-service-"]').inputValue();
+ if(skdCampaignService!=="Kredyt w PLN / SKD")throw Error("SKD campaign form selected wrong service");
+ const skdCampaignPhone=skdCampaign.locator('.contact-form input[type="tel"]');
+ if(!await skdCampaignPhone.evaluate(node=>node.required))throw Error("SKD campaign callback must require phone");
+ const skdCampaignMail=skdCampaign.locator(".campaign-skd-email");
+ if(!(await skdCampaignMail.getAttribute("href")).startsWith("mailto:wojciech.obieglo@votum-ds.pl?subject="))throw Error("SKD landing email wrong");
+ if(await skdCampaign.locator('a[href="tel:+48500171531"]').count())throw Error("SKD landing points to benefits number");
+ if(!await skdCampaign.locator(".campaign-mobile-actions").isVisible())throw Error("SKD mobile CTA missing");
+ await skdCampaignPhone.focus();
+ if(await skdCampaign.locator(".campaign-mobile-actions").isVisible())throw Error("SKD mobile CTA covers focused input");
+ console.log("SKD_CAMPAIGN_UI_OK",JSON.stringify({phoneRequired:true,mail:"wojciech.obieglo@votum-ds.pl",formSubmissions:0}));
+ await skdCampaign.close();
 
  // No submission: validate SKD callback phone as required, even when email is provided.
  const skdPhoneForm=await browser.newPage({viewport:{width:390,height:844}});

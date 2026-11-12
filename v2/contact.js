@@ -155,8 +155,15 @@
    button.addEventListener("click",()=>{city.value=place;syncCityQuick();});
    cityOptions.append(button);cityButtons.push(button);
   }
-  const cityHint=document.createElement("small");cityHint.textContent="Inna miejscowość w okolicy? Wpisz ją w polu powyżej. Wybór miasta nie przesądza o przyczynie szkody.";
-  cityQuick.append(cityQuickTitle,cityOptions,cityHint);form.append(cityQuick);
+  const cityOther=document.createElement("button");cityOther.type="button";cityOther.className="contact-city-other";
+  cityOther.textContent="Inna miejscowość — wpisz samodzielnie";
+  cityOther.addEventListener("click",()=>{
+   // On the homepage city is kept inside optional case details; reveal it without wiping other fields.
+   const details=city.closest?.("details.contact-case-details");if(details)details.open=true;
+   city.focus();city.scrollIntoView?.({block:"nearest",behavior:"auto"});
+  });
+  const cityHint=document.createElement("small");cityHint.textContent="Wpisz dowolną miejscowość w okolicy. Lokalizacja nie przesądza o przyczynie uszkodzeń.";
+  cityQuick.append(cityQuickTitle,cityOptions,cityOther,cityHint);form.append(cityQuick);
   city.addEventListener("input",syncCityQuick);select.addEventListener("change",syncCityQuick);syncCityQuick();
   const phone=field("Telefon kontaktowy","tel",false,30,"tel");phone.pattern="[+0-9()\\s-]{7,30}";phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";
   const email=field("Adres e-mail (opcjonalnie, jeśli podasz telefon)","email",false,150,"email");

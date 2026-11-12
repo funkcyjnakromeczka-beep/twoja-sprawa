@@ -221,6 +221,10 @@ await run(true);
  assert.equal(cityChoices[1].getAttribute("aria-pressed"),"true","Selected city should be visually announced");
  city.value="Rudna";city.events.input();
  assert.equal(cityChoices[1].getAttribute("aria-pressed"),"false","Manual town input must override the quick city state");
+ const otherCity=visit(form,n=>n.className==="contact-city-other");
+ assert.ok(otherCity&&typeof otherCity.events.click==="function","Any local town must have a manual-entry action");
+ otherCity.events.click();
+ assert.equal(city.focused,true,"Manual-entry button must focus the location field");
  cityChoices[1].events.click();
 
  assert.equal(damage.children.length,6,"Damage categories should be a closed, fixed list");

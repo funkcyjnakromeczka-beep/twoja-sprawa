@@ -152,3 +152,14 @@
  .contact-form .contact-city-choice{padding-inline:8px}
 }
 @media(prefers-reduced-motion:reduce){.contact-form .contact-city-choice{transition:none}}
+
+/* Przejście do ręcznego wpisania miejscowości, również z ukrytej sekcji na stronie głównej. */
+.contact-form .contact-city-other{
+ display:inline-flex;align-items:center;justify-content:flex-start;
+ min-height:44px;margin-top:8px;padding:8px 2px;
+ border:0;background:transparent;color:#154357;
+ text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+ font:750 .88rem/1.5 system-ui,sans-serif;text-align:left;
+}
+.contact-form .contact-city-other:hover{color:#825b26}
+.contact-form .contact-city-other:focus-visible{outline:3px solid #bd9251;outline-offset:3px}

@@ -481,6 +481,17 @@ try{
  if(skdPhoneRequired===null)throw Error("SKD shortcut did not require callback phone");
  await flagshipPage.screenshot({path:"screenshots/home-trzy-wybory-formularz-telefon.png",fullPage:false,animations:"disabled"});
  console.log("HOME_SHORTCUT_UI_OK",JSON.stringify({choices:3,selection:flagshipSelection,callbackRequired:true,feedback:true}));
+ await miningShortcut.click();
+ const otherCityLink=flagshipPage.locator(".contact-city-other");
+ if(!await otherCityLink.isVisible())throw Error("Manual location action should be visible on the mining form");
+ await otherCityLink.click();
+ const extraDetails=flagshipPage.locator(".contact-case-details");
+ if(!await extraDetails.evaluate(el=>el.open))throw Error("Manual city action did not expand hidden homepage case details");
+ const homeCity=flagshipPage.locator('.contact-form input[autocomplete="address-level2"]');
+ if(!await homeCity.evaluate(el=>document.activeElement===el))throw Error("Manual town input did not receive focus");
+ await homeCity.fill("Rudna");
+ if(await flagshipPage.locator(".contact-city-choice[aria-pressed='true']").count()!==0)throw Error("Custom town incorrectly marked as Lubin/Polkowice");
+ console.log("HOME_OTHER_TOWN_OK",JSON.stringify({expanded:true,focused:true,town:"Rudna",realMessagesSent:0}));
  await flagshipPage.close();
 
 

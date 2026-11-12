@@ -63,6 +63,7 @@ const run=async(error=false)=>{
  if(select.events.change)select.events.change();
  assert.equal(advisor.hidden,false,"Specialist is visible after choosing service");
  assert.ok(advisor.children.some(node=>(node.textContent||"").includes("Paulina Chandrała")),"Support cases should show Paulina");
+ assert.ok(advisor.children.some(node=>node.href?.startsWith("mailto:paulina.chandrala@votum-ds.pl?subject=")),"Support adviser email must be directly accessible");
  const supportPhone=visit(form,n=>n.className==="contact-people");
  assert.ok(supportPhone.children.some(n=>n.href==="tel:+48500171531"),"Support hotline must link to Paulina");
  assert.ok(!supportPhone.children.some(n=>n.href==="tel:+48796441345"),"Support should not show unrelated mining hotline");
@@ -98,7 +99,7 @@ const run=async(error=false)=>{
   assert.equal(status.className,"contact-status-error");
   const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
   assert.ok(fallback);
-  assert.ok(fallback.href.startsWith("mailto:twojasprawa_votum@outlook.com?"),"Non-SKD form keeps its default fallback mailbox");
+  assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"),"Support fallback must route directly to Paulina");
   assert.ok(decodeURIComponent(fallback.href).includes("Dogodna pora: Po południu"));
   assert.ok(decodeURIComponent(fallback.href).includes("grupa_lubin"));
  }else{
@@ -427,6 +428,10 @@ for(const sample of [
   {phone:"---------",email:"",method:"Dowolny",accepted:false},
   {phone:"123456",email:"",method:"Telefon",accepted:false},
   {phone:"1234567",email:"",method:"Telefon",accepted:true},
+  {phone:"++48796441345",email:"",method:"Telefon",accepted:false},
+  {phone:"(48796441345",email:"",method:"Telefon",accepted:false},
+  {phone:"48)796441345",email:"",method:"Telefon",accepted:false},
+  {phone:"+48 (796) 441-345",email:"",method:"Telefon",accepted:true},
   {phone:"+48 796 441 345",email:"",method:"Telefon",accepted:true},
   {phone:"00442079460123",email:"",method:"Telefon",accepted:true},
   {phone:"5123+4567",email:"",method:"Telefon",accepted:false},

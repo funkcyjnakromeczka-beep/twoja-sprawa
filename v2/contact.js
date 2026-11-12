@@ -47,7 +47,7 @@
   };
   select.addEventListener("change",updatePeople);updatePeople();
   const advisor=document.createElement("div");advisor.className="contact-advisor";advisor.setAttribute("aria-live","polite");form.append(advisor);
-  const updateAdvisor=()=>{advisor.replaceChildren();benefitNodes[1].textContent=select.value==="Kredyt w PLN / SKD"?"✓ Możesz przesłać pełną umowę e-mailem":"✓ Bez wysyłania dokumentów na początek";if(!select.value){advisor.hidden=true;return;}advisor.hidden=false;const paulina=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value);const title=document.createElement("strong");title.textContent=paulina?"Twoja osoba do kontaktu: Paulina Chandrała":"Twoja osoba do kontaktu: Wojciech Obiegło";const info=document.createElement("span");info.textContent=paulina?"Świadczenia i renty":select.value==="Kredyt w PLN / SKD"?"Wstępna analiza umowy kredytowej — SKD":"Szkody górnicze i pozostałe sprawy";const call=document.createElement("a");call.href=paulina?"tel:+48500171531":"tel:+48796441345";call.textContent=paulina?"Zadzwoń: 500 171 531":"Zadzwoń: 796 441 345";advisor.append(title,info,call);if(select.value==="Kredyt w PLN / SKD"){const tip=document.createElement("span");tip.textContent="Do analizy wyślij pełną umowę, bez zasłaniania danych, i podaj numer telefonu: ";const emailLink=document.createElement("a");emailLink.href="mailto:wojciech.obieglo@votum-ds.pl?subject=Analiza%20umowy%20SKD";emailLink.textContent="wojciech.obieglo@votum-ds.pl";advisor.append(tip,emailLink);}};select.addEventListener("change",updateAdvisor);updateAdvisor();
+  const updateAdvisor=()=>{advisor.replaceChildren();benefitNodes[1].textContent=select.value==="Kredyt w PLN / SKD"?"✓ Możesz przesłać pełną umowę e-mailem":"✓ Bez wysyłania dokumentów na początek";if(!select.value){advisor.hidden=true;return;}advisor.hidden=false;const paulina=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value);const title=document.createElement("strong");title.textContent=paulina?"Twoja osoba do kontaktu: Paulina Chandrała":"Twoja osoba do kontaktu: Wojciech Obiegło";const info=document.createElement("span");info.textContent=paulina?"Świadczenia i renty":select.value==="Kredyt w PLN / SKD"?"Wstępna analiza umowy kredytowej — SKD":"Szkody górnicze i pozostałe sprawy";const call=document.createElement("a");call.href=paulina?"tel:+48500171531":"tel:+48796441345";call.textContent=paulina?"Zadzwoń: 500 171 531":"Zadzwoń: 796 441 345";advisor.append(title,info,call);if(paulina){const directMail=document.createElement("a");directMail.href="mailto:paulina.chandrala@votum-ds.pl?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+select.value);directMail.textContent="Napisz do Pauliny: paulina.chandrala@votum-ds.pl";advisor.append(directMail);}if(select.value==="Kredyt w PLN / SKD"){const tip=document.createElement("span");tip.textContent="Do analizy wyślij pełną umowę, bez zasłaniania danych, i podaj numer telefonu: ";const emailLink=document.createElement("a");emailLink.href="mailto:wojciech.obieglo@votum-ds.pl?subject=Analiza%20umowy%20SKD";emailLink.textContent="wojciech.obieglo@votum-ds.pl";advisor.append(tip,emailLink);}};select.addEventListener("change",updateAdvisor);updateAdvisor();
   const guideBox=document.createElement("div");guideBox.className="contact-guide-box";guideBox.setAttribute("aria-live","polite");
   const guideTitle=document.createElement("strong");guideTitle.textContent="Przygotuj się do rozmowy";
   const guideText=document.createElement("span");
@@ -177,7 +177,7 @@
   const cityHint=document.createElement("small");cityHint.textContent="Wpisz dowolną miejscowość w okolicy. Lokalizacja nie przesądza o przyczynie uszkodzeń.";
   cityQuick.append(cityQuickTitle,cityOptions,cityOther,cityHint);form.append(cityQuick);
   city.addEventListener("input",syncCityQuick);select.addEventListener("change",syncCityQuick);syncCityQuick();
-  const phone=field("Telefon kontaktowy","tel",false,30,"tel");phone.pattern="[+0-9()\\s-]{7,30}";phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";
+  const phone=field("Telefon kontaktowy","tel",false,30,"tel");phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";
   const email=field("Adres e-mail (opcjonalnie, jeśli podasz telefon)","email",false,150,"email");
   const phoneHint=document.createElement("small");phoneHint.className="contact-field-hint";phoneHint.textContent="Wystarczy telefon lub e-mail. Numer telefonu powinien zawierać 7–15 cyfr (spacje i myślniki są dozwolone). Nie wpisuj numeru PESEL ani danych dokumentów.";phoneHint.id="cf-phone-help-"+Math.random().toString(36).slice(2,8);phone.setAttribute("aria-describedby",phoneHint.id);phone.insertAdjacentElement("afterend",phoneHint);
   const methodLabel=document.createElement("label");methodLabel.textContent="Preferowany sposób kontaktu";const method=document.createElement("select");method.id="cf-method-"+Math.random().toString(36).slice(2,8);methodLabel.htmlFor=method.id;for(const [value,title] of [["Dowolny","Telefon lub e-mail"],["Telefon","Telefon"],["E-mail","E-mail"]]){const option=document.createElement("option");option.value=value;option.textContent=title;method.append(option);}form.append(methodLabel,method);
@@ -186,7 +186,15 @@
   const validPhoneNumber=value=>{
     const raw=value.trim();
     const digits=raw.replace(/\D/g,"");
-    return /^(?:\+|\(\+|[0-9(])[0-9()\s-]*$/.test(raw)&&digits.length>=7&&digits.length<=15;
+    // Reject misplaced plus signs and unmatched parentheses. HTML's pattern
+    // uses modern Unicode-v rules; rely on this explicit checked validator.
+    if(!/^(?:\+?\d|\(\+?\d)[0-9()\s-]*$/.test(raw))return false;
+    let opened=false;
+    for(const c of raw){
+      if(c==="("){if(opened)return false;opened=true;}
+      if(c===")"){if(!opened)return false;opened=false;}
+    }
+    return !opened&&digits.length>=7&&digits.length<=15;
   };
   const syncContactPreference=()=>{
     const prefer=method.value;
@@ -242,7 +250,7 @@
    if(!checkName()){name.reportValidity();name.focus();return;}
    if(!checkContact())return;
    if(!form.reportValidity())return;
-   const mailRecipient=select.value==="Kredyt w PLN / SKD"?"wojciech.obieglo@votum-ds.pl":"twojasprawa_votum@outlook.com";
+   const mailRecipient=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value)?"paulina.chandrala@votum-ds.pl":select.value==="Kredyt w PLN / SKD"?"wojciech.obieglo@votum-ds.pl":"twojasprawa_votum@outlook.com";
    if(automatic){
     if(honeypot.value){status.textContent="Nie udało się zweryfikować formularza.";return;}
     sending=true;button.disabled=true;button.textContent="Wysyłanie…";status.className="";status.textContent="Przesyłam zgłoszenie…";

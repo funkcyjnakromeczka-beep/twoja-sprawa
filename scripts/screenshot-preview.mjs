@@ -665,6 +665,21 @@ try{
  console.log("RENT_ADVISOR_UI_OK",JSON.stringify({phone:"500 171 531",person:"Paulina",formSelected:true,realLeadsSent:0}));
  await rentPage.close();
 
+ // Direct fallback email stays with the correct adviser after a simulated
+ // provider outage. This intercepts the request, never contacting Web3Forms.
+ const supportFailPage=await browser.newPage({viewport:{width:390,height:844}});
+ await supportFailPage.route("https://api.web3forms.com/submit",route=>route.fulfill({status:503,contentType:"application/json",body:'{"success":false}'}));
+ await supportFailPage.goto(origin+"/kampanie/swiadczenie-wspierajace.html",{waitUntil:"domcontentloaded"});
+ await supportFailPage.locator('.contact-form input[autocomplete="given-name"]').fill("Klient testowy");
+ await supportFailPage.locator('.contact-form input[autocomplete="tel"]').fill("500 000 000");
+ await supportFailPage.locator('.contact-form input[type="checkbox"]').check();
+ await supportFailPage.locator('.contact-form button[type="submit"]').click();
+ const supportFailLink=await supportFailPage.locator('.contact-status-error .contact-fallback-link').getAttribute("href");
+ if(!supportFailLink?.startsWith("mailto:paulina.chandrala@votum-ds.pl?"))throw Error("Support fallback points at the wrong inbox: "+supportFailLink);
+ if(await supportFailPage.locator('.contact-form input[autocomplete="given-name"]').inputValue()!=="Klient testowy")throw Error("Failed provider request lost the draft");
+ console.log("SUPPORT_FAILURE_MAIL_OK",JSON.stringify({recipient:"Paulina",draftPreserved:true,actualMessagesSent:0}));
+ await supportFailPage.close();
+
  // Generated marketing links should be the same short canonical addresses printed on flyers.
  const generatorPage=await browser.newPage({viewport:{width:390,height:844}});
  await generatorPage.goto(origin+"/narzedzia/linki-kampanii.html",{waitUntil:"domcontentloaded"});

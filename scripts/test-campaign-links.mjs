@@ -49,7 +49,9 @@ const check=(service,path,phone)=>{
 check("szkody","/kampanie/szkody-gornicze.html","796 441 345");
 check("swiadczenie","/kampanie/swiadczenie-wspierajace.html","500 171 531");
 check("renty","/uslugi/renty-powypadkowe.html","500 171 531");
-check("skd","/uslugi/kredyty-pln.html","500 171 531");
+check("skd","/uslugi/kredyty-pln.html","796 441 345");
+assert.ok(post.value.includes("wojciech.obieglo@votum-ds.pl"),"SKD message must offer VOTUM contract mailbox");
+assert.ok(!post.value.includes("500 171 531"),"SKD message must not send visitors to benefit hotline");
 check("przesyl","/uslugi/sluzebnosc-przesylu.html","796 441 345");
 values.channel.value="ulotka";
 values.content.value="Grupa 1";
@@ -64,5 +66,6 @@ values.style.value="hook";values.content.value="";
 listeners.change();
 assert.equal(new URL(link.value).searchParams.get("utm_content"),"hook");
 assert.ok(post.value.includes("Czy na Twojej działce"));
-assert.ok(status.textContent.includes("wersji testowej Cloudflare Pages"));
+assert.ok(status.textContent.includes("Darmowa domena Cloudflare Pages"));
+assert.ok(!status.textContent.includes("wersji testowej"),"Cloudflare production must not be called a preview");
 console.log("OK: five services, phone routing, UTM channels, variants and generated content, with no external requests.");

@@ -52,7 +52,7 @@
     szkody: "Lubin, Polkowice i okolice: pęknięcia ścian, elewacji lub uszkodzenia kostki? Warto udokumentować szkody i sprawdzić możliwości działania. Pierwszy kontakt bez zobowiązania do umowy.",
     swiadczenie: "Świadczenie wspierające: WZON, ZUS, decyzja lub wniosek? Uporządkuj etap sprawy i poznaj możliwe dalsze kroki. Bez obietnic wyniku.",
     renty: "Renta powypadkowa: sprawdź, jakie dokumenty i informacje mogą być potrzebne do analizy indywidualnej sytuacji.",
-    skd: "Kredyt konsumencki w PLN? Sprawdź, czy warunki umowy można analizować pod kątem sankcji kredytu darmowego. Nie każda umowa daje podstawę do roszczenia.",
+    skd: "Kredyt konsumencki w PLN? Wyślij pełną umowę na wojciech.obieglo@votum-ds.pl, zostaw numer telefonu i zapytaj o indywidualną analizę SKD. Bez gwarancji wyniku.",
     przesyl: "Słupy lub linie na działce? Warto ustalić dokumentację i stan prawny urządzeń przesyłowych przed podjęciem dalszych działań."
   };
   const channels = {
@@ -76,9 +76,10 @@
     if (variant) target.searchParams.set("utm_content", variant);
     urlOutput.value = target.href;
     const selectedText = style.value === "short" ? shorts[service.value] : style.value === "hook" ? hooks[service.value] + "\n\n" + chosen.text : chosen.text;
-    postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + "Kontakt: " + (["swiadczenie", "renty", "skd"].includes(service.value) ? "500 171 531" : "796 441 345");
+    const contactFooter = service.value === "skd" ? "Umowa kredytowa: wojciech.obieglo@votum-ds.pl\nTelefon: 796 441 345" : "Kontakt: " + (["swiadczenie", "renty"].includes(service.value) ? "500 171 531" : "796 441 345");
+    postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + contactFooter;
     openAction.href = target.href;
-    message.textContent = /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "UWAGA: to link do wersji testowej Cloudflare Pages. Przed masową publikacją uruchom i zweryfikuj docelową domenę oraz dostarczanie formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
+    message.textContent = /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "Darmowa domena Cloudflare Pages (pages.dev) nadaje się do publikacji. Przed udostępnieniem sprawdź działanie strony i odbiór formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
   };
   const copy = async (value, label) => {
     try {

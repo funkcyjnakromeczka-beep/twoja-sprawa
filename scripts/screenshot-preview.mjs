@@ -598,7 +598,7 @@ try{
   if(!await compactPage.locator(field).isVisible())throw Error("Essential lead field was hidden: "+field);
  }
  await compactPage.locator('#kontakt .contact-alternatives summary').click();
- if(!await compactPage.locator('#kontakt .contact-alternative-links a[href="tel:+48500171531"]').isVisible())throw Error("Optional phone fallback missing");
+ await compactPage.locator('#kontakt .contact-alternative-links a[href="tel:+48500171531"]').waitFor({state:"visible",timeout:5000}).catch(()=>{throw Error("Optional phone fallback missing after expanding alternatives");});
  await compactPage.locator('#kontakt .contact-case-details > summary').click();
  if(!await compactPage.locator('#kontakt .contact-guide-box').isVisible())throw Error("Checklist must be accessible in expanded details");
  console.log("HOME_COMPACT_LEAD_OK",JSON.stringify({essentialFields:3,duplicatePhoneHidden:true,guideOptional:true,alternativeContacts:true,leadsSent:0}));

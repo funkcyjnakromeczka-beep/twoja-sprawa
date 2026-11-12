@@ -443,7 +443,8 @@ try{
  await flagshipPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
  const miningShortcut=flagshipPage.locator('[data-contact-shortcut="szkody"]');
  const supportShortcut=flagshipPage.locator('[data-contact-shortcut="swiadczenie"]');
- if(await flagshipPage.locator("[data-contact-shortcut]").count()!==2)throw Error("Homepage should have two flagship shortcut buttons");
+ const skdShortcut=flagshipPage.locator('[data-contact-shortcut="skd"]');
+ if(await flagshipPage.locator("[data-contact-shortcut]").count()!==3)throw Error("Homepage should have three flagship shortcut buttons");
  await miningShortcut.click();
  let flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
  if(flagshipSelection!=="Szkody górnicze")throw Error("Home mining shortcut failed to select service");
@@ -457,8 +458,14 @@ try{
  if(await miningShortcut.getAttribute("data-selected")!=="false"||await supportShortcut.getAttribute("data-selected")!=="true")throw Error("Home shortcut state remains stale after switching");
  const message=await flagshipPage.locator("[data-contact-shortcut-status]").textContent();
  if(!message.includes("Świadczenie wspierające"))throw Error("Homepage shortcut selection lacks accessible feedback");
- await flagshipPage.screenshot({path:"screenshots/home-dwa-wybory-formularz-telefon.png",fullPage:false,animations:"disabled"});
- console.log("HOME_SHORTCUT_UI_OK",JSON.stringify({choices:2,selection:flagshipSelection,feedback:true}));
+ await skdShortcut.click();
+ flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
+ if(flagshipSelection!=="Kredyt w PLN / SKD")throw Error("Home SKD shortcut failed to select service");
+ if(await skdShortcut.getAttribute("data-selected")!=="true")throw Error("Home SKD shortcut not visibly selected");
+ const skdPhoneRequired=await flagshipPage.locator('.contact-form input[type="tel"]').getAttribute("required");
+ if(skdPhoneRequired===null)throw Error("SKD shortcut did not require callback phone");
+ await flagshipPage.screenshot({path:"screenshots/home-trzy-wybory-formularz-telefon.png",fullPage:false,animations:"disabled"});
+ console.log("HOME_SHORTCUT_UI_OK",JSON.stringify({choices:3,selection:flagshipSelection,callbackRequired:true,feedback:true}));
  await flagshipPage.close();
 
 

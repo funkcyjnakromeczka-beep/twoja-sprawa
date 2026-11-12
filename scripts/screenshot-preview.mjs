@@ -469,7 +469,7 @@ try{
   if(await noResults.locator("[data-search-contact]").getAttribute("href")!==destination)throw Error("No-result contact routes to wrong service: "+topic);
  }
  await noResults.locator('[data-search-category="all"]').click();
- if(await noResults.locator("[data-search-contact]").getAttribute("href")!=="/v2/kontakt.html")throw Error("General search should route to general contact");
+ if(await noResults.locator("[data-search-contact]").getAttribute("href")!=="/kontakt.html")throw Error("General search should route to general contact");
  console.log("SEARCH_EMPTY_CONTEXT_CONTACT_OK",JSON.stringify({serviceRoutes:4,generalFallback:true,actualLeadsSent:0}));
  await noResults.close();
 

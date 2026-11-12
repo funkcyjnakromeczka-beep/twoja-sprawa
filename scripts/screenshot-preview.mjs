@@ -511,7 +511,7 @@ try{
  }
  await compactPage.locator('#kontakt .contact-alternatives summary').click();
  if(!await compactPage.locator('#kontakt .contact-alternative-links a[href="tel:+48500171531"]').isVisible())throw Error("Optional phone fallback missing");
- await compactPage.locator('#kontakt .contact-case-details summary').click();
+ await compactPage.locator('#kontakt .contact-case-details > summary').click();
  if(!await compactPage.locator('#kontakt .contact-guide-box').isVisible())throw Error("Checklist must be accessible in expanded details");
  console.log("HOME_COMPACT_LEAD_OK",JSON.stringify({essentialFields:3,duplicatePhoneHidden:true,guideOptional:true,alternativeContacts:true,leadsSent:0}));
  await compactPage.close();

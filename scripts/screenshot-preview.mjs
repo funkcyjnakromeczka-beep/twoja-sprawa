@@ -459,10 +459,10 @@ try{
  await noResults.goto(origin+"/szukaj.html",{waitUntil:"domcontentloaded"});
  await noResults.locator("#site-search-input").fill("niespotykane xxyzzq xxxpq");
  for(const [topic,destination] of [
-  ["swiadczenie","/kampanie/swiadczenie-wspierajace#formularz"],
-  ["szkody","/uslugi/szkody-gornicze#formularz"],
-  ["skd","/kampanie/skd#formularz"],
-  ["renty","/uslugi/renty-powypadkowe#formularz"]
+  ["swiadczenie","/kampanie/swiadczenie-wspierajace.html#formularz"],
+  ["szkody","/uslugi/szkody-gornicze.html#formularz"],
+  ["skd","/kampanie/skd.html#formularz"],
+  ["renty","/uslugi/renty-powypadkowe.html#formularz"]
  ]){
   await noResults.locator('[data-search-category="'+topic+'"]').click();
   if(!await noResults.locator("[data-search-empty]").isVisible())throw Error("Missing empty state for "+topic);

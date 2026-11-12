@@ -3,10 +3,20 @@
 import assert from "node:assert/strict";
 import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 const root="https://twoja-sprawa.pages.dev";
+// Cloudflare may briefly return 429/5xx during deployment. Retry a bounded
+// number of times, but never treat persistent errors as passing tests.
 const get=async(path)=>{
- const response=await fetch(root+path,{signal:AbortSignal.timeout(20000),headers:{"Accept":"text/html,application/xml,text/plain;q=0.9,*/*;q=0.8"}});
- assert.ok(response.ok,"Live "+path+" HTTP "+response.status);
- return {response,body:await response.text()};
+ let lastStatus=null,lastError=null;
+ for(let attempt=0;attempt<4;attempt++){
+  try{
+   const response=await fetch(root+path,{signal:AbortSignal.timeout(20000),headers:{"Accept":"text/html,application/xml,text/plain;q=0.9,*/*;q=0.8"}});
+   if(response.ok)return {response,body:await response.text()};
+   lastStatus=response.status;
+   if(![429,500,502,503,504].includes(response.status))break;
+  }catch(error){lastError=error;}
+  if(attempt<3)await new Promise(resolve=>setTimeout(resolve,(attempt+1)*1250));
+ }
+ assert.fail("Live "+path+" HTTP "+(lastStatus??"connection failed")+(lastError?" ("+lastError.message+")":""));
 };
 const [robots,sitemap,home,mining,support,faq,search,marker,portraitA,portraitB,mobileJS,mobileCSS,frank,frankGuide,contrastCSS,skd,homeFlow,navigatorJS,leaflet,leafletCSS,shareJS,brandCSS,chatJS,leadJS,miningLanding,personaCSS,supportLanding]=await Promise.all([
  get("/robots.txt"),get("/sitemap.xml"),get("/"),get("/uslugi/szkody-gornicze"),

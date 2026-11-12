@@ -289,3 +289,8 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - Programatyczne zmiany usługi w formularzu (skróty strony głównej, kategorie uszkodzeń i etapy świadczenia) aktualizują teraz również reguły wymaganych danych. Po przejściu z SKD do szkód lub świadczenia, podanie numeru przestaje być obowiązkowe, gdy użytkownik wpisał poprawny e-mail.
 - Test integracyjny symuluje awarię przesyłania (bez rzeczywistych zgłoszeń), sprawdza poprawny adres i numer w zapasowej wiadomości. Chromium weryfikuje wybór SKD i następnie szkód górniczych bez zaległego wymogu telefonu. Kontrola publicznej strony potwierdza wdrożenie zmian.
 - Nadal SKD jest trzecią wyróżnioną usługą, nie ma kosztów za dodatkowe narzędzia i użytkownik samodzielnie przesyła pełną umowę kredytową pocztą e-mail.
+
+### Dodatkowa kontrola Etapu XXVI (12.11.2026)
+
+- Przejrzano również historyczny test „50 kontroli”, który zakładał jeden stały adres poczty awaryjnej. Obecnie sprawdza on prawidłowy wybór skrzynki dla SKD oraz pozostałych usług.
+- Audyt odczytujący publiczne zasoby Cloudflare ponawia do czterech razy żądania z przejściowymi błędami HTTP 429/5xx i krótkim opóźnieniem. Nie pomija błędów 404 ani trwałych problemów dostępności; po wyczerpaniu prób audyt kończy się błędem.

@@ -47,7 +47,7 @@ add("23. Rozróżnienie tematów przez formularz",()=>assert.ok(form.includes('"
 add("24. Formularz obsługiwany przez Web3Forms",()=>assert.ok(form.includes("https://api.web3forms.com/submit")));
 add("25. Honeypot przeciw przypadkowym botom",()=>assert.ok(form.includes('honeypot.name="botcheck"')));
 add("26. Ograniczenie czasu żądania formularza",()=>assert.ok(form.includes("AbortController()")&&form.includes("12000")));
-add("27. Awaryjny kontakt przez e-mail",()=>assert.ok(form.includes("mailto:twojasprawa_votum@outlook.com")));
+add("27. Awaryjny kontakt przez e-mail",()=>assert.ok(form.includes('const mailRecipient=select.value==="Kredyt w PLN / SKD"?"wojciech.obieglo@votum-ds.pl":"twojasprawa_votum@outlook.com"')&&form.includes('fallback.href="mailto:"+mailRecipient')));
 add("28. Zgoda na kontakt w formularzu",()=>assert.ok(form.includes("ack.required=true")));
 add("29. Telefon lub e-mail: dynamiczny wymóg",()=>assert.ok(form.includes("syncContactPreference")));
 add("30. Formularz przyjmuje wybór z planu",()=>assert.ok(form.includes('"plan"].includes(requestedLeadPath)')));

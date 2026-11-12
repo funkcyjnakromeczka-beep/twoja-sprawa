@@ -121,3 +121,34 @@
 @media(max-width:650px){
  .contact-form .contact-damage-area:not([hidden]){padding:13px 14px}
 }
+
+/* Szkody górnicze: szybkie podanie miejscowości bez autolokalizacji i śledzenia. */
+.contact-form .contact-city-quick{
+ margin:0 0 12px;padding:13px 15px;border:1px solid #bbd2cb;
+ border-radius:13px;background:#eff6f3;color:#173b49;
+}
+.contact-form .contact-city-quick[hidden]{display:none!important}
+.contact-form .contact-city-quick>strong{
+ display:block;margin-bottom:9px;color:#173b49;font-size:.92rem;line-height:1.4;
+}
+.contact-form .contact-city-options{display:flex;flex-wrap:wrap;gap:9px}
+.contact-form .contact-city-choice{
+ min-height:44px;padding:9px 18px;background:#fff;color:#153e4a;
+ border:2px solid #91b4a8;border-radius:999px;cursor:pointer;
+ font:800 .9rem/1.35 system-ui,sans-serif;
+}
+.contact-form .contact-city-choice[aria-pressed="true"]{
+ background:#163f49;border-color:#163f49;color:#fff;
+}
+.contact-form .contact-city-choice:hover{border-color:#a27d45}
+.contact-form .contact-city-choice:focus-visible{
+ outline:3px solid #bd9251;outline-offset:3px;
+}
+.contact-form .contact-city-quick>small{
+ display:block;margin-top:9px;color:#3a5c66;line-height:1.5;font-size:.83rem;
+}
+@media(max-width:380px){
+ .contact-form .contact-city-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .contact-form .contact-city-choice{padding-inline:8px}
+}
+@media(prefers-reduced-motion:reduce){.contact-form .contact-city-choice{transition:none}}

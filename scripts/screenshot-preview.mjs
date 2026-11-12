@@ -420,6 +420,18 @@ try{
  const damageVisibility=await damagePage.locator(".contact-damage-area").isVisible();
  if(!damageVisibility)throw Error("Mining damage qualifier must be visible on campaign form");
  await damagePage.screenshot({path:"screenshots/szkody-szybki-wybor-telefon.png",fullPage:false,animations:"disabled"});
+
+ const quickCities=damagePage.locator(".contact-city-options .contact-city-choice");
+ if(await quickCities.count()!==2)throw Error("Mining form needs two optional city shortcuts");
+ await quickCities.nth(1).click();
+ const cityInput=damagePage.locator('.contact-form input[autocomplete="address-level2"]');
+ if(await cityInput.inputValue()!=="Polkowice")throw Error("Polkowice quick city option did not fill location");
+ if(await quickCities.nth(1).getAttribute("aria-pressed")!=="true")throw Error("Polkowice city shortcut not visibly selected");
+ await cityInput.fill("Rudna");
+ if(await quickCities.nth(1).getAttribute("aria-pressed")!=="false")throw Error("Manual city entry did not clear quick selection");
+ await quickCities.nth(0).click();
+ if(await cityInput.inputValue()!=="Lubin")throw Error("Mining city shortcut cannot be switched");
+ console.log("MINING_CITY_QUICK_OK",JSON.stringify({twoChoices:true,lastCity:"Lubin",customTownAllowed:true,realMessagesSent:0}));
  console.log("MINING_DAMAGE_UI_OK",JSON.stringify({category:selectedDamage,atForm:true,visible:damageVisibility}));
  await damagePage.close();
 

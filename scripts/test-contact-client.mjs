@@ -63,6 +63,9 @@ const run=async(error=false)=>{
  if(select.events.change)select.events.change();
  assert.equal(advisor.hidden,false,"Specialist is visible after choosing service");
  assert.ok(advisor.children.some(node=>(node.textContent||"").includes("Paulina Chandrała")),"Support cases should show Paulina");
+ const supportPhone=visit(form,n=>n.className==="contact-people");
+ assert.ok(supportPhone.children.some(n=>n.href==="tel:+48500171531"),"Support hotline must link to Paulina");
+ assert.ok(!supportPhone.children.some(n=>n.href==="tel:+48796441345"),"Support should not show unrelated mining hotline");
  // Opening a checklist or privacy information must not replace the filled form.
  const guide=visit(form,n=>n.tag==="a"&&n.textContent?.startsWith("Otwórz listę kontrolną"));
  const privacy=visit(form,n=>n.tag==="a"&&n.href==="/v2/polityka-prywatnosci.html");
@@ -121,6 +124,9 @@ await run(true);
  const advisor=visit(form,n=>n.className==="contact-advisor");
  const guide=visit(form,n=>n.className==="contact-guide-box");
  assert.equal(service.value,"Kredyt w PLN / SKD");
+ const skdPhone=visit(form,n=>n.className==="contact-people");
+ assert.ok(skdPhone.children.some(n=>n.href==="tel:+48796441345"),"SKD phone must be Wojciech");
+ assert.ok(!skdPhone.children.some(n=>n.href==="tel:+48500171531"),"SKD phone must not be benefit specialist");
  assert.ok(advisor.children.some(n=>n.textContent==="Twoja osoba do kontaktu: Wojciech Obiegło"),"SKD advisor must be Wojciech");
  assert.ok(advisor.children.some(n=>n.href?.startsWith("mailto:wojciech.obieglo@votum-ds.pl")),"SKD email destination missing");
  assert.ok(advisor.children.some(n=>n.href==="tel:+48796441345"),"SKD callback uses a different phone");

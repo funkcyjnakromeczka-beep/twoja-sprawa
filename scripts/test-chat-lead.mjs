@@ -88,4 +88,6 @@ const skdForm=visit(result,n=>n.className==="chat-reply-contact");
 assert.equal(new URL(skdForm.href,origin).searchParams.get("usluga"),"skd","SKD form must retain service alias");
 const skdCaution=visit(result,n=>n.className==="chat-caution");
 assert.ok(skdCaution.textContent.includes("nie wysyła zgłoszenia"),"SKD chatbot must explain no automatic submission");
-console.log("OK: chatbot links preserve UTM/stage, SKD includes direct agreement email and callback instructions.");
+assert.ok(source.includes('else if(url.includes("renty-powypadkowe"))choose(topics[2]);'),"Rent pages must auto-select the correct chatbot adviser");
+assert.ok(source.includes('else if(url.includes("kredyty-pln"))choose(topics[3]);'),"SKD service page should auto-select the agreement path");
+console.log("OK: chatbot links preserve UTM/stage, service pages auto-select the correct adviser and SKD offers the contract mailbox.");

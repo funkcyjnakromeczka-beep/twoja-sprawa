@@ -185,6 +185,10 @@
   if(chosenTopic)choose(chosenTopic);
   else if(url.includes("swiadczenie-wspierajace"))choose(topics[0]);
   else if(url.includes("szkody-gornicze"))choose(topics[1]);
+  else if(url.includes("renty-powypadkowe"))choose(topics[2]);
+  else if(url.includes("kredyty-pln"))choose(topics[3]);
+  else if(url.includes("kredyty-frankowe"))choose(topics[4]);
+  else if(url.includes("sluzebnosc-przesylu"))choose(topics[5]);
   // On narrow screens, the form should remain unobstructed while the assistant is closed.
   const contactArea=document.getElementById("formularz")||document.getElementById("kontakt");
   const videoArea=document.getElementById("filmy");

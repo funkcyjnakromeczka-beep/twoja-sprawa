@@ -657,7 +657,8 @@ try{
  // Rent page conversion and both profile pages must route to the assigned advisor.
  const rentPage=await browser.newPage({viewport:{width:390,height:844}});
  await rentPage.goto(origin+"/uslugi/renty-powypadkowe.html",{waitUntil:"domcontentloaded"});
- if(await rentPage.locator('a[href="tel:+48796441345"]').count())throw Error("Rent page still directs callers to mining number");
+ if(await rentPage.locator('.contact .actions a[href="tel:+48796441345"],.service-cta .actions a[href="tel:+48796441345"],.chat-actions a[href="tel:+48796441345"]').count())throw Error("Rent conversion controls still direct callers to mining number");
+ if(!await rentPage.locator('.chat-actions a[href="tel:+48500171531"]').count())throw Error("Rent chatbot should automatically show Paulina's phone");
  if(!await rentPage.locator('.mobile-service-cta .mobile-service-call[href="tel:+48500171531"]').isVisible())throw Error("Mobile rent contact bar must show Paulina");
  if(await rentPage.locator('.contact-form select[id^="cf-service-"]').inputValue()!=="Renty powypadkowe")throw Error("Rent form must preselect assigned service");
  if(!await rentPage.locator('a[href^="mailto:paulina.chandrala@votum-ds.pl"]').count())throw Error("Rent CTA must offer Paulina's address");

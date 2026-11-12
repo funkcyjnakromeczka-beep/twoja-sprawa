@@ -50,6 +50,9 @@ try{
   ["wyszukiwarka-desktop","/szukaj.html",1440,900],
   ["wiedza-szkody-telefon","/wiedza/drobne-pekniecia-szkody-gornicze.html",390,844],
   ["wiedza-swiadczenie-telefon","/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",390,844],
+  ["wiedza-swiadczenie-dokumenty-telefon","/wiedza/swiadczenie-wspierajace-dokumenty.html",390,844],
+  ["wiedza-wzon-zus-telefon","/wiedza/swiadczenie-wspierajace-wzon-zus.html",390,844],
+  ["wiedza-renta-dokumenty-telefon","/wiedza/renta-powypadkowa-dokumenty.html",390,844],
   ["blad-404-telefon","/404.html",390,844]
  ];
  for(const [name,path,width,height] of pages){

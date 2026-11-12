@@ -11,6 +11,19 @@ for(const page of pages){
  assert.ok(html.includes('src="/v2/article-accessibility.js"'),"Missing script: "+page);
  assert.ok(html.includes('href="/v2/article-accessibility.css"'),"Missing stylesheet: "+page);
 }
+// Archival educational pages remain accessible: never route benefit/rent enquiries
+// to the mining adviser or to an unrelated homepage form.
+for(const [path,destination] of [
+ ["swiadczenie-wspierajace-dokumenty.html","/v2/kampanie/swiadczenie-wspierajace.html#formularz"],
+ ["swiadczenie-wspierajace-wzon-zus.html","/v2/kampanie/swiadczenie-wspierajace.html#formularz"],
+ ["renta-powypadkowa-dokumenty.html","/v2/uslugi/renty-powypadkowe.html#formularz"]
+]){
+ const page=await readFile("v2/wiedza/"+path,"utf8");
+ assert.ok(!page.includes('href="tel:+48796441345"'),"Wrong mining contact on educational page "+path);
+ assert.ok(page.includes('href="tel:+48500171531"'),"Benefit and rent pages must call Paulina: "+path);
+ assert.ok(page.includes('class="btn" href="'+destination+'"'),"Primary lead CTA should open the service-specific contact form: "+path);
+ assert.ok(page.includes('href="'+destination+'">Kontakt</a>'),"Header contact must retain correct service: "+path);
+}
 class Node{
  constructor(tag){this.tag=tag;this.children=[];this.events={};this.attributes={};this.className="";this.textContent="";this.classList={value:false,toggle:()=>this.classList.value=!this.classList.value};}
  addEventListener(key,cb){this.events[key]=cb;}

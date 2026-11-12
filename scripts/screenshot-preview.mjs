@@ -453,6 +453,26 @@ try{
  console.log("KNOWLEDGE_TO_GLOBAL_SEARCH_OK",JSON.stringify({questionPreserved:true,topicPreserved:true,relatedResults:true,leadsSent:0}));
  await knowledgeSearchPage.close();
 
+ // No-result contact should retain the chosen service rather than silently
+ // reverting to a generic enquiry or an unrelated adviser.
+ const noResults=await browser.newPage({viewport:{width:390,height:844}});
+ await noResults.goto(origin+"/szukaj.html",{waitUntil:"domcontentloaded"});
+ await noResults.locator("#site-search-input").fill("niespotykane xxyzzq xxxpq");
+ for(const [topic,destination] of [
+  ["swiadczenie","/v2/kampanie/swiadczenie-wspierajace.html#formularz"],
+  ["szkody","/v2/uslugi/szkody-gornicze.html#formularz"],
+  ["skd","/v2/kampanie/skd.html#formularz"],
+  ["renty","/v2/uslugi/renty-powypadkowe.html#formularz"]
+ ]){
+  await noResults.locator('[data-search-category="'+topic+'"]').click();
+  if(!await noResults.locator("[data-search-empty]").isVisible())throw Error("Missing empty state for "+topic);
+  if(await noResults.locator("[data-search-contact]").getAttribute("href")!==destination)throw Error("No-result contact routes to wrong service: "+topic);
+ }
+ await noResults.locator('[data-search-category="all"]').click();
+ if(await noResults.locator("[data-search-contact]").getAttribute("href")!=="/v2/kontakt.html")throw Error("General search should route to general contact");
+ console.log("SEARCH_EMPTY_CONTEXT_CONTACT_OK",JSON.stringify({serviceRoutes:4,generalFallback:true,actualLeadsSent:0}));
+ await noResults.close();
+
  // Mining campaign: choosing an example should prepare the form, not submit a lead.
  const damagePage=await browser.newPage({viewport:{width:390,height:844}});
  await damagePage.goto(origin+"/kampanie/szkody-gornicze.html?utm_source=ulotka&utm_medium=qr",{waitUntil:"domcontentloaded"});

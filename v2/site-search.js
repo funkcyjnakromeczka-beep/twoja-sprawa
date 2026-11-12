@@ -8,9 +8,18 @@
  const results=host.querySelector("[data-search-results]");
  const counter=host.querySelector("[data-search-count]");
  const empty=host.querySelector("[data-search-empty]");
+ const emptyContact=host.querySelector("[data-search-contact]");
  const reset=host.querySelector("[data-search-reset]");
  const tabs=[...host.querySelectorAll("[data-search-category]")];
  if(!input||!results||!counter||!empty||!reset||!tabs.length)return;
+ const contactByTopic={
+  szkody:"/v2/uslugi/szkody-gornicze.html#formularz",
+  swiadczenie:"/v2/kampanie/swiadczenie-wspierajace.html#formularz",
+  renty:"/v2/uslugi/renty-powypadkowe.html#formularz",
+  skd:"/v2/kampanie/skd.html#formularz",
+  franki:"/v2/uslugi/kredyty-frankowe.html#formularz",
+  przesyl:"/v2/uslugi/sluzebnosc-przesylu.html#formularz"
+ };
  const labels={szkody:"Szkody górnicze",swiadczenie:"Świadczenie wspierające",renty:"Renty i wypadki",skd:"Sankcja Kredytu Darmowego (SKD)",franki:"Pomoc frankowiczom — CHF",przesyl:"Służebność przesyłu",inne:"Pozostałe materiały"};
  let category="all";
  const params=new URLSearchParams(window.location.search);
@@ -37,6 +46,10 @@
    results.append(card);
   }
   empty.hidden=matched.length!==0;
+  if(emptyContact){
+   emptyContact.href=contactByTopic[category]||"/v2/kontakt.html";
+   emptyContact.textContent=contactByTopic[category]?"Zostaw kontakt w wybranej sprawie":"Zadaj własne pytanie";
+  }
   reset.hidden=!phrase&&category==="all";
   for(const tab of tabs)tab.setAttribute("aria-pressed",String(tab.dataset.searchCategory===category));
  };

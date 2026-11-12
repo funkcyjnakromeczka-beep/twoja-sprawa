@@ -76,4 +76,15 @@ assertChoice("szkody","Otrzymałem odmowę","odmowa");
 assertChoice("swiadczenie","Mam decyzję WZON","decyzja");
 assertChoice("swiadczenie","Chcę sprawdzić odwołanie","odwolanie");
 assertChoice("renty","Mam już rentę",null);
-console.log("OK: seven chatbot lead links preserve UTM, case stage and only two safe mining damage categories.");
+// For SKD, the guide must offer an agreement email in addition to the lead form.
+choices.children.find(n=>n.dataset.topic==="skd").events.click();
+const skdMail=visit(result,n=>n.className==="chat-reply-email");
+assert.ok(skdMail,"SKD chatbot should offer direct contract email");
+assert.ok(skdMail.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD email must target Wojciech");
+assert.ok(decodeURIComponent(skdMail.href).includes("Mój numer telefonu: [wpisz numer]"),"SKD email must request callback phone");
+assert.ok(decodeURIComponent(skdMail.href).includes("umowę dołączę do wiadomości"),"SKD email must ask for contract attachment");
+const skdForm=visit(result,n=>n.className==="chat-reply-contact");
+assert.equal(new URL(skdForm.href,origin).searchParams.get("usluga"),"skd","SKD form must retain service alias");
+const skdCaution=visit(result,n=>n.className==="chat-caution");
+assert.ok(skdCaution.textContent.includes("nie wysyła zgłoszenia"),"SKD chatbot must explain no automatic submission");
+console.log("OK: chatbot links preserve UTM/stage, SKD includes direct agreement email and callback instructions.");

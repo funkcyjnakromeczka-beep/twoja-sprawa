@@ -159,8 +159,14 @@
     const form=mk("a","chat-reply-contact","Zostaw kontakt ↗");form.href=destination(topic);
     const details=mk("a","chat-reply-detail","Przeczytaj o usłudze");details.href=base+"uslugi/"+topic.service;
     const checklist=mk("a","chat-reply-checklist","Lista kroków przed rozmową");checklist.href=base+"poradniki/"+topic.checklist;
+    if(topic.key==="skd"){
+      const mail=mk("a","chat-reply-email","Wyślij umowę do analizy SKD e-mailem ↗");
+      mail.href="mailto:wojciech.obieglo@votum-ds.pl?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+"&body="+encodeURIComponent("Dzień dobry,\\nProszę o wstępną analizę załączonej umowy kredytowej pod kątem SKD.\\nMój numer telefonu: [wpisz numer]\\nPełną umowę dołączę do wiadomości jako załącznik.");
+      links.append(mail);
+    }
     links.append(form,details,checklist);
-    const caution=mk("small","chat-caution","Po wybraniu sytuacji zostanie ona zaznaczona w formularzu kontaktowym. Sam wybór niczego nie wysyła. Wskazówki nie gwarantują wyniku.");
+    const stageTransfer=topic.key==="szkody"||topic.key==="swiadczenie";
+    const caution=mk("small","chat-caution",stageTransfer?"Wybrany etap może zostać zaznaczony w formularzu. Sam wybór niczego nie wysyła. Wskazówki nie gwarantują wyniku.":"Otrzymujesz jedynie ogólne wskazówki. Wybór sytuacji nie wysyła zgłoszenia ani dokumentów i nie gwarantuje wyniku.");
     reply.append(heading,summary,prompt,stages,answer,links,caution);
     phone.href="tel:"+topic.tel;phone.textContent="☎ Zadzwoń: "+topic.phone;
     contact.href=destination(topic);contact.textContent="✉ Zostaw kontakt";

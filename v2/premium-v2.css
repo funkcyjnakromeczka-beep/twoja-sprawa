@@ -4019,3 +4019,12 @@ html{scroll-padding-top:16px}
  .contact-form .contact-context-notice{grid-template-columns:1fr}
  .contact-form .contact-context-notice button{grid-column:1;grid-row:auto;justify-self:start;margin-top:6px}
 }
+
+/* SKD: directly email the complete agreement from the free service guide. */
+.chat-assistant .chat-reply-links a.chat-reply-email{
+ background:#f8dfac;color:#193645!important;border:2px solid #b68d4b;
+}
+.chat-assistant .chat-reply-links a.chat-reply-email:hover,
+.chat-assistant .chat-reply-links a.chat-reply-email:focus-visible{
+ background:#ffedc5;color:#14303c!important;
+}

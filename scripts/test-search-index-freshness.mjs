@@ -55,6 +55,6 @@ for(const [phrase,expected] of [
  assert.ok(results.some(item=>item.category===expected),"Question does not surface the relevant service: "+phrase);
  assert.ok(results.some(item=>item.similar===true),"Natural question should be marked as approximate matching: "+phrase);
 }
-assert.deepEqual(engine.search("zupełnie nieistniejące xxyzzq xxxpq", "all",10),[],"Unknown query should not fabricate relevant results");
+assert.equal(engine.search("zupełnie nieistniejące xxyzzq xxxpq", "all",10).length,0,"Unknown query should not fabricate relevant results");
 assert.ok(engine.search("Świadczenie wspierające","swiadczenie",10).some(x=>!x.similar),"Literal search should retain its original strict behavior");
 console.log("SEARCH_NATURAL_POLISH_OK: six natural client questions find domain content, no-result state and strict lookup preserved.");

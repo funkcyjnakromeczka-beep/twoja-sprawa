@@ -43,17 +43,21 @@ assert.ok(navigator.includes('root.open=true'),"Navigator not expanded on user a
 const bar=html.match(/<aside class="mobile-contact-bar"[\s\S]*?<\/aside>/)?.[0]||"";
 assert.ok(bar.includes('tel:+48796441345')&&bar.includes('tel:+48500171531'),"Both phone actions missing");
 assert.ok(bar.includes('class="mobile-form-link" href="#kontakt"'),"Missing direct form shortcut");
+const mobileTop=html.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0]||"";
+assert.deepEqual([...mobileTop.matchAll(/class="mobile-(support|mining|skd)-priority"/g)].map(m=>m[1]),["support","mining","skd"],"Mobile quick links must expose all three flagship services in order");
+assert.ok(mobileTop.includes('href="/v2/uslugi/kredyty-pln.html"'),"Mobile SKD service destination missing");
 assert.equal((bar.match(/<a\b/g)||[]).length,3,"Mobile contact bar must have exactly three actions");
 assert.ok(css.includes('grid-template-columns:repeat(3,minmax(0,1fr))'),"Three actions are not fitted to a narrow screen");
 assert.ok(css.includes(':focus-within')&&css.includes('.chat-assistant.is-open'),"Sticky contact bar can cover an active form or chat");
 assert.ok(html.includes("data-share-page")&&html.includes("data-share-feedback"),"Share control has no user feedback");
 assert.ok(html.includes('src="/v2/share-page.js"'),"Share control script missing");
 
-// The homepage offers only two concise, accessible shortcuts to the same form.
+// The homepage offers three accessible flagship shortcuts to the same form.
 const shortcutBlock=html.match(/<div class="contact-service-shortcuts"[\s\S]*?<\/div><div class="lead-panel"/)?.[0]||"";
-assert.equal((shortcutBlock.match(/data-contact-shortcut="/g)||[]).length,2,"Exactly two flagship contact shortcuts required");
+assert.equal((shortcutBlock.match(/data-contact-shortcut="/g)||[]).length,3,"Exactly three flagship contact shortcuts required");
 assert.ok(shortcutBlock.includes('data-contact-shortcut="szkody"'),"Mining shortcut missing");
 assert.ok(shortcutBlock.includes('data-contact-shortcut="swiadczenie"'),"Support shortcut missing");
+assert.ok(shortcutBlock.includes('data-contact-shortcut="skd"'),"SKD shortcut missing");
 assert.ok(shortcutBlock.includes('role="status" aria-live="polite"'),"Selection feedback should be accessible");
 assert.ok(css.includes("contact-shortcuts-actions")&&css.includes('data-selected="true"'),"Flagship selection styling missing");
 assert.ok(html.includes('<div class="lead-panel"><div data-contact-form></div></div>'),"Shortcuts must reuse the existing homepage form");

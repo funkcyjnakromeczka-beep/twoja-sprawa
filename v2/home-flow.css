@@ -151,7 +151,7 @@
  display:block;color:#173747;font-weight:800;font-size:1rem;line-height:1.4;
 }
 .premium-v2 #kontakt .contact-shortcuts-actions{
- display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:11px 0 9px;
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:11px 0 9px;
 }
 .premium-v2 #kontakt .contact-shortcuts-actions a{
  display:flex;align-items:center;justify-content:center;
@@ -303,4 +303,17 @@
   background:#213f48;color:#ffebbf!important;
   border:1px solid #c8a76b!important;
  }
+}
+
+/* Etap XXVII: trzy usługi dostępne jednym dotknięciem także na telefonie. */
+@media(max-width:760px){
+ .premium-v2 .mobile-quick-nav a.mobile-skd-priority{
+  background:#344b3d;border-color:#e3c28c;color:#fff8e6;
+ }
+ .premium-v2 .mobile-quick-nav a.mobile-skd-priority span{color:#ffe0a1}
+ .premium-v2 .mobile-quick-nav a:focus-visible{outline:3px solid #f3d391;outline-offset:3px}
+}
+@media(min-width:571px) and (max-width:760px){
+ .premium-v2 #kontakt .contact-shortcuts-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .premium-v2 #kontakt .contact-shortcuts-actions a{font-size:.84rem;padding-inline:8px}
 }

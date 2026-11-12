@@ -186,14 +186,15 @@ try{
   checks.push({name,...measured});
   await page.close();
  }
- // Leaflet entrypoint: no extra form, direct choice to two existing qualified forms.
+ // Leaflet entrypoint: no duplicate form; three prioritized flagship funnels.
  const flyerPage=await browser.newPage({viewport:{width:390,height:844}});
  await flyerPage.goto(origin+"/start.html",{waitUntil:"domcontentloaded"});
- if(await flyerPage.locator(".leaflet-option").count()!==2)throw Error("Leaflet page must show exactly two flagship paths");
+ if(await flyerPage.locator(".leaflet-option").count()!==3)throw Error("Leaflet page must show exactly three flagship paths");
  if(await flyerPage.locator('[data-contact-form]').count())throw Error("Leaflet page must not duplicate the lead form");
  for(const [card,service,contact] of [
   [".leaflet-option-support","swiadczenie-wspierajace","Świadczenie wspierające"],
-  [".leaflet-option-mining","szkody-gornicze","Szkody górnicze"]
+  [".leaflet-option-mining","szkody-gornicze","Szkody górnicze"],
+  [".leaflet-option-skd","skd","Kredyt w PLN / SKD"]
  ]){
   await flyerPage.goto(origin+"/start.html",{waitUntil:"domcontentloaded"});
   await flyerPage.locator(card+" .leaflet-main-btn").click();
@@ -203,7 +204,7 @@ try{
   const url=new URL(flyerPage.url());
   if(url.searchParams.get("utm_source")!=="ulotka"||url.searchParams.get("utm_medium")!=="druk"||url.hash!=="#formularz")throw Error("Leaflet attribution/form anchor missing: "+url.href);
  }
- console.log("LEAFLET_UI_OK: two flagship funnels, correct service in both forms, UTM ulotka/druk, no duplicate form");
+ console.log("LEAFLET_UI_OK: three flagship funnels, preselected services, UTM ulotka/druk, no duplicate form");
  await flyerPage.close();
  // New homepage information architecture: services first, real disclosure after CTA.
  const clarityMobile=await browser.newPage({viewport:{width:390,height:844}});

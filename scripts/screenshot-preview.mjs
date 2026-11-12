@@ -652,6 +652,18 @@ try{
  }
 
 
+ // A mistyped link should recover to all three flagship services in the
+ // correct order, or to search, with no mobile horizontal overflow.
+ const notFound=await browser.newPage({viewport:{width:390,height:844}});
+ await notFound.goto(origin+"/404.html",{waitUntil:"domcontentloaded"});
+ const recovery=await notFound.locator(".notfound-grid>a").evaluateAll(items=>items.map(el=>el.getAttribute("href")));
+ const expectedRecovery=["/kampanie/swiadczenie-wspierajace.html","/kampanie/szkody-gornicze.html","/kampanie/skd.html"];
+ if(JSON.stringify(recovery)!==JSON.stringify(expectedRecovery))throw Error("404 flagship order incorrect: "+JSON.stringify(recovery));
+ if(!await notFound.locator('.notfound-actions a[href="/szukaj.html"]').count())throw Error("404 lacks full search recovery");
+ if(await notFound.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2))throw Error("404 mobile overflow");
+ console.log("404_RECOVERY_OK",JSON.stringify({flagshipOrder:recovery,search:true,mobileOverflow:false}));
+ await notFound.close();
+
  // The third flagship project gets two persistent, accessible mobile actions.
  const skdQuick=await browser.newPage({viewport:{width:390,height:844}});
  await skdQuick.goto(origin+"/uslugi/kredyty-pln.html",{waitUntil:"domcontentloaded"});

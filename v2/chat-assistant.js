@@ -19,18 +19,6 @@
   const params="?utm_source="+encodeURIComponent(source)+"&utm_medium="+encodeURIComponent(medium)+"&utm_campaign="+encodeURIComponent(campaign)+contentSuffix+"&lead_path=chatbot";
   const topics=[
     {
-      key:"swiadczenie",name:"Świadczenie wspierające",short:"WZON, decyzje, ZUS",phone:"500 171 531",tel:"+48500171531",
-      service:"swiadczenie-wspierajace.html",checklist:"swiadczenie-wspierajace-pierwsze-kroki.html",form:"kampanie/swiadczenie-wspierajace.html"+params,
-      intro:"Pomagamy uporządkować etap sprawy przed WZON lub ZUS. O uprawnieniu do świadczenia rozstrzygają właściwe organy, nie chatbot.",
-      stages:[
-        ["Dopiero planuję wniosek","Zacznij od ustalenia etapu postępowania i informacji o codziennym funkcjonowaniu. Nie przesyłaj w czacie diagnoz ani dokumentacji medycznej.","wniosek"],
-        ["Czekam na decyzję WZON","Zachowaj potwierdzenie złożenia wniosku i przychodzącą korespondencję. W razie otrzymania decyzji zanotuj datę jej doręczenia.","oczekiwanie"],
-        ["Mam decyzję WZON","Sprawdź liczbę punktów oraz pouczenie o dostępnych działaniach i terminach. Sam wynik nie przesądza automatycznie o wypłacie świadczenia.","decyzja"],
-        ["Mam sprawę w ZUS","Warto ustalić, czy wniosek został złożony i jakie pisma już otrzymano. Ewentualne wyrównanie zależy od przepisów, terminów i sytuacji.","zus"],
-        ["Chcę sprawdzić odwołanie","Zachowaj decyzję wraz z pouczeniem i dokładną datę doręczenia. Dalszy tryb i termin trzeba sprawdzić w konkretnej sprawie.","odwolanie"]
-      ]
-    },
-    {
       key:"szkody",name:"Szkody górnicze",short:"Lubin, Polkowice i okolice",phone:"796 441 345",tel:"+48796441345",
       service:"szkody-gornicze.html",checklist:"checklista-szkody-gorniczej.html",form:"kampanie/szkody-gornicze.html"+params,
       intro:"Analizujemy m.in. pęknięcia ścian, elewacji i nierówności kostki w rejonie Lubina i Polkowic. Sama lokalizacja nie przesądza o przyczynie uszkodzeń.",
@@ -40,6 +28,18 @@
         ["Zgłosiłem szkodę do kopalni","Zachowaj zgłoszenie, potwierdzenie i odpowiedzi przedsiębiorcy górniczego. Przydadzą się do indywidualnej analizy.","zgloszona"],
         ["Mam propozycję ugody","Nie zakładaj, że propozycja obejmuje wszystkie szkody. Przed podpisaniem warto dokładnie przeanalizować jej zakres i skutki.","ugoda"],
         ["Otrzymałem odmowę","Zachowaj treść odmowy, wcześniejszą korespondencję i zdjęcia. Można przeanalizować argumentację oraz dostępne możliwości działania.","odmowa"]
+      ]
+    },
+    {
+      key:"swiadczenie",name:"Świadczenie wspierające",short:"WZON, decyzje, ZUS",phone:"500 171 531",tel:"+48500171531",
+      service:"swiadczenie-wspierajace.html",checklist:"swiadczenie-wspierajace-pierwsze-kroki.html",form:"kampanie/swiadczenie-wspierajace.html"+params,
+      intro:"Pomagamy uporządkować etap sprawy przed WZON lub ZUS. O uprawnieniu do świadczenia rozstrzygają właściwe organy, nie chatbot.",
+      stages:[
+        ["Dopiero planuję wniosek","Zacznij od ustalenia etapu postępowania i informacji o codziennym funkcjonowaniu. Nie przesyłaj w czacie diagnoz ani dokumentacji medycznej.","wniosek"],
+        ["Czekam na decyzję WZON","Zachowaj potwierdzenie złożenia wniosku i przychodzącą korespondencję. W razie otrzymania decyzji zanotuj datę jej doręczenia.","oczekiwanie"],
+        ["Mam decyzję WZON","Sprawdź liczbę punktów oraz pouczenie o dostępnych działaniach i terminach. Sam wynik nie przesądza automatycznie o wypłacie świadczenia.","decyzja"],
+        ["Mam sprawę w ZUS","Warto ustalić, czy wniosek został złożony i jakie pisma już otrzymano. Ewentualne wyrównanie zależy od przepisów, terminów i sytuacji.","zus"],
+        ["Chcę sprawdzić odwołanie","Zachowaj decyzję wraz z pouczeniem i dokładną datę doręczenia. Dalszy tryb i termin trzeba sprawdzić w konkretnej sprawie.","odwolanie"]
       ]
     },
     {

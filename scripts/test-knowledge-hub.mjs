@@ -24,7 +24,7 @@ const hub={
  querySelector:selector=>({"#hub-search":input,"[data-hub-count]":status,"#hub-empty":empty,"[data-hub-reset]":reset})[selector]||null,
  querySelectorAll:selector=>selector==="[data-hub-filter]"?filters:selector==="[data-hub-category]"?cards:selector==="[data-hub-full-search]"?fullSearch:[]
 };
-runInNewContext(js,{document:{querySelector:sel=>sel==="[data-knowledge-hub]"?hub:null},String});
+runInNewContext(js,{document:{querySelector:sel=>sel==="[data-knowledge-hub]"?hub:null},String,URLSearchParams});
 assert.equal(status.textContent,"Widoczne: 4 artykuły");
 assert.equal(cards.filter(x=>!x.hidden).length,4);
 filters.find(x=>x.dataset.hubFilter==="szkody").events.click();

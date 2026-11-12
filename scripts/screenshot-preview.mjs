@@ -523,7 +523,7 @@ try{
  await preservedForm.locator('[data-contact-shortcut="swiadczenie"]').click();
  const savedName=preservedForm.locator('.contact-form input[autocomplete="given-name"]');
  await savedName.fill("Testowy klient");
- await preservedForm.locator(".contact-case-details summary").click();
+ await preservedForm.locator(".contact-case-details > summary").click();
  const guideURL=preservedForm.locator('.contact-form .contact-guide-box a');
  if(await guideURL.getAttribute("target")!=="_blank")throw Error("Checklist link must open a new tab");
  const [guidePopup]=await Promise.all([preservedForm.waitForEvent("popup"),guideURL.click()]);

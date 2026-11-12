@@ -680,6 +680,25 @@ try{
  console.log("SUPPORT_FAILURE_MAIL_OK",JSON.stringify({recipient:"Paulina",draftPreserved:true,actualMessagesSent:0}));
  await supportFailPage.close();
 
+ // Phone-only lead: Web3Forms treats email as optional. Do not send an
+ // empty email key that its provider might attempt to validate as an address.
+ const phoneOnlyPage=await browser.newPage({viewport:{width:390,height:844}});
+ let phoneOnlyBody=null;
+ await phoneOnlyPage.route("https://api.web3forms.com/submit",async route=>{
+  phoneOnlyBody=route.request().postDataJSON();
+  await route.fulfill({status:200,contentType:"application/json",body:'{"success":true}'});
+ });
+ await phoneOnlyPage.goto(origin+"/kampanie/szkody-gornicze.html",{waitUntil:"domcontentloaded"});
+ await phoneOnlyPage.locator('.contact-form input[autocomplete="given-name"]').fill("Klient testowy");
+ await phoneOnlyPage.locator('.contact-form input[autocomplete="tel"]').fill("796 000 000");
+ await phoneOnlyPage.locator('.contact-form input[type="checkbox"]').check();
+ await phoneOnlyPage.locator('.contact-form button[type="submit"]').click();
+ await phoneOnlyPage.locator(".contact-status-success").waitFor({state:"visible"});
+ if(!phoneOnlyBody||Object.hasOwn(phoneOnlyBody,"email")||Object.hasOwn(phoneOnlyBody,"replyto"))throw Error("Phone-only lead sent an invalid empty email key: "+JSON.stringify(phoneOnlyBody));
+ if(phoneOnlyBody.phone!=="796 000 000"||phoneOnlyBody.service!=="Szkody górnicze")throw Error("Phone-only lead lost its phone or service");
+ console.log("PHONE_ONLY_PAYLOAD_OK",JSON.stringify({emailFieldOmitted:true,replytoOmitted:true,phonePreserved:true,actualMessagesSent:0}));
+ await phoneOnlyPage.close();
+
  // Generated marketing links should be the same short canonical addresses printed on flyers.
  const generatorPage=await browser.newPage({viewport:{width:390,height:844}});
  await generatorPage.goto(origin+"/narzedzia/linki-kampanii.html",{waitUntil:"domcontentloaded"});

@@ -463,7 +463,16 @@ for(const sample of [
   await form.events.submit({preventDefault(){}});
   assert.equal(payloads.length,sample.accepted?1:0,"Incorrect phone/contact validation: "+JSON.stringify(sample));
   if(!sample.accepted)assert.ok(phone.focused||email.focused,"Invalid contact field should receive focus");
-  if(sample.accepted)assert.equal(payloads[0].phone,sample.phone);
+  if(sample.accepted){
+    assert.equal(payloads[0].phone,sample.phone);
+    if(sample.email){
+      assert.equal(payloads[0].email,sample.email,"Valid email must be forwarded");
+      assert.equal(payloads[0].replyto,sample.email,"Reply-To must match the supplied email");
+    }else{
+      assert.ok(!Object.hasOwn(payloads[0],"email"),"Phone-only submission must omit empty email key");
+      assert.ok(!Object.hasOwn(payloads[0],"replyto"),"Phone-only submission must omit empty Reply-To");
+    }
+  }
 }
 
 // Three homepage shortcuts change one form without sending data on selection.

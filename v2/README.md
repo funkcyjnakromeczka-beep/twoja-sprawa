@@ -282,3 +282,10 @@ Dokładny raport: `docs/ETAP-V-UPROSZCZENIE-I-1000-KONTROLI.md`.
 - Nie zmieniono przetwarzania danych Web3Forms ani układu formularza, nie dodano pól do przesyłania dokumentów. Pełną umowę SKD można nadal przesłać samodzielnie na `wojciech.obieglo@votum-ds.pl` bez wymogu zasłaniania danych.
 - `scripts/test-contact-client.mjs`: test pola wymaganego, wyboru preferencji e-mail, blokady zgłoszenia SKD bez numeru oraz powrotu do elastycznych zasad innych usług. `scripts/screenshot-preview.mjs`: rzeczywiste sprawdzenie w Chromium, bez wysyłania danych. `scripts/audit-production-live.mjs`: kontrola kodu opublikowanego w Cloudflare.
 - Wdrożenie nie jest równoważne z potwierdzeniem skutecznego odbioru wiadomości ani z uzyskaniem określonej liczby leadów. Bez nowych usług i opłat.
+
+## Etap XXVI — poprawne zgłoszenie awaryjne SKD i zmiana usługi (12.11.2026)
+
+- Przy błędzie automatycznego formularza (Web3Forms) gotowy link e-mail dla **SKD** prowadzi bezpośrednio na `wojciech.obieglo@votum-ds.pl` i zawiera wpisany numer telefonu. W innych sprawach dotychczasowy adres awaryjny pozostaje bez zmian. Poprawiono także awaryjny tryb wysyłki `mailto:` bez dostępu do automatycznego formularza.
+- Programatyczne zmiany usługi w formularzu (skróty strony głównej, kategorie uszkodzeń i etapy świadczenia) aktualizują teraz również reguły wymaganych danych. Po przejściu z SKD do szkód lub świadczenia, podanie numeru przestaje być obowiązkowe, gdy użytkownik wpisał poprawny e-mail.
+- Test integracyjny symuluje awarię przesyłania (bez rzeczywistych zgłoszeń), sprawdza poprawny adres i numer w zapasowej wiadomości. Chromium weryfikuje wybór SKD i następnie szkód górniczych bez zaległego wymogu telefonu. Kontrola publicznej strony potwierdza wdrożenie zmian.
+- Nadal SKD jest trzecią wyróżnioną usługą, nie ma kosztów za dodatkowe narzędzia i użytkownik samodzielnie przesyła pełną umowę kredytową pocztą e-mail.

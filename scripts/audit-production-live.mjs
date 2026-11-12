@@ -352,5 +352,19 @@ for(let attempt=0;attempt<8&&!skdPhoneValidationLive(publishedPhoneValidator);at
 }
 assert.ok(skdPhoneValidationLive(publishedPhoneValidator),"Cloudflare has not deployed SKD callback-phone validation");
 
+// Stage XXVI: synthetic outage paths and programmatic service changes must
+// retain current service context, particularly the SKD VOTUM email and callback.
+const skdFallbackPublished=body=>
+ body.includes('const mailRecipient=select.value==="Kredyt w PLN / SKD"?"wojciech.obieglo@votum-ds.pl":"twojasprawa_votum@outlook.com"')&&
+ body.includes('fallback.href="mailto:"+mailRecipient+"?subject="')&&
+ body.includes('window.location.href="mailto:"+mailRecipient+"?subject="')&&
+ body.includes('updateDamageArea();updateContextNotice();syncContactPreference();');
+let fallbackJS=publishedPhoneValidator;
+for(let attempt=0;attempt<8&&!skdFallbackPublished(fallbackJS);attempt++){
+ await new Promise(resolve=>setTimeout(resolve,5000));
+ fallbackJS=(await get("/contact.js")).body;
+}
+assert.ok(skdFallbackPublished(fallbackJS),"Cloudflare has not published consistent SKD error fallback and service-switch rules");
+
 const verified=27;
 console.log("LIVE_PRODUCTION_OK: "+verified+" resources, "+urls.length+" sitemap URLs, 24 real FAQ Q&A, QR flyer /start and correct phones, agency-specific ContactPage/AboutPage/CollectionPage schemas, lean homepage stylesheet loading, draft-preserving checklist/privacy links, chatbot-guided damage categorization, validated contact phone numbers, compact secondary mobile services and two-step flagship homepage lead choices, safe form submission, quick mining damage qualification and WZON stage choice, verified OG photos, seven locally hosted portrait pages and sharing, homepage 2+1+3 SKD featured layout, open navigator, CHF page/checklist, Votum Wsparcie logo, contrast, mobile CTA, indexable services, noindex internal search, images, search-bot access.");

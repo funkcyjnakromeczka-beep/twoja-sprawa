@@ -605,6 +605,20 @@ try{
  if(await skdPhoneField.evaluate(el=>el.required))throw Error("Other services must retain email-only contact option");
  console.log("SKD_CALLBACK_VALIDATION_OK",JSON.stringify({skdPhoneRequired:true,otherServicesFlexible:true,realMessagesSent:0}));
  await skdPhoneForm.close();
+
+ // SKD-to-mining homepage selection must not retain the SKD-only phone requirement.
+ const switchPage=await browser.newPage({viewport:{width:390,height:844}});
+ await switchPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ const quickService=switchPage.locator('.contact-form select[id^="cf-service-"]');
+ const quickPhoneField=switchPage.locator('.contact-form input[type="tel"]');
+ const quickEmailField=switchPage.locator('.contact-form input[type="email"]');
+ await quickEmailField.fill("test@example.com");
+ await quickService.selectOption("Kredyt w PLN / SKD");
+ if(!await quickPhoneField.evaluate(el=>el.required))throw Error("Home SKD did not require a callback number");
+ await switchPage.locator('[data-contact-shortcut="szkody"]').click();
+ if(await quickService.inputValue()!=="Szkody górnicze"||await quickPhoneField.evaluate(el=>el.required))throw Error("Mining shortcut kept stale SKD phone requirement");
+ console.log("SERVICE_SWITCH_CONTACT_RULES_OK",JSON.stringify({from:"skd",to:"szkody",phoneOptionalWithEmail:true}));
+ await switchPage.close();
  console.log("SUCCESS",checks.length,"visual routes, sticky logos, chatbot and navigator funnels. No real leads sent.");
 }finally{
  if(browser)await browser.close();

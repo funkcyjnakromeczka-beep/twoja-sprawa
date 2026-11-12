@@ -95,7 +95,7 @@ const run=async(error=false)=>{
   assert.equal(status.className,"contact-status-error");
   const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
   assert.ok(fallback);
-  assert.ok(fallback.href.startsWith("mailto:"));
+  assert.ok(fallback.href.startsWith("mailto:twojasprawa_votum@outlook.com?"),"Non-SKD form keeps its default fallback mailbox");
   assert.ok(decodeURIComponent(fallback.href).includes("Dogodna pora: Po południu"));
   assert.ok(decodeURIComponent(fallback.href).includes("grupa_lubin"));
  }else{
@@ -153,6 +153,38 @@ await run(true);
  service.value="Kredyt w PLN / SKD";service.events.change();
  assert.ok(benefits.children.some(n=>n.textContent?.includes("pełną umowę e-mailem")),"Returning to SKD must restore complete agreement guidance");
 }
+
+ // Simulated API failure: the SKD customer must be directed to Wojciech's work inbox,
+ // with the callback number preserved in a prefilled message.
+{
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?"Kredyt w PLN / SKD":""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?utm_source=ulotka"},setTimeout:()=>1,clearTimeout:()=>{}};
+ let attempted=0;
+ const fetch=async()=>{attempted++;throw Error("Synthetic delivery outage");};
+ runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0];
+ const name=visit(form,n=>n.autocomplete==="given-name");
+ const phone=visit(form,n=>n.autocomplete==="tel");
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ name.value="Test";phone.value="796 441 345";phone.events.input();
+ assert.equal(service.value,"Kredyt w PLN / SKD");
+ await form.events.submit({preventDefault(){}});
+ assert.equal(attempted,1,"Synthetic Web3Forms outage must be exercised");
+ const status=visit(form,n=>n.attributes?.role==="status");
+ assert.equal(status.className,"contact-status-error");
+ const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
+ assert.ok(fallback?.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"),"SKD fallback must go to Wojciech's VOTUM email");
+ assert.ok(decodeURIComponent(fallback.href).includes("Telefon: 796 441 345"),"SKD fallback must retain the callback number");
+ assert.ok(status.children.some(n=>n.href==="tel:+48796441345"),"Fallback call number for SKD differs from Wojciech");
+}
+
 // Qualification of an observed property issue, without inferring a mining cause.
 {
  const host=new Node("host");
@@ -426,6 +458,12 @@ for(const sample of [
  const advisor=visit(form,n=>n.className==="contact-advisor");
  const damage=visit(form,n=>n.className==="contact-damage-area");
  assert.equal(service.value,"","Homepage starts with no service preselected");
+ const quickPhone=visit(form,n=>n.autocomplete==="tel");
+ const quickEmail=visit(form,n=>n.autocomplete==="email");
+ quickEmail.value="test@example.com";quickEmail.events.input();
+ service.value="Kredyt w PLN / SKD";service.events.change();
+ assert.equal(quickPhone.required,true,"SKD must require a phone before using a homepage shortcut");
+
  assert.equal(mining.attributes["data-selected"],"false");
  assert.equal(support.attributes["data-selected"],"false");
  let prevented=false;
@@ -433,6 +471,9 @@ for(const sample of [
  assert.equal(prevented,true,"A functional shortcut should prevent the anchor jump");
  assert.equal(service.value,"Szkody górnicze");
  assert.equal(damage.hidden,false,"Choosing mining reveals its damage area");
+ assert.equal(quickPhone.required,false,"Mining homepage shortcut must clear the previous SKD-only phone requirement");
+ assert.equal(quickEmail.required,true,"Email-only mining lead must still validate its email");
+
  assert.equal(mining.attributes["data-selected"],"true");
  assert.equal(support.attributes["data-selected"],"false");
  assert.ok(feedback.textContent.includes("Szkody górnicze"));

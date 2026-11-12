@@ -201,16 +201,17 @@
    if(!checkName()){name.reportValidity();name.focus();return;}
    if(!checkContact())return;
    if(!form.reportValidity())return;
+   const mailRecipient=select.value==="Kredyt w PLN / SKD"?"wojciech.obieglo@votum-ds.pl":"twojasprawa_votum@outlook.com";
    if(automatic){
     if(honeypot.value){status.textContent="Nie udało się zweryfikować formularza.";return;}
     sending=true;button.disabled=true;button.textContent="Wysyłanie…";status.className="";status.textContent="Przesyłam zgłoszenie…";
     const payload={access_key:accessKey,subject:"Twoja Sprawa: "+select.value,from_name:"Formularz Twoja Sprawa",name:name.value.trim(),email:email.value.trim(),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,campaign_medium:safeMedium||"brak",campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
-    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Dziękujemy! Nie jest to jeszcze potwierdzenie dostarczenia wiadomości do skrzynki odbiorczej. Jeśli sprawa jest pilna, skorzystaj z kontaktu telefonicznego.";form.reset();updateAdvisor();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();name.setCustomValidity("");refreshShortcutState();}catch{status.className="contact-status-error";status.replaceChildren();const errorText=document.createElement("span");errorText.textContent="Nie udało się potwierdzić przyjęcia zgłoszenia. Dane pozostają w formularzu. Możesz spróbować ponownie albo zadzwonić: ";const errorCall=document.createElement("a");const paulina=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value);errorCall.href=paulina?"tel:+48500171531":"tel:+48796441345";errorCall.textContent=paulina?"500 171 531":"796 441 345";status.append(errorText,errorCall);const fallback=document.createElement("a");fallback.className="contact-fallback-link";fallback.href="mailto:twojasprawa_votum@outlook.com?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+select.value)+"&body="+encodeURIComponent(["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Dogodna pora: "+callback.value,"Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),"Źródło: "+source,"Kanał: "+(safeMedium||"brak"),"Kampania: "+(safeCampaign||"brak"),"Wariant: "+(safeCreative||"brak"),"Sposób przejścia: "+leadPath,"","Opis: "+(msg.value.trim()||"Proszę o kontakt.")].join("\n"));fallback.textContent="Otwórz gotową wiadomość e-mail";status.append(document.createTextNode(" · "),fallback);}finally{sending=false;button.disabled=false;button.textContent="Wyślij zgłoszenie";}return;
+    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Dziękujemy! Nie jest to jeszcze potwierdzenie dostarczenia wiadomości do skrzynki odbiorczej. Jeśli sprawa jest pilna, skorzystaj z kontaktu telefonicznego.";form.reset();updateAdvisor();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();name.setCustomValidity("");refreshShortcutState();}catch{status.className="contact-status-error";status.replaceChildren();const errorText=document.createElement("span");errorText.textContent="Nie udało się potwierdzić przyjęcia zgłoszenia. Dane pozostają w formularzu. Możesz spróbować ponownie albo zadzwonić: ";const errorCall=document.createElement("a");const paulina=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value);errorCall.href=paulina?"tel:+48500171531":"tel:+48796441345";errorCall.textContent=paulina?"500 171 531":"796 441 345";status.append(errorText,errorCall);const fallback=document.createElement("a");fallback.className="contact-fallback-link";fallback.href="mailto:"+mailRecipient+"?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+select.value)+"&body="+encodeURIComponent(["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Dogodna pora: "+callback.value,"Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),"Źródło: "+source,"Kanał: "+(safeMedium||"brak"),"Kampania: "+(safeCampaign||"brak"),"Wariant: "+(safeCreative||"brak"),"Sposób przejścia: "+leadPath,"","Opis: "+(msg.value.trim()||"Proszę o kontakt.")].join("\n"));fallback.textContent="Otwórz gotową wiadomość e-mail";status.append(document.createTextNode(" · "),fallback);}finally{sending=false;button.disabled=false;button.textContent="Wyślij zgłoszenie";}return;
    }
    const subject="Zapytanie Twoja Sprawa: "+select.value;
    const body=["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Dogodna pora: "+callback.value,"Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),"Źródło zgłoszenia: "+source,"Kanał: "+(safeMedium||"brak"),"Kampania: "+(safeCampaign||"brak"),"Wariant: "+(safeCreative||"brak"),"Sposób przejścia: "+leadPath,"","Opis sprawy:",""+(msg.value.trim()||"Proszę o kontakt."),"","Proszę o odpowiedź na wskazany adres e-mail lub telefon."].join("\n");
    status.textContent="Otwieram aplikację pocztową. Sprawdź przygotowaną wiadomość i wyślij ją samodzielnie.";
-   window.location.href="mailto:twojasprawa_votum@outlook.com?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+   window.location.href="mailto:"+mailRecipient+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
   });
   // Jedno kliknięcie z karty uszkodzenia ustawia tylko dozwoloną opcję w formularzu.
   // Link #formularz pozostaje natywnym, dostępnym odnośnikiem bez JavaScript.
@@ -219,7 +220,7 @@
     const choice=trigger.getAttribute("data-damage-option");
     if(![...damageArea.children].some(option=>option.value===choice))return;
     if(select.value!=="Szkody górnicze"){
-     select.value="Szkody górnicze";updateAdvisor();updateGuide();updateStage();updateContextNotice();
+     select.value="Szkody górnicze";updateAdvisor();updateGuide();updateStage();updateContextNotice();syncContactPreference();
     }
     updateDamageArea();damageArea.value=choice;
    });
@@ -234,7 +235,7 @@
     if(!chosen)return;
     if(select.value!=="Świadczenie wspierające"){
      select.value="Świadczenie wspierające";
-     updateAdvisor();updateGuide();updateStage();updateDamageArea();
+     updateAdvisor();updateGuide();updateStage();updateDamageArea();syncContactPreference();
     }
     if(stageWrap.hidden)return;
     stage.value=chosen;
@@ -264,7 +265,7 @@
      if(!chosen)return;
      event.preventDefault();
      select.value=chosen;
-     updateAdvisor();updateGuide();updateStage();updateDamageArea();updateContextNotice();
+     updateAdvisor();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();
      syncShortcuts();
      // Instant scroll avoids competing animations when visitors change topic quickly.
      // It also respects motion-sensitive users without relying on OS detection.

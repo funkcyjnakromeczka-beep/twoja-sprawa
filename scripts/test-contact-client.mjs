@@ -460,6 +460,9 @@ for(const sample of [
  assert.equal(service.value,"","Homepage starts with no service preselected");
  const quickPhone=visit(form,n=>n.autocomplete==="tel");
  const quickEmail=visit(form,n=>n.autocomplete==="email");
+ const quickMethod=visit(form,n=>n.id?.startsWith("cf-method-"));
+ // The small DOM mock does not automatically select the first <option> as a real browser does.
+ quickMethod.value="Dowolny";quickMethod.events.change();
  quickEmail.value="test@example.com";quickEmail.events.input();
  service.value="Kredyt w PLN / SKD";service.events.change();
  assert.equal(quickPhone.required,true,"SKD must require a phone before using a homepage shortcut");

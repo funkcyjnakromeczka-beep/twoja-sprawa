@@ -43,21 +43,21 @@
       ]
     },
     {
-      key:"renty",name:"Renty powypadkowe",short:"Wysokość renty i waloryzacja",phone:"500 171 531",tel:"+48500171531",
-      service:"renty-powypadkowe.html",checklist:"renta-powypadkowa-dokumenty.html",alias:"renty",
-      intro:"Można przeanalizować wysokość renty wypłacanej przez ubezpieczyciela i zmiany potrzeb lub możliwości zarobkowych. Nie obiecujemy podwyższenia świadczenia.",
-      stages:[
-        ["Mam już rentę","Przygotuj informacje o obecnej wysokości renty, wcześniejszych decyzjach i zmianach kosztów lub dochodów."],
-        ["Po wypadku straciłem dochody","Zapisz datę zdarzenia oraz ogólne informacje o skutkach dla możliwości pracy. Zakres dowodów ustalimy w rozmowie."]
-      ]
-    },
-    {
       key:"skd",name:"Sankcja Kredytu Darmowego (SKD)",short:"Sprawdzenie umowy kredytowej",phone:"796 441 345",tel:"+48796441345",
       service:"kredyty-pln.html",checklist:"skd-kredyt-pln-lista-kontrolna.html",alias:"skd",
       intro:"Wyślij kopię umowy kredytowej na wojciech.obieglo@votum-ds.pl i pozostaw numer telefonu. Nie każdy kredyt podlega sankcji kredytu darmowego. Możesz dołączyć pełną umowę bez zasłaniania danych; przed wysłaniem sprawdź adres odbiorcy.",
       stages:[
         ["Mam umowę kredytu","Zachowaj umowę, aneksy i harmonogram. Istotne mogą być rodzaj kredytu, koszty i daty."],
         ["Kredyt został spłacony","Zachowaj umowę i potwierdzenia spłaty. Możliwości działania zależą od rodzaju umowy i obowiązujących terminów."]
+      ]
+    },
+    {
+      key:"renty",name:"Renty powypadkowe",short:"Wysokość renty i waloryzacja",phone:"500 171 531",tel:"+48500171531",
+      service:"renty-powypadkowe.html",checklist:"renta-powypadkowa-dokumenty.html",alias:"renty",
+      intro:"Można przeanalizować wysokość renty wypłacanej przez ubezpieczyciela i zmiany potrzeb lub możliwości zarobkowych. Nie obiecujemy podwyższenia świadczenia.",
+      stages:[
+        ["Mam już rentę","Przygotuj informacje o obecnej wysokości renty, wcześniejszych decyzjach i zmianach kosztów lub dochodów."],
+        ["Po wypadku straciłem dochody","Zapisz datę zdarzenia oraz ogólne informacje o skutkach dla możliwości pracy. Zakres dowodów ustalimy w rozmowie."]
       ]
     },
     {
@@ -182,13 +182,18 @@
   const url=window.location.pathname;
   const chosenInForm=(new URLSearchParams(window.location.search).get("usluga")||"").toLowerCase();
   const chosenTopic=topics.find(t=>(t.alias||t.key)===chosenInForm);
+  const byKey=key=>topics.find(topic=>topic.key===key);
+  const routeTopic=[
+    ["swiadczenie-wspierajace","swiadczenie"],
+    ["szkody-gornicze","szkody"],
+    ["kampanie/skd","skd"],
+    ["kredyty-pln","skd"],
+    ["renty-powypadkowe","renty"],
+    ["kredyty-frankowe","franki"],
+    ["sluzebnosc-przesylu","przesyl"]
+  ].find(([route])=>url.includes(route));
   if(chosenTopic)choose(chosenTopic);
-  else if(url.includes("swiadczenie-wspierajace"))choose(topics[0]);
-  else if(url.includes("szkody-gornicze"))choose(topics[1]);
-  else if(url.includes("renty-powypadkowe"))choose(topics[2]);
-  else if(url.includes("kredyty-pln"))choose(topics[3]);
-  else if(url.includes("kredyty-frankowe"))choose(topics[4]);
-  else if(url.includes("sluzebnosc-przesylu"))choose(topics[5]);
+  else if(routeTopic)choose(byKey(routeTopic[1]));
   // On narrow screens, the form should remain unobstructed while the assistant is closed.
   const contactArea=document.getElementById("formularz")||document.getElementById("kontakt");
   const videoArea=document.getElementById("filmy");

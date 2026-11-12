@@ -461,16 +461,16 @@ for(const sample of [
   if(sample.accepted)assert.equal(payloads[0].phone,sample.phone);
 }
 
-// The two homepage shortcuts change an existing form; no third-party request occurs.
+// Three homepage shortcuts change one form without sending data on selection.
 {
  const host=new Node("host");
- const mining=new Node("a"),support=new Node("a"),feedback=new Node("p");
+ const mining=new Node("a"),support=new Node("a"),skd=new Node("a"),feedback=new Node("p");
  const makeKey=(node,key)=>{node.getAttribute=name=>name==="data-contact-shortcut"?key:(node.attributes[name]??null);};
- makeKey(mining,"szkody");makeKey(support,"swiadczenie");
+ makeKey(mining,"szkody");makeKey(support,"swiadczenie");makeKey(skd,"skd");
  const document={
   body:{classList:{contains:()=>false}},
   currentScript:{getAttribute:()=>""},
-  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-contact-shortcut]"?[mining,support]:selector==="[data-contact-shortcut-status]"?[feedback]:[],
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-contact-shortcut]"?[mining,support,skd]:selector==="[data-contact-shortcut-status]"?[feedback]:[],
   createElement:tag=>new Node(tag),
   createTextNode:text=>({tag:"text",textContent:text})
  };
@@ -512,6 +512,17 @@ for(const sample of [
  assert.equal(support.attributes["data-selected"],"true");
  assert.ok(feedback.textContent.includes("Świadczenie wspierające"));
  assert.ok(advisor.children.some(n=>(n.textContent||"").includes("Paulina Chandrała")));
+ // A quick second click can race with the previous scroll in the browser.
+ // Pointer activation must select SKD even if the subsequent click is lost.
+ skd.events.pointerdown({isPrimary:true,pointerType:"mouse",button:0});
+ assert.equal(service.value,"Kredyt w PLN / SKD","Mouse pointerdown should preserve SKD selection under scroll");
+ assert.equal(skd.attributes["data-selected"],"true");
+ assert.equal(quickPhone.required,true,"Selecting SKD must require callback phone");
+ support.events.pointerup({isPrimary:true,pointerType:"touch"});
+ assert.equal(service.value,"Świadczenie wspierające","Touch pointerup should select service after a completed tap");
+ skd.events.click({preventDefault(){}});
+ assert.equal(service.value,"Kredyt w PLN / SKD","Normal keyboard/click activation remains functional");
+ assert.equal(skd.attributes["data-selected"],"true");
  service.value="Renty powypadkowe";service.events.change();
  assert.equal(mining.attributes["data-selected"],"false");
  assert.equal(support.attributes["data-selected"],"false");

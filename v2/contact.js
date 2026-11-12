@@ -299,16 +299,28 @@
     if(shortcutStatus)shortcutStatus.textContent=active?"Wybrano: "+select.value+". Uzupełnij dane w formularzu poniżej.":"";
    };
    select.addEventListener("change",syncShortcuts);
-   for(const link of primaryShortcuts){
-    link.addEventListener("click",event=>{
-     const chosen=pickService(link.getAttribute("data-contact-shortcut"));
-     if(!chosen)return;
-     event.preventDefault();
+   const activateShortcut=chosen=>{
+    if(select.value!==chosen){
      select.value=chosen;
      updateAdvisor();updatePeople();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();
-     syncShortcuts();
-     // Instant scroll avoids competing animations when visitors change topic quickly.
-     // It also respects motion-sensitive users without relying on OS detection.
+    }
+    syncShortcuts();
+   };
+   for(const link of primaryShortcuts){
+    const chosen=pickService(link.getAttribute("data-contact-shortcut"));
+    if(!chosen)continue;
+    // On fast consecutive taps, a pointer target can move during scroll before
+    // the browser dispatches click. Keep the selected service correct without
+    // starting a network request or scrolling on pointer activation.
+    link.addEventListener("pointerdown",event=>{
+     if(event.isPrimary&&event.pointerType==="mouse"&&event.button===0)activateShortcut(chosen);
+    });
+    link.addEventListener("pointerup",event=>{
+     if(event.isPrimary&&(event.pointerType==="touch"||event.pointerType==="pen"))activateShortcut(chosen);
+    });
+    link.addEventListener("click",event=>{
+     event.preventDefault();
+     activateShortcut(chosen);
      host.scrollIntoView?.({behavior:"instant",block:"start"});
      select.focus?.({preventScroll:true});
     });

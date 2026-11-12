@@ -460,7 +460,10 @@ try{
  if(!message.includes("Świadczenie wspierające"))throw Error("Homepage shortcut selection lacks accessible feedback");
  await skdShortcut.click();
  flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
- if(flagshipSelection!=="Kredyt w PLN / SKD")throw Error("Home SKD shortcut failed to select service");
+ if(flagshipSelection!=="Kredyt w PLN / SKD"){
+  const state=await flagshipPage.evaluate(()=>({url:location.href,service:document.querySelector('#kontakt .contact-form select[id^="cf-service-"]')?.value,options:[...document.querySelector('#kontakt .contact-form select[id^="cf-service-"]')?.options||[]].map(o=>o.value),selected:[...document.querySelectorAll('[data-contact-shortcut]')].map(x=>({topic:x.getAttribute('data-contact-shortcut'),selected:x.getAttribute('data-selected')})),activeElement:document.activeElement?.outerHTML.slice(0,220),errors:document.querySelector('.contact-status-error')?.textContent}));
+  throw Error("Home SKD shortcut failed: "+JSON.stringify(state));
+ }
  if(await skdShortcut.getAttribute("data-selected")!=="true")throw Error("Home SKD shortcut not visibly selected");
  const skdPhoneRequired=await flagshipPage.locator('.contact-form input[type="tel"]').getAttribute("required");
  if(skdPhoneRequired===null)throw Error("SKD shortcut did not require callback phone");

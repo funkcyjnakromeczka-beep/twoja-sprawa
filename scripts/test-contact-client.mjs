@@ -147,7 +147,7 @@ await run(true);
  assert.ok(benefits.children.some(n=>n.textContent?.includes("pełną umowę e-mailem")),"SKD lead must not discourage sending the contract");
  service.value="Świadczenie wspierające";service.events.change();
  assert.equal(phone.required,false,"Switching away from SKD should restore email-only enquiries");
- assert.equal(email.required,false,"Existing email should satisfy support contact preference");
+ assert.equal(email.required,true,"Support email-only route must require the sole contact method");
 
  assert.ok(benefits.children.every(n=>!n.textContent?.includes("pełną umowę e-mailem")),"Non-SKD leads must not show contract upload guidance");
  service.value="Kredyt w PLN / SKD";service.events.change();

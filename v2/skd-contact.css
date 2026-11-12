@@ -110,7 +110,7 @@
 .premium-subpage.theme-skd .skd-copy-email:not([hidden]){
  display:inline-flex;align-items:center;justify-content:center;min-height:52px;
  padding:12px 19px;border:2px solid #f0d7a4;border-radius:12px;
- background:transparent;color:#fff8e9;font:800 1rem/1.4 inherit;cursor:pointer;
+ background:transparent;color:#fff8e9;font-weight:800;font-size:1rem;line-height:1.4;font-family:inherit;cursor:pointer;
 }
 .premium-subpage.theme-skd .skd-copy-email:hover{background:rgba(255,255,255,.12)}
 .premium-subpage.theme-skd .skd-copy-email:focus-visible{outline:3px solid #fff;outline-offset:4px}

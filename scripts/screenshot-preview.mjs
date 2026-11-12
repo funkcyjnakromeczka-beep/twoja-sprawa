@@ -220,6 +220,17 @@ try{
  if(await contactHub.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2))throw Error("Contact hub mobile overflow");
  console.log("CONTACT_HUB_ROUTES_OK",JSON.stringify({serviceRoutes:contactLinks.length,skdEmail:true}));
  await contactHub.close();
+ // Hero contact action should go to the visible on-page lead form,
+ // not an unqualified generic mailbox that obscures specialist routing.
+ const contactHero=await browser.newPage({viewport:{width:390,height:844}});
+ await contactHero.goto(origin+"/kontakt.html",{waitUntil:"domcontentloaded"});
+ const heroAction=contactHero.locator(".subhero .actions a").filter({hasText:"Zostaw zapytanie"});
+ if(await heroAction.count()!==1||await heroAction.getAttribute("href")!=="#formularz")throw Error("Contact hero CTA must open own form");
+ await heroAction.click();
+ if(new URL(contactHero.url()).hash!=="#formularz")throw Error("Contact hero CTA does not reach form");
+ if(!await contactHero.locator('#formularz [data-contact-form]').count())throw Error("Contact form missing after hero CTA");
+ console.log("CONTACT_HERO_CTA_OK");
+ await contactHero.close();
  // New homepage information architecture: services first, real disclosure after CTA.
  const clarityMobile=await browser.newPage({viewport:{width:390,height:844}});
  await clarityMobile.goto(origin+"/",{waitUntil:"domcontentloaded"});

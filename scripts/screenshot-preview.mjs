@@ -437,6 +437,22 @@ try{
  console.log("NATURAL_SEARCH_UI_OK",JSON.stringify({questions:3,relatedMatchesLabelled:true,unknownQueriesEmpty:true,actualLeadsSent:0}));
  await naturalSearch.close();
 
+ // The ten-card knowledge hub must not trap users when their natural question
+ // is absent; it forwards the original phrase and topic to the 62-record search.
+ const knowledgeSearchPage=await browser.newPage({viewport:{width:390,height:844}});
+ await knowledgeSearchPage.goto(origin+"/wiedza/",{waitUntil:"domcontentloaded"});
+ await knowledgeSearchPage.locator("#hub-search").fill("Jak uzyskać świadczenie wspierające?");
+ await knowledgeSearchPage.locator('[data-hub-filter="swiadczenie"]').click();
+ const knowledgeAll=knowledgeSearchPage.locator('[data-hub-full-search]').first();
+ const knowledgeHref=await knowledgeAll.getAttribute("href");
+ const knowledgeParams=new URL(knowledgeHref,origin).searchParams;
+ if(knowledgeParams.get("q")!=="Jak uzyskać świadczenie wspierające?"||knowledgeParams.get("temat")!=="swiadczenie")throw Error("Knowledge hub lost search query or selected service");
+ await knowledgeAll.click();
+ await knowledgeSearchPage.waitForURL(/szukaj\.html\?/);
+ if(await knowledgeSearchPage.locator(".site-search-card").count()<1)throw Error("Full search should show related support content from knowledge hub query");
+ console.log("KNOWLEDGE_TO_GLOBAL_SEARCH_OK",JSON.stringify({questionPreserved:true,topicPreserved:true,relatedResults:true,leadsSent:0}));
+ await knowledgeSearchPage.close();
+
  // Mining campaign: choosing an example should prepare the form, not submit a lead.
  const damagePage=await browser.newPage({viewport:{width:390,height:844}});
  await damagePage.goto(origin+"/kampanie/szkody-gornicze.html?utm_source=ulotka&utm_medium=qr",{waitUntil:"domcontentloaded"});

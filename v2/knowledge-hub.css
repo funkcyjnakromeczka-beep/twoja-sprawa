@@ -53,3 +53,12 @@
 .knowledge-hub .hub-banner-actions a:nth-child(2){background:transparent;color:#f5dba9;border-color:#c1a070}
 .knowledge-hub .hub-banner-actions a:focus-visible{outline:3px solid #f7d49a;outline-offset:3px}
 @media(max-width:560px){.knowledge-hub .hub-banner-actions{flex-direction:column}.knowledge-hub .hub-banner-actions a{width:100%}}
+
+/* Przekazanie zapytania z 10 poradników do wyszukiwarki wszystkich materiałów. */
+.knowledge-hub .hub-more-search{margin:19px 0 0}
+.knowledge-hub .hub-search-all{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:10px 16px;border:1px solid #b99358;border-radius:11px;background:#f5e3c5;color:#173d4b;font-weight:800;text-decoration:none;line-height:1.45}
+.knowledge-hub .hub-search-all:hover{background:#ecd1a7}
+.knowledge-hub .hub-search-all:focus-visible{outline:3px solid #9b7135;outline-offset:3px}
+.knowledge-hub #hub-empty{border:1px solid #c8d7d2;border-radius:14px;padding:20px;background:#fff;color:#294a57}
+.knowledge-hub #hub-empty[hidden]{display:none!important}
+.knowledge-hub #hub-empty p{margin:0 0 12px}

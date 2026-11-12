@@ -7,6 +7,7 @@
  const count=hub.querySelector("[data-hub-count]");
  const empty=hub.querySelector("#hub-empty");
  const clear=hub.querySelector("[data-hub-reset]");
+ const fullSearch=[...hub.querySelectorAll("[data-hub-full-search]")];
  const buttons=[...hub.querySelectorAll("[data-hub-filter]")];
  const cards=[...hub.querySelectorAll("[data-hub-category]")];
  if(!input||!count||!empty||!cards.length)return;
@@ -24,6 +25,13 @@
   const form=shown===1?"artykuł":shown>=2&&shown<=4?"artykuły":"artykułów";
   count.textContent="Widoczne: "+shown+" "+form;
   empty.hidden=shown!==0;
+  const phrase=input.value.trim();
+  for(const link of fullSearch){
+   const params=new URLSearchParams();
+   if(phrase)params.set("q",phrase);
+   if(category!=="all")params.set("temat",category);
+   link.href="/v2/szukaj.html"+(params.size?"?"+params.toString():"");
+  }
   if(clear)clear.hidden=!input.value.trim()&&category==="all";
  };
  buttons.forEach(button=>button.addEventListener("click",()=>{

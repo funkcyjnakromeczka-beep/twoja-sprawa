@@ -29,6 +29,7 @@ try{
   ["kampania-swiadczenie-telefon","/kampanie/swiadczenie-wspierajace.html",390,844],
   ["kampania-skd-telefon","/kampanie/skd.html",390,844],
   ["kampania-skd-desktop","/kampanie/skd.html",1440,900],
+  ["generator-linkow-telefon","/narzedzia/linki-kampanii.html",390,844],
   ["usluga-szkody-telefon","/uslugi/szkody-gornicze.html",390,844],
   ["usluga-swiadczenie-telefon","/uslugi/swiadczenie-wspierajace.html",390,844],
   ["usluga-frankowicze-telefon","/uslugi/kredyty-frankowe.html",390,844],
@@ -632,6 +633,30 @@ try{
  if(!new URL(skdQuickEntry.url()).pathname.includes("/kampanie/skd.html"))throw Error("Third SKD card should open dedicated campaign");
  console.log("SKD_HOME_FASTPATH_OK",JSON.stringify({mobile:true,thirdCard:true,utmPreserved:true,phoneRequired:true,leadsSent:0}));
  await skdQuickEntry.close();
+
+ // Generated marketing links should be the same short canonical addresses printed on flyers.
+ const generatorPage=await browser.newPage({viewport:{width:390,height:844}});
+ await generatorPage.goto(origin+"/narzedzia/linki-kampanii.html",{waitUntil:"domcontentloaded"});
+ const campaignSelector=generatorPage.locator('[data-campaign-builder] select[name="service"]');
+ const resultLink=generatorPage.locator('[data-campaign-url]');
+ for(const [service,expected] of [
+  ["szkody","/kampanie/szkody-gornicze"],
+  ["swiadczenie","/kampanie/swiadczenie-wspierajace"],
+  ["skd","/kampanie/skd"],
+  ["renty","/uslugi/renty-powypadkowe"],
+  ["przesyl","/uslugi/sluzebnosc-przesylu"]
+ ]){
+  await campaignSelector.selectOption(service);
+  const selected=new URL(await resultLink.inputValue());
+  if(selected.pathname!==expected||selected.pathname.endsWith(".html"))throw Error("Generator canonical marketing destination is incorrect: "+service+" "+selected.href);
+  if(selected.searchParams.get("utm_campaign")!=="lokalna_pomoc")throw Error("Generator dropped campaign tracking label");
+  if(service==="skd"){
+   const postText=await generatorPage.locator("[data-campaign-post]").inputValue();
+   if(!postText.includes("wojciech.obieglo@votum-ds.pl")||!postText.includes("796 441 345")||postText.includes("500 171 531"))throw Error("SKD marketing post contacts wrong advisor");
+  }
+ }
+ console.log("CAMPAIGN_SHORT_URLS_OK",JSON.stringify({canonical:5,skdPhone:"796 441 345",realLeadsSent:0}));
+ await generatorPage.close();
 
  // Campaign SKD: direct agreement email and phone-required callback, no external form submission.
  const skdCampaign=await browser.newPage({viewport:{width:390,height:844}});

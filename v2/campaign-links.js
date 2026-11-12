@@ -65,7 +65,9 @@
     const chosen = campaigns[service.value];
     if (!chosen) return;
     const origin = window.location.origin;
-    const target = new URL(chosen.path, origin);
+    // Cloudflare Pages publicly serves HTML pages at extensionless canonical URLs.
+    // Prefer direct short addresses for QR codes, posts and printed flyers.
+    const target = new URL(chosen.path.replace(/\.html$/, ""), origin);
     const campaign = slug(name.value) || "kampania_bezplatna";
     const selectedChannel = Object.prototype.hasOwnProperty.call(channels, channel.value) ? channel.value : "inne";
     const source = selectedChannel.startsWith("facebook_") ? "facebook" : selectedChannel;

@@ -24,6 +24,23 @@ for(const [path,destination] of [
  assert.ok(page.includes('class="btn" href="'+destination+'"'),"Primary lead CTA should open the service-specific contact form: "+path);
  assert.ok(page.includes('href="'+destination+'">Kontakt</a>'),"Header contact must retain correct service: "+path);
 }
+// Older knowledge articles now lead directly to the contextual contact form
+// instead of dropping a visitor at an unselected homepage contact form.
+for(const [path,target,phone] of [
+ ["kredyt-pln-dokumenty-skd.html","/v2/kampanie/skd.html#formularz","+48796441345"],
+ ["sluzebnosc-przesylu-slup-na-dzialce.html","/v2/uslugi/sluzebnosc-przesylu.html#formularz","+48796441345"],
+ ["ugoda-z-kopalnia-co-sprawdzic.html","/v2/uslugi/szkody-gornicze.html?etap=ugoda#formularz","+48796441345"],
+ ["szkody-gornicze-drobne-pekniecia.html","/v2/uslugi/szkody-gornicze.html?etap=uszkodzenia&uszkodzenie=sciany#formularz","+48796441345"],
+ ["wypadek-przy-pracy-pierwsze-kroki.html","/v2/uslugi/wypadki-przy-pracy.html#formularz","+48796441345"]
+]){
+ const html=await readFile("v2/wiedza/"+path,"utf8");
+ assert.ok(!html.includes('href="/v2/#kontakt"'),"Old home contact must not swallow the service selection: "+path);
+ assert.ok(html.includes('href="'+target.replaceAll("&","&amp;")+'">Kontakt</a>'),"Article must carry the service to the form: "+path);
+ assert.ok(html.includes('href="tel:'+phone+'"'),"Wrong article contact phone: "+path);
+}
+const supportDetails=await readFile("v2/uslugi/swiadczenie-wspierajace.html","utf8");
+assert.ok(supportDetails.includes('href="mailto:paulina.chandrala@votum-ds.pl?subject='),"Benefit service must email the Paulina adviser");
+assert.ok(!supportDetails.includes("mailto:twojasprawa_votum@outlook.com"),"Benefit service must not offer unrelated general mailbox as primary CTA");
 class Node{
  constructor(tag){this.tag=tag;this.children=[];this.events={};this.attributes={};this.className="";this.textContent="";this.classList={value:false,toggle:()=>this.classList.value=!this.classList.value};}
  addEventListener(key,cb){this.events[key]=cb;}

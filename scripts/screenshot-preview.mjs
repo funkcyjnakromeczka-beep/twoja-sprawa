@@ -52,6 +52,8 @@ try{
   ["wiedza-swiadczenie-telefon","/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",390,844],
   ["wiedza-swiadczenie-dokumenty-telefon","/wiedza/swiadczenie-wspierajace-dokumenty.html",390,844],
   ["wiedza-wzon-zus-telefon","/wiedza/swiadczenie-wspierajace-wzon-zus.html",390,844],
+  ["wiedza-skd-dokumenty-telefon","/wiedza/kredyt-pln-dokumenty-skd.html",390,844],
+  ["wiedza-ugoda-telefon","/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",390,844],
   ["wiedza-renta-dokumenty-telefon","/wiedza/renta-powypadkowa-dokumenty.html",390,844],
   ["blad-404-telefon","/404.html",390,844]
  ];

@@ -206,6 +206,20 @@ try{
  }
  console.log("LEAFLET_UI_OK: three flagship funnels, preselected services, UTM ulotka/druk, no duplicate form");
  await flyerPage.close();
+ // Direct contact links must lead to real, service-specific form anchors.
+ const contactHub=await browser.newPage({viewport:{width:390,height:844}});
+ await contactHub.goto(origin+"/kontakt.html",{waitUntil:"domcontentloaded"});
+ const contactLinks=await contactHub.locator(".contact-specialists-grid a[href*='#formularz']").evaluateAll(els=>els.map(a=>a.getAttribute("href")));
+ const expectedContact=["/kampanie/szkody-gornicze.html#formularz","/kampanie/skd.html#formularz","/uslugi/kredyty-frankowe.html#formularz","/uslugi/sluzebnosc-przesylu.html#formularz","/kampanie/swiadczenie-wspierajace.html#formularz","/uslugi/renty-powypadkowe.html#formularz"];
+ for(const target of expectedContact){
+  if(!contactLinks.includes(target))throw Error("Contact hub missing service-specific route: "+target);
+  const response=await contactHub.request.get(origin+target.split("#")[0]);
+  if(!response.ok()||!(await response.text()).includes('id="formularz"'))throw Error("Contact hub target has no form anchor: "+target);
+ }
+ if(!(await contactHub.locator('.contact-specialist-skd-mail').getAttribute("href"))?.startsWith("mailto:wojciech.obieglo@votum-ds.pl"))throw Error("SKD contact email missing");
+ if(await contactHub.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2))throw Error("Contact hub mobile overflow");
+ console.log("CONTACT_HUB_ROUTES_OK",JSON.stringify({serviceRoutes:contactLinks.length,skdEmail:true}));
+ await contactHub.close();
  // New homepage information architecture: services first, real disclosure after CTA.
  const clarityMobile=await browser.newPage({viewport:{width:390,height:844}});
  await clarityMobile.goto(origin+"/",{waitUntil:"domcontentloaded"});

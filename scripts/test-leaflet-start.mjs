@@ -17,7 +17,7 @@ assert.ok(!/<script\b/i.test(html),"Print landing must not load external trackin
 assert.ok(html.includes("nie oficjalna strona VOTUM"),"Agency disclaimer missing");
 assert.ok(html.includes("Nie wpisuj do otwartego formularza numeru PESEL"),"Data minimization notice missing");
 assert.ok(html.includes('href="/v2/ulotka-start.css"'));
-assert.ok(css.includes("grid-template-columns:repeat(2,minmax(0,1fr))"));
+assert.ok(css.includes(".leaflet-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))"));
 assert.ok(css.includes("@media(max-width:730px)"));
 const expected=[
  {service:"swiadczenie-wspierajace",phone:"+48500171531",content:"swiadczenie"},
@@ -31,10 +31,17 @@ for(const e of expected){
  const landing=await read("v2/kampanie/"+e.service+".html");
  assert.ok(landing.includes('id="formularz"')&&landing.includes("data-contact-form"),"Missing actual form: "+e.service);
 }
-for(const slug of ["renty-powypadkowe","kredyty-pln","kredyty-frankowe","sluzebnosc-przesylu"]){
+const skdTarget="/v2/kampanie/skd.html";
+await access("v2/kampanie/skd.html");
+assert.ok(html.includes('href="'+skdTarget+'?utm_source=ulotka&amp;utm_medium=druk&amp;utm_campaign=ulotki_2026&amp;utm_content=skd#formularz"'),"SKD flagship callback missing");
+assert.ok(html.includes('href="mailto:wojciech.obieglo@votum-ds.pl?subject='),"SKD flagship contract email missing");
+const skdLanding=await read("v2/kampanie/skd.html");
+assert.ok(skdLanding.includes('id="formularz"')&&skdLanding.includes("data-contact-form"),"SKD campaign callback form missing");
+assert.ok(html.indexOf('leaflet-option-support')<html.indexOf('leaflet-option-mining')&&html.indexOf('leaflet-option-mining')<html.indexOf('leaflet-option-skd'),"Three flagship services must be ordered: benefits, mining, SKD");
+for(const slug of ["renty-powypadkowe","kredyty-frankowe","sluzebnosc-przesylu"]){
  assert.ok(html.includes('/v2/uslugi/'+slug+'.html?utm_source=ulotka'),"Secondary service missing "+slug);
  await access("v2/uslugi/"+slug+".html");
 }
 const allowedDomains=[...html.matchAll(/https?:\/\/[^\s"'<>]+/g)].map(x=>x[0]);
 assert.equal(allowedDomains.length,0,"Print landing should not depend on an external domain");
-console.log("LEAFLET_ENTRY_OK: /start, 2 direct contact paths, 4 secondary services, 2 correct phone numbers, noindex, privacy, no duplicate form.");
+console.log("LEAFLET_ENTRY_OK: /start, 3 flagship paths, SKD agreement email+callback, 3 secondary services, 2 correct phone numbers, noindex, privacy, no duplicate form.");

@@ -71,3 +71,9 @@
 .premium-v2 .faq-explore-all a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 19px;border:1px solid #be965b;border-radius:12px;background:#f2dfbc;color:#173b4b;text-decoration:none;text-align:center;font-weight:800;line-height:1.4}
 .premium-v2 .faq-explore-all a:hover{background:#e9cca0}
 .premium-v2 .faq-explore-all a:focus-visible{outline:3px solid #b58c4f;outline-offset:3px}
+
+/* SKD: trzecia usługa i wyraźny kontakt mailowy */
+.premium-v2 .skd-direct-contact{margin:24px 0;padding:20px 24px;border:1px solid #b88c49;border-left:5px solid #b88c49;border-radius:14px;background:#102d3c;color:#fff;line-height:1.7;font-size:1rem}
+.premium-v2 .skd-direct-contact strong{color:#f3d6a3}
+.premium-v2 .skd-direct-contact a{color:#fff;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere;font-weight:700}
+.premium-v2 .skd-direct-contact a:focus-visible{outline:3px solid #f3d6a3;outline-offset:3px}

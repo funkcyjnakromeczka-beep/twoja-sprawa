@@ -307,18 +307,22 @@
     syncShortcuts();
    };
    for(const link of primaryShortcuts){
-    const chosen=pickService(link.getAttribute("data-contact-shortcut"));
-    if(!chosen)continue;
-    // On fast consecutive taps, a pointer target can move during scroll before
-    // the browser dispatches click. Keep the selected service correct without
-    // starting a network request or scrolling on pointer activation.
+    const getChosen=()=>pickService(link.getAttribute("data-contact-shortcut"));
+    if(!getChosen())continue;
+    // Resolve the current validated service on each action. An unknown or
+    // changed link must not hijack navigation or retain an outdated selection.
+    // Pointer selection safeguards rapid changes during the previous scroll.
     link.addEventListener("pointerdown",event=>{
-     if(event.isPrimary&&event.pointerType==="mouse"&&event.button===0)activateShortcut(chosen);
+     const chosen=getChosen();
+     if(chosen&&event.isPrimary&&event.pointerType==="mouse"&&event.button===0)activateShortcut(chosen);
     });
     link.addEventListener("pointerup",event=>{
-     if(event.isPrimary&&(event.pointerType==="touch"||event.pointerType==="pen"))activateShortcut(chosen);
+     const chosen=getChosen();
+     if(chosen&&event.isPrimary&&(event.pointerType==="touch"||event.pointerType==="pen"))activateShortcut(chosen);
     });
     link.addEventListener("click",event=>{
+     const chosen=getChosen();
+     if(!chosen)return;
      event.preventDefault();
      activateShortcut(chosen);
      host.scrollIntoView?.({behavior:"instant",block:"start"});

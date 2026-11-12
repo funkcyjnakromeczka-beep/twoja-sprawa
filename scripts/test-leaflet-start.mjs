@@ -35,6 +35,7 @@ const skdTarget="/v2/kampanie/skd.html";
 await access("v2/kampanie/skd.html");
 assert.ok(html.includes('href="'+skdTarget+'?utm_source=ulotka&amp;utm_medium=druk&amp;utm_campaign=ulotki_2026&amp;utm_content=skd#formularz"'),"SKD flagship callback missing");
 assert.ok(html.includes('href="mailto:wojciech.obieglo@votum-ds.pl?subject='),"SKD flagship contract email missing");
+assert.ok(html.includes('class="leaflet-skd-email"')&&html.includes('<strong>wojciech.obieglo@votum-ds.pl</strong>'),"SKD must display a copyable fallback email address");
 const skdLanding=await read("v2/kampanie/skd.html");
 assert.ok(skdLanding.includes('id="formularz"')&&skdLanding.includes("data-contact-form"),"SKD campaign callback form missing");
 assert.ok(html.indexOf('leaflet-option-support')<html.indexOf('leaflet-option-mining')&&html.indexOf('leaflet-option-mining')<html.indexOf('leaflet-option-skd'),"Three flagship services must be ordered: benefits, mining, SKD");

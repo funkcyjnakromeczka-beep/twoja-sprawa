@@ -498,6 +498,24 @@ try{
  await flagshipPage.close();
 
 
+ // Compact homepage must show essential fields without duplicated contact summaries.
+ const compactPage=await browser.newPage({viewport:{width:390,height:844}});
+ await compactPage.goto(origin+"/?utm_source=facebook",{waitUntil:"domcontentloaded"});
+ await compactPage.locator('[data-contact-shortcut="swiadczenie"]').click();
+ if(await compactPage.locator('#kontakt .contact-benefits').isVisible())throw Error("Homepage duplicated benefit banners should be hidden");
+ if(await compactPage.locator('#kontakt .contact-people').isVisible())throw Error("Homepage duplicated phone summary should be hidden");
+ if(await compactPage.locator('#kontakt .contact-guide-box').isVisible())throw Error("Guidance should be behind the optional-details disclosure");
+ if(!await compactPage.locator('#kontakt .contact-advisor').isVisible())throw Error("Correct specialist must remain visible");
+ for(const field of ['.contact-form input[autocomplete="given-name"]','.contact-form input[autocomplete="tel"]','.contact-form input[autocomplete="email"]']){
+  if(!await compactPage.locator(field).isVisible())throw Error("Essential lead field was hidden: "+field);
+ }
+ await compactPage.locator('#kontakt .contact-alternatives summary').click();
+ if(!await compactPage.locator('#kontakt .contact-alternative-links a[href="tel:+48500171531"]').isVisible())throw Error("Optional phone fallback missing");
+ await compactPage.locator('#kontakt .contact-case-details summary').click();
+ if(!await compactPage.locator('#kontakt .contact-guide-box').isVisible())throw Error("Checklist must be accessible in expanded details");
+ console.log("HOME_COMPACT_LEAD_OK",JSON.stringify({essentialFields:3,duplicatePhoneHidden:true,guideOptional:true,alternativeContacts:true,leadsSent:0}));
+ await compactPage.close();
+
  // Do not discard a partially completed lead when the visitor reads a checklist
  // or the privacy notice. Both resources must open in a separate browser tab.
  const preservedForm=await browser.newPage({viewport:{width:390,height:844}});
@@ -505,6 +523,7 @@ try{
  await preservedForm.locator('[data-contact-shortcut="swiadczenie"]').click();
  const savedName=preservedForm.locator('.contact-form input[autocomplete="given-name"]');
  await savedName.fill("Testowy klient");
+ await preservedForm.locator(".contact-case-details summary").click();
  const guideURL=preservedForm.locator('.contact-form .contact-guide-box a');
  if(await guideURL.getAttribute("target")!=="_blank")throw Error("Checklist link must open a new tab");
  const [guidePopup]=await Promise.all([preservedForm.waitForEvent("popup"),guideURL.click()]);

@@ -62,6 +62,11 @@ assert.ok(shortcutBlock.includes('data-contact-shortcut="skd"'),"SKD shortcut mi
 assert.ok(shortcutBlock.includes('role="status" aria-live="polite"'),"Selection feedback should be accessible");
 assert.ok(css.includes("contact-shortcuts-actions")&&css.includes('data-selected="true"'),"Flagship selection styling missing");
 assert.ok(html.includes('<div class="lead-panel"><div data-contact-form></div></div>'),"Shortcuts must reuse the existing homepage form");
+assert.ok(!html.includes('class="contact-steps"'),"Homepage form should not repeat an unnecessary three-step banner");
+assert.ok(html.includes('class="contact-alternatives"')&&html.includes('class="contact-alternative-links"'),"Phone and email alternatives must remain accessible");
+assert.ok(html.includes("Wojciech · 796 441 345")&&html.includes("Paulina · 500 171 531"),"Both service contacts must be reachable");
+assert.ok(html.includes("świadczenia wspierającego i rent powypadkowych."),"Support advisor biography must not incorrectly claim SKD");
+assert.ok(css.includes(".contact-benefits[hidden]")&&css.includes(".contact-alternatives"),"Compact homepage lead-form styling missing");
 
 // Keep the homepage CSS lean without losing its visible article/FAQ cards.
 assert.ok(!html.includes('href="/v2/knowledge-articles.css"'),"Homepage still downloads long-form article CSS");

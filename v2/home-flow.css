@@ -317,3 +317,16 @@
  .premium-v2 #kontakt .contact-shortcuts-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
  .premium-v2 #kontakt .contact-shortcuts-actions a{font-size:.84rem;padding-inline:8px}
 }
+
+/* Contact UX: on the homepage show one service, name and callback first. */
+.premium-v2 #kontakt .contact-benefits[hidden],
+.premium-v2 #kontakt .contact-people[hidden]{display:none!important}
+.premium-v2 #kontakt .contact-intro-compact{max-width:64ch;line-height:1.6;margin-bottom:17px}
+.premium-v2 #kontakt .contact-alternatives{margin:16px 0 11px;border:1px solid #c9ba9d;border-radius:13px;overflow:hidden;background:#f6f4ed;color:#183b48}
+.premium-v2 #kontakt .contact-alternatives summary{display:flex;align-items:center;min-height:48px;padding:12px 16px;cursor:pointer;font-weight:800;color:#193b48}
+.premium-v2 #kontakt .contact-alternatives summary:focus-visible{outline:3px solid #ac874a;outline-offset:-3px}
+.premium-v2 #kontakt .contact-alternative-links{display:flex;flex-wrap:wrap;gap:9px;padding:2px 13px 14px}
+.premium-v2 #kontakt .contact-alternative-links a{display:inline-flex;justify-content:center;align-items:center;min-height:45px;padding:10px 13px;background:#123d4c;color:#fff;border-radius:10px;text-align:center;text-decoration:none;font-weight:750}
+.premium-v2 #kontakt .contact-alternative-links a:focus-visible{outline:3px solid #a67e41;outline-offset:2px}
+.premium-v2 #kontakt .contact-delivery-note{display:block;max-width:70ch;line-height:1.5;color:#48616c}
+@media(max-width:620px){.premium-v2 #kontakt .contact-alternative-links{display:grid;grid-template-columns:minmax(0,1fr)}.premium-v2 #kontakt .contact-alternative-links a{width:100%}}

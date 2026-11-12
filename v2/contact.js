@@ -18,10 +18,11 @@
  const safeCreative=/^[a-z0-9_-]{1,40}$/.test(creative)?creative:"";
 
  for (const host of hosts) {
+  const compactHome=document.body.classList.contains("premium-v2");
   const form = document.createElement("form"); form.className = "contact-form";
   const heading = document.createElement("h3"); heading.textContent = automatic?"Zostaw kontakt — oddzwonimy lub odpiszemy":"Przygotuj zapytanie"; form.append(heading);
-  const benefits=document.createElement("div");benefits.className="contact-benefits";const benefitNodes=[];for(const item of ["Bez zobowiązania do zawarcia umowy","Bez wysyłania dokumentów na początek","Kontakt w wybranej formie"]){const el=document.createElement("span");el.textContent="✓ "+item;benefitNodes.push(el);benefits.append(el);}form.append(benefits);
-  const note = document.createElement("p"); note.textContent = automatic ? "Wyślij zgłoszenie bezpośrednio z tej strony. Nie podawaj PESEL, informacji medycznych ani danych dokumentów." : "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
+  const benefits=document.createElement("div");benefits.className="contact-benefits";const benefitNodes=[];for(const item of ["Bez zobowiązania do zawarcia umowy","Bez wysyłania dokumentów na początek","Kontakt w wybranej formie"]){const el=document.createElement("span");el.textContent="✓ "+item;benefitNodes.push(el);benefits.append(el);}form.append(benefits);if(compactHome)benefits.hidden=true;
+  const note = document.createElement("p"); note.textContent = automatic ? (compactHome?"Na początek wystarczą dane kontaktowe. Nie wpisuj PESEL ani szczegółowych danych medycznych.":"Wyślij zgłoszenie bezpośrednio z tej strony. Nie podawaj PESEL, informacji medycznych ani danych dokumentów.") : "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
   function field(labelText,type,required,limit,auto) {
    const id = "cf-"+(auto||type)+"-"+Math.random().toString(36).slice(2,8);
    const label=document.createElement("label"); label.htmlFor=id;label.textContent=labelText;
@@ -33,7 +34,7 @@
   const serviceFromLink=serviceAlias[(campaignParams.get("usluga")||"").toLowerCase()]||"";
   for(const name of services){const option=document.createElement("option");option.value=name;option.textContent=name==="Kredyt w PLN / SKD"?"Sankcja Kredytu Darmowego (SKD) — kredyt PLN":name;if(name===(current||serviceFromLink))option.selected=true;select.append(option);}
   form.append(label,select);
-  const people=document.createElement("p");people.className="contact-people";form.append(people);
+  const people=document.createElement("p");people.className="contact-people";if(compactHome)people.hidden=true;form.append(people);
   const updatePeople=()=>{
    people.replaceChildren();
    if(!select.value){people.textContent="Wybierz usługę, aby zobaczyć właściwy numer telefonu.";return;}
@@ -222,10 +223,10 @@
   const optionalDetails=document.createElement("details");optionalDetails.className="contact-optional-details";const optionalSummary=document.createElement("summary");optionalSummary.textContent="Dodatkowe preferencje kontaktu (opcjonalnie)";optionalDetails.append(optionalSummary,callbackLabel,callback,callbackHint);form.append(optionalDetails);
   const msgLabel=document.createElement("label");msgLabel.textContent="Treść wiadomości (opcjonalnie)";const msg=document.createElement("textarea");msg.id="cf-message-"+Math.random().toString(36).slice(2,8);msgLabel.htmlFor=msg.id;msg.rows=4;msg.maxLength=1200;msg.placeholder="Opisz sprawę ogólnie, bez numeru PESEL, informacji medycznych i danych dokumentów.";form.append(msgLabel,msg);
   // On the homepage show the minimum fields first. Optional case information stays accessible.
-  if(document.body.classList.contains("premium-v2")){
+  if(compactHome){
     const extra=document.createElement("details");extra.className="contact-case-details";
     const summary=document.createElement("summary");summary.textContent="Dodaj opis i szczegóły sprawy (opcjonalnie)";
-    extra.append(summary,stageWrap,damageWrap,city.previousElementSibling,city,methodLabel,method,optionalDetails,msgLabel,msg);
+    extra.append(summary,guideBox,stageWrap,damageWrap,city.previousElementSibling,city,methodLabel,method,optionalDetails,msgLabel,msg);
     if(stage.value && requestedStage)extra.open=true;
     form.append(extra);
   }

@@ -51,6 +51,7 @@ check("swiadczenie","/kampanie/swiadczenie-wspierajace.html","500 171 531");
 check("renty","/uslugi/renty-powypadkowe.html","500 171 531");
 check("skd","/kampanie/skd.html","796 441 345");
 assert.ok(post.value.includes("wojciech.obieglo@votum-ds.pl"),"SKD message must offer VOTUM contract mailbox");
+assert.ok(post.value.includes("pełną umowę")&&post.value.includes("numer telefonu"),"Default SKD social post must explain full contract and callback");
 assert.ok(!post.value.includes("500 171 531"),"SKD message must not send visitors to benefit hotline");
 check("przesyl","/uslugi/sluzebnosc-przesylu.html","796 441 345");
 values.channel.value="ulotka";

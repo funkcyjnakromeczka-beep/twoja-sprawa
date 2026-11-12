@@ -19,8 +19,9 @@ const segment=html.slice(beg,end);
 const links=[...segment.matchAll(/class="card primary-card[^"]*" href="([^"]+)"/g)].map(m=>m[1]);
 assert.equal(links.length,6,"Should show six distinct service cards");
 assert.equal(new Set(links).size,6,"Duplicated service links");
-for(const link of links){
- assert.ok(link.startsWith("/v2/uslugi/")&&link.endsWith(".html"),"Bad service path "+link);
+for(const [index,link] of links.entries()){
+ const valid=index===2?link==="/v2/kampanie/skd.html":link.startsWith("/v2/uslugi/")&&link.endsWith(".html");
+ assert.ok(valid,"Incorrect service destination "+link);
  await access(link.slice(1));
 }
 assert.ok(segment.indexOf("support-featured")<segment.indexOf("mining-featured")&&segment.indexOf("mining-featured")<segment.indexOf("skd-featured"),"Three flagship priorities must be WZON, mining, SKD");
@@ -29,7 +30,7 @@ const priorityNav=[...headerNav.matchAll(/class="nav-(support|mining|skd)-priori
 assert.deepEqual(priorityNav,["support","mining","skd"],"Main navigation must expose WZON, mining, SKD as the top three projects");
 assert.ok(headerNav.includes('class="nav-skd-priority" href="/v2/uslugi/kredyty-pln.html"'),"SKD navigation route missing");
 assert.ok(css.includes(".nav-skd-priority"),"SKD main navigation contrast styles missing");
-assert.ok(links[2].endsWith("/kredyty-pln.html")&&links[3].endsWith("/renty-powypadkowe.html"),"SKD must be the third featured card and precede rents");
+assert.ok(links[2]==="/v2/kampanie/skd.html"&&links[3].endsWith("/renty-powypadkowe.html"),"Third flagship SKD must lead to the shorter full-contract campaign before rents");
 assert.ok(segment.includes("Trzecia wyróżniona usługa • SKD")&&segment.includes("wojciech.obieglo@votum-ds.pl")&&segment.includes("numer telefonu"),"Homepage SKD lacks prominent contract and callback instructions");
 assert.ok(segment.includes("Sankcja Kredytu Darmowego")&&segment.includes("Pomoc frankowiczom"),"Financial areas not shown explicitly");
 assert.ok(html.includes("Trzy wyróżnione usługi:"),"Homepage description must name three featured services");
@@ -45,7 +46,7 @@ assert.ok(bar.includes('tel:+48796441345')&&bar.includes('tel:+48500171531'),"Bo
 assert.ok(bar.includes('class="mobile-form-link" href="#kontakt"'),"Missing direct form shortcut");
 const mobileTop=html.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0]||"";
 assert.deepEqual([...mobileTop.matchAll(/class="mobile-(support|mining|skd)-priority"/g)].map(m=>m[1]),["support","mining","skd"],"Mobile quick links must expose all three flagship services in order");
-assert.ok(mobileTop.includes('href="/v2/uslugi/kredyty-pln.html"'),"Mobile SKD service destination missing");
+assert.ok(mobileTop.includes('href="/v2/kampanie/skd.html"'),"Mobile SKD quick path should lead to direct agreement and callback actions");
 assert.equal((bar.match(/<a\b/g)||[]).length,3,"Mobile contact bar must have exactly three actions");
 assert.ok(css.includes('grid-template-columns:repeat(3,minmax(0,1fr))'),"Three actions are not fitted to a narrow screen");
 assert.ok(css.includes(':focus-within')&&css.includes('.chat-assistant.is-open'),"Sticky contact bar can cover an active form or chat");

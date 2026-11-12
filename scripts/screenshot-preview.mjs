@@ -264,7 +264,7 @@ try{
  console.log("MOBILE_SERVICE_DENSITY_OK",JSON.stringify(cardDensity));
  // SKD must remain the third distinguished service and retain its full mobile summary.
  const ordered=await serviceDensityPage.locator("#uslugi .primary-services>.primary-card").evaluateAll(nodes=>nodes.map(node=>({href:node.getAttribute("href"),featured:node.classList.contains("skd-featured")})));
- if(!ordered[2]?.featured||!ordered[2].href.includes("kredyty-pln"))throw Error("SKD lost third featured card position: "+JSON.stringify(ordered));
+ if(!ordered[2]?.featured||!ordered[2].href.includes("/kampanie/skd.html"))throw Error("SKD third featured card must lead straight to the contact campaign: "+JSON.stringify(ordered));
  if(cardDensity[2].height<215)throw Error("SKD promoted card is too compact to display its full CTA");
 
  await serviceDensityPage.close();
@@ -619,6 +619,19 @@ try{
  if(!navOverflow.skd||navOverflow.content>navOverflow.width+2)throw Error("Desktop SKD navigation causes overflow: "+JSON.stringify(navOverflow));
  await navDesktop.close();
 
+
+ // Two prominent home entry points should lead to SKD contact without the long article.
+ const skdQuickEntry=await browser.newPage({viewport:{width:390,height:844}});
+ await skdQuickEntry.goto(origin+"/?utm_source=facebook&utm_medium=social&utm_campaign=fb_skd",{waitUntil:"domcontentloaded"});
+ await skdQuickEntry.locator(".mobile-quick-nav .mobile-skd-priority").click();
+ if(!new URL(skdQuickEntry.url()).pathname.includes("/kampanie/skd.html"))throw Error("Mobile SKD entry must open dedicated campaign");
+ if(new URL(skdQuickEntry.url()).searchParams.get("utm_source")!=="facebook")throw Error("SKD quick navigation lost campaign attribution");
+ if(!await skdQuickEntry.locator('.contact-form input[type="tel"]').evaluate(el=>el.required))throw Error("SKD quick navigation did not require callback");
+ await skdQuickEntry.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ await skdQuickEntry.locator("#uslugi .skd-featured").click();
+ if(!new URL(skdQuickEntry.url()).pathname.includes("/kampanie/skd.html"))throw Error("Third SKD card should open dedicated campaign");
+ console.log("SKD_HOME_FASTPATH_OK",JSON.stringify({mobile:true,thirdCard:true,utmPreserved:true,phoneRequired:true,leadsSent:0}));
+ await skdQuickEntry.close();
 
  // Campaign SKD: direct agreement email and phone-required callback, no external form submission.
  const skdCampaign=await browser.newPage({viewport:{width:390,height:844}});

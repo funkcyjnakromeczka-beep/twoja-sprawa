@@ -33,7 +33,7 @@
     skd: {
       path: "/kampanie/skd.html",
       title: "Kredyty PLN — sankcja kredytu darmowego",
-      text: "Masz kredyt konsumencki w PLN? Warunki umowy i rozliczenie kosztów można poddać indywidualnej analizie pod kątem sankcji kredytu darmowego. Nie każda umowa daje podstawę do roszczenia. Skontaktuj się, aby poznać możliwe następne kroki."
+      text: "Masz umowę kredytu konsumenckiego w PLN? Możesz przesłać pełną umowę do indywidualnej analizy pod kątem sankcji kredytu darmowego. Wyślij dokument na wojciech.obieglo@votum-ds.pl i podaj numer telefonu do kontaktu. Nie każda umowa daje podstawę do zastosowania SKD."
     },
     przesyl: {
       path: "/uslugi/sluzebnosc-przesylu.html",

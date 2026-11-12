@@ -44,3 +44,6 @@
 .premium-subpage.theme-contact .contact-specialist-more{display:flex;flex-wrap:wrap;gap:8px 16px;width:100%;padding-top:10px;border-top:1px solid rgba(255,255,255,.24)}
 .premium-subpage.theme-contact .contact-specialist-more a{color:#f6e5c7;text-decoration:underline;text-underline-offset:3px;font-size:.87rem;font-weight:650}
 .premium-subpage.theme-contact .contact-specialist-more a:focus-visible{outline:3px solid #f6d09a;outline-offset:3px}
+
+/* Wyraźny, spokojny drogowskaz do kontaktu tematycznego. */
+.premium-subpage.theme-contact .contact-hero-hint{margin:15px 0 0;max-width:72ch;color:#425867;font-size:.91rem;line-height:1.65}

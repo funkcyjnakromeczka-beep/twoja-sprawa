@@ -231,6 +231,13 @@ try{
  if(!await contactHero.locator('#formularz [data-contact-form]').count())throw Error("Contact form missing after hero CTA");
  console.log("CONTACT_HERO_CTA_OK");
  await contactHero.close();
+ // Contact hero must explain the service-specific alternatives.
+ const contactHint=await browser.newPage({viewport:{width:390,height:844}});
+ await contactHint.goto(origin+"/kontakt.html",{waitUntil:"domcontentloaded"});
+ if(!await contactHint.locator(".contact-hero-hint").isVisible())throw Error("Contact hero routing hint missing");
+ if(await contactHint.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2))throw Error("Contact page mobile overflow after routing hint");
+ console.log("CONTACT_HERO_HINT_OK");
+ await contactHint.close();
  // New homepage information architecture: services first, real disclosure after CTA.
  const clarityMobile=await browser.newPage({viewport:{width:390,height:844}});
  await clarityMobile.goto(origin+"/",{waitUntil:"domcontentloaded"});

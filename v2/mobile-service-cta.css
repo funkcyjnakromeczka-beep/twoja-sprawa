@@ -1,4 +1,4 @@
-/* Mobilny kontakt tylko na dwóch flagowych podstronach; brak pop-upu i cookies. */
+/* Mobilny kontakt na kluczowych podstronach; bez pop-upu i cookies. */
 .mobile-service-cta{display:none}
 @media(max-width:650px){
  body:has(.mobile-service-cta){padding-bottom:calc(88px + env(safe-area-inset-bottom))}

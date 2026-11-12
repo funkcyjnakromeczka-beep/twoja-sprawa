@@ -32,6 +32,7 @@ try{
   ["generator-linkow-telefon","/narzedzia/linki-kampanii.html",390,844],
   ["usluga-szkody-telefon","/uslugi/szkody-gornicze.html",390,844],
   ["usluga-swiadczenie-telefon","/uslugi/swiadczenie-wspierajace.html",390,844],
+  ["usluga-renty-telefon","/uslugi/renty-powypadkowe.html",390,844],
   ["usluga-frankowicze-telefon","/uslugi/kredyty-frankowe.html",390,844],
   ["usluga-frankowicze-desktop","/uslugi/kredyty-frankowe.html",1440,900],
   ["checklista-frankowicze-telefon","/poradniki/frankowicze-lista-kontrolna.html",390,844],
@@ -652,6 +653,16 @@ try{
  if(!new URL(skdQuickEntry.url()).pathname.includes("/kampanie/skd.html"))throw Error("Third SKD card should open dedicated campaign");
  console.log("SKD_HOME_FASTPATH_OK",JSON.stringify({mobile:true,thirdCard:true,utmPreserved:true,phoneRequired:true,leadsSent:0}));
  await skdQuickEntry.close();
+
+ // Rent page conversion and both profile pages must route to the assigned advisor.
+ const rentPage=await browser.newPage({viewport:{width:390,height:844}});
+ await rentPage.goto(origin+"/uslugi/renty-powypadkowe.html",{waitUntil:"domcontentloaded"});
+ if(await rentPage.locator('a[href="tel:+48796441345"]').count())throw Error("Rent page still directs callers to mining number");
+ if(!await rentPage.locator('.mobile-service-cta .mobile-service-call[href="tel:+48500171531"]').isVisible())throw Error("Mobile rent contact bar must show Paulina");
+ if(await rentPage.locator('.contact-form select[id^="cf-service-"]').inputValue()!=="Renty powypadkowe")throw Error("Rent form must preselect assigned service");
+ if(!await rentPage.locator('a[href^="mailto:paulina.chandrala@votum-ds.pl"]').count())throw Error("Rent CTA must offer Paulina's address");
+ console.log("RENT_ADVISOR_UI_OK",JSON.stringify({phone:"500 171 531",person:"Paulina",formSelected:true,realLeadsSent:0}));
+ await rentPage.close();
 
  // Generated marketing links should be the same short canonical addresses printed on flyers.
  const generatorPage=await browser.newPage({viewport:{width:390,height:844}});

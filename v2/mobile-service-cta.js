@@ -1,10 +1,11 @@
-/* Dostępny, nieśledzący pasek kontaktu dla dwóch głównych usług na telefonie. */
+/* Dostępny, nieśledzący pasek kontaktu na stronach szkód, świadczeń i rent. */
 (()=>{
  "use strict";
  const variant=document.currentScript?.getAttribute("data-service");
  const services={
   szkody:{phone:"+48796441345",label:"Zadzwoń do Wojciecha",number:"796 441 345"},
-  swiadczenie:{phone:"+48500171531",label:"Zadzwoń do Pauliny",number:"500 171 531"}
+  swiadczenie:{phone:"+48500171531",label:"Zadzwoń do Pauliny",number:"500 171 531"},
+  renty:{phone:"+48500171531",label:"Zadzwoń do Pauliny",number:"500 171 531"}
  };
  const service=services[variant];
  if(!service||!document.querySelector("#formularz [data-contact-form]"))return;

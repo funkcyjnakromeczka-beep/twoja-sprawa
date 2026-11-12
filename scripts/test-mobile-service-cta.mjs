@@ -11,7 +11,7 @@ class Element{
  setAttribute(k,v){this.attrs[k]=v;}
  contains(node){return node===this||this.children.some(child=>child.contains?.(node));}
 }
-for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swiadczenie","+48500171531","Pauliny"]]){
+for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swiadczenie","+48500171531","Pauliny"],["renty","+48500171531","Pauliny"]]){
  const documentEvents={};
  const body=new Element("body"),form=new Element("form"),target=new Element("section");
  target.append(form);
@@ -52,9 +52,23 @@ assert.ok(css.includes("@media(max-width:650px)")&&css.includes("env(safe-area-i
 assert.ok(css.includes(".mobile-service-cta[hidden]{display:none!important}"));
 assert.ok(css.includes("body:has(.chat-assistant.is-open) .mobile-service-cta"));
 assert.ok(!/fetch\s*\(|localStorage|sessionStorage|sendBeacon/.test(js));
-for(const [path,kind] of [["v2/uslugi/szkody-gornicze.html","szkody"],["v2/uslugi/swiadczenie-wspierajace.html","swiadczenie"]]){
+for(const [path,kind] of [["v2/uslugi/szkody-gornicze.html","szkody"],["v2/uslugi/swiadczenie-wspierajace.html","swiadczenie"],["v2/uslugi/renty-powypadkowe.html","renty"]]){
  const h=await readFile(path,"utf8");
  assert.ok(h.includes('src="/v2/mobile-service-cta.js" data-service="'+kind+'"'));
  assert.ok(h.includes('href="/v2/mobile-service-cta.css"'));
 }
-console.log("MOBILE_SERVICE_CTA_OK: 2 numery, dopasowanie usługi, formularz, ukrywanie, chatbot, brak śledzenia");
+console.log("MOBILE_SERVICE_CTA_OK: 3 usługi, 2 właściwe numery, formularz, ukrywanie, chatbot, brak śledzenia");
+
+// Public pages must not misdirect SKD to support and rent queries to mining contacts.
+const about=await readFile("v2/o-nas.html","utf8");
+const contact=await readFile("v2/kontakt.html","utf8");
+const rents=await readFile("v2/uslugi/renty-powypadkowe.html","utf8");
+for(const page of [about,contact]){
+ assert.ok(page.includes("wojciech.obieglo@votum-ds.pl")&&page.includes("paulina.chandrala@votum-ds.pl"),"Both direct advisor addresses missing");
+}
+const person=about.slice(about.indexOf('<article id="paulina"'),about.indexOf('</article>',about.indexOf('<article id="paulina"')));
+assert.ok(!person.includes("SKD")&&!person.includes("PLN"),"About page assigned SKD to the support adviser");
+const paulina=contact.slice(contact.indexOf('data-persona="support"'),contact.indexOf('</article>',contact.indexOf('data-persona="support"')));
+assert.ok(!paulina.includes("SKD")&&!paulina.includes("PLN"),"Contact page assigned SKD to the support adviser");
+assert.ok(rents.includes('href="tel:+48500171531"')&&!rents.includes('href="tel:+48796441345"'),"Rent conversion CTAs must use Paulina's number");
+assert.ok(rents.includes('href="mailto:paulina.chandrala@votum-ds.pl?subject='),"Rent email must go to Paulina");

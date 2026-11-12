@@ -29,3 +29,8 @@
 @media(max-width:920px){.premium-subpage.theme-contact .contact-specialists-grid{grid-template-columns:1fr}.premium-subpage.theme-contact .contact-specialist{max-width:770px}}
 @media(max-width:530px){.premium-subpage.theme-contact .contact-specialist{grid-template-columns:92px minmax(0,1fr);gap:12px;padding:14px}.premium-subpage.theme-contact .contact-specialist h3{font-size:1.12rem}.premium-subpage.theme-contact .contact-specialist p{font-size:.86rem}.premium-subpage.theme-contact .contact-specialist-tag{font-size:.65rem}.premium-subpage.theme-contact .contact-specialist .btn{width:100%;font-size:.84rem}.premium-subpage.theme-contact .contact-process{grid-template-columns:1fr}}
 @media(max-width:760px) and (min-width:531px){.premium-subpage.theme-contact .contact-process{grid-template-columns:1fr}}
+
+/* Direct VOTUM mailbox for the appropriate project contact, readable on narrow phones. */
+.premium-subpage.theme-contact .contact-specialist-email{display:inline-block;max-width:100%;font-size:clamp(.76rem,1.65vw,.89rem);line-height:1.5;font-weight:750;color:#ffdfae;overflow-wrap:anywhere;text-underline-offset:3px;padding:2px 0 8px}
+.premium-subpage.theme-contact .contact-specialist[data-persona="support"] .contact-specialist-email{color:#c7efd4}
+.premium-subpage.theme-contact .contact-specialist-email:focus-visible{outline:3px solid #fff;outline-offset:2px}

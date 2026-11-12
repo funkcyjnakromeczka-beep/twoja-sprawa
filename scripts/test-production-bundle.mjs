@@ -9,6 +9,9 @@ assert.ok(home.includes("data-share-page")&&home.includes("data-share-feedback")
 const robots=await read("robots.txt");
 const sitemap=await read("sitemap.xml");
 const headers=await read("_headers");
+const privacyDisclosure=await read("polityka-prywatnosci.html");
+assert.ok(privacyDisclosure.includes('href="https://web3forms.com/dpa"')&&privacyDisclosure.includes("poza Europejskim Obszarem Gospodarczym")&&privacyDisclosure.includes("maksymalnie przez trzy lata"),"Privacy page must link the current Web3Forms DPA and explain international processing and operator retention");
+
 assert.ok(robots.includes("Allow: /")&&!robots.includes("Disallow: /"),"production robots not enabled");
 assert.ok(robots.includes("Sitemap: "+origin+"/sitemap.xml"),"production sitemap not announced");
 assert.ok(sitemap.includes("<urlset")&&sitemap.includes("<loc>"+origin+"/</loc>"),"sitemap invalid");

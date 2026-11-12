@@ -163,8 +163,9 @@ try {
  const end=home.indexOf('id="dobierz-pomoc"',start);
  const part=start>=0&&end>start?home.slice(start,end):"";
  if(!part.includes('class="grid primary-services"')||(part.match(/class="card primary-card/g)||[]).length!==6)errors.push("Service cards: expected exactly six");
- for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","kredyty-pln","sluzebnosc-przesylu"])
+ for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","sluzebnosc-przesylu"])
   if(!part.includes("/v2/uslugi/"+slug+".html"))errors.push("Service card link missing: "+slug);
+ if(!part.includes('class="card primary-card skd-featured" href="/v2/kampanie/skd.html"')) errors.push("SKD third flagship must lead to dedicated agreement and callback landing");
  if(!part.includes("support-featured")||!part.includes("mining-featured"))errors.push("Service cards: dual priority missing");
  if(!css.includes(".premium-v2 #uslugi .primary-services")||!css.includes("DUAL-PRIORITY-CHAT-20261110"))errors.push("Service card styling missing");
 } catch(e){errors.push("Service card audit failed: "+e.message);}

@@ -16,9 +16,10 @@ body.leaflet-start{margin:0;background:var(--paper);color:var(--ink);font:400 16
 .leaflet-eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#795323;font-weight:800}
 .leaflet-hero h1{font:750 clamp(2rem,5vw,3.6rem)/1.13 Georgia,serif;letter-spacing:-.035em;color:var(--navy);margin:12px auto}
 .leaflet-hero p{max-width:64ch;margin:0 auto;color:#3c515d;line-height:1.68}
-.leaflet-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2vw,24px)}
+.leaflet-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,24px)}
 .leaflet-option{display:flex;flex-direction:column;position:relative;overflow:hidden;border:2px solid #c7a678;border-radius:22px;padding:clamp(20px,3vw,34px);min-width:0;min-height:360px;background:linear-gradient(145deg,#0d3045,#102839 78%);color:#fff;box-shadow:0 16px 44px rgba(9,36,51,.1)}
 .leaflet-option-support{background:linear-gradient(145deg,#154b42,#092f31 80%);border-color:#7bbaa5}
+.leaflet-option-skd{background:linear-gradient(145deg,#243d58,#14283e 80%);border-color:#d5b583}
 .leaflet-option .leaflet-label{z-index:1;align-self:flex-start;font-size:.78rem;letter-spacing:.045em;text-transform:uppercase;color:#f3d7a9;font-weight:750}
 .leaflet-option-support .leaflet-label{color:#bdf1da}
 .leaflet-symbol{position:absolute;top:17px;right:24px;font-size:4rem;opacity:.13;line-height:1}
@@ -47,6 +48,7 @@ body.leaflet-start{margin:0;background:var(--paper);color:var(--ink);font:400 16
 .leaflet-privacy{font-size:.87rem;line-height:1.65;color:#4c5960;border-top:1px solid #dcd7ca;padding-top:17px;max-width:91ch}
 .leaflet-footer{padding:18px 20px;background:#0c2838;color:#e7e7df;font-size:.78rem;text-align:center}
 .leaflet-footer a{color:#ffe2ab}
+@media(max-width:1100px) and (min-width:731px){.leaflet-options{grid-template-columns:repeat(2,minmax(0,1fr))}.leaflet-option-skd{grid-column:1/-1;min-height:260px}}
 @media(max-width:730px){
  .leaflet-header{padding:15px 16px}
  .leaflet-header-note{font-size:.68rem;max-width:170px}

@@ -652,6 +652,19 @@ try{
  }
 
 
+ // Printed QR entry must expose the three flagship services without duplicates.
+ const leaflet=await browser.newPage({viewport:{width:390,height:844}});
+ await leaflet.goto(origin+"/start.html",{waitUntil:"domcontentloaded"});
+ const leafletTitles=await leaflet.locator(".leaflet-option h2").allTextContents();
+ if(JSON.stringify(leafletTitles)!==JSON.stringify(["Świadczenie wspierające","Szkody górnicze","Sankcja Kredytu Darmowego"]))throw Error("Leaflet flagship order incorrect: "+JSON.stringify(leafletTitles));
+ const leafletSKD=leaflet.locator(".leaflet-option-skd");
+ if(!await leafletSKD.locator('a[href*="kampanie/skd.html"]').count())throw Error("Leaflet SKD callback route missing");
+ if(!(await leafletSKD.locator('a[href^="mailto:"]').getAttribute("href"))?.includes("wojciech.obieglo@votum-ds.pl"))throw Error("Leaflet SKD email missing");
+ if(await leaflet.locator(".leaflet-other-links a").filter({hasText:"Sankcja Kredytu Darmowego"}).count())throw Error("Duplicate SKD link in leaflet secondary services");
+ if(await leaflet.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2))throw Error("Leaflet mobile overflow");
+ console.log("LEAFLET_THREE_FLAGSHIPS_OK",JSON.stringify({titles:leafletTitles,skdEmail:true,skdCallback:true}));
+ await leaflet.close();
+
  // A mistyped link should recover to all three flagship services in the
  // correct order, or to search, with no mobile horizontal overflow.
  const notFound=await browser.newPage({viewport:{width:390,height:844}});

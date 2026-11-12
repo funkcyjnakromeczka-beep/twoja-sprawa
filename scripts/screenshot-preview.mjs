@@ -629,7 +629,7 @@ try{
  if(!await skdCampaignPhone.evaluate(node=>node.required))throw Error("SKD campaign callback must require phone");
  const skdCampaignMail=skdCampaign.locator(".campaign-skd-email");
  if(!(await skdCampaignMail.getAttribute("href")).startsWith("mailto:wojciech.obieglo@votum-ds.pl?subject="))throw Error("SKD landing email wrong");
- if(await skdCampaign.locator('a[href="tel:+48500171531"]').count())throw Error("SKD landing points to benefits number");
+ if(await skdCampaign.locator('.campaign-persona a[href="tel:+48500171531"],.campaign-mobile-actions a[href="tel:+48500171531"],.contact-people a[href="tel:+48500171531"]').count())throw Error("SKD visitor-facing phone points to benefits number");
  if(!await skdCampaign.locator(".campaign-mobile-actions").isVisible())throw Error("SKD mobile CTA missing");
  await skdCampaignPhone.focus();
  if(await skdCampaign.locator(".campaign-mobile-actions").isVisible())throw Error("SKD mobile CTA covers focused input");

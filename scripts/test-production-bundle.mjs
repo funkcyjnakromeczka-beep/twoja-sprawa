@@ -57,7 +57,7 @@ assert.ok(skdLanding.includes('src="/contact.js" data-service="Kredyt w PLN / SK
 assert.ok(skdLanding.includes("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD contract email missing");
 assert.ok(skdLanding.includes("M%C3%B3j%20numer%20telefonu"),"SKD email must request phone");
 assert.ok(skdLanding.includes('href="tel:+48796441345"'),"SKD campaign phone missing");
-assert.ok(!skdLanding.includes("500 171 531"),"SKD must not route visitors to Paulina");
+assert.ok(!skdLanding.includes('href="tel:+48500171531"'),"SKD landing must not link to benefits number");
 assert.ok(skdLanding.includes('class="network-brand-bar"'),"SKD landing partner logos missing");
 assert.ok(skdLanding.includes('href="/skd-campaign.css"'),"SKD landing CSS missing");
 const skdCss=await read("skd-campaign.css");

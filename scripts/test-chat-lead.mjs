@@ -82,6 +82,7 @@ const skdMail=visit(result,n=>n.className==="chat-reply-email");
 assert.ok(skdMail,"SKD chatbot should offer direct contract email");
 assert.ok(skdMail.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD email must target Wojciech");
 assert.ok(decodeURIComponent(skdMail.href).includes("Mój numer telefonu: [wpisz numer]"),"SKD email must request callback phone");
+assert.ok(skdMail.href.includes("%0A"),"SKD email should contain real line breaks, not a literal backslash-n");
 assert.ok(decodeURIComponent(skdMail.href).includes("umowę dołączę do wiadomości"),"SKD email must ask for contract attachment");
 const skdForm=visit(result,n=>n.className==="chat-reply-contact");
 assert.equal(new URL(skdForm.href,origin).searchParams.get("usluga"),"skd","SKD form must retain service alias");

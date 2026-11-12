@@ -161,7 +161,7 @@
     const checklist=mk("a","chat-reply-checklist","Lista kroków przed rozmową");checklist.href=base+"poradniki/"+topic.checklist;
     if(topic.key==="skd"){
       const mail=mk("a","chat-reply-email","Wyślij umowę do analizy SKD e-mailem ↗");
-      mail.href="mailto:wojciech.obieglo@votum-ds.pl?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+"&body="+encodeURIComponent("Dzień dobry,\\nProszę o wstępną analizę załączonej umowy kredytowej pod kątem SKD.\\nMój numer telefonu: [wpisz numer]\\nPełną umowę dołączę do wiadomości jako załącznik.");
+      mail.href="mailto:wojciech.obieglo@votum-ds.pl?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+"&body="+encodeURIComponent("Dzień dobry,\nProszę o wstępną analizę załączonej umowy kredytowej pod kątem SKD.\nMój numer telefonu: [wpisz numer]\nPełną umowę dołączę do wiadomości jako załącznik.");
       links.append(mail);
     }
     links.append(form,details,checklist);

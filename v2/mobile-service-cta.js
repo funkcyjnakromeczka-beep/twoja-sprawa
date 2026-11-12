@@ -40,7 +40,7 @@
  }
  // Hide while the contact form has keyboard focus, including mobile keyboards.
  document.addEventListener("focusin",event=>{
-  if(target?.contains(event.target))syncVisibility();
+  if(target?.contains(event.target))nav.hidden=true;
  });
  document.addEventListener("focusout",event=>{
   if(!target?.contains(event.target))return;

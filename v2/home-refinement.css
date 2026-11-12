@@ -77,3 +77,20 @@
 .premium-v2 .skd-direct-contact strong{color:#f3d6a3}
 .premium-v2 .skd-direct-contact a{color:#fff;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere;font-weight:700}
 .premium-v2 .skd-direct-contact a:focus-visible{outline:3px solid #f3d6a3;outline-offset:3px}
+
+/* 2026-11: poprawki czytelności, dotykowej nawigacji i mobilnego formularza. */
+.premium-v2 .agency-header-mark{padding:3px 5px;flex-basis:168px;width:clamp(116px,13vw,168px);height:64px}
+.premium-v2 .agency-header-mark img{object-fit:contain;object-position:center}
+.premium-v2 .primary-services .primary-card{position:relative;min-height:210px;transition:transform .18s ease,box-shadow .18s ease}
+.premium-v2 .primary-services .primary-card:hover{transform:translateY(-3px)}
+.premium-v2 .primary-services .primary-card:focus-visible,.premium-v2 .premium-quick-lead-links a:focus-visible{outline:3px solid #b7833e;outline-offset:4px}
+.premium-v2 .primary-services .primary-card:nth-child(3){border:2px solid #bb9457;box-shadow:0 9px 24px rgba(11,38,53,.12)}
+.premium-v2 .premium-quick-lead-links a{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+@media(max-width:700px){
+ .premium-v2 .agency-header-marks{gap:7px;flex-wrap:nowrap;width:100%}
+ .premium-v2 .agency-header-mark{flex:1 1 0;min-width:0;width:auto;height:62px;padding:3px}
+ .premium-v2 .primary-services .primary-card{min-height:0}
+ .premium-v2 .skd-direct-contact{padding:17px;margin:18px 0;line-height:1.65}
+ .premium-v2 .hero-primary-ctas .btn{min-height:48px}
+}
+@media(prefers-reduced-motion:reduce){.premium-v2 .primary-services .primary-card{transition:none}.premium-v2 .primary-services .primary-card:hover{transform:none}}

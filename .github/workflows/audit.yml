@@ -18,6 +18,7 @@ jobs:
           node-version: '22'
       - name: Sprawdź składnię JavaScript
         run: |
+          node --check v2/skd-copy-email.js
           node --check v2/contact.js
           node --check v2/mobile-service-cta.js
           node --check scripts/test-mobile-service-cta.mjs

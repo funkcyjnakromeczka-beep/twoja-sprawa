@@ -104,3 +104,15 @@
  }
 }
 @media print{.premium-subpage.theme-skd .skd-mobile-quickbar{display:none!important}}
+
+/* Optional copy action for visitors without a configured mailto application. */
+.premium-subpage.theme-skd .skd-copy-email[hidden]{display:none!important}
+.premium-subpage.theme-skd .skd-copy-email:not([hidden]){
+ display:inline-flex;align-items:center;justify-content:center;min-height:52px;
+ padding:12px 19px;border:2px solid #f0d7a4;border-radius:12px;
+ background:transparent;color:#fff8e9;font:800 1rem/1.4 inherit;cursor:pointer;
+}
+.premium-subpage.theme-skd .skd-copy-email:hover{background:rgba(255,255,255,.12)}
+.premium-subpage.theme-skd .skd-copy-email:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.premium-subpage.theme-skd .skd-copy-status:not(:empty){margin:0 0 12px;font-size:.88rem;color:#ffedc4;line-height:1.5}
+@media(max-width:580px){.premium-subpage.theme-skd .skd-copy-email:not([hidden]){width:100%}}

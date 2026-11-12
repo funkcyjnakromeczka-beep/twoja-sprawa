@@ -89,6 +89,9 @@ assert.ok(skdPage.includes("bez zasłaniania danych")&&skdCSS.includes(".skd-doc
 assert.ok(skdPage.includes('class="skd-mobile-quickbar"')&&skdPage.includes('class="skd-mobile-phone" href="#formularz"'),"SKD mobile quick bar must provide direct callback form");
 assert.ok(skdPage.includes('class="skd-mobile-mail" href="mailto:wojciech.obieglo@votum-ds.pl?subject='),"SKD mobile quick bar must link to Wojciech agreement email");
 assert.equal((skdPage.match(/class="skd-mobile-quickbar"/g)||[]).length,1,"SKD mobile quick bar should be present only once");
+const skdCopyJS=await readFile("v2/skd-copy-email.js","utf8");
+assert.ok(skdPage.includes('data-skd-copy-email hidden')&&skdPage.includes('data-skd-copy-status role="status"'),"SKD copy email action and accessible status must be present");
+assert.ok(skdPage.includes('src="/v2/skd-copy-email.js"')&&skdCopyJS.includes("navigator.clipboard?.writeText")&&skdCopyJS.includes("wojciech.obieglo@votum-ds.pl"),"SKD copy action must be progressive and target the exact VOTUM email address");
 assert.ok(skdCSS.includes("@media(max-width:650px)")&&skdCSS.includes(".skd-mobile-quickbar")&&skdCSS.includes("env(safe-area-inset-bottom)"),"Mobile quickbar must honor phone safe area");
 assert.ok(skdCSS.includes("body.premium-subpage.theme-skd .chat-assistant:not(.is-open)")&&skdCSS.includes(".contact-form input:focus"),"SKD chat offset must override generic subpage :not(.is-open) CSS and avoid keyboard collisions");
 

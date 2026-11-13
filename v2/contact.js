@@ -3,6 +3,8 @@
  "use strict";
  const services = ["Szkody górnicze","Świadczenie wspierające","Renty powypadkowe","Kredyt w PLN / SKD","Kredyty frankowe CHF","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
  const current = document.currentScript?.getAttribute("data-service") || "";
+ const localCity = document.currentScript?.getAttribute("data-locality") || "";
+ const suggestedCity = ["Lubin","Polkowice"].includes(localCity) ? localCity : "";
  const hosts = document.querySelectorAll("[data-contact-form]");
  const accessKey="80a28b90-b5ac-406e-8512-3d3c1615b73c"; // Publiczny identyfikator formularza Web3Forms, nie hasło.
  const automatic=/^[a-f0-9-]{30,40}$/i.test(accessKey);
@@ -148,6 +150,8 @@
   const checkName=()=>{const valid=Boolean(name.value.trim());name.setCustomValidity(valid?"":"Wpisz imię, abyśmy mogli się do Ciebie zwrócić.");return valid;};
   name.addEventListener("input",()=>{if(name.value.trim())name.setCustomValidity("");});
   const city=field("Miejscowość (opcjonalnie)","text",false,100,"address-level2");
+  // Podstrona lokalna sugeruje miasto, ale mieszkaniec może je dowolnie zmienić.
+  if(select.value==="Szkody górnicze" && suggestedCity){city.value=suggestedCity;city.defaultValue=suggestedCity;}
   // Szybkie podanie miasta tylko dla szkód górniczych; inne miejscowości pozostają w zwykłym polu.
   const cityQuick=document.createElement("div");cityQuick.className="contact-city-quick";
   cityQuick.setAttribute("role","group");cityQuick.setAttribute("aria-label","Szybki wybór miejscowości dla szkód górniczych");

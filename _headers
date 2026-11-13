@@ -1,0 +1,7 @@
+# Cloudflare Pages: zasady bezpieczeństwa dla stron statycznych.
+# Nie ustawiamy własnego Cache-Control — Pages zarządza cache wdrożeń.
+# Ograniczony CSP nie blokuje istniejącego Web3Forms, inline JSON-LD ani zdjęć.
+/*
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()

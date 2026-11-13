@@ -527,3 +527,9 @@ h3{line-height:1.25}
 .contact-guide-box span{font-size:.91rem;color:#435d69}
 .contact-guide-box a{font-size:.91rem;font-weight:700;color:#76572d;text-decoration:underline;text-underline-offset:3px}
 .contact-guide-box a:focus-visible{outline:3px solid #b69760;outline-offset:3px}
+
+/* Statyczny kontakt awaryjny: zostaje na stronie, gdy JavaScript się nie wczyta.
+   contact.js zastępuje go działającym formularzem po poprawnym uruchomieniu. */
+.contact-load-fallback{margin:0;padding:17px 20px;border:1px solid #c7d8d6;border-left:4px solid #b39360;border-radius:11px;background:#fff;color:#17384b;font-size:1rem;line-height:1.65;overflow-wrap:anywhere}
+.contact-load-fallback a{color:#174b66;text-decoration:underline;text-underline-offset:3px;font-weight:800;overflow-wrap:anywhere}
+.contact-load-fallback a:focus-visible{outline:3px solid #b78c4b;outline-offset:3px}

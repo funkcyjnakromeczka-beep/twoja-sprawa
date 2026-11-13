@@ -1,39 +1,47 @@
 # Twoja Sprawa — SuccessTree OBIEGŁO WOJCIECH
 
-> Twoja Sprawa jest serwisem informacyjnym i kontaktowym SuccessTree OBIEGŁO WOJCIECH, przedstawiciela współpracującego z podmiotami Grupy VOTUM. SuccessTree nie jest kancelarią prawną ani oficjalną witryną VOTUM. Nie gwarantuje wyniku postępowania ani wypłaty świadczenia.
+> Publiczna witryna informacyjna i kontaktowa działalności SuccessTree OBIEGŁO WOJCIECH, współpracującej na podstawie umowy agencyjnej z podmiotami VOTUM. SuccessTree nie jest oficjalnym serwisem VOTUM ani kancelarią prawną. Każda sprawa wymaga indywidualnej analizy; wyniku, świadczenia i odszkodowania nie można zagwarantować.
 
-## Usługi główne
-- [Szkody górnicze — Lubin, Polkowice i okolice](https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze): pierwsze zgłoszenie, dokumentowanie pęknięć, elewacji, kostki brukowej, ogrodzeń oraz analiza możliwych dalszych kroków. Kontakt: Wojciech Obiegło, tel. +48 796 441 345.
-- [Świadczenie wspierające — cała Polska](https://twoja-sprawa.pages.dev/uslugi/swiadczenie-wspierajace): WZON, ZUS, analiza decyzji, punktacji i ewentualnych terminów. Kontakt: Paulina Chandrała, tel. +48 500 171 531.
+Witryna: https://twoja-sprawa.pages.dev/
+Język: polski.
+Główne obszary: Lubin, Polkowice i okolice (szkody górnicze); cała Polska (wybrane pozostałe usługi).
 
-## Pozostałe obszary
-- [Renty powypadkowe i waloryzacja](https://twoja-sprawa.pages.dev/uslugi/renty-powypadkowe.html)
-- [Sankcja Kredytu Darmowego (SKD) — kredyty konsumenckie PLN](https://twoja-sprawa.pages.dev/uslugi/kredyty-pln)
-- [Pomoc frankowiczom — analiza aktywnych i spłaconych kredytów CHF](https://twoja-sprawa.pages.dev/uslugi/kredyty-frankowe): odrębna od SKD analiza umów indeksowanych i denominowanych do franka szwajcarskiego, ugód i rozliczeń z bankiem. Wstępny kontakt: 796 441 345.
-- [Służebność przesyłu](https://twoja-sprawa.pages.dev/uslugi/sluzebnosc-przesylu.html)
+## Trzy wyróżnione usługi — w tej kolejności
 
-## Najczęstsze pytania i odpowiedzi
-- [Baza 24 pytań o szkody górnicze, świadczenie wspierające, renty, SKD, służebność przesyłu i kontakt](https://twoja-sprawa.pages.dev/faq): sześć kategorii, wyszukiwarka bez zbierania danych i bezpośrednie odnośniki do publicznych źródeł ZUS. Odpowiedzi nie zastępują indywidualnej analizy.
+1. [Szkody górnicze — Lubin, Polkowice i okolice](https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze) — analiza uszkodzeń nieruchomości, pęknięć ścian, elewacji, podjazdów i ogrodzeń, dokumentowanie i możliwe dalsze kroki. Kontakt: Wojciech Obiegło, tel. +48 796 441 345, e-mail wojciech.obieglo@votum-ds.pl. Sama lokalizacja ani widoczne pęknięcia nie dowodzą związku przyczynowego z górnictwem.
+2. [Świadczenie wspierające — WZON i ZUS](https://twoja-sprawa.pages.dev/uslugi/swiadczenie-wspierajace) — etap oceny potrzeby wsparcia, decyzje WZON, procedura ZUS, dokumenty i terminy. Kontakt: Paulina Chandrała, tel. +48 500 171 531, e-mail paulina.chandrala@votum-ds.pl. O świadczeniu decydują właściwe organy.
+3. [Sankcja Kredytu Darmowego (SKD) — kredyty konsumenckie PLN](https://twoja-sprawa.pages.dev/uslugi/kredyty-pln) — indywidualna analiza umowy pod kątem możliwych roszczeń. [Przesłanie umowy do analizy i pozostawienie telefonu](https://twoja-sprawa.pages.dev/kampanie/skd). Pełną umowę kredytową prześlij na wojciech.obieglo@votum-ds.pl i podaj numer telefonu. Nie każda umowa daje podstawę do zastosowania SKD.
 
-## Artykuły i praktyczne materiały
-- [Drobne pęknięcia ścian i kostka a szkody górnicze](https://twoja-sprawa.pages.dev/wiedza/drobne-pekniecia-szkody-gornicze.html)
-- [Świadczenie wspierające 2026: WZON i ZUS](https://twoja-sprawa.pages.dev/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html)
-- [Biblioteka poradników z wyszukiwarką i filtrami](https://twoja-sprawa.pages.dev/wiedza/): 10 artykułów o szkodach, WZON, ZUS, rentach, SKD i przesyle, z narzędziami powiększania tekstu i wydruku.
-- [Poradniki i listy kontrolne](https://twoja-sprawa.pages.dev/wiedza/)
+## Pozostałe usługi
 
-## Dokumenty dla frankowiczów
-- [Kredyt CHF — interaktywna lista dokumentów do analizy](https://twoja-sprawa.pages.dev/poradniki/frankowicze-lista-kontrolna): przygotowanie umowy, aneksów, historii spłat i ugód, bez przekazywania danych podczas zaznaczania.
+- [Renty powypadkowe i waloryzacja](https://twoja-sprawa.pages.dev/uslugi/renty-powypadkowe) — ocena roszczeń wobec ubezpieczycieli. Kontakt: +48 500 171 531.
+- [Kredyty frankowe CHF](https://twoja-sprawa.pages.dev/uslugi/kredyty-frankowe) — analiza aktywnych i spłaconych umów oraz możliwych rozliczeń lub ugód z bankiem. Odrębny obszar od SKD.
+- [Służebność przesyłu](https://twoja-sprawa.pages.dev/uslugi/sluzebnosc-przesylu) — analiza korzystania z działek przez urządzenia przesyłowe i dokumentów.
 
-## Bezpłatne narzędzia
-- [Plan pierwszych kroków — pięć usług](https://twoja-sprawa.pages.dev/plan-dzialania.html): prywatna checklista dokumentowania szkód górniczych, WZON/ZUS, rent powypadkowych, umów kredytu PLN oraz służebności przesyłu. Zaznaczanie kroków i wydruk działają lokalnie, bez logowania, bez przekazywania danych osobowych; narzędzie nie stanowi indywidualnej porady prawnej.
+## Lokalne informacje o szkodach górniczych
 
-## O nas i kontakt
-- [Osoby do kontaktu: Wojciech Obiegło i Paulina Chandrała](https://twoja-sprawa.pages.dev/o-nas.html)
-- [Kontakt](https://twoja-sprawa.pages.dev/kontakt.html)
-- [Informacje o prywatności](https://twoja-sprawa.pages.dev/polityka-prywatnosci.html)
-- E-mail: twojasprawa_votum@outlook.com
+- [Lubin — pęknięcia ścian i elewacji](https://twoja-sprawa.pages.dev/lokalnie/szkody-gornicze-lubin)
+- [Polkowice — kostka brukowa, ogrodzenia i budynki](https://twoja-sprawa.pages.dev/lokalnie/szkody-gornicze-polkowice)
+- [Poradnik: nawet drobne pęknięcia a szkody górnicze](https://twoja-sprawa.pages.dev/wiedza/drobne-pekniecia-szkody-gornicze)
 
-## Granice informacji
-Wszystkie usługi wymagają indywidualnej analizy. Sama lokalizacja na terenie górniczym nie dowodzi odpowiedzialności za pęknięcia. Samo orzeczenie o niepełnosprawności nie przesądza o prawie do świadczenia wspierającego. Dane medyczne i numery identyfikacyjne nie powinny być podawane w otwartym formularzu.
+## Wiedza i przydatne materiały
 
-Ten dokument pomaga czytelnikom i systemom automatycznym znaleźć właściwe strony. Możliwości wyszukiwania i powiększania tekstu działają lokalnie, bez cookies. Nie jest oficjalnym standardem pozycjonowania ani gwarancją uwzględnienia w odpowiedziach AI.
+- [FAQ — najczęstsze pytania o usługi](https://twoja-sprawa.pages.dev/faq)
+- [Świadczenie wspierające w 2026 roku — WZON i ZUS](https://twoja-sprawa.pages.dev/wiedza/swiadczenie-wspierajace-2026-wzon-zus)
+- [Biblioteka poradników](https://twoja-sprawa.pages.dev/wiedza/)
+- [Checklista dokumentów do kredytu frankowego](https://twoja-sprawa.pages.dev/poradniki/frankowicze-lista-kontrolna)
+- [Plan pierwszych kroków](https://twoja-sprawa.pages.dev/plan-dzialania)
+
+## Zespół, kontakt i zasady
+
+- [Informacje o zespole](https://twoja-sprawa.pages.dev/o-nas)
+- [Formularz kontaktowy](https://twoja-sprawa.pages.dev/kontakt)
+- [Informacje o prywatności](https://twoja-sprawa.pages.dev/polityka-prywatnosci)
+- Główny kontakt w sprawach szkód górniczych i SKD: Wojciech Obiegło — +48 796 441 345, wojciech.obieglo@votum-ds.pl.
+- Kontakt w sprawach świadczenia wspierającego i rent: Paulina Chandrała — +48 500 171 531, paulina.chandrala@votum-ds.pl.
+
+## Zastrzeżenia dotyczące treści
+
+Serwis ma charakter informacyjny; nie gwarantuje wyniku postępowania ani wysokości świadczeń. Dokumentów medycznych, numeru PESEL ani danych logowania nie należy wprowadzać do otwartego formularza. W sprawach SKD umowę można przesłać odrębnie pocztą elektroniczną na wskazany adres, z numerem telefonu do kontaktu.
+
+Ten dokument jest pomocniczym indeksem stron dla czytelników i systemów automatycznych. Format llms.txt nie jest oficjalnym standardem wyszukiwarek ani gwarancją widoczności w wynikach AI.

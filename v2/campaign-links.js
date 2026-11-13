@@ -39,8 +39,8 @@
       path: "/uslugi/sluzebnosc-przesylu.html",
       title: "Służebność przesyłu",
       text: "Na Twojej działce znajdują się słupy, linie lub inne urządzenia przesyłowe? Warto ustalić stan prawny nieruchomości oraz dokumentację dotyczącą urządzeń. Możesz zostawić kontakt do wstępnej analizy sytuacji. Samo istnienie urządzeń nie oznacza automatycznie prawa do wynagrodzenia."
-    }
-    ,franki: {
+    },
+    franki: {
       path: "/uslugi/kredyty-frankowe.html",
       title: "Kredyty frankowe CHF — analiza umowy",
       text: "Masz kredyt frankowy lub spłaciłeś już taką umowę? Możesz zapytać o analizę postanowień umowy, historii spłaty i możliwych rozliczeń z bankiem. Ocena indywidualnej sprawy zależy od treści umowy, dokumentacji i aktualnego stanu prawnego. Kontakt nie oznacza obietnicy wygranej ani określonej korzyści."

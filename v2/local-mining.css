@@ -1,0 +1,56 @@
+/* Twoja Sprawa — podstrony lokalne szkód górniczych. Bez bibliotek i zewnętrznych fontów. */
+.local-mining-page{margin:0;background:#f8f8f5;color:#122e3e;line-height:1.65;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.local-mining-page a{overflow-wrap:anywhere}
+.local-mining-page a:focus-visible,.local-mining-page summary:focus-visible{outline:3px solid #c79241;outline-offset:4px}
+.local-mining-page .local-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:12px clamp(18px,4vw,70px);background:#0b2535;color:#fff;border-bottom:1px solid #385263}
+.local-mining-page .local-brand{font-weight:850;text-decoration:none;letter-spacing:.025em;font-size:1.2rem}
+.local-mining-page .local-brand span{color:#e2c18e}
+.local-mining-page .local-nav{display:flex;flex-wrap:wrap;align-items:center;gap:15px}
+.local-mining-page .local-nav a{font-size:.95rem;color:#fff;text-decoration:none}
+.local-mining-page .local-nav a:hover{text-decoration:underline}
+.local-mining-page .local-nav .local-nav-cta{padding:10px 14px;background:#f1d7aa;border-radius:9px;color:#102b39;font-weight:750}
+.local-mining-page .local-partners{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:9px clamp(18px,4vw,70px);background:#fff;border-bottom:1px solid #d5e0df}
+.local-mining-page .local-partners>span{font-size:.83rem;font-weight:700;color:#4c6570}
+.local-mining-page .local-partners a{display:flex;align-items:center;justify-content:center;width:155px;height:64px;border:1px solid #dbe3e3;background:#fff;border-radius:10px;padding:4px}
+.local-mining-page .local-partners img{display:block;max-width:100%;width:100%;height:100%;object-fit:contain}
+.local-mining-page .local-hero{background:radial-gradient(circle at 95% 4%,rgba(225,192,128,.2),transparent 38%),linear-gradient(135deg,#09202f,#174c59);color:#fff;padding:clamp(40px,6vw,90px) clamp(18px,5vw,90px)}
+.local-mining-page .local-hero-inner{max-width:1120px;margin:auto}
+.local-mining-page .local-eyebrow{display:block;color:#f0cd95;font-size:.78rem;font-weight:850;letter-spacing:.13em;text-transform:uppercase}
+.local-mining-page .local-hero h1{color:#fff;max-width:900px;margin:13px 0 19px;font-size:clamp(2rem,4.8vw,3.75rem);line-height:1.14;letter-spacing:-.025em}
+.local-mining-page .local-hero p{max-width:760px;font-size:clamp(1.02rem,1.5vw,1.16rem);line-height:1.72;color:#e8f1ef}
+.local-mining-page .local-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:25px 0}
+.local-mining-page .local-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 18px;text-align:center;text-decoration:none;border-radius:10px;font-weight:800;line-height:1.35;background:#f1d4a2;color:#102c3b}
+.local-mining-page .local-actions a.local-secondary{background:transparent;color:#fff;border:1px solid #b6cbcf}
+.local-mining-page .local-hero .local-disclaimer{display:block;color:#d6e4e6;font-size:.83rem;max-width:800px}
+.local-mining-page .local-container{width:min(1120px,calc(100% - 36px));margin:0 auto}
+.local-mining-page .local-section{padding:clamp(30px,4.5vw,58px) 0}
+.local-mining-page .local-section h2{font-size:clamp(1.45rem,2.7vw,2.15rem);line-height:1.2;color:#102d3b;letter-spacing:-.02em;margin:0 0 15px}
+.local-mining-page .local-section h3{font-size:1.14rem;color:#123648;margin:0 0 9px}
+.local-mining-page .local-section p{margin:8px 0 15px}
+.local-mining-page .local-lead{font-size:1.07rem;max-width:830px;color:#405b66}
+.local-mining-page .local-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:25px}
+.local-mining-page .local-card{padding:23px;background:#fff;border:1px solid #d5e1e0;border-radius:16px;box-shadow:0 7px 22px rgba(10,37,47,.045)}
+.local-mining-page .local-card p{font-size:.95rem;color:#3d5661}
+.local-mining-page .local-card strong{display:block;font-size:.85rem;color:#89612d;margin-bottom:7px}
+.local-mining-page .local-soft{background:#eef3f1;border-block:1px solid #dde6e4}
+.local-mining-page .local-steps{margin:20px 0 0;padding-left:24px;max-width:880px}
+.local-mining-page .local-steps li{margin:0 0 15px;padding-left:7px}
+.local-mining-page .local-steps li::marker{color:#946b35;font-weight:800}
+.local-mining-page .local-note{margin:22px 0;padding:19px 22px;border-left:4px solid #b68a49;background:#fff;border-radius:0 12px 12px 0;color:#243d4b}
+.local-mining-page .local-related{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.local-mining-page .local-related a{display:inline-flex;align-items:center;padding:12px 15px;min-height:44px;background:#fff;border:1px solid #c7d6d6;border-radius:10px;color:#12384b;font-weight:700;text-decoration:none}
+.local-mining-page .local-related a:hover{background:#e4eceb}
+.local-mining-page .local-faq{max-width:900px}
+.local-mining-page .local-faq details{margin:12px 0;border:1px solid #d6e1e1;border-radius:11px;background:#fff}
+.local-mining-page .local-faq summary{cursor:pointer;padding:17px 18px;font-weight:750;color:#14384a}
+.local-mining-page .local-faq details p{padding:0 18px 17px;margin:0}
+.local-mining-page .local-contact{background:#103548;color:#fff;padding:clamp(36px,5vw,60px) 0}
+.local-mining-page .local-contact h2{color:#fff}
+.local-mining-page .local-contact .local-lead{color:#e1eded}
+.local-mining-page .local-contact .lead-panel{background:#fff;color:#143343;padding:clamp(12px,2vw,25px);border-radius:16px}
+.local-mining-page .local-contact small{display:block;color:#dce9e9;line-height:1.65;margin-top:15px}
+.local-mining-page .local-footer{padding:26px clamp(18px,5vw,90px);background:#081e2a;color:#dce6e6;font-size:.9rem}
+.local-mining-page .local-footer a{color:#f3d8a8}
+@media(max-width:780px){.local-mining-page .local-grid{grid-template-columns:1fr}.local-mining-page .local-top{align-items:flex-start}.local-mining-page .local-nav{gap:10px}.local-mining-page .local-partners a{width:128px;height:57px}.local-mining-page .local-actions a{flex:1 1 220px}}
+@media(max-width:430px){.local-mining-page .local-partners>span{width:100%}.local-mining-page .local-partners a{flex:1 1 120px;min-width:0}.local-mining-page .local-nav{justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){.local-mining-page *, .local-mining-page *::before,.local-mining-page *::after{scroll-behavior:auto}}

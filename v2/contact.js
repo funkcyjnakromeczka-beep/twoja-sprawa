@@ -340,7 +340,7 @@
      if(!chosen)return;
      event.preventDefault();
      activateShortcut(chosen);
-     host.scrollIntoView?.({behavior:"instant",block:"start"});
+     host.scrollIntoView?.({behavior:"auto",block:"start"});
      select.focus?.({preventScroll:true});
     });
    }

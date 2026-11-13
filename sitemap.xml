@@ -2,6 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://twoja-sprawa.pages.dev/</loc><priority>1.0</priority></url>
   <url><loc>https://twoja-sprawa.pages.dev/v2/uslugi/szkody-gornicze.html</loc><priority>0.7</priority></url>
+  <url><loc>https://twoja-sprawa.pages.dev/v2/lokalnie/szkody-gornicze-lubin.html</loc><priority>0.8</priority></url>
+  <url><loc>https://twoja-sprawa.pages.dev/v2/lokalnie/szkody-gornicze-polkowice.html</loc><priority>0.8</priority></url>
   <url><loc>https://twoja-sprawa.pages.dev/v2/uslugi/swiadczenie-wspierajace.html</loc><priority>0.7</priority></url>
   <url><loc>https://twoja-sprawa.pages.dev/v2/uslugi/renty-powypadkowe.html</loc><priority>0.7</priority></url>
   <url><loc>https://twoja-sprawa.pages.dev/v2/uslugi/kredyty-pln.html</loc><priority>0.7</priority></url>

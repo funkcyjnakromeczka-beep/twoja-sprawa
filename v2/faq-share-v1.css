@@ -1,0 +1,9 @@
+/* Niezależny styl udostępniania pojedynczych pytań w FAQ. */
+.faq-page .faq-share-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 14px 14px;min-width:0}
+.faq-page .faq-share-button{border:1px solid #a8bcb9;border-radius:9px;background:#f3f8f6;color:#164254;padding:8px 12px;min-height:44px;cursor:pointer;font:750 .82rem/1.4 system-ui,sans-serif}
+.faq-page .faq-share-button:hover{background:#e0f1eb;border-color:#a38a5a}
+.faq-page .faq-share-button:focus-visible,.faq-page .faq-share-copy:focus-visible{outline:3px solid #b78d4a;outline-offset:3px}
+.faq-page .faq-share-feedback{font-size:.8rem;color:#366052;min-width:0;max-width:100%;overflow-wrap:anywhere}
+.faq-page .faq-share-copy{display:block;margin-top:5px;width:min(430px,100%);min-height:42px;padding:8px;border:1px solid #aabfba;border-radius:8px;background:#fff;color:#183847}
+@media(max-width:510px){.faq-page .faq-share-tools{flex-direction:column;align-items:stretch}.faq-page .faq-share-button{width:100%}}
+@media print{.faq-page .faq-share-tools{display:none!important}}

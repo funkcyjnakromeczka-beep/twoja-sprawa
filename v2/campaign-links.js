@@ -40,20 +40,27 @@
       title: "Służebność przesyłu",
       text: "Na Twojej działce znajdują się słupy, linie lub inne urządzenia przesyłowe? Warto ustalić stan prawny nieruchomości oraz dokumentację dotyczącą urządzeń. Możesz zostawić kontakt do wstępnej analizy sytuacji. Samo istnienie urządzeń nie oznacza automatycznie prawa do wynagrodzenia."
     }
+    ,franki: {
+      path: "/uslugi/kredyty-frankowe.html",
+      title: "Kredyty frankowe CHF — analiza umowy",
+      text: "Masz kredyt frankowy lub spłaciłeś już taką umowę? Możesz zapytać o analizę postanowień umowy, historii spłaty i możliwych rozliczeń z bankiem. Ocena indywidualnej sprawy zależy od treści umowy, dokumentacji i aktualnego stanu prawnego. Kontakt nie oznacza obietnicy wygranej ani określonej korzyści."
+    }
   };
   const hooks = {
     szkody: "Zauważyłeś rysę na elewacji i zastanawiasz się, czy może mieć związek z działalnością górniczą?",
     swiadczenie: "Masz decyzję WZON albo dopiero planujesz wniosek o świadczenie wspierające?",
     renty: "Czy skutki wypadku nadal wpływają na Twoje wydatki lub możliwości zarobkowania?",
     skd: "Czy dokładnie wiesz, jakie koszty przewiduje Twoja umowa kredytu konsumenckiego?",
-    przesyl: "Czy na Twojej działce znajdują się urządzenia przesyłowe?"
+    przesyl: "Czy na Twojej działce znajdują się urządzenia przesyłowe?",
+    franki: "Masz kredyt frankowy — aktywny albo spłacony — i chcesz sprawdzić swoją umowę?"
   };
   const shorts = {
     szkody: "Lubin, Polkowice i okolice: pęknięcia ścian, elewacji lub uszkodzenia kostki? Warto udokumentować szkody i sprawdzić możliwości działania. Pierwszy kontakt bez zobowiązania do umowy.",
     swiadczenie: "Świadczenie wspierające: WZON, ZUS, decyzja lub wniosek? Uporządkuj etap sprawy i poznaj możliwe dalsze kroki. Bez obietnic wyniku.",
     renty: "Renta powypadkowa: sprawdź, jakie dokumenty i informacje mogą być potrzebne do analizy indywidualnej sytuacji.",
     skd: "Kredyt konsumencki w PLN? Wyślij pełną umowę na wojciech.obieglo@votum-ds.pl, zostaw numer telefonu i zapytaj o indywidualną analizę SKD. Bez gwarancji wyniku.",
-    przesyl: "Słupy lub linie na działce? Warto ustalić dokumentację i stan prawny urządzeń przesyłowych przed podjęciem dalszych działań."
+    przesyl: "Słupy lub linie na działce? Warto ustalić dokumentację i stan prawny urządzeń przesyłowych przed podjęciem dalszych działań.",
+    franki: "Kredyt frankowy CHF? Sprawdź, jakie zapisy umowy i dokumenty mogą mieć znaczenie dla indywidualnej analizy możliwych rozliczeń z bankiem. Bez obietnic wyniku."
   };
   const channels = {
     facebook: "social", facebook_grupa: "grupa", facebook_strona: "post", instagram: "social", tiktok: "social",

@@ -1,7 +1,7 @@
 /* Formularz kontaktowy: Web3Forms; mailto jako wariant awaryjny. */
 (() => {
  "use strict";
- const services = ["Szkody górnicze","Świadczenie wspierające","Renty powypadkowe","Kredyt w PLN / SKD","Kredyty frankowe CHF","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
+ const services = ["Szkody górnicze","Świadczenie wspierające","Kredyt w PLN / SKD","Renty powypadkowe","Kredyty frankowe CHF","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
  const current = document.currentScript?.getAttribute("data-service") || "";
  const localCity = document.currentScript?.getAttribute("data-locality") || "";
  const suggestedCity = ["Lubin","Polkowice"].includes(localCity) ? localCity : "";

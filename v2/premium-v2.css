@@ -4028,3 +4028,10 @@ html{scroll-padding-top:16px}
 .chat-assistant .chat-reply-links a.chat-reply-email:focus-visible{
  background:#ffedc5;color:#14303c!important;
 }
+
+/* Przewodnik: telefon + formularz + bezpośredni e-mail, bez przewijania poziomego. */
+.chat-assistant .chat-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.chat-assistant .chat-actions>a{display:flex;min-width:0;width:100%;padding:10px 8px;line-height:1.35;overflow-wrap:anywhere;white-space:normal}
+.chat-assistant .chat-actions>a.chat-email-action{grid-column:1/-1;background:#f4e1bd;color:#163747!important;border-color:#bd995c}
+.chat-assistant .chat-actions>a.chat-email-action:hover{background:#f8ebd3;color:#092b3b!important}
+.chat-assistant .chat-actions>a:focus-visible{outline:3px solid #bd8744;outline-offset:2px}

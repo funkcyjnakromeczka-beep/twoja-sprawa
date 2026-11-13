@@ -24,9 +24,25 @@ Mechanizm usuwania prefiksu/rozszerzenia i ustawienia projektu Cloudflare trzeba
 - `v2/contact.js` — formularze Web3Forms z awaryjnym kontaktem e-mail
 - `v2/chat-assistant.js` — bezpłatny przewodnik po usługach
 - `v2/kampanie/skd.html` — kontakt do analizy pełnej umowy kredytu PLN
+- `v2/attribution.js` — bezcookiesowe przenoszenie wyłącznie dozwolonych UTM przy klikaniu linków wewnętrznych; podłączone do kluczowych podstron
+- `v2/narzedzia/linki-kampanii.html` + `v2/campaign-links.js` — bezpłatny generator linków UTM i tekstów do publikacji (6 usług, w tym SKD jako trzecia)
 - `v2/local-mining.css`, `v2/lokalnie/` — lokalne strony Lubina i Polkowic
 - `v2/_headers` — konserwatywne nagłówki bezpieczeństwa na ścieżce publikacji
 - `v2/404.html` — wersja strony błędu powiązana z publiczną witryną
+
+## Bezpłatne linki marketingowe
+
+Generator: https://twoja-sprawa.pages.dev/narzedzia/linki-kampanii (strona pomocnicza oznaczona `noindex`). Tworzy gotowe linki z UTM oraz propozycje tekstów. Nie zapisuje nazw kampanii na serwerze. Do Canvy można skopiować cały URL i wygenerować kod QR na ulotkę.
+
+Przykłady do edycji:
+
+- Szkody, Facebook: `https://twoja-sprawa.pages.dev/kampanie/szkody-gornicze?utm_source=facebook&utm_medium=post&utm_campaign=szkody_lubin_2026`
+- Świadczenia, rolka: `https://twoja-sprawa.pages.dev/kampanie/swiadczenie-wspierajace?utm_source=instagram&utm_medium=social&utm_campaign=swiadczenie_2026`
+- SKD, kod QR: `https://twoja-sprawa.pages.dev/kampanie/skd?utm_source=qr&utm_medium=print&utm_campaign=skd_ulotka_2026`
+
+Skrypt `attribution.js` zachowuje oznaczenia kampanii podczas typowej nawigacji linkami. **Nie mierzy wejść ani konwersji bez wysłania formularza** i nie działa jako pełna analityka. Nie dodawać do UTM imion klientów, telefonów, PESEL ani danych wrażliwych.
+
+Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono 70 unikatowych lokalnych zasobów; istnienie powiązanych plików, w tym obu JPG, zostało potwierdzone w GitHub. To nie zastępuje testów całej strony w działającej przeglądarce.
 
 ## Kontrola zmian po każdym wdrożeniu
 

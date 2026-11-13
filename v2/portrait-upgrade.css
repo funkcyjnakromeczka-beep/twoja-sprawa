@@ -113,3 +113,15 @@
 .premium-subpage .about-services-links a:hover{filter:brightness(1.09)}
 .premium-subpage .about-services-links a:focus-visible{outline:3px solid #c28c43;outline-offset:3px}
 @media(max-width:720px){.premium-subpage .about-services-links{grid-template-columns:1fr}}
+
+/* Kontakt zespołu: e-maile nie mogą wyjeżdżać poza wąskie karty na Androidzie. */
+.premium-subpage .team-profile-card>div:last-child{min-width:0}
+.premium-subpage .team-profile-card a[href^="mailto:"]{
+ display:block;max-width:100%;overflow-wrap:anywhere;word-break:break-word;
+ font-size:clamp(.78rem,1.5vw,.94rem);line-height:1.4;
+}
+.premium-subpage .team-profile-card a[href^="tel:"]{min-height:44px}
+@media(max-width:370px){
+ .premium-subpage .team-profile-card{grid-template-columns:82px minmax(0,1fr);gap:10px}
+ .premium-subpage .team-profile-card h3{font-size:1.09rem}
+}

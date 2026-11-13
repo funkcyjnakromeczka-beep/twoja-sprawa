@@ -120,36 +120,55 @@ async function checkPage(name,path){
 }
 function dynamicTest(name,path,requiredPhone){
  return new Promise(resolve=>{
+  // Same-origin iframe only. The test never clicks Submit and never fills user data.
   const frame=document.createElement("iframe");
   frame.className="test-iframe";
   frame.tabIndex=-1;
   frame.setAttribute("aria-hidden","true");
   frame.title="Automatyczny test formularza — "+name;
   let finished=false;
+  let poll=null;
   const finalize=(ok,details)=>{
    if(finished)return;
-   finished=true;clearTimeout(timer);frame.remove();
+   finished=true;
+   window.clearTimeout(timeout);
+   if(poll!==null)window.clearInterval(poll);
+   frame.remove();
    resolve([name,ok?"OK":"DO SPRAWDZENIA",details,ok]);
   };
-  const timer=setTimeout(()=>finalize(false,"Brak wyniku po 15 sekundach"),15000);
+  const timeout=window.setTimeout(()=>finalize(false,"Nie udało się potwierdzić formularza przez 15 sekund"),15000);
+  const inspect=()=>{
+   if(finished)return;
+   let doc;
+   try{doc=frame.contentDocument;}catch{return;}
+   if(!doc)return;
+   const form=doc.querySelector("form.contact-form");
+   if(!form)return; // Defer scripts may not have rendered the form yet.
+   const service=form.querySelector("select[required]");
+   const tel=form.querySelector('input[type="tel"]');
+   const submit=form.querySelector('button[type="submit"]');
+   if(!service||!tel||!submit)return;
+   if(requiredPhone){
+    const selected=service.value==="Kredyt w PLN / SKD";
+    const required=tel.required;
+    const email=doc.body?.textContent?.includes("wojciech.obieglo@votum-ds.pl");
+    finalize(selected&&required&&email,selected&&required&&email?"Wybrano SKD, telefon obowiązkowy i prawidłowy e-mail Wojciecha":!selected?"W formularzu nie wybrano SKD":!required?"Telefon w SKD nie jest wymagany":"Nie znaleziono kontaktu e-mail do Wojciecha");
+   }else{
+    const hasName=Boolean(form.querySelector('input[autocomplete="given-name"]'));
+    finalize(hasName,hasName?"Wybór usługi, imię, telefon i przycisk obecne":"Nie znaleziono pola imienia");
+   }
+  };
   frame.addEventListener("load",()=>{
-   setTimeout(()=>{
-    try{
-     const doc=frame.contentDocument;
-     if(!doc){finalize(false,"Brak dostępu do ramki");return;}
-     const form=doc.querySelector("form.contact-form");
-     const service=form?.querySelector("select[required]");
-     const tel=form?.querySelector('input[type="tel"]');
-     const submit=form?.querySelector('button[type="submit"]');
-     const valid=Boolean(form&&service&&tel&&submit&&(!requiredPhone||tel.required));
-     finalize(valid,valid?(requiredPhone?"Telefon wymagany; formularz gotowy":"Pola i przycisk formularza obecne"):"Formularz nie został w pełni wyrenderowany");
-    }catch{finalize(false,"Nie udało się odczytać formularza z ramki");}
-   },400);
+   // Give deferred JavaScript time to mount. Recheck until a real form appears.
+   inspect();
+   if(!finished)poll=window.setInterval(inspect,250);
   },{once:true});
+  frame.addEventListener("error",()=>finalize(false,"Nie udało się wczytać strony testowej"),{once:true});
   frame.src=path;
   document.body.appendChild(frame);
  });
 }
+
 run.addEventListener("click",async()=>{
  run.disabled=true;output.replaceChildren();formOutput.replaceChildren();
  let passed=0;

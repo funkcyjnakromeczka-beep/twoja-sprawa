@@ -94,3 +94,16 @@
  .premium-v2 .hero-primary-ctas .btn{min-height:48px}
 }
 @media(prefers-reduced-motion:reduce){.premium-v2 .primary-services .primary-card{transition:none}.premium-v2 .primary-services .primary-card:hover{transform:none}}
+
+/* Zwięzła biblioteka filmów: domyślnie zamknięta, dostępna bez JavaScript. */
+.premium-v2 .homepage-video-disclosure{margin:24px 0;border:1px solid #c4a16a;border-radius:14px;background:#fff;overflow:hidden}
+.premium-v2 .homepage-video-disclosure>summary{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:60px;padding:17px 22px;cursor:pointer;background:#102d3c;color:#fff;font-weight:750;line-height:1.5;list-style:none}
+.premium-v2 .homepage-video-disclosure>summary::-webkit-details-marker{display:none}
+.premium-v2 .homepage-video-disclosure>summary::after{content:"+";font-size:1.4rem;line-height:1;color:#f4d59e;flex-shrink:0}
+.premium-v2 .homepage-video-disclosure[open]>summary::after{content:"−"}
+.premium-v2 .homepage-video-disclosure>summary:hover{background:#183d4e}
+.premium-v2 .homepage-video-disclosure>summary:focus-visible{outline:3px solid #b58c4f;outline-offset:-4px}
+.premium-v2 .homepage-video-disclosure>.video-library,.premium-v2 .homepage-video-disclosure>.premium-video-note,.premium-v2 .homepage-video-disclosure>.video-links{margin-left:clamp(12px,3vw,25px);margin-right:clamp(12px,3vw,25px)}
+.premium-v2 .homepage-video-disclosure>.video-library{margin-top:22px}
+.premium-v2 .homepage-video-disclosure>.video-links{margin-bottom:24px}
+@media(max-width:700px){.premium-v2 .homepage-video-disclosure>summary{padding:16px;min-height:56px}}

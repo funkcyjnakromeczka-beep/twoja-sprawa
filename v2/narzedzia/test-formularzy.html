@@ -47,13 +47,13 @@ footer a{color:#efcf9b}
 <main>
 <p>Zaplecze techniczne SuccessTree · Bezpłatne narzędzie diagnostyczne</p>
 <h1>Sprawdź stronę i formularze bez wysyłania zgłoszeń</h1>
-<p class="lead">Ten test sprawdza dostępność dziesięciu kluczowych stron, obecność formularzy w kodzie oraz uruchomienie formularza na stronie kontaktowej i SKD. Niczego nie wysyła do Web3Forms. Nie wymaga płatnego konta ani podawania danych klienta.</p>
+<p class="lead">Ten test sprawdza dostępność dziesięciu kluczowych stron, trzech plików wspierających indeksowanie (robots.txt, sitemap.xml, llms.txt), obecność formularzy w kodzie oraz ich uruchomienie na stronie kontaktowej i SKD. Niczego nie wysyła do Web3Forms. Nie wymaga płatnego konta ani podawania danych klienta.</p>
 <section class="panel" aria-labelledby="run-title">
 <h2 id="run-title">Jednorazowy test techniczny</h2>
 <button id="run" type="button">Uruchom kontrolę</button>
 <p class="status" role="status" aria-live="polite" id="status">Test uruchamiany jest wyłącznie po kliknięciu przycisku.</p>
 <div class="table-wrap"><table>
-<thead><tr><th>Podstrona</th><th>Odpowiedź serwera</th><th>Elementy strony</th></tr></thead>
+<thead><tr><th>Strona lub plik</th><th>Odpowiedź serwera</th><th>Elementy strony</th></tr></thead>
 <tbody id="results"><tr><td colspan="3">Brak wyników — uruchom kontrolę.</td></tr></tbody>
 </table></div>
 </section>
@@ -82,6 +82,11 @@ const checks=[
 ["Lubin — szkody","/lokalnie/szkody-gornicze-lubin"],
 ["Polkowice — szkody","/lokalnie/szkody-gornicze-polkowice"],
 ["Generator linków","/narzedzia/linki-kampanii"]
+];
+const seoChecks=[
+ ["Zasady indeksowania","/robots.txt","Sitemap:"],
+ ["Mapa witryny","/sitemap.xml","<urlset"],
+ ["Indeks informacji dla AI","/llms.txt","Sankcja Kredytu Darmowego"]
 ];
 const run=document.getElementById("run"),status=document.getElementById("status");
 const output=document.getElementById("results"),formOutput=document.getElementById("form-results");
@@ -117,6 +122,19 @@ async function checkPage(name,path){
   const good=Boolean(count&&formOK);
   return[name,"HTTP "+response.status,(count?"H1 obecny":"Brak H1")+"; "+(expected?(formOK?"formularz osadzony":"brak kodu formularza"):"strona dostępna"),good];
  }catch(e){return[name,"Błąd połączenia",e?.name==="AbortError"?"Przekroczono 10 sekund":"Nie udało się pobrać strony",false];}
+}
+async function checkSeoFile(name,path,requiredText){
+ try{
+  const controller=new AbortController();
+  const timeout=window.setTimeout(()=>controller.abort(),10000);
+  let response;
+  try{response=await fetch(path,{cache:"no-store",credentials:"same-origin",signal:controller.signal});}
+  finally{window.clearTimeout(timeout);}
+  if(!response.ok)return[name,"HTTP "+response.status,"Plik jest niedostępny",false];
+  const content=await response.text();
+  const good=content.includes(requiredText) && content.length<5000000;
+  return[name,"HTTP "+response.status,good?"Wymagane informacje obecne":"Brak wymaganego znacznika",good];
+ }catch(e){return[name,"Błąd połączenia",e?.name==="AbortError"?"Przekroczono 10 sekund":"Nie udało się pobrać pliku",false];}
 }
 function dynamicTest(name,path,requiredPhone){
  return new Promise(resolve=>{
@@ -173,10 +191,14 @@ run.addEventListener("click",async()=>{
  run.disabled=true;output.replaceChildren();formOutput.replaceChildren();
  let passed=0;
  try{
-  status.textContent="Sprawdzanie dostępności dziesięciu stron…";
-  const results=await Promise.all(checks.map(([name,path])=>checkPage(name,path)));
+  const total=checks.length+seoChecks.length;
+  status.textContent="Sprawdzanie 10 stron i 3 plików indeksowania…";
+  const results=await Promise.all([
+   ...checks.map(([name,path])=>checkPage(name,path)),
+   ...seoChecks.map(([name,path,marker])=>checkSeoFile(name,path,marker))
+  ]);
   for(const r of results){row(output,r.slice(0,3),["",r[3]?"ok":"fail",r[3]?"ok":"fail"]);if(r[3])passed++;}
-  status.textContent="Strony: "+passed+"/"+checks.length+" dostępnych. Kontrola formularzy…";
+  status.textContent="Strony i pliki: "+passed+"/"+total+" dostępnych. Kontrola formularzy…";
   const tests=[["Kontakt","/kontakt",false],["SKD — obowiązkowy telefon","/kampanie/skd",true]];
   let goodForms=0;
   for(const [name,path,mustPhone] of tests){
@@ -184,7 +206,7 @@ run.addEventListener("click",async()=>{
    row(formOutput,r.slice(0,3),["",r[3]?"ok":"warn",""]);
    if(r[3])goodForms++;
   }
-  status.textContent="Wynik: "+passed+"/"+checks.length+" stron i "+goodForms+"/2 testy formularzy. Nie wysłano żadnego zgłoszenia.";
+  status.textContent="Wynik: "+passed+"/"+total+" stron i plików oraz "+goodForms+"/2 testy formularzy. Nie wysłano żadnego zgłoszenia.";
  }catch{
   status.textContent="Kontrola napotkała błąd. Nie wysłano żadnego zgłoszenia.";
  }finally{run.disabled=false;}

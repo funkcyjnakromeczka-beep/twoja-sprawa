@@ -28,7 +28,7 @@ Mechanizm usuwania prefiksu/rozszerzenia i ustawienia projektu Cloudflare trzeba
 - `v2/kampanie/skd.html` — kontakt do analizy pełnej umowy kredytu PLN
 - `v2/attribution.js` — bezcookiesowe przenoszenie wyłącznie dozwolonych UTM przy klikaniu linków wewnętrznych; podłączone do kluczowych podstron
 - `v2/narzedzia/linki-kampanii.html` + `v2/campaign-links.js` — bezpłatny generator linków UTM i tekstów do publikacji (6 usług, w tym SKD jako trzecia)
-- `v2/narzedzia/test-formularzy.html` — ręcznie uruchamiana kontrola 10 podstron, 3 plików indeksowania (`robots.txt`, `sitemap.xml`, `llms.txt`) i renderowania 2 formularzy, bez wysyłania danych i bez płatnych usług
+- `v2/narzedzia/test-formularzy.html` — ręcznie uruchamiana kontrola 10 podstron, 3 plików indeksowania, 3 elementów aktualnej wersji FAQ (JS, CSS, osadzenie w HTML) i renderowania 2 formularzy, bez wysyłania danych i bez płatnych usług
 - `v2/local-mining.css`, `v2/lokalnie/` — lokalne strony Lubina i Polkowic
 - `v2/_headers` — konserwatywne nagłówki bezpieczeństwa na ścieżce publikacji
 - `v2/404.html` — wersja strony błędu powiązana z publiczną witryną
@@ -53,9 +53,25 @@ Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono
 2. Sprawdź `https://twoja-sprawa.pages.dev/kontakt` oraz `https://twoja-sprawa.pages.dev/kampanie/skd`.
 3. Sprawdź `https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze` oraz `https://twoja-sprawa.pages.dev/uslugi/swiadczenie-wspierajace`.
 4. Sprawdź aktualną mapę `https://twoja-sprawa.pages.dev/sitemap.xml` — publiczna mapa jest generowana inaczej niż starszy plik `sitemap.xml` w katalogu repozytorium.
-5. Otwórz `https://twoja-sprawa.pages.dev/narzedzia/test-formularzy` i kliknij „Uruchom kontrolę” — sprawdza 10 stron, 3 pliki SEO i 2 formularze bez wysyłania danych.
+5. Otwórz `https://twoja-sprawa.pages.dev/narzedzia/test-formularzy` i kliknij „Uruchom kontrolę” — sprawdza 10 stron, 3 pliki SEO, 3 elementy najnowszego FAQ i 2 formularze bez wysyłania danych.
 6. Przetestuj działanie formularza w przeglądarce i potwierdź dostarczenie testowego zgłoszenia dopiero po uzgodnieniu procedury, aby nie generować fałszywych leadów.
 7. Jeżeli formularz nie działa, statyczny kontakt wewnątrz `[data-contact-form]` powinien pozostać widoczny.
+
+## Diagnostyka rozbieżności GitHub ↔ Cloudflare (13.11.2026)
+
+**Potwierdzony problem:** pliki `v2/faq-share-v1.js` i `v2/faq-share-v1.css` istnieją w GitHub, a po opublikowaniu w katalogu `v2/` powinny być dostępne odpowiednio pod `/faq-share-v1.js` oraz `/faq-share-v1.css`. Publiczny Cloudflare Pages zwrócił 404, zaś `/faq` nadal wskazywał stare zasoby, pomimo obecności nowych odnośników w `v2/faq.html`. **Zapis w GitHub nie jest potwierdzeniem wdrożenia.**
+
+Nie znaleziono standardowych plików `.github/workflows/deploy.yml`, `cloudflare.yml`, `pages.yml`, `wrangler.toml` ani `package.json` w badanych ścieżkach repozytorium. Nie przesądza to, czy Cloudflare Pages jest połączony przez własną integrację Git, czy wdrażany ręcznie (Direct Upload).
+
+### Bezpłatny sposób rozpoznania i naprawy
+
+1. W panelu https://dash.cloudflare.com/ przejdź do **Workers & Pages → twoja-sprawa → Deployments** i sprawdź datę, status, gałąź i commit ostatniej udanej publikacji.
+2. **Jeśli projekt ma integrację GitHub:** wejdź do **Settings → Builds → Branch control**, sprawdź, czy produkcyjną gałęzią jest `main` i czy automatyczne wdrożenia produkcyjne są aktywne. Sprawdź także repozytorium i katalog wyjściowy (publiczne pliki pochodzą z `v2`), a następnie błędy ostatniego wdrożenia. Zastosuj ponowne wdrożenie z panelu dopiero po sprawdzeniu właściwej gałęzi i konfiguracji.
+3. **Jeżeli projekt jest typu Direct Upload:** sam `git push` nie publikuje zmian; potrzebne jest świadome wdrożenie katalogu z plikami przez Cloudflare Pages (ręcznie lub przez bezpłatnie skonfigurowany proces CI). Nie wprowadzaj tokenów API ani sekretów do repozytorium.
+4. Po publikacji sprawdź działanie `https://twoja-sprawa.pages.dev/faq-share-v1.js`, `https://twoja-sprawa.pages.dev/faq-share-v1.css` oraz znaczników w `https://twoja-sprawa.pages.dev/faq`. Możesz też użyć `/narzedzia/test-formularzy`: podaje wynik 0–3 dla aktualności FAQ.
+5. Nie zmieniaj domeny ani nie usuwaj istniejącego projektu bez potwierdzenia, jak został pierwotnie wdrożony. W pierwszej kolejności przywróć spójność między repozytorium a obecnym projektem.
+
+Dokumentacja Cloudflare: [GitHub integration](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/) i [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/).
 
 ## Przekazywanie zgłoszeń i podglądy linków
 

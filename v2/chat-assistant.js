@@ -145,6 +145,7 @@
     const stages=mk("div","chat-stage-choices");
     const answer=mk("p","chat-stage-answer","Wybierz sytuację, aby zobaczyć ogólną wskazówkę.");
     answer.setAttribute("role","status");
+    const stageTransfer=topic.key==="szkody"||topic.key==="swiadczenie";
     for(const [question,text,stageCode,damageCode] of topic.stages){
       const btn=mk("button","chat-stage-choice",question);btn.type="button";
       btn.setAttribute("aria-pressed","false");
@@ -152,9 +153,9 @@
         for(const item of stages.querySelectorAll("button"))item.setAttribute("aria-pressed",String(item===btn));
         answer.textContent=text;
         form.href=destination(topic,stageCode,damageCode);
-        form.textContent="Przejdź do formularza z wybranym etapem ↗";
+        form.textContent=stageTransfer?"Przejdź do formularza z wybranym etapem ↗":"Przejdź do formularza kontaktowego ↗";
         contact.href=destination(topic,stageCode,damageCode);
-        contact.textContent="✉ Zostaw kontakt — etap wybrany";
+        contact.textContent=stageTransfer?"✉ Zostaw kontakt — etap wybrany":"✉ Zostaw kontakt";
         answer.scrollIntoView({block:"nearest",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
       });
       stages.append(btn);
@@ -169,7 +170,6 @@
       links.append(mail);
     }
     links.append(form,details,checklist);
-    const stageTransfer=topic.key==="szkody"||topic.key==="swiadczenie";
     const caution=mk("small","chat-caution",stageTransfer?"Wybrany etap może zostać zaznaczony w formularzu. Sam wybór niczego nie wysyła. Wskazówki nie gwarantują wyniku.":"Otrzymujesz jedynie ogólne wskazówki. Wybór sytuacji nie wysyła zgłoszenia ani dokumentów i nie gwarantuje wyniku.");
     reply.append(heading,summary,prompt,stages,answer,links,caution);
     phone.href="tel:"+topic.tel;phone.textContent="☎ Zadzwoń: "+topic.phone;

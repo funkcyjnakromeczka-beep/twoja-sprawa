@@ -47,7 +47,7 @@ footer a{color:#efcf9b}
 <main>
 <p>Zaplecze techniczne SuccessTree · Bezpłatne narzędzie diagnostyczne</p>
 <h1>Sprawdź stronę i formularze bez wysyłania zgłoszeń</h1>
-<p class="lead">Ten test sprawdza dostępność dziesięciu kluczowych stron, trzech plików wspierających indeksowanie (robots.txt, sitemap.xml, llms.txt), obecność formularzy w kodzie oraz ich uruchomienie na stronie kontaktowej i SKD. Niczego nie wysyła do Web3Forms. Nie wymaga płatnego konta ani podawania danych klienta.</p>
+<p class="lead">Ten test sprawdza dostępność dziesięciu kluczowych stron, trzech plików wspierających indeksowanie, aktualność plików FAQ oraz uruchomienie formularzy kontaktowych i SKD. Niczego nie wysyła do Web3Forms. Nie wymaga płatnego konta ani podawania danych klienta.</p>
 <section class="panel" aria-labelledby="run-title">
 <h2 id="run-title">Jednorazowy test techniczny</h2>
 <button id="run" type="button">Uruchom kontrolę</button>
@@ -56,6 +56,16 @@ footer a{color:#efcf9b}
 <thead><tr><th>Strona lub plik</th><th>Odpowiedź serwera</th><th>Elementy strony</th></tr></thead>
 <tbody id="results"><tr><td colspan="3">Brak wyników — uruchom kontrolę.</td></tr></tbody>
 </table></div>
+</section>
+<section class="panel" aria-labelledby="deploy-title">
+<h2 id="deploy-title">Czy najnowsze FAQ jest już opublikowane?</h2>
+<p>Porównaj pliki używane przez publiczną stronę z funkcją „Udostępnij odpowiedź”. Jeśli jest 404 albo brak nowego skryptu, kod może być zapisany w GitHub, ale jeszcze niewdrożony na Cloudflare.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Element wdrożenia</th><th>Odpowiedź</th><th>Weryfikacja</th></tr></thead>
+<tbody id="deploy-results"><tr><td colspan="3">Uruchom kontrolę, aby zweryfikować wersję produkcyjną.</td></tr></tbody>
+</table></div>
+<p class="status" id="deploy-status" aria-live="polite"></p>
+<p><strong>Jeśli test zgłosi problem:</strong> otwórz <a href="https://dash.cloudflare.com/" rel="noopener noreferrer" target="_blank">Cloudflare Dashboard</a> → Workers &amp; Pages → projekt <strong>twoja-sprawa</strong> → Deployments. Porównaj najnowszą udaną publikację z aktualnym commitem GitHub. Sprawdź w ustawieniach Builds / Branch control, czy produkcyjną gałęzią jest <code>main</code> i czy wdrożenia automatyczne nie są wyłączone. Nie zmieniaj katalogu budowania bez sprawdzenia obecnej konfiguracji.</p>
 </section>
 <section class="panel" aria-labelledby="form-test-title">
 <h2 id="form-test-title">Kontrola formularzy JavaScript</h2>
@@ -88,8 +98,14 @@ const seoChecks=[
  ["Mapa witryny","/sitemap.xml","<urlset"],
  ["Indeks informacji dla AI","/llms.txt","Sankcja Kredytu Darmowego"]
 ];
+const deployChecks=[
+ ["Nowy moduł FAQ JS","/faq-share-v1.js","faq-share-tools"],
+ ["Nowe style FAQ CSS","/faq-share-v1.css","faq-share-button"],
+ ["Podłączenie modułu w FAQ","/faq","faq-share-v1.js"]
+];
 const run=document.getElementById("run"),status=document.getElementById("status");
 const output=document.getElementById("results"),formOutput=document.getElementById("form-results");
+const deployOutput=document.getElementById("deploy-results"),deployStatus=document.getElementById("deploy-status");
 const el=(tag,txt,cls)=>{
  const node=document.createElement(tag);
  if(txt!==undefined)node.textContent=String(txt);
@@ -188,7 +204,7 @@ function dynamicTest(name,path,requiredPhone){
 }
 
 run.addEventListener("click",async()=>{
- run.disabled=true;output.replaceChildren();formOutput.replaceChildren();
+ run.disabled=true;output.replaceChildren();formOutput.replaceChildren();deployOutput.replaceChildren();deployStatus.textContent="";
  let passed=0;
  try{
   const total=checks.length+seoChecks.length;
@@ -198,7 +214,17 @@ run.addEventListener("click",async()=>{
    ...seoChecks.map(([name,path,marker])=>checkSeoFile(name,path,marker))
   ]);
   for(const r of results){row(output,r.slice(0,3),["",r[3]?"ok":"fail",r[3]?"ok":"fail"]);if(r[3])passed++;}
-  status.textContent="Strony i pliki: "+passed+"/"+total+" dostępnych. Kontrola formularzy…";
+  status.textContent="Strony i pliki: "+passed+"/"+total+" dostępnych. Kontrola wersji FAQ…";
+  const deployment=await Promise.all(deployChecks.map(([name,path,marker])=>checkSeoFile(name,path,marker)));
+  let deployed=0;
+  for(const entry of deployment){
+   row(deployOutput,entry.slice(0,3),["",entry[3]?"ok":"fail",entry[3]?"ok":"fail"]);
+   if(entry[3])deployed++;
+  }
+  deployStatus.textContent=deployed===deployChecks.length
+   ?"Wszystkie pliki FAQ dostępne w wersji produkcyjnej. Nadal warto przetestować kliknięcie na telefonie."
+   :"Wykryto rozbieżność: "+deployed+"/"+deployChecks.length+" elementów FAQ potwierdzonych. Sprawdź najnowsze wdrożenie w Cloudflare.";
+  status.textContent="Strony i pliki: "+passed+"/"+total+". Wersja FAQ: "+deployed+"/"+deployChecks.length+". Kontrola formularzy…";
   const tests=[["Kontakt","/kontakt",false],["SKD — obowiązkowy telefon","/kampanie/skd",true]];
   let goodForms=0;
   for(const [name,path,mustPhone] of tests){

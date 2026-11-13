@@ -20,7 +20,9 @@ Mechanizm usuwania prefiksu/rozszerzenia i ustawienia projektu Cloudflare trzeba
 ## Najważniejsze pliki
 
 - `v2/index.html` — publiczna strona główna
+- `v2/o-nas.html` — indeksowalna podstrona o zespole i zakresie współpracy (samodzielna treść, canonical `/o-nas`, schemat `AboutPage`); łączy trzy główne usługi i bezpośrednie kontakty do doradców
 - `v2/home-flow.css`, `v2/premium-v2.css`, `v2/styles.css` — układ i styl
+- `v2/portrait-upgrade.css` — karty osób kontaktowych, elastyczne adresy e-mail i odnośniki do usług na urządzeniach mobilnych
 - `v2/contact.js` — formularze Web3Forms z awaryjnym kontaktem e-mail
 - `v2/chat-assistant.js` — bezpłatny przewodnik po usługach
 - `v2/kampanie/skd.html` — kontakt do analizy pełnej umowy kredytu PLN
@@ -69,3 +71,11 @@ Strona główna oraz trzy główne podstrony mają jawne `og:url` z kanonicznym 
 - Nie deklarujemy gwarantowanego świadczenia, odszkodowania ani wygranej.
 - SuccessTree jest odrębną działalnością; serwis nie jest oficjalną stroną VOTUM ani kancelarią.
 - Przy formularzach nie prosimy o PESEL, hasła ani szczegółową dokumentację medyczną.
+
+## Główne ścieżki kontaktu i testy
+
+1. Wybór szkód górniczych, świadczenia wspierającego lub SKD na stronie głównej, przejście do sekcji `#kontakt` (również na wąskim ekranie).
+2. Z formularza SKD wymagany jest numer telefonu; pełną umowę klient wysyła osobno na `wojciech.obieglo@votum-ds.pl`.
+3. Na podstronie `/o-nas` sprawdź klikane numery, adresy e-mail i trzy linki do usług.
+4. Awaryjny kontakt e-mail z formularza trafia bezpośrednio do właściwej osoby; Web3Forms nadal używa osobno skonfigurowanej skrzynki, a pole `advisor_email` ma wyłącznie charakter informacyjny.
+5. Nie udawaj potwierdzenia doręczenia e-maila na podstawie statusu API. Tester `/narzedzia/test-formularzy` nie wysyła żadnych zgłoszeń.

@@ -109,6 +109,7 @@
   const phone=document.createElement("a");phone.href="tel:+48796441345";phone.textContent="☎ Zadzwoń: 796 441 345";
   const contact=document.createElement("a");contact.href=base+"kontakt.html#formularz";contact.textContent="✉ Zostaw kontakt";
   const emailAction=document.createElement("a");
+  emailAction.className="chat-email-action";
   emailAction.href="mailto:wojciech.obieglo@votum-ds.pl?subject="+encodeURIComponent("Zapytanie — Twoja Sprawa");
   emailAction.textContent="✉ Napisz e-mail";
   actions.append(phone,contact,emailAction);

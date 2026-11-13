@@ -1,5 +1,5 @@
-/* 2026-11-10: authentic team portraits, visibly accessible on all screen sizes.
-   Photos remain external from user's existing Lovable project until local asset migration. */
+/* Autentyczne portrety zespołu pobierane z własnych plików /assets/.
+   Dostępny kontakt bezpośredni: telefon i e-mail. */
 .premium-v2 .team-spotlight{
   background:linear-gradient(125deg,#f8f6ef 0%,#f0f6f4 55%,#f9f7f0 100%);
   border-block:1px solid #d9d9d1;padding-top:48px;padding-bottom:52px;
@@ -77,4 +77,17 @@
   .premium-v2 .team-spotlight .team-person h3{font-size:1.18rem}
   .premium-subpage .team-profile-card{grid-template-columns:100px minmax(0,1fr);gap:13px;padding:15px}
   .premium-subpage .team-profile-card p{font-size:.9rem}
+}
+
+/* Adresy kontaktowe widoczne i możliwe do skopiowania także na wąskich ekranach. */
+.premium-v2 .team-spotlight .team-person a.team-email{
+ display:block;width:fit-content;max-width:100%;min-height:36px;
+ padding:6px 0;overflow-wrap:anywhere;word-break:break-word;
+ font-size:clamp(.77rem,1vw,.89rem);font-weight:700;line-height:1.45;
+ color:#f4e4c5;text-decoration:underline;text-underline-offset:3px;
+}
+.premium-v2 .team-spotlight .team-person a.team-email:hover{color:#fff}
+@media(max-width:420px){
+ .premium-v2 .team-spotlight .team-person{grid-template-columns:82px minmax(0,1fr)}
+ .premium-v2 .team-spotlight .team-person a.team-email{font-size:.75rem}
 }

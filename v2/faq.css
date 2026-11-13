@@ -49,3 +49,17 @@
 
 /* Anchor links from search results remain visible below the sticky brand bar. */
 .faq-page .faq-card{scroll-margin-top:calc(var(--network-brand-height,70px) + 20px)}
+
+/* Weryfikacja źródła urzędowego, czytelna również przy wąskim ekranie. */
+.faq-page .faq-hero p.faq-verified{
+ margin:15px 0 6px;max-width:79ch;
+ padding:12px 15px;border-left:4px solid #d4b37f;border-radius:0 10px 10px 0;
+ background:rgba(255,255,255,.09);color:#f0f3ec;
+ font-size:.88rem;line-height:1.65;
+}
+.faq-page .faq-hero .faq-verified a{color:#ffdfa8;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.faq-page .faq-hero .faq-verified a:focus-visible{outline:3px solid #f5d5a2;outline-offset:3px}
+.faq-page .faq-answer p+p{margin-top:13px}
+.faq-page .faq-answer p a{color:#155576;overflow-wrap:anywhere;text-decoration:underline;text-underline-offset:3px;font-weight:750}
+.faq-page .faq-answer p a:hover{color:#8d5524}
+.faq-page .faq-answer p a:focus-visible{outline:3px solid #ad8848;outline-offset:3px}

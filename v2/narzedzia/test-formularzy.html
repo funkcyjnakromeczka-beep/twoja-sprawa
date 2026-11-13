@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0c2c3b">
+<title>Diagnostyka strony i formularzy — Twoja Sprawa</title>
+<meta name="description" content="Bezpieczny test dostępności podstron i formularzy bez wysyłania zgłoszeń. Narzędzie techniczne serwisu Twoja Sprawa.">
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#143545;background:#f5f7f4;line-height:1.6}
+*{box-sizing:border-box}
+body{margin:0}
+a{overflow-wrap:anywhere}
+a:focus-visible,button:focus-visible{outline:3px solid #bc8d48;outline-offset:4px}
+header{background:#0a2a3b;color:#fff;padding:15px clamp(16px,4vw,55px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header a{color:#fff;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+header .brand{font-size:1.2rem;text-decoration:none}
+header .brand span{color:#e8c48a}
+main{max-width:1050px;margin:auto;padding:35px 17px 75px}
+h1{font-size:clamp(1.8rem,4vw,3rem);line-height:1.2;margin:8px 0 16px}
+h2{font-size:1.3rem;margin:5px 0 15px}
+.lead{max-width:800px;color:#405b67}
+.panel{background:#fff;border:1px solid #d3dfde;border-radius:16px;padding:clamp(18px,3vw,30px);margin:22px 0}
+button{border:0;border-radius:10px;min-height:48px;padding:11px 20px;background:#123e51;color:#fff;font:800 1rem/1.4 system-ui,sans-serif;cursor:pointer}
+button:hover{background:#235f73}
+button:disabled{opacity:.55;cursor:progress}
+.status{font-weight:700;color:#275164;min-height:26px}
+.table-wrap{max-width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:610px;text-align:left}
+th,td{padding:12px 10px;border-bottom:1px solid #e1e8e6;vertical-align:top}
+th{color:#173f52;font-size:.84rem}
+td:first-child{font-weight:700}
+td code{font-size:.81rem;white-space:nowrap}
+.ok{color:#15623c;font-weight:800}
+.fail{color:#a3291e;font-weight:800}
+.warn{color:#7e581a;font-weight:800}
+.note{border-left:4px solid #ae8750;background:#fff;padding:14px 19px;border-radius:0 11px 11px 0}
+.test-iframe{position:absolute;left:-10000px;top:0;width:1px;height:1px;visibility:hidden;pointer-events:none}
+footer{background:#092533;color:#e6efed;padding:24px clamp(16px,4vw,55px);font-size:.87rem}
+footer a{color:#efcf9b}
+@media(max-width:650px){th,td{padding:10px 7px;font-size:.85rem}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">TWOJA <span>SPRAWA</span></a><a href="/narzedzia/linki-kampanii">Generator kampanii</a></header>
+<main>
+<p>Zaplecze techniczne SuccessTree · Bezpłatne narzędzie diagnostyczne</p>
+<h1>Sprawdź stronę i formularze bez wysyłania zgłoszeń</h1>
+<p class="lead">Ten test sprawdza dostępność dziesięciu kluczowych stron, obecność formularzy w kodzie oraz uruchomienie formularza na stronie kontaktowej i SKD. Niczego nie wysyła do Web3Forms. Nie wymaga płatnego konta ani podawania danych klienta.</p>
+<section class="panel" aria-labelledby="run-title">
+<h2 id="run-title">Jednorazowy test techniczny</h2>
+<button id="run" type="button">Uruchom kontrolę</button>
+<p class="status" role="status" aria-live="polite" id="status">Test uruchamiany jest wyłącznie po kliknięciu przycisku.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Podstrona</th><th>Odpowiedź serwera</th><th>Elementy strony</th></tr></thead>
+<tbody id="results"><tr><td colspan="3">Brak wyników — uruchom kontrolę.</td></tr></tbody>
+</table></div>
+</section>
+<section class="panel" aria-labelledby="form-test-title">
+<h2 id="form-test-title">Kontrola formularzy JavaScript</h2>
+<p>Po teście sprawdzimy, czy w niewidocznej ramce można odczytać formularz z pola wyboru usługi, telefonem i przyciskiem wysyłania. W SKD numer telefonu musi być wymagany.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Test</th><th>Wynik</th><th>Opis</th></tr></thead>
+<tbody id="form-results"><tr><td colspan="3">Test nie został uruchomiony.</td></tr></tbody>
+</table></div>
+</section>
+<p class="note"><strong>Zakres:</strong> to kontrola techniczna z poziomu przeglądarki, a nie test doręczenia wiadomości. Wynik pozytywny nie potwierdza, że Web3Forms przyjął zgłoszenie lub że e-mail dotarł. Test nie naciska przycisku wysyłania, nie wypełnia danych osobowych i nie zapisuje wyników na serwerze.</p>
+</main>
+<footer><strong>Twoja Sprawa — SuccessTree OBIEGŁO WOJCIECH.</strong> Narzędzie pomocnicze, nie oficjalna witryna VOTUM. <a href="/polityka-prywatnosci">Informacje o prywatności</a></footer>
+<script>
+(()=>{
+"use strict";
+const checks=[
+["Strona główna","/"],
+["Kontakt","/kontakt"],
+["Szkody górnicze","/uslugi/szkody-gornicze"],
+["Świadczenie wspierające","/uslugi/swiadczenie-wspierajace"],
+["SKD — kredyty PLN","/kampanie/skd"],
+["Kampania — szkody","/kampanie/szkody-gornicze"],
+["Kampania — świadczenia","/kampanie/swiadczenie-wspierajace"],
+["Lubin — szkody","/lokalnie/szkody-gornicze-lubin"],
+["Polkowice — szkody","/lokalnie/szkody-gornicze-polkowice"],
+["Generator linków","/narzedzia/linki-kampanii"]
+];
+const run=document.getElementById("run"),status=document.getElementById("status");
+const output=document.getElementById("results"),formOutput=document.getElementById("form-results");
+const el=(tag,txt,cls)=>{
+ const node=document.createElement(tag);
+ if(txt!==undefined)node.textContent=String(txt);
+ if(cls)node.className=cls;
+ return node;
+};
+function row(parent,values,classes=[]){
+ const tr=document.createElement("tr");
+ values.forEach((value,i)=>tr.appendChild(el("td",value,classes[i]||"")));
+ parent.appendChild(tr);
+}
+async function checkPage(name,path){
+ try{
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),10000);
+  let response;
+  try{response=await fetch(path,{cache:"no-store",signal:controller.signal,credentials:"same-origin"});}
+  finally{clearTimeout(timeout);}
+  if(!response.ok)return[name,"HTTP "+response.status,"Strona jest niedostępna",false];
+  const type=response.headers.get("content-type")||"";
+  if(!type.includes("html"))return[name,"HTTP "+response.status,"Nieprawidłowy typ pliku",false];
+  const html=await response.text();
+  const documentNode=new DOMParser().parseFromString(html,"text/html");
+  const h1=documentNode.querySelector("h1");
+  const mount=documentNode.querySelector("[data-contact-form]");
+  const script=[...documentNode.querySelectorAll("script[src]")].some(s=>(s.getAttribute("src")||"").endsWith("/contact.js"));
+  const expected=path==="/"||path==="/kontakt"||path.startsWith("/uslugi/")||path.startsWith("/kampanie/")||path.startsWith("/lokalnie/");
+  const formOK=!expected||Boolean(mount&&script);
+  const count=h1?1:0;
+  const good=Boolean(count&&formOK);
+  return[name,"HTTP "+response.status,(count?"H1 obecny":"Brak H1")+"; "+(expected?(formOK?"formularz osadzony":"brak kodu formularza"):"strona dostępna"),good];
+ }catch(e){return[name,"Błąd połączenia",e?.name==="AbortError"?"Przekroczono 10 sekund":"Nie udało się pobrać strony",false];}
+}
+function dynamicTest(name,path,requiredPhone){
+ return new Promise(resolve=>{
+  const frame=document.createElement("iframe");
+  frame.className="test-iframe";
+  frame.tabIndex=-1;
+  frame.setAttribute("aria-hidden","true");
+  frame.title="Automatyczny test formularza — "+name;
+  let finished=false;
+  const finalize=(ok,details)=>{
+   if(finished)return;
+   finished=true;clearTimeout(timer);frame.remove();
+   resolve([name,ok?"OK":"DO SPRAWDZENIA",details,ok]);
+  };
+  const timer=setTimeout(()=>finalize(false,"Brak wyniku po 15 sekundach"),15000);
+  frame.addEventListener("load",()=>{
+   setTimeout(()=>{
+    try{
+     const doc=frame.contentDocument;
+     if(!doc){finalize(false,"Brak dostępu do ramki");return;}
+     const form=doc.querySelector("form.contact-form");
+     const service=form?.querySelector("select[required]");
+     const tel=form?.querySelector('input[type="tel"]');
+     const submit=form?.querySelector('button[type="submit"]');
+     const valid=Boolean(form&&service&&tel&&submit&&(!requiredPhone||tel.required));
+     finalize(valid,valid?(requiredPhone?"Telefon wymagany; formularz gotowy":"Pola i przycisk formularza obecne"):"Formularz nie został w pełni wyrenderowany");
+    }catch{finalize(false,"Nie udało się odczytać formularza z ramki");}
+   },400);
+  },{once:true});
+  frame.src=path;
+  document.body.appendChild(frame);
+ });
+}
+run.addEventListener("click",async()=>{
+ run.disabled=true;output.replaceChildren();formOutput.replaceChildren();
+ let passed=0;
+ try{
+  status.textContent="Sprawdzanie dostępności dziesięciu stron…";
+  const results=await Promise.all(checks.map(([name,path])=>checkPage(name,path)));
+  for(const r of results){row(output,r.slice(0,3),["",r[3]?"ok":"fail",r[3]?"ok":"fail"]);if(r[3])passed++;}
+  status.textContent="Strony: "+passed+"/"+checks.length+" dostępnych. Kontrola formularzy…";
+  const tests=[["Kontakt","/kontakt",false],["SKD — obowiązkowy telefon","/kampanie/skd",true]];
+  let goodForms=0;
+  for(const [name,path,mustPhone] of tests){
+   const r=await dynamicTest(name,path,mustPhone);
+   row(formOutput,r.slice(0,3),["",r[3]?"ok":"warn",""]);
+   if(r[3])goodForms++;
+  }
+  status.textContent="Wynik: "+passed+"/"+checks.length+" stron i "+goodForms+"/2 testy formularzy. Nie wysłano żadnego zgłoszenia.";
+ }catch{
+  status.textContent="Kontrola napotkała błąd. Nie wysłano żadnego zgłoszenia.";
+ }finally{run.disabled=false;}
+});
+})();
+</script>
+</body>
+</html>

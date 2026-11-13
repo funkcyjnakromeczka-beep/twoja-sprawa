@@ -375,3 +375,19 @@
  .premium-v2 .homepage-partner-note{grid-column:1/-1;font-size:.67rem}
 }
 @media(prefers-reduced-motion:reduce){.premium-v2 .homepage-partner-logo{transition:none}}
+
+/* Pierwsze dwie usługi: własne kolory identyfikacji niezależnie od pozycji w DOM. */
+.premium-v2 #uslugi .primary-services>.primary-card.mining-featured:first-child{
+ border-top:4px solid #dfbf88!important;
+}
+.premium-v2 #uslugi .primary-services>.primary-card.support-featured{
+ border-top:4px solid #93c9ae!important;
+}
+.premium-v2 #uslugi .primary-services>.primary-card.skd-featured{
+ border-top:4px solid #f5d49d!important;
+}
+/* Wyraźne obramowanie fokusu w obszarze CTA, także dla nawigacji klawiaturą. */
+.premium-v2 .hero-priority-grid>a:focus-visible,
+.premium-v2 .mobile-quick-nav>a:focus-visible{
+ outline:3px solid #f3d08c!important;outline-offset:4px;
+}

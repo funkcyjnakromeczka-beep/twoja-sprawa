@@ -6,6 +6,8 @@
   szkody:{phone:"+48796441345",label:"Zadzwoń do Wojciecha",number:"796 441 345"},
   swiadczenie:{phone:"+48500171531",label:"Zadzwoń do Pauliny",number:"500 171 531"},
   renty:{phone:"+48500171531",label:"Zadzwoń do Pauliny",number:"500 171 531"},
+  franki:{phone:"+48796441345",label:"Zadzwoń do Wojciecha w sprawie kredytu CHF",number:"796 441 345"},
+  przesyl:{phone:"+48796441345",label:"Zadzwoń do Wojciecha w sprawie służebności przesyłu",number:"796 441 345"},
   skd:{phone:"+48796441345",label:"Wyślij umowę do Wojciecha",number:"",email:"wojciech.obieglo@votum-ds.pl"}
  };
  const service=services[variant];
@@ -16,7 +18,7 @@
  const phone=document.createElement("a");
  phone.href=service.email?"mailto:"+service.email+"?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+"&body="+encodeURIComponent("Dzień dobry,\n\nW załączniku przesyłam umowę kredytową do analizy SKD.\nMój numer telefonu: [wpisz numer]\n\nPozdrawiam"):"tel:"+service.phone;
  phone.className="mobile-service-call";
- phone.setAttribute("aria-label",service.label+": "+service.number);
+ phone.setAttribute("aria-label",service.email?service.label+": "+service.email:service.label+": "+service.number);
  const callLabel=document.createElement("span");callLabel.textContent=service.email?"Wyślij umowę":"Zadzwoń";
  const callNumber=document.createElement("strong");callNumber.textContent=service.number;
  if(service.email){callNumber.textContent="E-mail do Wojciecha";}phone.append(callLabel,callNumber);

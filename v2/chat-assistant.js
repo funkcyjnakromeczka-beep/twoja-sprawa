@@ -108,7 +108,10 @@
   const actions=document.createElement("div");actions.className="chat-actions";
   const phone=document.createElement("a");phone.href="tel:+48796441345";phone.textContent="☎ Zadzwoń: 796 441 345";
   const contact=document.createElement("a");contact.href=base+"kontakt.html#formularz";contact.textContent="✉ Zostaw kontakt";
-  actions.append(phone,contact);
+  const emailAction=document.createElement("a");
+  emailAction.href="mailto:wojciech.obieglo@votum-ds.pl?subject="+encodeURIComponent("Zapytanie — Twoja Sprawa");
+  emailAction.textContent="✉ Napisz e-mail";
+  actions.append(phone,contact,emailAction);
   panel.append(header,content,actions);
   root.append(toggle,panel);
   document.body.append(root);
@@ -170,6 +173,16 @@
     reply.append(heading,summary,prompt,stages,answer,links,caution);
     phone.href="tel:"+topic.tel;phone.textContent="☎ Zadzwoń: "+topic.phone;
     contact.href=destination(topic);contact.textContent="✉ Zostaw kontakt";
+    // Bezpośredni e-mail do właściwej osoby — również gdy formularz Web3Forms nie działa.
+    const advisorEmail=["swiadczenie","renty"].includes(topic.key)
+      ?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";
+    const emailSubject=topic.key==="skd"?"Umowa kredytowa do analizy SKD":"Zapytanie Twoja Sprawa: "+topic.name;
+    const skdEmailBody=topic.key==="skd"
+      ?"Dzień dobry,\nProszę o wstępną analizę dołączonej pełnej umowy kredytu w PLN pod kątem SKD.\nMój numer telefonu: [wpisz numer]\nUmowę dołączę jako załącznik.":"";
+    emailAction.href="mailto:"+advisorEmail+"?subject="+encodeURIComponent(emailSubject)
+      +(skdEmailBody?"&body="+encodeURIComponent(skdEmailBody):"");
+    emailAction.textContent=topic.key==="skd"?"✉ Wyślij umowę e-mailem":"✉ Napisz e-mail";
+    emailAction.setAttribute("aria-label",topic.key==="skd"?"Otwórz e-mail do Wojciecha w sprawie przesłania pełnej umowy SKD":("Napisz do "+(["swiadczenie","renty"].includes(topic.key)?"Pauliny":"Wojciecha")+" w sprawie: "+topic.name));
   };
   for(const topic of topics){
     const btn=mk("button",topics.indexOf(topic)<2?"chat-choice-featured":"",topic.name);

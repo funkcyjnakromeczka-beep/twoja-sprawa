@@ -330,3 +330,23 @@
 .premium-v2 #kontakt .contact-alternative-links a:focus-visible{outline:3px solid #a67e41;outline-offset:2px}
 .premium-v2 #kontakt .contact-delivery-note{display:block;max-width:70ch;line-height:1.5;color:#48616c}
 @media(max-width:620px){.premium-v2 #kontakt .contact-alternative-links{display:grid;grid-template-columns:minmax(0,1fr)}.premium-v2 #kontakt .contact-alternative-links a{width:100%}}
+
+/* Trzecia ścieżka kontaktu w wersji produkcyjnej: SKD bez dublowania głównych kart. */
+.premium-v2 .hero-skd-third{
+  display:flex;align-items:center;gap:12px;max-width:740px;min-height:58px;
+  margin:14px 0 9px;padding:12px 15px;
+  border:1px solid #bf9c64;border-radius:13px;
+  background:rgba(15,43,58,.89);color:#fff6e7;
+  font-weight:800;text-decoration:none;line-height:1.4;
+  box-shadow:0 7px 24px rgba(3,21,30,.16);
+}
+.premium-v2 .hero-skd-third:hover{background:#204856;border-color:#eed1a0;color:#fff}
+.premium-v2 .hero-skd-third:focus-visible{outline:3px solid #f6d393;outline-offset:3px}
+.premium-v2 .hero-skd-third .hero-skd-third-symbol{display:flex;align-items:center;justify-content:center;flex:none;width:36px;height:36px;border-radius:9px;background:#d7b579;color:#112d3a;font-size:1.4rem}
+.premium-v2 .hero-skd-third .hero-skd-third-content{display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:2px}
+.premium-v2 .hero-skd-third .hero-skd-third-content strong{color:#fff;font-size:1rem}
+.premium-v2 .hero-skd-third .hero-skd-third-content small{font-size:.86rem;color:#e8edea;font-weight:500;line-height:1.45}
+@media(max-width:720px){
+ /* Na telefonie istnieje już pasek 3 usług; nie powtarzaj przycisku SKD. */
+ .premium-v2 .hero-skd-third{display:none}
+}

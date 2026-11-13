@@ -107,3 +107,8 @@
 .premium-v2 .homepage-video-disclosure>.video-library{margin-top:22px}
 .premium-v2 .homepage-video-disclosure>.video-links{margin-bottom:24px}
 @media(max-width:700px){.premium-v2 .homepage-video-disclosure>summary{padding:16px;min-height:56px}}
+
+/* Czytelna karta doradcy i bezpieczne zawijanie długich adresów e-mail na telefonach. */
+.premium-v2 #zespol .team-person a[href^="mailto:"]{display:block;max-width:100%;overflow-wrap:anywhere;word-break:normal;font-size:.9rem;font-weight:700;line-height:1.5;margin-top:9px}
+.premium-v2 #zespol .team-person a[href^="tel:"]{display:inline-block;min-height:38px;padding-block:7px}
+.premium-v2 #zespol .team-person a:focus-visible{outline:3px solid #b58c4f;outline-offset:4px}

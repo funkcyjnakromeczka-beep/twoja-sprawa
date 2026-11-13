@@ -26,7 +26,7 @@ Mechanizm usuwania prefiksu/rozszerzenia i ustawienia projektu Cloudflare trzeba
 - `v2/kampanie/skd.html` — kontakt do analizy pełnej umowy kredytu PLN
 - `v2/attribution.js` — bezcookiesowe przenoszenie wyłącznie dozwolonych UTM przy klikaniu linków wewnętrznych; podłączone do kluczowych podstron
 - `v2/narzedzia/linki-kampanii.html` + `v2/campaign-links.js` — bezpłatny generator linków UTM i tekstów do publikacji (6 usług, w tym SKD jako trzecia)
-- `v2/narzedzia/test-formularzy.html` — ręcznie uruchamiana kontrola dostępności dziesięciu stron i renderowania dwóch formularzy, bez wysyłania danych i bez płatnych usług
+- `v2/narzedzia/test-formularzy.html` — ręcznie uruchamiana kontrola 10 podstron, 3 plików indeksowania (`robots.txt`, `sitemap.xml`, `llms.txt`) i renderowania 2 formularzy, bez wysyłania danych i bez płatnych usług
 - `v2/local-mining.css`, `v2/lokalnie/` — lokalne strony Lubina i Polkowic
 - `v2/_headers` — konserwatywne nagłówki bezpieczeństwa na ścieżce publikacji
 - `v2/404.html` — wersja strony błędu powiązana z publiczną witryną
@@ -51,9 +51,15 @@ Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono
 2. Sprawdź `https://twoja-sprawa.pages.dev/kontakt` oraz `https://twoja-sprawa.pages.dev/kampanie/skd`.
 3. Sprawdź `https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze` oraz `https://twoja-sprawa.pages.dev/uslugi/swiadczenie-wspierajace`.
 4. Sprawdź aktualną mapę `https://twoja-sprawa.pages.dev/sitemap.xml` — publiczna mapa jest generowana inaczej niż starszy plik `sitemap.xml` w katalogu repozytorium.
-5. Otwórz `https://twoja-sprawa.pages.dev/narzedzia/test-formularzy` i kliknij „Uruchom kontrolę” — sprawdza 10 stron i dwa formularze bez przesyłania danych.
+5. Otwórz `https://twoja-sprawa.pages.dev/narzedzia/test-formularzy` i kliknij „Uruchom kontrolę” — sprawdza 10 stron, 3 pliki SEO i 2 formularze bez wysyłania danych.
 6. Przetestuj działanie formularza w przeglądarce i potwierdź dostarczenie testowego zgłoszenia dopiero po uzgodnieniu procedury, aby nie generować fałszywych leadów.
 7. Jeżeli formularz nie działa, statyczny kontakt wewnątrz `[data-contact-form]` powinien pozostać widoczny.
+
+## Przekazywanie zgłoszeń i podglądy linków
+
+Formularze Web3Forms korzystają z jednego publicznego identyfikatora formularza. O tym, do której rzeczywistej skrzynki trafiają wiadomości, decyduje konfiguracja Web3Forms. Pole `advisor` / `advisor_email` i tytuł zgłoszenia pomagają w ręcznym przypisaniu sprawy: Wojciech — szkody górnicze, SKD i pozostałe usługi; Paulina — świadczenia wspierające i renty. Nie oznacza to automatycznego przekierowania na dwie skrzynki. W razie błędu formularza link mailto przygotowuje wiadomość bezpośrednio do wskazanego doradcy.
+
+Strona główna oraz trzy główne podstrony mają jawne `og:url` z kanonicznym adresem publicznym i `og:image` ze zdjęciem właściwej osoby. Wymiary obrazów sprawdzone w plikach JPEG: Wojciech 1080 × 1708 px, Paulina 1056 × 1489 px. Ostateczny wygląd podglądu jest kontrolowany również przez Facebook, komunikatory i inne serwisy i nie jest gwarantowany przez samo dodanie metadanych.
 
 ## Zasady projektu
 

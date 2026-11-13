@@ -112,3 +112,23 @@
 .premium-v2 #zespol .team-person a[href^="mailto:"]{display:block;max-width:100%;overflow-wrap:anywhere;word-break:normal;font-size:.9rem;font-weight:700;line-height:1.5;margin-top:9px}
 .premium-v2 #zespol .team-person a[href^="tel:"]{display:inline-block;min-height:38px;padding-block:7px}
 .premium-v2 #zespol .team-person a:focus-visible{outline:3px solid #b58c4f;outline-offset:4px}
+
+/* Trzeci priorytet na ekranie startowym: SKD. Dwie usługi główne pozostają wyraźniejsze. */
+.premium-v2 .hero-glamour .hero-primary-ctas .hero-skd-cta{
+  background:rgba(15,48,65,.8);border:1px solid #cfaa6b;
+  color:#fff6e7;font-weight:760;box-shadow:inset 0 0 0 1px rgba(207,170,107,.15);
+}
+.premium-v2 .hero-glamour .hero-primary-ctas .hero-skd-cta:hover{
+  background:#264a59;border-color:#f2d29a;color:#fff;
+}
+.premium-v2 .hero-glamour .hero-all-services{
+  display:inline-flex;align-items:center;gap:7px;min-height:44px;
+  margin-top:-12px;padding:7px 2px;color:#ecf2f1;
+  text-decoration:underline;text-underline-offset:4px;font-size:.9rem;font-weight:700;
+}
+.premium-v2 .hero-glamour .hero-all-services:focus-visible{outline:3px solid #f0d4a2;outline-offset:4px}
+@media(max-width:700px){
+  .premium-v2 .hero-glamour .hero-primary-ctas{gap:9px;margin-bottom:14px}
+  .premium-v2 .hero-glamour .hero-primary-ctas .btn{width:100%;min-height:48px}
+  .premium-v2 .hero-glamour .hero-all-services{margin-top:0}
+}

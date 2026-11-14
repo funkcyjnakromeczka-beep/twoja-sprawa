@@ -346,8 +346,8 @@
 .premium-v2 .hero-skd-third .hero-skd-third-content{display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:2px}
 .premium-v2 .hero-skd-third .hero-skd-third-content strong{color:#fff;font-size:1rem}
 .premium-v2 .hero-skd-third .hero-skd-third-content small{font-size:.86rem;color:#e8edea;font-weight:500;line-height:1.45}
-@media(max-width:720px){
- /* Na telefonie istnieje już pasek 3 usług; nie powtarzaj przycisku SKD. */
+@media(max-width:760px){
+ /* Mobilny pasek 3 usług obejmuje także wąskie tablety. */
  .premium-v2 .hero-skd-third{display:none}
 }
 
@@ -394,9 +394,9 @@
 
 
 /* Mobilna hierarchia 2026-11: jedno, niepowielone menu trzech głównych usług. */
-@media(max-width:600px){
- /* Trzy identyczne ścieżki są już w .mobile-quick-nav tuż pod hero;
-    usuń drugą parę ogromnych przycisków i skróć przewijanie. */
+@media(max-width:760px){
+ /* Mobilna nawigacja jest widoczna do 760px; ukryj powtórzone
+    karty również na wąskich tabletach i skróć przewijanie. */
  .premium-v2 .hero-priority-grid{display:none}
  .premium-v2 .hero-glamour{padding-bottom:26px}
  .premium-v2 .mobile-quick-nav a{min-height:64px;line-height:1.3}

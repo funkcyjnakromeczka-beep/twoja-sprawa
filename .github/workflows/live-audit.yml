@@ -1,10 +1,10 @@
-name: Audyt działającej produkcji — Cloudflare Pages
+name: Audyt aktualnej produkcji — Cloudflare Pages
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/live-audit.yml'
-      - 'scripts/audit-production-live.mjs'
+      - 'scripts/audit-production-current.mjs'
   workflow_dispatch:
 concurrency:
   group: twoja-sprawa-live-audit-${{ github.ref }}
@@ -21,6 +21,6 @@ jobs:
         with:
           node-version: '22'
       - name: Składnia audytu
-        run: node --check scripts/audit-production-live.mjs
-      - name: Kontrola publicznych adresów, sitemap, JSON-LD, robots i zdjęć
-        run: node scripts/audit-production-live.mjs
+        run: node --check scripts/audit-production-current.mjs
+      - name: Sprawdz aktualny uklad, kontakty, SEO, formularze i publikacje
+        run: node scripts/audit-production-current.mjs

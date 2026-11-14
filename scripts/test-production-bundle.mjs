@@ -223,6 +223,11 @@ assert.ok(skdLanding.includes('href="tel:+48796441345"'),"SKD campaign phone mis
 assert.ok(!skdLanding.includes('href="tel:+48500171531"'),"SKD landing must not link to benefits number");
 assert.ok(skdLanding.includes('class="network-brand-bar"'),"SKD landing partner logos missing");
 assert.ok(skdLanding.includes('href="/skd-campaign.css"'),"SKD landing CSS missing");
+
+assert.ok(skdLanding.includes('class="campaign-mobile-call" href="#formularz" aria-label="Zostaw numer telefonu do analizy SKD"'),
+ "SKD mobile callback action should reach the phone form");
+assert.ok(skdLanding.includes('class="campaign-mobile-primary" href="mailto:wojciech.obieglo@votum-ds.pl'),
+ "SKD mobile contract action must still email Wojciech");
 const skdCss=await read("skd-campaign.css");
 assert.ok(skdCss.includes(".campaign-skd"),"SKD campaign styles not built");
 const leaflet=await read("start.html");

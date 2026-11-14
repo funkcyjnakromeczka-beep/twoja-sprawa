@@ -533,3 +533,14 @@ h3{line-height:1.25}
 .contact-load-fallback{margin:0;padding:17px 20px;border:1px solid #c7d8d6;border-left:4px solid #b39360;border-radius:11px;background:#fff;color:#17384b;font-size:1rem;line-height:1.65;overflow-wrap:anywhere}
 .contact-load-fallback a{color:#174b66;text-decoration:underline;text-underline-offset:3px;font-weight:800;overflow-wrap:anywhere}
 .contact-load-fallback a:focus-visible{outline:3px solid #b78c4b;outline-offset:3px}
+
+/* CONTACT DIRECT FALLBACK 2026 — telefon i e-mail nie wymagają działania Web3Forms. */
+.contact-form .contact-direct-alternatives{border:1px solid #b8c9cf;border-radius:12px;background:#f1f6f6;padding:11px 14px;margin-top:5px;min-width:0}
+.contact-form .contact-direct-alternatives summary{color:#173f50;font-weight:800;line-height:1.5;cursor:pointer;min-height:42px;display:list-item;align-content:center}
+.contact-form .contact-direct-alternatives summary:focus-visible{outline:3px solid #c49850;outline-offset:4px;border-radius:4px}
+.contact-form .contact-direct-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:10px 0 4px}
+.contact-form .contact-direct-actions a{display:flex;align-items:center;justify-content:center;min-height:46px;padding:10px 12px;border-radius:9px;background:#173f50;color:#fff!important;text-align:center;line-height:1.4;font-weight:750;text-decoration:none;overflow-wrap:anywhere}
+.contact-form .contact-direct-actions .contact-direct-email{background:#e4edeb;color:#163c36!important;border:1px solid #9fbbb2}
+.contact-form .contact-direct-actions a:focus-visible{outline:3px solid #c49850;outline-offset:3px}
+@media(max-width:550px){.contact-form .contact-direct-actions{grid-template-columns:1fr}}
+@media print{.contact-form .contact-direct-alternatives{display:none!important}}

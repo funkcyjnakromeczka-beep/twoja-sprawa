@@ -131,6 +131,11 @@ must(data["/narzedzia/test-formularzy"].includes('["Szkody — zmiana z karty","
 must(data["/narzedzia/test-formularzy"].includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]'),
  "Publiczna diagnostyka nie kontroluje formularza swiadczenia wspierajacego");
 
+must(data["/narzedzia/test-formularzy"].includes('["SKD — walidacja numeru","/kampanie/skd",true,"","","skd-phone"]')&&
+     data["/narzedzia/test-formularzy"].includes('["Szkody — e-mail bez telefonu","/kampanie/szkody-gornicze",false,"","","email-only"]'),
+ "Publiczna diagnostyka nie zawiera testow numeru SKD i formularza bez telefonu");
+
+
 must(contact.includes('routingNote.className="contact-routing-note"')&&
      contact.includes('directMail.className="contact-advisor-direct-email"')&&
      contact.includes("advisor_email jest metadana"),

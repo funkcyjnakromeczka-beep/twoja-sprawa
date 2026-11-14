@@ -1,0 +1,34 @@
+name: Kontrola jakosci Twoja Sprawa
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'v2/**'
+      - 'scripts/validate-site.js'
+      - '.github/workflows/validate-site.yml'
+  pull_request:
+    paths:
+      - 'v2/**'
+      - 'scripts/validate-site.js'
+      - '.github/workflows/validate-site.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Walidacja plikow i linkow
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+      - name: Wybierz Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sprawdz skladnie JS i integralnosc strony
+        run: node scripts/validate-site.js

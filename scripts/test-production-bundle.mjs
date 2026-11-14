@@ -124,6 +124,11 @@ assert.ok(skdNavigator.includes('service:"kredyty-pln.html",landing:"kampanie/sk
  "Navigator must offer dedicated SKD campaign form");
 assert.ok(skdChatbot.includes('form:"kampanie/skd.html"+params,alias:"skd"'),
  "Chatbot must offer dedicated SKD campaign form");
+const homeFlowCss=await read("home-flow.css");
+assert.ok(homeFlowCss.includes("Mobilna hierarchia 2026-11: jedno, niepowielone menu trzech głównych usług. */\n@media(max-width:760px)"),
+ "Mobile hero cards must not duplicate quick navigation on 601-760px screens");
+assert.ok(homeFlowCss.includes(".premium-v2 .hero-skd-third{display:none}"),
+ "SKD hero CTA must not duplicate its mobile nav button");
 const skdLanding=await read("kampanie/skd.html");
 assert.ok(skdLanding.includes('src="/contact.js" data-service="Kredyt w PLN / SKD"'),"SKD lead form must be selected");
 assert.ok(skdLanding.includes("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD contract email missing");

@@ -80,6 +80,15 @@ Nie znaleziono standardowych plików `.github/workflows/deploy.yml`, `cloudflare
 - Zmiany zapisane w GitHub to **nie potwierdzenie publikacji** w Cloudflare Pages. Audyt publicznej produkcji jest niezależny od testów `dist/`. Do naprawy rozbieżności potrzebne jest sprawdzenie panelu Cloudflare i rzeczywistej konfiguracji GitHub/Direct Upload.
 - Audyt uruchamia się ręcznie lub po zmianie jego workflow/skryptu. Nie należy zakładać, że audyt automatycznie wykonuje wdrożenie.
 
+## Usprawnienia ścieżek użytkownika (14 listopada 2026 r.)
+
+- W kreatorze usług (`v2/service-navigator.js`) i chatbotcie (`v2/chat-assistant.js`) SKD prowadzi do `/kampanie/skd#formularz`, a nie do ogólnej strony kontaktowej. Dedykowana kampania zawiera możliwość przesłania pełnej umowy na `wojciech.obieglo@votum-ds.pl` i podania telefonu. Wersja źródłowa używa ścieżki `/v2/kampanie/skd.html`, przetwarzanej w buildzie.
+- Na ekranach o szerokości do 760 px wielokrotne przyciski w hero są schowane na rzecz jednego widocznego paska mobilnego dla szkód, świadczenia i SKD (`v2/home-flow.css`).
+- Dane strukturalne `Service.areaServed`: szkody górnicze — Lubin, Polkowice i okolice; lokalne strony — odpowiednio Lubin lub Polkowice; świadczenia wspierające — Polska. Zasięg w Schema.org ma odpowiadać rzeczywistej ofercie, nie udawać dostępności wszędzie.
+- `scripts/validate-site.js` i `scripts/test-production-bundle.mjs` zawierają regresję dla nowych ścieżek SKD i zasięgu SEO. `scripts/audit-production-current.mjs` weryfikuje także publiczną wersję obu funkcji i układu mobilnego, bez wysyłania formularzy.
+- `.github/workflows/release-candidate.yml` uruchamia kontrolę także po zmianie `scripts/network-brand.mjs`. Nadal jest to **budowanie i testowanie bez wdrożenia**.
+- Odczyt produkcyjnej domeny nie był możliwy przez dostępne kanały HTTP w tej sesji. Zatwierdzona zmiana w GitHub nie oznacza weryfikacji strony Cloudflare Pages.
+
 ## Obecne workflow GitHub i lokalny proces wydania
 
 W repozytorium działają już niezależne zadania:

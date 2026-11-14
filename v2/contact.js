@@ -70,6 +70,16 @@
    directMail.href="mailto:"+advisorEmail+"?subject="+encodeURIComponent(isSKD?"Umowa kredytowa do analizy SKD":"Zapytanie Twoja Sprawa: "+select.value)
     +(isSKD?"&body="+encodeURIComponent("Dzień dobry,\nProszę o wstępną analizę pełnej umowy kredytu w PLN pod kątem SKD.\nMój numer telefonu: [wpisz numer]\nUmowę dołączę jako załącznik."):"");
    directMail.textContent=paulina?"Napisz bezpośrednio do Pauliny":isSKD?"Wyślij umowę bezpośrednio do Wojciecha":"Napisz bezpośrednio do Wojciecha";
+   if(isSKD){
+    // Wpisany numer wstawiamy do kopii roboczej dopiero po kliknięciu przez klienta.
+    // Nie przenosimy numeru do adresu URL strony ani do śledzenia.
+    directMail.addEventListener("click",()=>{
+     const entered=phone.value.trim();
+     const callbackNumber=entered&&validPhoneNumber(entered)?entered:"[wpisz numer]";
+     directMail.href="mailto:"+advisorEmail+"?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+
+      "&body="+encodeURIComponent("Dzień dobry,\nProszę o wstępną analizę pełnej umowy kredytu w PLN pod kątem SKD.\nMój numer telefonu: "+callbackNumber+"\nUmowę dołączę jako załącznik.");
+    });
+   }
    advisor.append(title,info,call,directMail);
    if(isSKD){
     const tip=document.createElement("span");
@@ -336,7 +346,7 @@
     const choice=trigger.getAttribute("data-damage-option");
     if(![...damageArea.children].some(option=>option.value===choice))return;
     if(select.value!=="Szkody górnicze"){
-     select.value="Szkody górnicze";updateAdvisor();updatePeople();updateGuide();updateStage();updateContextNotice();syncContactPreference();
+     select.value="Szkody górnicze";updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateContextNotice();syncContactPreference();
     }
     updateDamageArea();damageArea.value=choice;syncCityQuick();
    });
@@ -351,7 +361,7 @@
     if(!chosen)return;
     if(select.value!=="Świadczenie wspierające"){
      select.value="Świadczenie wspierające";
-     updateAdvisor();updatePeople();updateGuide();updateStage();updateDamageArea();syncContactPreference();
+     updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();syncContactPreference();
     }
     syncCityQuick();
     if(stageWrap.hidden)return;

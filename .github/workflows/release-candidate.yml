@@ -39,6 +39,8 @@ jobs:
         run: |
           node scripts/build.mjs
           node scripts/test-production-bundle.mjs
+      - name: Identyfikator zbudowanej wersji
+        run: cat dist/release-info.json
       - name: Zapisz tymczasowy pakiet wydania do pobrania
         uses: actions/upload-artifact@v4
         with:

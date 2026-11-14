@@ -5,6 +5,7 @@ on:
     paths:
       - 'v2/**'
       - 'scripts/build.mjs'
+      - 'scripts/network-brand.mjs'
       - 'scripts/public-routes.mjs'
       - 'scripts/seo-policy.mjs'
       - 'scripts/test-production-bundle.mjs'

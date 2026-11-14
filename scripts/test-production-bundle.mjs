@@ -138,6 +138,15 @@ for(const [page,photo] of [
   assert.ok(html.includes('<meta property="og:image:alt" content="'),"missing accessible preview label: "+page);
 }
 
+
+const contactFormJS=await read("contact.js");
+assert.ok(contactFormJS.includes("let refreshDirectContact=()=>{};")&&
+ contactFormJS.includes("refreshDirectContact=updateDirect;updateDirect();")&&
+ contactFormJS.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();"),
+ "After submission and reset, direct contact must point to the currently selected adviser");
+assert.ok(contactFormJS.includes("phoneFieldLabel.textContent=isSKD||prefer")&&
+ contactFormJS.includes('emailFieldLabel.textContent=prefer==="E-mail"'),
+ "Phone/email required-label hints must update with selected service and contact preference");
 const skdNavigator=await read("service-navigator.js");
 const skdChatbot=await read("chat-assistant.js");
 assert.ok(skdNavigator.includes('service:"kredyty-pln.html",landing:"kampanie/skd.html"'),

@@ -23,6 +23,9 @@ for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swia
  assert.ok(!sitemap.includes("<loc>"+origin+route+"</loc>"),"nonindex route leaked into sitemap: "+route);
 }
 assert.ok(!headers.includes("X-Robots-Tag: noindex"),"preview response headers leaked");
+assert.ok(headers.includes("X-Frame-Options: SAMEORIGIN"),"Own diagnostics must be allowed to frame same-origin forms");
+assert.ok(headers.includes("Content-Security-Policy: frame-ancestors 'self'"),"External sites must not frame the contact forms");
+assert.ok(!headers.includes("X-Frame-Options: DENY"),"DENY would block same-origin form diagnostics");
 for(const path of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","uslugi/kredyty-frankowe.html","uslugi/kredyty-pln.html","wiedza/index.html","faq.html","plan-dzialania.html"]){
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="index,follow"'),"still noindex: "+path);

@@ -278,7 +278,9 @@ body:has(.subhero) .article .contact-form a{color:#694615}
 /* Mobile conversion bar: unobtrusive on desktop, visible on smaller screens. */
 .campaign-mobile-actions{display:none}
 @media(max-width:700px){
-.campaign-page{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+.campaign-page{padding-bottom:0}
+.campaign-page:has(.campaign-mobile-actions:not([hidden])){padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+.campaign-mobile-actions[hidden]{display:none!important}
 .campaign-mobile-actions{position:fixed;z-index:80;bottom:0;left:0;right:0;display:grid;grid-template-columns:1.35fr 1fr;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:#112c3c;border-top:1px solid #b89a60;box-shadow:0 -8px 30px rgba(0,0,0,.24)}
 .campaign-mobile-actions a{min-height:45px;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:10px;padding:9px;font-weight:750;text-decoration:none;font-size:.93rem}
 .campaign-mobile-primary{background:#e7c582;color:#152b3b!important}

@@ -2,6 +2,7 @@
 /** Read-only smoke test for a local production candidate. Does NOT deploy. */
 import assert from "node:assert/strict";
 import {readFile,stat,readdir} from "node:fs/promises";
+import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 const origin="https://twoja-sprawa.pages.dev";
 const read=path=>readFile("dist/"+path,"utf8");
 const home=await read("index.html");
@@ -160,6 +161,8 @@ assert.ok(!miningPage.includes('"@type":"FAQPage"'),"FAQ schema should not be du
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");
 const urlTags=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
-assert.ok(urlTags.length>=25,"too few indexed pages");
+const expectedIndexable=await collectIndexableRoutes("v2");
+assert.ok(urlTags.length>=15,"too few indexed pages");
+assert.deepEqual(urlTags.map(uri=>new URL(uri).pathname).sort(),expectedIndexable,"sitemap does not match approved SEO policy");
 assert.equal(new Set(urlTags).size,urlTags.length,"duplicate sitemap URLs");
 console.log("PRODUCTION_CANDIDATE_OK:",urlTags.length,"indexable URLs; robots, sitemap, canonical, schemas, local portraits, search and exclusions valid. NOT DEPLOYED.");

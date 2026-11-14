@@ -37,7 +37,7 @@ for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampani
 // Build-level regression: the UTM module must never attach twice.
 for(const target of ["index.html","kontakt.html","faq.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","kampanie/skd.html"]){
  const html=await read(target);
- const modules=[...html.matchAll(/<script\\b[^>]*\\bsrc="\\/attribution\\.js"/g)];
+ const modules=[...html.matchAll(/<script\b[^>]*\bsrc="\/attribution\.js"/g)];
  assert.equal(modules.length,1,"Duplicated or missing campaign attribution: "+target);
 }
 for(const target of [

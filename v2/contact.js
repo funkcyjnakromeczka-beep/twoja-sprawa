@@ -259,7 +259,8 @@
     const paulina=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value);
     const person=paulina?"Pauliny":"Wojciecha";
     directCall.href=paulina?"tel:+48500171531":"tel:+48796441345";
-    directCall.textContent="Zadzwoń do "+person+": "+(paulina?"500 171 531":"796 441 345");
+    directCall.textContent="Zadzwoń: "+(paulina?"500 171 531":"796 441 345");
+    directCall.setAttribute("aria-label","Zadzwoń do "+person+": "+(paulina?"500 171 531":"796 441 345"));
     directEmail.href="mailto:"+(paulina?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl")+"?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+(select.value||"Wstępna rozmowa"));
     directEmail.textContent="Napisz do "+person+" e-mail";
    };

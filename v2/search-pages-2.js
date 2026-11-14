@@ -11,7 +11,7 @@ window.TwojaSprawaSearchPages2=[
  {
   "id": "page:v2/uslugi/swiadczenie-wspierajace.html",
   "href": "/v2/uslugi/swiadczenie-wspierajace.html",
-  "title": "Świadczenie wspierające — pomoc od pierwszego zgłoszenia",
+  "title": "Świadczenie wspierające: WZON i ZUS",
   "description": "Pomoc w uporządkowaniu dokumentów do WZON i ZUS oraz analizie decyzji dotyczącej potrzeby wsparcia. Poznaj etapy postępowania i zgłoś swoją sprawę.",
   "category": "swiadczenie",
   "keywords": "Świadczenie wspierające — pomoc od pierwszego zgłoszenia v2 uslugi swiadczenie wspierajace html Swiadczenie Wspierajace"
@@ -19,8 +19,8 @@ window.TwojaSprawaSearchPages2=[
  {
   "id": "page:v2/uslugi/szkody-gornicze.html",
   "href": "/v2/uslugi/szkody-gornicze.html",
-  "title": "Szkody górnicze w Lubinie, Polkowicach i okolicach",
-  "description": "Szkody górnicze w gminie Lubin i gminie Polkowice: dojeżdżamy do klientów, analizujemy pęknięcia, elewacje i kostkę. Wstępna opłata 1 zł i success fee według umowy.",
+  "title": "Szkody górnicze Lubin i Polkowice",
+  "description": "Pęknięcia ścian, elewacji lub nierówna kostka w Lubinie i Polkowicach? Sprawdź możliwe roszczenia za szkody górnicze. Kontakt: 796 441 345.",
   "category": "szkody",
   "keywords": "Szkody górnicze w Lubinie, Polkowicach i okolicach v2 uslugi szkody gornicze html Szkody Gornicze"
  },

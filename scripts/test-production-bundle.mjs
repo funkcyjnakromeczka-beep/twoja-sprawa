@@ -18,6 +18,13 @@ const expectedCommit=process.env.CF_PAGES_COMMIT_SHA||process.env.GITHUB_SHA;
 if(expectedCommit)assert.equal(releaseInfo.commit,expectedCommit.toLowerCase(),
  "Release fingerprint does not match CI commit");
 const home=await read("index.html");
+
+const stickyCtaStyles=await read("mobile-service-cta.css");
+assert.ok(stickyCtaStyles.includes('body:has(.mobile-service-cta:not([hidden])){padding-bottom:'),
+ "Hidden mobile CTA must not reserve bottom space");
+assert.ok(stickyCtaStyles.includes('body.premium-subpage:has(.mobile-service-cta:not([hidden])) .chat-assistant'),
+ "Chatbot bottom offset must follow the visible mobile CTA");
+
 assert.equal((home.match(/class="network-brand-bar"/g)||[]).length,1,"Production homepage must show one sticky partner bar");
 assert.ok(!home.includes('class="homepage-partner-strip"'),"Duplicate source partner bar leaked into production homepage");
 // Search-engine metadata must match the direct mailboxes displayed to clients.

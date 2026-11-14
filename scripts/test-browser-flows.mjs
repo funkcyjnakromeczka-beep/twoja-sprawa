@@ -134,6 +134,39 @@ try{
  assert.equal(errors.length,0,"Browser errors after mobile navigation: "+errors.join("; "));
  console.log("PASS: mobile sticky call buttons point to Wojciech and Paulina as intended.");
 
+ // Campaign landing pages have their own (different) sticky contact buttons.
+ // They must remain usable after scrolling, but disappear when the form appears.
+ for(const [path,phoneNumber,isSKD] of [
+  ["/kampanie/szkody-gornicze","+48796441345",false],
+  ["/kampanie/swiadczenie-wspierajace","+48500171531",false],
+  ["/kampanie/skd","+48796441345",true]
+ ]){
+  await page.goto(origin+path,{waitUntil:"domcontentloaded",timeout:40000});
+  const bar=page.locator("aside.campaign-mobile-actions");
+  assert.equal(await bar.count(),1,"Campaign must have exactly one mobile bar: "+path);
+  const links=bar.locator("a");
+  assert.equal(await links.count(),2,"Expected 2 campaign actions: "+path);
+  assert.equal(await bar.locator("a.campaign-mobile-call").getAttribute("href"),
+   "tel:"+phoneNumber,"Wrong campaign phone contact: "+path);
+  const primary=await bar.locator("a.campaign-mobile-primary").getAttribute("href");
+  assert.ok(isSKD?primary?.startsWith("mailto:wojciech.obieglo@votum-ds.pl"):
+   primary==="#formularz","Wrong first campaign action: "+path);
+  // The form can be long on mobile; hide the fixed bar when the form is in view.
+  await page.locator("#formularz").scrollIntoViewIfNeeded();
+  await bar.waitFor({state:"hidden",timeout:7000});
+  // Do not cover text fields even after the user taps in the middle of the form.
+  await page.locator("#formularz input[autocomplete='given-name']").focus();
+  assert.equal(await bar.isVisible(),false,"Bar covers focused input on "+path);
+  // Once the user moves beyond the form, the bar is available again.
+  await page.evaluate(()=>{document.activeElement?.blur?.();window.scrollTo(0,document.body.scrollHeight);});
+  await bar.waitFor({state:"visible",timeout:7000});
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  assert.ok(overflow<=2,"Campaign creates horizontal overflow "+overflow+"px on "+path);
+ }
+ assert.equal(errors.length,0,"Browser errors in campaign mobile flows: "+errors.join("; "));
+ console.log("PASS: three mobile campaign bars hide at form, reappear afterward and retain correct adviser links.");
+
+
 }finally{
  await browser.close();
 }

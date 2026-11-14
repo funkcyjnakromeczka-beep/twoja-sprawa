@@ -130,6 +130,9 @@ must(contact.includes("api.web3forms.com/submit")&&contact.includes("if(sending)
 must(contact.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();")&&
      contact.includes("refreshDirectContact=updateDirect;updateDirect();"),
   "Po wyslaniu formularza dane doradcy w awaryjnym kontakcie sa nieaktualne");
+must(contact.includes("updateDamageArea();damageArea.value=choice;syncCityQuick();")&&
+     contact.includes("syncCityQuick();\n    if(stageWrap.hidden)return;"),
+  "Karty kampanii nie aktualizuja wyboru miejscowosci");
 must(contact.includes("phoneFieldLabel.textContent=isSKD||prefer")&&
      contact.includes('emailFieldLabel.textContent=prefer==="E-mail"'),
   "Brak komunikacji wymaganych danych kontaktowych przy zmianie uslugi");

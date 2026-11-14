@@ -196,6 +196,24 @@ assert.ok(homeFlowCss.includes("@media(max-width:420px)")&&
  "On narrow phones SKD must remain visible, readable and third");
 assert.ok(homeFlowCss.includes(".premium-v2 .hero-skd-third{display:none}"),
  "SKD hero CTA must not duplicate its mobile nav button");
+
+const campaignQuickBar=await read("campaign-mobile-actions.js");
+assert.ok(campaignQuickBar.includes('const formHasFocus=formRegion.contains(document.activeElement);')&&
+ campaignQuickBar.includes('bar.hidden=overlapsForm||formHasFocus;'),
+ "Campaign bottom CTA must hide when the contact form is visible or focused");
+const campaignStyles=await read("styles.css");
+assert.ok(campaignStyles.includes(".campaign-mobile-actions[hidden]{display:none!important}")&&
+ campaignStyles.includes(".campaign-page:has(.campaign-mobile-actions:not([hidden]))"),
+ "Hidden campaign bar must not leave extra mobile bottom space");
+for(const path of [
+ "kampanie/szkody-gornicze.html",
+ "kampanie/swiadczenie-wspierajace.html",
+ "kampanie/skd.html"
+]){
+ const html=await read(path);
+ assert.ok(html.includes('<script src="/campaign-mobile-actions.js" defer></script>'),
+  "Campaign missing its mobile quick bar visibility controller: "+path);
+}
 const skdLanding=await read("kampanie/skd.html");
 assert.ok(skdLanding.includes('src="/contact.js" data-service="Kredyt w PLN / SKD"'),"SKD lead form must be selected");
 assert.ok(skdLanding.includes("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD contract email missing");

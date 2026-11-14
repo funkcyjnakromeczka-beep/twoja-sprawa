@@ -150,6 +150,23 @@ if(!diagnostic.includes('["SKD — walidacja numeru","/kampanie/skd",true,"","",
    !diagnostic.includes('const acceptsValid=tel.checkValidity();')||
    !diagnostic.includes('const good=!tel.required&&tel.checkValidity()&&email.checkValidity();'))
  warn("Diagnostyka: brak walidacji numeru SKD lub sprawy z samym adresem e-mail");
+
+const campaignQuickBar=read("v2/campaign-mobile-actions.js");
+if(!campaignQuickBar.includes('const formHasFocus=formRegion.contains(document.activeElement);')||
+   !campaignQuickBar.includes('bar.hidden=overlapsForm||formHasFocus;'))
+ warn("Kampanie: dolny pasek kontaktu może zasłaniać aktywny formularz");
+const campaignStyles=read("v2/styles.css");
+if(!campaignStyles.includes(".campaign-mobile-actions[hidden]{display:none!important}")||
+   !campaignStyles.includes(".campaign-page:has(.campaign-mobile-actions:not([hidden]))"))
+ warn("Kampanie: dolny pasek kontaktowy nie zwalnia miejsca, gdy jest ukryty");
+for(const path of [
+ "v2/kampanie/szkody-gornicze.html",
+ "v2/kampanie/swiadczenie-wspierajace.html",
+ "v2/kampanie/skd.html"
+]){
+ if(!read(path).includes('<script src="/v2/campaign-mobile-actions.js" defer></script>'))
+  warn(path+": brak kontrolera mobilnego paska kontaktowego");
+}
 const contact = read("v2/contact.js");
 if(!contact.includes('isSKD||prefer==="Telefon"'))
  warn("Formularz: brak wymogu telefonu dla SKD");

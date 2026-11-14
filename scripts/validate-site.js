@@ -156,6 +156,15 @@ if(!contact.includes("updateDamageArea();damageArea.value=choice;syncCityQuick()
 if(!contact.includes("phoneFieldLabel.textContent=isSKD||prefer")||
    !contact.includes('emailFieldLabel.textContent=prefer==="E-mail"'))
  warn("Formularz: brak aktualizacji etykiet wymaganych pól telefonu i e-maila");
+
+if(!contact.includes('routingNote.className="contact-routing-note"')||
+   !contact.includes('directMail.className="contact-advisor-direct-email"')||
+   !contact.includes("advisor_email jest metadana")||
+   !contact.includes("nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy"))
+ warn("Formularz: myląca informacja o bezpośrednim doręczeniu do doradcy zamiast na skrzynkę Web3Forms");
+const contactStyles=read("v2/styles.css");
+if(!contactStyles.includes(".contact-advisor .contact-routing-note"))
+ warn("Formularz: brakuje czytelnego opisu sposobu kierowania wiadomości");
 if(!contact.includes("api.web3forms.com/submit"))
  warn("Formularz: brak połączenia z aktualnym operatorem zgłoszeń");
 

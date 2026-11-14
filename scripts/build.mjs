@@ -103,7 +103,7 @@ const structured = (route,canonical,title,markup) => {
       "@type":"Service","@id":canonical+"#service",
       name:title.split("|")[0].trim().replace(/\\s*[—–-]\\s*Twoja Sprawa.*$/,""),
       provider:{"@id":organization["@id"]},
-      areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):"Polska",
+      areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):route.includes("szkody-gornicze")?"Lubin, Polkowice i okolice":"Polska",
       url:canonical,
       serviceType:route.includes("swiadczenie")?"Wsparcie w sprawach świadczenia wspierającego":route.includes("szkody-gornicze")?"Wstępna analiza szkód górniczych":route.includes("kredyty-frankowe")?"Analiza umów kredytów CHF i możliwych rozliczeń z bankiem":route.includes("kredyty-pln")?"Analiza kredytu konsumenckiego pod kątem Sankcji Kredytu Darmowego":"Wstępny kontakt i analiza sprawy"
     });

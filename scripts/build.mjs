@@ -151,6 +151,23 @@ function upsertSocialMetadata(markup,route,origin){
   return markup;
 }
 
+// Source homepage has an older agency Organization/WebSite JSON-LD graph.
+// Keep its visible FAQ schema, but generate the agency graph once with the
+// verified per-advisor contacts below. This avoids two Organization nodes
+// with the same @id and different contact information.
+function stripSourceHomeAgencySchema(markup,rel){
+ if(rel!=="index.html")return markup;
+ return markup.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,(tag,raw)=>{
+  let parsed;
+  try{parsed=JSON.parse(raw);}catch{return tag;}
+  const graph=parsed?.["@graph"];
+  if(!Array.isArray(graph)||graph.length!==2)return tag;
+  const agency=graph.find(item=>item["@type"]==="Organization");
+  const website=graph.find(item=>item["@type"]==="WebSite");
+  if(agency?.name!=="SuccessTree OBIEGŁO WOJCIECH"||website?.name!=="Twoja Sprawa")return tag;
+  return "";
+ });
+}
 async function walk(dir){
   for(const entry of await readdir(dir,{withFileTypes:true})){
     const absolute=join(dir,entry.name);
@@ -159,7 +176,7 @@ async function walk(dir){
     const target=join(dest,rel);
     await mkdir(dirname(target),{recursive:true});
     if(entry.name.endsWith(".html")){
-      let html=withNetworkBrand(await readFile(absolute,"utf8"));
+      let html=stripSourceHomeAgencySchema(withNetworkBrand(await readFile(absolute,"utf8")),rel);
       const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
       const publicRoute=toPublicRoute(route); // Cloudflare Pages maps *.html to extensionless URLs.
       const canonical=origin+publicRoute;

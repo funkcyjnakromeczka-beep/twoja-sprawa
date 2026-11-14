@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/contact-alternatives-browser.yml'
+      - 'v2/contact.js'
+      - 'v2/styles.css'
+      - 'scripts/check-contact-alternatives-browser.mjs'
   workflow_dispatch:
 
 permissions:

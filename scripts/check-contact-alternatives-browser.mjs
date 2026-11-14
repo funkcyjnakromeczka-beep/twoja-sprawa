@@ -43,6 +43,28 @@ try {
  await select.selectOption("Kredyt w PLN / SKD");
  assert.equal(await details.locator(".contact-direct-call").getAttribute("href"),"tel:+48796441345");
  assert.ok((await details.locator(".contact-direct-email").getAttribute("href")).startsWith("mailto:wojciech.obieglo@votum-ds.pl?subject="));
+
+ // Real mobile-browser check without JavaScript: static fallback must remain visible.
+ const noJs=await browser.newContext({viewport:{width:390,height:844},locale:"pl-PL",javaScriptEnabled:false});
+ const noJsPage=await noJs.newPage();
+ for(const item of [
+  {path:"/uslugi/szkody-gornicze",phone:"tel:+48796441345",email:"wojciech.obieglo@votum-ds.pl"},
+  {path:"/uslugi/swiadczenie-wspierajace",phone:"tel:+48500171531",email:"paulina.chandrala@votum-ds.pl"},
+  {path:"/uslugi/renty-powypadkowe",phone:"tel:+48500171531",email:"paulina.chandrala@votum-ds.pl"},
+  {path:"/uslugi/kredyty-frankowe",phone:"tel:+48796441345",email:"wojciech.obieglo@votum-ds.pl"},
+  {path:"/uslugi/sluzebnosc-przesylu",phone:"tel:+48796441345",email:"wojciech.obieglo@votum-ds.pl"},
+  {path:"/kampanie/skd",phone:"tel:+48796441345",email:"wojciech.obieglo@votum-ds.pl"}
+ ]){
+  await noJsPage.goto(origin+item.path,{waitUntil:"domcontentloaded",timeout:30000});
+  const mount=noJsPage.locator("[data-contact-form]").first();
+  const fallback=mount.locator(".contact-load-fallback");
+  await fallback.waitFor({state:"visible",timeout:10000});
+  assert.equal(await mount.locator("form.contact-form").count(),0,"No JS must not show dynamic form");
+  assert.equal(await fallback.locator('a[href="'+item.phone+'"]').count(),1,"Missing no-JS telephone "+item.path);
+  assert.equal(await fallback.locator('a[href^="mailto:'+item.email+'?subject="]').count(),1,"Missing no-JS email "+item.path);
+  console.log("NO_JS_CONTACT_OK "+item.path);
+ }
+ await noJs.close();
  assert.equal(sent,0,"A read-only contact test must never submit a lead");
  console.log("DYNAMIC_ROUTING_OK: contact route switches to Paulina then Wojciech; 0 submissions");
 } catch(error) {

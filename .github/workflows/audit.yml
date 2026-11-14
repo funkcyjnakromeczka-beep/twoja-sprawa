@@ -73,6 +73,8 @@ jobs:
         run: node scripts/test-campaign-links.mjs
       - name: Przetestuj formularz w przeglądarce symulowanej bez wysyłki danych
         run: node scripts/test-contact-client.mjs
+      - name: Statyczne telefony i e-maile na wszystkich podstronach usług i kampanii
+        run: node scripts/test-contact-fallback-static.mjs
       - name: Test mobilnej ścieżki kontaktu dwóch usług
         run: node scripts/test-mobile-service-cta.mjs
       - name: Test przyszłych adresów IndexNow i wykluczeń SEO

@@ -12,7 +12,7 @@ window.TwojaSprawaSearchPages1=[
   "id": "page:v2/index.html",
   "href": "/v2/",
   "title": "Twoja Sprawa — analiza roszczeń i świadczeń w całej Polsce",
-  "description": "Twoja Sprawa: szkody górnicze, świadczenie wspierające, renty, Sankcja Kredytu Darmowego (SKD), pomoc frankowiczom i służebność przesyłu. SuccessTree — współpraca z VOTUM.",
+  "description": "Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające, SKD i renty. Twoja Sprawa — kontakt z SuccessTree, współpracującym z VOTUM.",
   "category": "inne",
   "keywords": "Szkody górnicze? Świadczenie wspierające? v2 index html Twoja Sprawa — strona główna"
  },

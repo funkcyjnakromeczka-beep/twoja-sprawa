@@ -69,7 +69,7 @@ footer a{color:#efcf9b}
 </section>
 <section class="panel" aria-labelledby="form-test-title">
 <h2 id="form-test-title">Kontrola formularzy JavaScript</h2>
-<p>Po teście sprawdzimy trzy formularze: ogólny kontakt, świadczenie wspierające (kontakt do Pauliny) oraz SKD (obowiązkowy telefon). Kontrola odbywa się w niewidocznej ramce i nie wysyła zgłoszeń.</p>
+<p>Po teście sprawdzimy trzy formularze i dwa scenariusze zmiany usługi z karty kampanii: szkody górnicze oraz świadczenie wspierające. Weryfikujemy właściwą osobę do kontaktu i obowiązkowy telefon przy SKD. Kontrola odbywa się w niewidocznej ramce i nie wysyła zgłoszeń.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Test</th><th>Wynik</th><th>Opis</th></tr></thead>
 <tbody id="form-results"><tr><td colspan="3">Test nie został uruchomiony.</td></tr></tbody>
@@ -152,7 +152,7 @@ async function checkSeoFile(name,path,requiredText){
   return[name,"HTTP "+response.status,good?"Wymagane informacje obecne":"Brak wymaganego znacznika",good];
  }catch(e){return[name,"Błąd połączenia",e?.name==="AbortError"?"Przekroczono 10 sekund":"Nie udało się pobrać pliku",false];}
 }
-function dynamicTest(name,path,requiredPhone,expectedService=""){
+function dynamicTest(name,path,requiredPhone,expectedService="",switchTopic=""){
  return new Promise(resolve=>{
   // Same-origin iframe only. The test never clicks Submit and never fills user data.
   const frame=document.createElement("iframe");
@@ -182,7 +182,26 @@ function dynamicTest(name,path,requiredPhone,expectedService=""){
    const tel=form.querySelector('input[type="tel"]');
    const submit=form.querySelector('button[type="submit"]');
    if(!service||!tel||!submit)return;
-   if(requiredPhone){
+   if(switchTopic){
+    const mining=switchTopic==="szkody";
+    const trigger=doc.querySelector(mining?'[data-damage-option]':'[data-stage-option]');
+    const directCall=form.querySelector("a.contact-direct-call");
+    const directEmail=form.querySelector("a.contact-direct-email");
+    if(!trigger||!directCall||!directEmail){
+     finalize(false,"Brak karty wyboru lub awaryjnego kontaktu");return;
+    }
+    // Symulujemy wyłącznie zmianę usługi. Bez wpisywania danych i bez Submit.
+    service.value=mining?"Świadczenie wspierające":"Szkody górnicze";
+    service.dispatchEvent(new frame.contentWindow.Event("change",{bubbles:true}));
+    trigger.click();
+    const expected=mining?"Szkody górnicze":"Świadczenie wspierające";
+    const phoneNumber=mining?"tel:+48796441345":"tel:+48500171531";
+    const emailAddress=mining?"wojciech.obieglo@votum-ds.pl":"paulina.chandrala@votum-ds.pl";
+    const ok=service.value===expected&&
+     directCall.getAttribute("href")===phoneNumber&&
+     (directEmail.getAttribute("href")||"").startsWith("mailto:"+emailAddress+"?");
+    finalize(ok,ok?"Wybór z karty aktualizuje usługę, numer telefonu i bezpośredni adres e-mail":"Po zmianie przez kartę kontakt jest niezgodny z usługą");
+   }else if(requiredPhone){
     const selected=service.value==="Kredyt w PLN / SKD";
     const required=tel.required;
     const email=doc.body?.textContent?.includes("wojciech.obieglo@votum-ds.pl");
@@ -232,10 +251,10 @@ run.addEventListener("click",async()=>{
    ?"Wszystkie pliki FAQ dostępne w wersji produkcyjnej. Nadal warto przetestować kliknięcie na telefonie."
    :"Wykryto rozbieżność: "+deployed+"/"+deployChecks.length+" elementów FAQ potwierdzonych. Sprawdź najnowsze wdrożenie w Cloudflare.";
   status.textContent="Strony i pliki: "+passed+"/"+total+". Wersja FAQ: "+deployed+"/"+deployChecks.length+". Kontrola formularzy…";
-  const tests=[["Kontakt","/kontakt",false],["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"],["SKD — obowiązkowy telefon","/kampanie/skd",true]];
+  const tests=[["Kontakt","/kontakt",false],["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"],["SKD — obowiązkowy telefon","/kampanie/skd",true],["Szkody — zmiana z karty","/kampanie/szkody-gornicze",false,"","szkody"],["Świadczenie — zmiana z karty","/kampanie/swiadczenie-wspierajace",false,"","swiadczenie"]];
   let goodForms=0;
-  for(const [name,path,mustPhone,expectedService] of tests){
-   const r=await dynamicTest(name,path,mustPhone,expectedService);
+  for(const [name,path,mustPhone,expectedService,switchTopic] of tests){
+   const r=await dynamicTest(name,path,mustPhone,expectedService,switchTopic);
    row(formOutput,r.slice(0,3),["",r[3]?"ok":"warn",""]);
    if(r[3])goodForms++;
   }

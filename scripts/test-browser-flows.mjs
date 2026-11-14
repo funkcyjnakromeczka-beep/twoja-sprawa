@@ -180,6 +180,12 @@ try{
   const primary=await bar.locator("a.campaign-mobile-primary").getAttribute("href");
   assert.ok(isSKD?primary?.startsWith("mailto:wojciech.obieglo@votum-ds.pl"):
    primary==="#formularz","Wrong first campaign action: "+path);
+  if(isSKD){
+   // Exercise the actual second CTA, not just its href.
+   await bar.locator("a.campaign-mobile-call").click();
+   assert.equal(new URL(page.url()).hash,"#formularz",
+    "SKD callback button must navigate to its contact form");
+  }
   // The form can be long on mobile; hide the fixed bar when the form is in view.
   await page.locator("#formularz").scrollIntoViewIfNeeded();
   await bar.waitFor({state:"hidden",timeout:7000});
@@ -194,6 +200,22 @@ try{
  }
  assert.equal(errors.length,0,"Browser errors in campaign mobile flows: "+errors.join("; "));
  console.log("PASS: three mobile campaign bars hide at form, reappear afterward and keep correct contact paths.");
+
+ // Lowest supported practical phone viewport, including potentially long loan-email text.
+ await page.setViewportSize({width:320,height:740});
+ for(const path of ["/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/kampanie/skd"]){
+  await page.goto(origin+path,{waitUntil:"domcontentloaded",timeout:40000});
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  assert.ok(overflow<=2,"Campaign exceeds 320px viewport by "+overflow+"px on "+path);
+  const actions=await page.locator("aside.campaign-mobile-actions a").evaluateAll(nodes=>
+   nodes.map(el=>{const r=el.getBoundingClientRect();return {width:r.width,height:r.height};}));
+  for(const [index,size] of actions.entries()){
+   assert.ok(size.width>=44&&size.height>=44,
+    "Too small campaign mobile touch target "+index+" on "+path);
+  }
+ }
+ console.log("PASS: 320px campaign viewport has no horizontal overflow and touch targets meet 44px minimum.");
+
 
 
 }finally{

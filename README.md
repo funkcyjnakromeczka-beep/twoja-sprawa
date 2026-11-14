@@ -89,6 +89,14 @@ Nie znaleziono standardowych plików `.github/workflows/deploy.yml`, `cloudflare
 - `.github/workflows/release-candidate.yml` uruchamia kontrolę także po zmianie `scripts/network-brand.mjs`. Nadal jest to **budowanie i testowanie bez wdrożenia**.
 - Odczyt produkcyjnej domeny nie był możliwy przez dostępne kanały HTTP w tej sesji. Zatwierdzona zmiana w GitHub nie oznacza weryfikacji strony Cloudflare Pages.
 
+## Ustalenie faktycznej wersji na Cloudflare
+
+Od tej wersji polecenie `node scripts/build.mjs` zapisuje do pakietu produkcyjnego plik `dist/release-info.json`. Zawiera on wyłącznie publiczne informacje techniczne: adres strony, katalog źródłowy `v2`, ścieżkę skryptu kompilacji, czas budowania (UTC) i identyfikator commita, o ile jest dostępny w `CF_PAGES_COMMIT_SHA` lub `GITHUB_SHA`. W pakiecie nie zapisuje się haseł, formularzy ani danych klientów.
+
+Po **rzeczywistej publikacji pakietu `dist/`** sprawdź `https://twoja-sprawa.pages.dev/release-info.json`. Jeśli plik nie jest dostępny, to Cloudflare może nadal publikować inny katalog lub starszy pakiet. Nie należy interpretować braku pliku jako potwierdzenia aktualizacji. Jeśli plik jest dostępny, porównaj `commit` z GitHub i `builtAt` z datą wdrożenia. Przy braku identyfikatora commita pole ma wartość `null` — nie należy wtedy zgadywać wersji.
+
+Test kandydata wydania sprawdza format i zgodność pliku, a workflow GitHub pokazuje jego zawartość w logu. `scripts/audit-production-current.mjs` próbuje odczytać go z publicznej domeny — powodzenie audytu oznacza **odczyt działającej produkcji**, nie tylko przejście testów GitHub. Ten mechanizm nie wykonuje samodzielnie wdrożenia.
+
 ## Obecne workflow GitHub i lokalny proces wydania
 
 W repozytorium działają już niezależne zadania:

@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 
 const origin="https://twoja-sprawa.pages.dev";
 const targets=[
-  "/","/robots.txt","/sitemap.xml","/release-info.json","/home-flow.css","/network-brand.css","/mobile-service-cta.css",
+  "/","/robots.txt","/sitemap.xml","/release-info.json","/home-flow.css","/styles.css","/network-brand.css","/mobile-service-cta.css",
   "/contact.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",
   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
   "/uslugi/kredyty-pln","/kampanie/skd","/narzedzia/test-formularzy"
@@ -127,6 +127,13 @@ must(data["/kontakt"].includes("paulina.chandrala@votum-ds.pl")&&
 
 must(data["/narzedzia/test-formularzy"].includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]'),
  "Publiczna diagnostyka nie kontroluje formularza swiadczenia wspierajacego");
+
+must(contact.includes('routingNote.className="contact-routing-note"')&&
+     contact.includes('directMail.className="contact-advisor-direct-email"')&&
+     contact.includes("advisor_email jest metadana"),
+  "Formularz nie odroznia metadanych doradcy od odbiorcy Web3Forms");
+must(data["/styles.css"].includes(".contact-advisor .contact-routing-note"),
+  "Brak czytelnego objasnienia odbiorcy Web3Forms");
 must(contact.includes("api.web3forms.com/submit")&&contact.includes("if(sending)return;"),
   "Wdrozenie formularza jest niekompletne");
 

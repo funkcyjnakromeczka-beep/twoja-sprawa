@@ -1,0 +1,32 @@
+name: Test formularzy w przeglądarce — Cloudflare
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'v2/**'
+      - 'scripts/test-browser-flows.mjs'
+      - '.github/workflows/browser-flows.yml'
+  workflow_dispatch:
+concurrency:
+  group: twoja-sprawa-browser-flows-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  chromium:
+    name: Siedem scenariuszy formularzy bez wysyłki
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sprawdź składnię testu przeglądarkowego
+        run: node --check scripts/test-browser-flows.mjs
+      - name: Zainstaluj bezpłatne narzędzia Chromium
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.64.1
+          npx playwright install --with-deps chromium
+      - name: Poczekaj na wdrożenie i sprawdź wszystkie ścieżki
+        run: node scripts/test-browser-flows.mjs

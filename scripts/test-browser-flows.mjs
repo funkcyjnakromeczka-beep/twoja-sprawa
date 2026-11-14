@@ -89,6 +89,51 @@ try{
  }
  assert.equal(errors.length,0,"Browser errors: "+errors.join("; "));
  console.log("PASS: 13 page/SEO resources, 3 FAQ assets and 7 form scenarios.");
+
+ // Real responsive navigation: the primary three links are easy to find at phone width.
+ await page.goto(origin+"/",{waitUntil:"domcontentloaded",timeout:40000});
+ const quickNav=page.locator("nav.mobile-quick-nav");
+ await quickNav.waitFor({state:"visible",timeout:15000});
+ const mobileDestinations=await quickNav.locator("a").evaluateAll(links=>
+  links.map(a=>new URL(a.href).pathname));
+ assert.deepEqual(mobileDestinations,[
+  "/kampanie/szkody-gornicze",
+  "/kampanie/swiadczenie-wspierajace",
+  "/kampanie/skd"
+ ],"Mobile navigation must keep mining, support and SKD as first three priorities");
+ const partnerLogos=page.locator(".network-brand-bar .network-brand-logos a");
+ assert.equal(await partnerLogos.count(),2,
+  "Both VOTUM partnership logos should be displayed in the shared header");
+ const serviceTitles=await page.locator("#uslugi .primary-services > .primary-card h3").allTextContents();
+ assert.ok(serviceTitles[0]?.includes("Szkody górnicze"),"Mining must be first");
+ assert.ok(serviceTitles[1]?.includes("Świadczenie wspierające"),"Support must be second");
+ assert.ok(serviceTitles[2]?.includes("Sankcja Kredytu Darmowego"),"SKD must be third");
+
+ // Desktop should show the full hero instead of repeating the mobile priority bar.
+ await page.setViewportSize({width:1280,height:800});
+ await page.reload({waitUntil:"domcontentloaded",timeout:40000});
+ assert.equal(await page.locator("nav.mobile-quick-nav").isVisible(),false,
+  "Mobile-only priority bar must be hidden on desktop");
+ await page.locator(".hero-priority-grid").waitFor({state:"visible",timeout:15000});
+ console.log("PASS: mobile/desktop hero priorities, 3 service cards and 2 partner logos.");
+
+ // A real phone-width bottom bar must lead to the correct person's number.
+ await page.setViewportSize({width:390,height:844});
+ for(const [path,number] of [
+  ["/uslugi/szkody-gornicze","+48796441345"],
+  ["/uslugi/swiadczenie-wspierajace","+48500171531"]
+ ]){
+  await page.goto(origin+path,{waitUntil:"domcontentloaded",timeout:40000});
+  const cta=page.locator("nav.mobile-service-cta");
+  await cta.waitFor({state:"visible",timeout:15000});
+  assert.equal(await cta.locator("a.mobile-service-call").getAttribute("href"),
+   "tel:"+number,"Mobile call link points to wrong adviser on "+path);
+  assert.equal(await cta.locator("a.mobile-service-lead").getAttribute("href"),
+   "#formularz","Mobile lead link misses the form on "+path);
+ }
+ assert.equal(errors.length,0,"Browser errors after mobile navigation: "+errors.join("; "));
+ console.log("PASS: mobile sticky call buttons point to Wojciech and Paulina as intended.");
+
 }finally{
  await browser.close();
 }

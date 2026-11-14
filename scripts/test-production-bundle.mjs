@@ -147,6 +147,9 @@ assert.ok(contactFormJS.includes("let refreshDirectContact=()=>{};")&&
 assert.ok(contactFormJS.includes("phoneFieldLabel.textContent=isSKD||prefer")&&
  contactFormJS.includes('emailFieldLabel.textContent=prefer==="E-mail"'),
  "Phone/email required-label hints must update with selected service and contact preference");
+assert.ok(contactFormJS.includes("updateDamageArea();damageArea.value=choice;syncCityQuick();")&&
+ contactFormJS.includes("syncCityQuick();\n    if(stageWrap.hidden)return;"),
+ "Campaign cards must keep the locality choices synchronized with the chosen service");
 const skdNavigator=await read("service-navigator.js");
 const skdChatbot=await read("chat-assistant.js");
 assert.ok(skdNavigator.includes('service:"kredyty-pln.html",landing:"kampanie/skd.html"'),

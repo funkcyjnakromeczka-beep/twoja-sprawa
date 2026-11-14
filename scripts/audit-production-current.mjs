@@ -126,6 +126,13 @@ must(data["/kontakt"].includes("paulina.chandrala@votum-ds.pl")&&
 
 must(contact.includes("api.web3forms.com/submit")&&contact.includes("if(sending)return;"),
   "Wdrozenie formularza jest niekompletne");
+
+must(contact.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();")&&
+     contact.includes("refreshDirectContact=updateDirect;updateDirect();"),
+  "Po wyslaniu formularza dane doradcy w awaryjnym kontakcie sa nieaktualne");
+must(contact.includes("phoneFieldLabel.textContent=isSKD||prefer")&&
+     contact.includes('emailFieldLabel.textContent=prefer==="E-mail"'),
+  "Brak komunikacji wymaganych danych kontaktowych przy zmianie uslugi");
 must(contact.includes('querySelectorAll("[data-contact-shortcut]")'),
   "Przyciski skrotow do formularza nie sa obslugiwane");
 must(data["/service-navigator.js"].includes('service:"kredyty-pln.html",landing:"kampanie/skd.html"'),

@@ -150,6 +150,12 @@ assert.ok(contactFormJS.includes("phoneFieldLabel.textContent=isSKD||prefer")&&
 assert.ok(contactFormJS.includes("updateDamageArea();damageArea.value=choice;syncCityQuick();")&&
  contactFormJS.includes("syncCityQuick();\n    if(stageWrap.hidden)return;"),
  "Campaign cards must keep the locality choices synchronized with the chosen service");
+
+const diagnosticTool=await read("narzedzia/test-formularzy.html");
+assert.ok(diagnosticTool.includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]')&&
+ diagnosticTool.includes('a[href^="mailto:paulina.chandrala@votum-ds.pl"]')&&
+ diagnosticTool.includes('a[href="tel:+48500171531"]'),
+ "Diagnostic tool must check the dynamically selected benefit advisor without submitting forms");
 const skdNavigator=await read("service-navigator.js");
 const skdChatbot=await read("chat-assistant.js");
 assert.ok(skdNavigator.includes('service:"kredyty-pln.html",landing:"kampanie/skd.html"'),

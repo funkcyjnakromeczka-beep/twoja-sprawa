@@ -144,6 +144,12 @@ if(!diagnostic.includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiad
    !diagnostic.includes('a[href^="mailto:paulina.chandrala@votum-ds.pl"]')||
    !diagnostic.includes('a[href="tel:+48500171531"]'))
  warn("Diagnostyka: brak bezpiecznej kontroli konsultantki w formularzu świadczenia wspierającego");
+
+if(!diagnostic.includes('["SKD — walidacja numeru","/kampanie/skd",true,"","","skd-phone"]')||
+   !diagnostic.includes('["Szkody — e-mail bez telefonu","/kampanie/szkody-gornicze",false,"","","email-only"]')||
+   !diagnostic.includes('const acceptsValid=tel.checkValidity();')||
+   !diagnostic.includes('const good=!tel.required&&tel.checkValidity()&&email.checkValidity();'))
+ warn("Diagnostyka: brak walidacji numeru SKD lub sprawy z samym adresem e-mail");
 const contact = read("v2/contact.js");
 if(!contact.includes('isSKD||prefer==="Telefon"'))
  warn("Formularz: brak wymogu telefonu dla SKD");

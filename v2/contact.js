@@ -304,7 +304,7 @@
     if(select.value!=="Szkody górnicze"){
      select.value="Szkody górnicze";updateAdvisor();updatePeople();updateGuide();updateStage();updateContextNotice();syncContactPreference();
     }
-    updateDamageArea();damageArea.value=choice;
+    updateDamageArea();damageArea.value=choice;syncCityQuick();
    });
   }
   // Karty na stronie kampanii świadczenia wskazują wyłącznie jedną ze znanych
@@ -319,6 +319,7 @@
      select.value="Świadczenie wspierające";
      updateAdvisor();updatePeople();updateGuide();updateStage();updateDamageArea();syncContactPreference();
     }
+    syncCityQuick();
     if(stageWrap.hidden)return;
     stage.value=chosen;
     updateContextNotice();

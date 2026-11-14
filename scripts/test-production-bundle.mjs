@@ -152,6 +152,13 @@ assert.ok(contactFormJS.includes("updateDamageArea();damageArea.value=choice;syn
  "Campaign cards must keep the locality choices synchronized with the chosen service");
 
 
+
+assert.ok(contactFormJS.includes('select.value="Szkody górnicze";updateAdvisor();updatePeople();refreshDirectContact();')&&
+ contactFormJS.includes('updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();syncContactPreference();'),
+ "Changing service through campaign cards must also update direct advisor links");
+assert.ok(contactFormJS.includes('directMail.addEventListener("click",()=>{')&&
+ contactFormJS.includes('const callbackNumber=entered&&validPhoneNumber(entered)?entered:"[wpisz numer]";'),
+ "SKD direct email should include a verified entered callback number, without URL tracking");
 const contactCss=await read("styles.css");
 assert.ok(contactFormJS.includes('routingNote.className="contact-routing-note"')&&
  contactFormJS.includes('directMail.className="contact-advisor-direct-email"')&&

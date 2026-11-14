@@ -9,9 +9,9 @@ import assert from "node:assert/strict";
 const origin="https://twoja-sprawa.pages.dev";
 const targets=[
   "/","/robots.txt","/sitemap.xml","/release-info.json","/home-flow.css","/styles.css","/network-brand.css","/mobile-service-cta.css",
-  "/contact.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",
+  "/contact.js","/campaign-mobile-actions.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",
   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
-  "/uslugi/kredyty-pln","/kampanie/skd","/narzedzia/test-formularzy"
+  "/uslugi/kredyty-pln","/kampanie/skd","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/narzedzia/test-formularzy"
 ];
 const textResponse=async path=>{
   let lastError;
@@ -42,6 +42,21 @@ assert.ok(data["/mobile-service-cta.css"].includes('body:has(.mobile-service-cta
 assert.ok(data["/mobile-service-cta.css"].includes('body.premium-subpage:has(.mobile-service-cta:not([hidden])) .chat-assistant'),
  "Mobilny chatbot jest przesuwany nawet bez aktywnego CTA");
 
+
+const campaignQuickBar=data["/campaign-mobile-actions.js"];
+assert.ok(campaignQuickBar.includes('bar.hidden=overlapsForm||formHasFocus;'),
+ "Mobilny pasek kampanii nie ukrywa sie po przejsciu do formularza");
+assert.ok(data["/styles.css"].includes(".campaign-mobile-actions[hidden]{display:none!important}")&&
+ data["/styles.css"].includes(".campaign-page:has(.campaign-mobile-actions:not([hidden]))"),
+ "Ukryty pasek kampanii nadal zajmuje miejsce na telefonie");
+for(const path of [
+ "/kampanie/szkody-gornicze",
+ "/kampanie/swiadczenie-wspierajace",
+ "/kampanie/skd"
+]){
+ assert.ok(data[path].includes('<script src="/campaign-mobile-actions.js" defer></script>'),
+  "Kampania bez logiki widocznosci dolnego paska: "+path);
+}
 const releaseInfo=JSON.parse(data["/release-info.json"]);
 assert.equal(releaseInfo.schemaVersion,1,"Nieznana struktura release-info.json");
 assert.equal(releaseInfo.site,origin,"Wdrozenie wskazuje inna domene");

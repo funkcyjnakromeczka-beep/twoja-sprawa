@@ -187,6 +187,10 @@ must(data["/chat-assistant.js"].includes('key:"skd"'),
 must(data["/robots.txt"].includes("OAI-SearchBot")&&
      data["/robots.txt"].includes("Sitemap: "+origin+"/sitemap.xml"),
   "Nieprawidlowy robots.txt");
+
+must(data["/kampanie/skd"].includes('class="campaign-mobile-call" href="#formularz" aria-label="Zostaw numer telefonu do analizy SKD"')&&
+     data["/kampanie/skd"].includes('class="campaign-mobile-primary" href="mailto:wojciech.obieglo@votum-ds.pl'),
+  "Na mobilnej kampanii SKD brakuje dzialania wysylki umowy lub pozostawienia telefonu");
 const routes=[...data["/sitemap.xml"].matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1]);
 for(const route of ["/","/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
   "/uslugi/kredyty-pln","/faq"]){

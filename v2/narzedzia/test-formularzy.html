@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#0c2c3b">
 <title>Diagnostyka strony i formularzy — Twoja Sprawa</title>
-<meta name="description" content="Bezpieczny test dostępności podstron i formularzy bez wysyłania zgłoszeń. Narzędzie techniczne serwisu Twoja Sprawa.">
+<meta name="description" content="Bezpłatny test dostępności stron, ścieżek kontaktu i walidacji formularzy bez wysyłania zgłoszeń.">
 <style>
 :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#143545;background:#f5f7f4;line-height:1.6}
 *{box-sizing:border-box}
@@ -47,7 +47,7 @@ footer a{color:#efcf9b}
 <main>
 <p>Zaplecze techniczne SuccessTree · Bezpłatne narzędzie diagnostyczne</p>
 <h1>Sprawdź stronę i formularze bez wysyłania zgłoszeń</h1>
-<p class="lead">Ten test sprawdza dostępność dziesięciu kluczowych stron, trzech plików wspierających indeksowanie, aktualność plików FAQ oraz uruchomienie formularzy kontaktowych i SKD. Niczego nie wysyła do Web3Forms. Nie wymaga płatnego konta ani podawania danych klienta.</p>
+<p class="lead">Ten test sprawdza dostępność dziesięciu kluczowych stron, trzech plików wspierających indeksowanie, aktualność plików FAQ oraz siedem scenariuszy działania formularzy, w tym SKD i świadczenia wspierającego. Niczego nie wysyła do Web3Forms. Nie wymaga płatnego konta ani podawania danych klienta.</p>
 <section class="panel" aria-labelledby="run-title">
 <h2 id="run-title">Jednorazowy test techniczny</h2>
 <button id="run" type="button">Uruchom kontrolę</button>
@@ -283,7 +283,7 @@ run.addEventListener("click",async()=>{
    row(formOutput,r.slice(0,3),["",r[3]?"ok":"warn",""]);
    if(r[3])goodForms++;
   }
-  status.textContent="Wynik: "+passed+"/"+total+" stron i plików oraz "+goodForms+"/"+tests.length+" testy formularzy. Nie wysłano żadnego zgłoszenia.";
+  status.textContent="Wynik: "+passed+"/"+total+" stron i plików oraz "+goodForms+"/"+tests.length+" testów formularzy i ścieżek kontaktu. Nie wysłano żadnego zgłoszenia.";
  }catch{
   status.textContent="Kontrola napotkała błąd. Nie wysłano żadnego zgłoszenia.";
  }finally{run.disabled=false;}

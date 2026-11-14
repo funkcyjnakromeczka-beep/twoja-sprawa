@@ -66,11 +66,11 @@ const structured = (route,canonical,title,markup) => {
   const colleague={"@type":"Person","@id":origin+"/#paulina-chandrala",name:"Paulina Chandrała",url:origin+"/o-nas#paulina",image:origin+"/assets/paulina-chandrala.jpg"};
   const organization={
     "@type":"Organization","@id":origin+"/#successtree",name:"SuccessTree OBIEGŁO WOJCIECH",
-    url:origin+"/",email:"twojasprawa_votum@outlook.com",telephone:"+48 796 441 345",
+    url:origin+"/",email:"wojciech.obieglo@votum-ds.pl",telephone:"+48 796 441 345",
     founder:{"@id":owner["@id"]},
     contactPoint:[
-      {"@type":"ContactPoint",contactType:"Szkody górnicze i pozostałe zapytania",telephone:"+48 796 441 345",areaServed:"PL",availableLanguage:"pl"},
-      {"@type":"ContactPoint",contactType:"Świadczenie wspierające i renty",telephone:"+48 500 171 531",areaServed:"PL",availableLanguage:"pl"}
+      {"@type":"ContactPoint",contactType:"Szkody górnicze i pozostałe zapytania",telephone:"+48 796 441 345",email:"wojciech.obieglo@votum-ds.pl",areaServed:"PL",availableLanguage:"pl"},
+      {"@type":"ContactPoint",contactType:"Świadczenie wspierające i renty",telephone:"+48 500 171 531",email:"paulina.chandrala@votum-ds.pl",areaServed:"PL",availableLanguage:"pl"}
     ]
   };
   const site={"@type":"WebSite","@id":origin+"/#website",name:"Twoja Sprawa",url:origin+"/",publisher:{"@id":organization["@id"]},inLanguage:"pl-PL"};

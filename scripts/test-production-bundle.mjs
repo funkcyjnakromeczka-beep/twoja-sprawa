@@ -34,6 +34,38 @@ for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampani
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="noindex,follow"'),"excluded page accidentally indexable: "+path);
 }
+// Build-level regression: the UTM module must never attach twice.
+for(const target of ["index.html","kontakt.html","faq.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","kampanie/skd.html"]){
+ const html=await read(target);
+ const modules=[...html.matchAll(/<script\\b[^>]*\\bsrc="\\/attribution\\.js"/g)];
+ assert.equal(modules.length,1,"Duplicated or missing campaign attribution: "+target);
+}
+for(const target of [
+ "wiedza/drobne-pekniecia-szkody-gornicze.html",
+ "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"
+]){
+ const html=await read(target);
+ assert.ok(html.includes('name="robots" content="index,follow"'),"Approved guide should be indexable: "+target);
+ assert.ok(sitemap.includes("<loc>"+origin+"/"+target.slice(0,-5)+"</loc>"),"Approved guide missing in sitemap: "+target);
+}
+// Do not accidentally publish draft guides or lead checklists as SEO pages.
+for(const target of [
+ "wiedza/kredyt-pln-dokumenty-skd.html",
+ "wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
+ "wiedza/szkody-gornicze-drobne-pekniecia.html",
+ "poradniki/checklista-szkody-gorniczej.html",
+ "poradniki/frankowicze-lista-kontrolna.html",
+ "poradniki/skd-kredyt-pln-lista-kontrolna.html"
+]){
+ const html=await read(target);
+ assert.ok(html.includes('name="robots" content="noindex,follow"'),"Draft/checklist unexpectedly indexable: "+target);
+ assert.ok(!sitemap.includes("<loc>"+origin+"/"+target.slice(0,-5)+"</loc>"),"Draft/checklist leaked into sitemap: "+target);
+}
+for(const target of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html"]){
+ const html=await read(target);
+ assert.ok(html.includes('<meta name="twitter:card" content="summary_large_image">'),"Large social preview missing: "+target);
+}
+
 // Every shared URL should have a specific title, accessible same-origin photo,
 // and a description sourced from its own page rather than a generic homepage.
 for(const [page,photo] of [

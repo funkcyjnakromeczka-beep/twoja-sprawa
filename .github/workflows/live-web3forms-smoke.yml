@@ -1,0 +1,34 @@
+name: Jednorazowy test formularza Web3Forms — SKD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/live-web3forms-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: twoja-sprawa-web3forms-smoke
+  cancel-in-progress: false
+
+jobs:
+  test-live-form:
+    name: Test klienta w przeglądarce, jeden oznaczony lead
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Pobierz kod
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Zainstaluj bezpłatny silnik przeglądarki
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install chromium --only-shell
+      - name: Zweryfikuj strony i wyślij wyłącznie jeden oznaczony test SKD
+        run: node scripts/live-web3forms-smoke.mjs

@@ -117,6 +117,28 @@ try{
  await page.locator(".hero-priority-grid").waitFor({state:"visible",timeout:15000});
  console.log("PASS: mobile/desktop hero priorities, 3 service cards and 2 partner logos.");
 
+ // Check the smallest common phone widths for scrollbars and usable tap targets.
+ for(const width of [320,360,390]){
+  await page.setViewportSize({width,height:740});
+  await page.reload({waitUntil:"domcontentloaded",timeout:40000});
+  const mobile=page.locator("nav.mobile-quick-nav");
+  await mobile.waitFor({state:"visible",timeout:15000});
+  const geometry=await mobile.locator("a").evaluateAll(links=>links.map(link=>{
+   const rect=link.getBoundingClientRect();
+   return {width:rect.width,height:rect.height,left:rect.left,right:rect.right};
+  }));
+  assert.equal(geometry.length,3,"Three mobile navigation options required");
+  for(const [i,rect] of geometry.entries()){
+   assert.ok(rect.width>=44&&rect.height>=44,
+    "Mobile target "+i+" too small at "+width+"px: "+JSON.stringify(rect));
+   assert.ok(rect.left>=-2&&rect.right<=width+2,
+    "Mobile target "+i+" runs outside viewport "+width+"px");
+  }
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  assert.ok(overflow<=2,"Homepage horizontal overflow "+overflow+"px at "+width+"px");
+ }
+
+
  // A real phone-width bottom bar must lead to the correct person's number.
  await page.setViewportSize({width:390,height:844});
  for(const [path,number] of [
@@ -146,8 +168,15 @@ try{
   assert.equal(await bar.count(),1,"Campaign must have exactly one mobile bar: "+path);
   const links=bar.locator("a");
   assert.equal(await links.count(),2,"Expected 2 campaign actions: "+path);
-  assert.equal(await bar.locator("a.campaign-mobile-call").getAttribute("href"),
-   "tel:"+phoneNumber,"Wrong campaign phone contact: "+path);
+  const secondary=await bar.locator("a.campaign-mobile-call").getAttribute("href");
+  assert.equal(secondary,isSKD?"#formularz":"tel:"+phoneNumber,
+   "Wrong campaign second action: "+path);
+  // SKD has a dedicated callback form; the telephone remains available in the hero.
+  if(isSKD){
+   assert.equal(await page.locator(".campaign-persona-copy a[href^='tel:']").getAttribute("href"),
+    "tel:"+phoneNumber,"SKD must preserve the direct telephone number");
+   assert.match(await bar.locator("a.campaign-mobile-call").textContent(),/Zostaw numer/);
+  }
   const primary=await bar.locator("a.campaign-mobile-primary").getAttribute("href");
   assert.ok(isSKD?primary?.startsWith("mailto:wojciech.obieglo@votum-ds.pl"):
    primary==="#formularz","Wrong first campaign action: "+path);
@@ -164,7 +193,7 @@ try{
   assert.ok(overflow<=2,"Campaign creates horizontal overflow "+overflow+"px on "+path);
  }
  assert.equal(errors.length,0,"Browser errors in campaign mobile flows: "+errors.join("; "));
- console.log("PASS: three mobile campaign bars hide at form, reappear afterward and retain correct adviser links.");
+ console.log("PASS: three mobile campaign bars hide at form, reappear afterward and keep correct contact paths.");
 
 
 }finally{

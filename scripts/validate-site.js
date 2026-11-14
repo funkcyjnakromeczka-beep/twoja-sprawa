@@ -93,6 +93,21 @@ for(const page of critical){
 }
 
 const home = read("v2/index.html");
+
+const mobileNavLabels=[
+ 'aria-label="Szkody górnicze — zgłoś uszkodzenia do wstępnej analizy"',
+ 'aria-label="Świadczenie wspierające — sprawy WZON i ZUS, przejdź do zgłoszenia"',
+ 'Świadczenie wspierające</a>'
+];
+for(const label of mobileNavLabels){
+ if(!home.includes(label))warn("Strona główna: niepełna dostępna nazwa przycisku mobilnego: "+label);
+}
+const stickyCtaCss=read("v2/mobile-service-cta.css");
+if(!stickyCtaCss.includes('body:has(.mobile-service-cta:not([hidden])){padding-bottom:')||
+ !stickyCtaCss.includes('body.premium-subpage:has(.mobile-service-cta:not([hidden])) .chat-assistant')){
+ warn("Mobilny pasek kontaktu: po ukryciu pozostaje zbędne miejsce lub przesunięcie chatbota");
+}
+
 // Source HTML also needs reliable contact metadata if published directly,
 // even though the normal production compiler regenerates the SEO graph.
 if(!home.includes('<link rel="canonical" href="https://twoja-sprawa.pages.dev/">'))

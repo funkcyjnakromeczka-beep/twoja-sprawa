@@ -11,7 +11,7 @@ const targets=[
   "/","/robots.txt","/sitemap.xml","/release-info.json","/home-flow.css","/network-brand.css","/mobile-service-cta.css",
   "/contact.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",
   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
-  "/uslugi/kredyty-pln","/kampanie/skd"
+  "/uslugi/kredyty-pln","/kampanie/skd","/narzedzia/test-formularzy"
 ];
 const textResponse=async path=>{
   let lastError;
@@ -124,6 +124,9 @@ must(data["/kontakt"].includes("paulina.chandrala@votum-ds.pl")&&
      data["/kontakt"].includes("wojciech.obieglo@votum-ds.pl"),
   "Strona kontaktowa nie pokazuje obu doradcow");
 
+
+must(data["/narzedzia/test-formularzy"].includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]'),
+ "Publiczna diagnostyka nie kontroluje formularza swiadczenia wspierajacego");
 must(contact.includes("api.web3forms.com/submit")&&contact.includes("if(sending)return;"),
   "Wdrozenie formularza jest niekompletne");
 

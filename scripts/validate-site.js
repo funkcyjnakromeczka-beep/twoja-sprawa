@@ -144,6 +144,9 @@ if(!contact.includes("let refreshDirectContact=()=>{};")||
    !contact.includes("refreshDirectContact=updateDirect;updateDirect();")||
    !contact.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();"))
  warn("Formularz: po resecie zgłoszenia awaryjny telefon/e-mail mogą wskazywać niewłaściwego doradcę");
+if(!contact.includes("updateDamageArea();damageArea.value=choice;syncCityQuick();")||
+   !contact.includes("syncCityQuick();\n    if(stageWrap.hidden)return;"))
+ warn("Formularz: karty kampanii nie aktualizują wyboru miejscowości przy zmianie usługi");
 if(!contact.includes("phoneFieldLabel.textContent=isSKD||prefer")||
    !contact.includes('emailFieldLabel.textContent=prefer==="E-mail"'))
  warn("Formularz: brak aktualizacji etykiet wymaganych pól telefonu i e-maila");

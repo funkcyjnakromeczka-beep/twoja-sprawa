@@ -57,6 +57,9 @@ must(home.includes('class="mobile-quick-nav"')&&home.includes('data-contact-form
   "Brak nawigacji mobilnej lub formularza");
 must(css.includes("Mobilna hierarchia 2026-11")&&css.includes(".hero-priority-grid{display:none}"),
   "Najnowsze uproszczenie mobilne nie jest opublikowane");
+must(css.includes("Mobilna hierarchia 2026-11: jedno, niepowielone menu trzech głównych usług. */\n@media(max-width:760px)")&&
+     css.includes(".premium-v2 .hero-skd-third{display:none}"),
+  "Mobilna nawigacja na szerokich telefonach/tabletach nie jest poprawnie wdrozona");
 must(home.includes('href="/home-flow.css"'),"Brak CSS strony glownej");
 
 const graphs=Array.from(home.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g),

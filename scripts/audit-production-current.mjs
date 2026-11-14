@@ -137,6 +137,13 @@ must(data["/styles.css"].includes(".contact-advisor .contact-routing-note"),
 must(contact.includes("api.web3forms.com/submit")&&contact.includes("if(sending)return;"),
   "Wdrozenie formularza jest niekompletne");
 
+
+must(contact.includes('select.value="Szkody górnicze";updateAdvisor();updatePeople();refreshDirectContact();')&&
+     contact.includes('updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();syncContactPreference();'),
+  "Przyciski kart kampanii nie odswiezaja danych doradcy");
+must(contact.includes('directMail.addEventListener("click",()=>{')&&
+     contact.includes('const callbackNumber=entered&&validPhoneNumber(entered)?entered:"[wpisz numer]";'),
+  "SKD nie dolacza poprawnego numeru kontaktowego do nowej wiadomosci");
 must(contact.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();")&&
      contact.includes("refreshDirectContact=updateDirect;updateDirect();"),
   "Po wyslaniu formularza dane doradcy w awaryjnym kontakcie sa nieaktualne");

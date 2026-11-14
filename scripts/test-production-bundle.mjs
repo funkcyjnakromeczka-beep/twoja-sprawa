@@ -196,6 +196,20 @@ const frank=await read("uslugi/kredyty-frankowe.html");
 assert.ok(frank.includes('src="/contact.js" data-service="Kredyty frankowe CHF"'),"CHF conversion form missing or not selected");
 assert.ok(frank.includes('href="/poradniki/frankowicze-lista-kontrolna"'),"CHF checklist link missing");
 assert.ok(frank.includes("Pomoc frankowiczom"),"Frankowicz service missing visible heading");
+// Local mining SEO should describe the actual regional focus rather than all Poland.
+for(const [file,area] of [
+ ["uslugi/szkody-gornicze.html","Lubin, Polkowice i okolice"],
+ ["lokalnie/szkody-gornicze-lubin.html","Lubin i okolice"],
+ ["lokalnie/szkody-gornicze-polkowice.html","Polkowice i okolice"],
+ ["uslugi/swiadczenie-wspierajace.html","Polska"]
+]){
+ const html=await read(file);
+ const graphs=[...html.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)]
+   .flatMap(([,raw])=>JSON.parse(raw)["@graph"]||[]);
+ const service=graphs.find(item=>item["@type"]==="Service");
+ assert.ok(service,"Missing Service schema: "+file);
+ assert.equal(service.areaServed,area,"Inaccurate SEO service area: "+file);
+}
 const miningPage=await read("uslugi/szkody-gornicze.html");
 assert.ok(!miningPage.includes('"@type":"FAQPage"'),"FAQ schema should not be duplicated on other routes");
 

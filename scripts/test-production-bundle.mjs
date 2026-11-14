@@ -151,6 +151,15 @@ assert.ok(contactFormJS.includes("updateDamageArea();damageArea.value=choice;syn
  contactFormJS.includes("syncCityQuick();\n    if(stageWrap.hidden)return;"),
  "Campaign cards must keep the locality choices synchronized with the chosen service");
 
+
+const contactCss=await read("styles.css");
+assert.ok(contactFormJS.includes('routingNote.className="contact-routing-note"')&&
+ contactFormJS.includes('directMail.className="contact-advisor-direct-email"')&&
+ contactFormJS.includes("advisor_email jest metadana")&&
+ contactFormJS.includes("nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy"),
+ "Web3Forms access_key selects recipient; form must disclose routing and offer direct advisor email");
+assert.ok(contactCss.includes(".contact-advisor .contact-routing-note"),
+ "Form must show a legible routing disclosure");
 const diagnosticTool=await read("narzedzia/test-formularzy.html");
 assert.ok(diagnosticTool.includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]')&&
  diagnosticTool.includes('a[href^="mailto:paulina.chandrala@votum-ds.pl"]')&&

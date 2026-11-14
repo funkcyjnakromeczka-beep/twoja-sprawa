@@ -71,6 +71,15 @@ Nie znaleziono standardowych plików `.github/workflows/deploy.yml`, `cloudflare
 4. Po publikacji sprawdź działanie `https://twoja-sprawa.pages.dev/faq-share-v1.js`, `https://twoja-sprawa.pages.dev/faq-share-v1.css` oraz znaczników w `https://twoja-sprawa.pages.dev/faq`. Możesz też użyć `/narzedzia/test-formularzy`: podaje wynik 0–3 dla aktualności FAQ.
 5. Nie zmieniaj domeny ani nie usuwaj istniejącego projektu bez potwierdzenia, jak został pierwotnie wdrożony. W pierwszej kolejności przywróć spójność między repozytorium a obecnym projektem.
 
+## Audyt produkcji po zmianach z 14 listopada 2026 r.
+
+- Aktualną kontrolą odczytową jest `scripts/audit-production-current.mjs`, uruchamiana przez `.github/workflows/live-audit.yml` lub ręcznie przez `node scripts/audit-production-current.mjs`. Sprawdza 13 publicznych zasobów, trzy usługi i trzy skróty kontaktowe, pojedynczą belkę partnerów, zgodność adresów e-mail, canonical, sitemap, Web3Forms i FAQ; nie wysyła zgłoszeń.
+- Starszy `scripts/audit-production-live.mjs` pozostaje historycznym zestawem testów, **nie jest aktualną podstawą oceny**: zawiera oczekiwania z poprzednich wersji strony, np. dwa zamiast trzech skrótów formularza.
+- Kompilacja w `scripts/build.mjs` usuwa starszy, powtórzony schemat Organization/WebSite ze strony głównej i generuje jeden aktualny graf z kontaktami Wojciecha i Pauliny. `scripts/test-production-bundle.mjs` kontroluje ich zgodność.
+- Kompilator usuwa też źródłowy `homepage-partner-strip` przy wstawianiu wspólnego paska `network-brand-bar`. Źródłowy podgląd HTML może mieć osobną belkę, ale **kandydat produkcyjny nie powinien pokazywać dwóch**.
+- Zmiany zapisane w GitHub to **nie potwierdzenie publikacji** w Cloudflare Pages. Audyt publicznej produkcji jest niezależny od testów `dist/`. Do naprawy rozbieżności potrzebne jest sprawdzenie panelu Cloudflare i rzeczywistej konfiguracji GitHub/Direct Upload.
+- Audyt uruchamia się ręcznie lub po zmianie jego workflow/skryptu. Nie należy zakładać, że audyt automatycznie wykonuje wdrożenie.
+
 ## Obecne workflow GitHub i lokalny proces wydania
 
 W repozytorium działają już niezależne zadania:

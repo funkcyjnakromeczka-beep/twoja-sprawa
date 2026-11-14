@@ -140,6 +140,9 @@ assert.ok(skdChatbot.includes('form:"kampanie/skd.html"+params,alias:"skd"'),
 const homeFlowCss=await read("home-flow.css");
 assert.ok(homeFlowCss.includes("Mobilna hierarchia 2026-11: jedno, niepowielone menu trzech głównych usług. */\n@media(max-width:760px)"),
  "Mobile hero cards must not duplicate quick navigation on 601-760px screens");
+assert.ok(homeFlowCss.includes("@media(max-width:420px)")&&
+ homeFlowCss.includes(".premium-v2 .mobile-quick-nav>a.mobile-skd-priority{grid-column:1 / -1}"),
+ "On narrow phones SKD must remain visible, readable and third");
 assert.ok(homeFlowCss.includes(".premium-v2 .hero-skd-third{display:none}"),
  "SKD hero CTA must not duplicate its mobile nav button");
 const skdLanding=await read("kampanie/skd.html");

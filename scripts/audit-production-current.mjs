@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 
 const origin="https://twoja-sprawa.pages.dev";
 const targets=[
-  "/","/robots.txt","/sitemap.xml","/release-info.json","/home-flow.css","/network-brand.css",
+  "/","/robots.txt","/sitemap.xml","/release-info.json","/home-flow.css","/network-brand.css","/mobile-service-cta.css",
   "/contact.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",
   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
   "/uslugi/kredyty-pln","/kampanie/skd"
@@ -37,6 +37,11 @@ const textResponse=async path=>{
 const responses=await Promise.all(targets.map(textResponse));
 const data=Object.fromEntries(targets.map((path,index)=>[path,responses[index]]));
 const home=data["/"], css=data["/home-flow.css"], contact=data["/contact.js"];
+assert.ok(data["/mobile-service-cta.css"].includes('body:has(.mobile-service-cta:not([hidden])){padding-bottom:'),
+ "Po ukryciu mobilnego CTA nadal jest rezerwowane miejsce");
+assert.ok(data["/mobile-service-cta.css"].includes('body.premium-subpage:has(.mobile-service-cta:not([hidden])) .chat-assistant'),
+ "Mobilny chatbot jest przesuwany nawet bez aktywnego CTA");
+
 const releaseInfo=JSON.parse(data["/release-info.json"]);
 assert.equal(releaseInfo.schemaVersion,1,"Nieznana struktura release-info.json");
 assert.equal(releaseInfo.site,origin,"Wdrozenie wskazuje inna domene");

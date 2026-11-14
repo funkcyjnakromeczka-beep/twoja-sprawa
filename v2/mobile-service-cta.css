@@ -1,7 +1,8 @@
 /* Mobilny kontakt na kluczowych podstronach; bez pop-upu i cookies. */
 .mobile-service-cta{display:none}
 @media(max-width:650px){
- body:has(.mobile-service-cta){padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+ /* Reserve space only while the sticky CTA is actually visible. */
+ body:has(.mobile-service-cta:not([hidden])){padding-bottom:calc(88px + env(safe-area-inset-bottom))}
  .mobile-service-cta:not([hidden]){
   position:fixed;inset:auto 0 0;z-index:150;
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
@@ -22,8 +23,8 @@
  }
  .mobile-service-call strong{font-size:1rem;font-variant-numeric:tabular-nums;font-weight:850}
  .mobile-service-cta a:focus-visible{outline:3px solid #fff;outline-offset:3px}
- body.premium-subpage:has(.mobile-service-cta) .chat-assistant,
- body.premium-subpage:has(.mobile-service-cta) .chat-assistant:not(.is-open){
+ body.premium-subpage:has(.mobile-service-cta:not([hidden])) .chat-assistant,
+ body.premium-subpage:has(.mobile-service-cta:not([hidden])) .chat-assistant:not(.is-open){
   bottom:calc(90px + env(safe-area-inset-bottom))!important;right:10px;z-index:145;
  }
  body:has(.mobile-service-cta) .chat-assistant .chat-panel{max-height:min(60dvh,530px)}

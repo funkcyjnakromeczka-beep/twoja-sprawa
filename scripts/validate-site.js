@@ -150,6 +150,14 @@ if(!contact.includes("let refreshDirectContact=()=>{};")||
    !contact.includes("refreshDirectContact=updateDirect;updateDirect();")||
    !contact.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();"))
  warn("Formularz: po resecie zgłoszenia awaryjny telefon/e-mail mogą wskazywać niewłaściwego doradcę");
+
+if(!contact.includes('select.value="Szkody górnicze";updateAdvisor();updatePeople();refreshDirectContact();')||
+   !contact.includes('select.value="Świadczenie wspierające";')||
+   !contact.includes('updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();syncContactPreference();'))
+ warn("Formularz: po wyborze z karty kampanii awaryjny kontakt może wskazywać inną osobę");
+if(!contact.includes('const callbackNumber=entered&&validPhoneNumber(entered)?entered:"[wpisz numer]";')||
+   !contact.includes('directMail.addEventListener("click",()=>{'))
+ warn("Formularz SKD: bezpośredni e-mail nie wykorzystuje zweryfikowanego numeru telefonu");
 if(!contact.includes("updateDamageArea();damageArea.value=choice;syncCityQuick();")||
    !contact.includes("syncCityQuick();\n    if(stageWrap.hidden)return;"))
  warn("Formularz: karty kampanii nie aktualizują wyboru miejscowości przy zmianie usługi");

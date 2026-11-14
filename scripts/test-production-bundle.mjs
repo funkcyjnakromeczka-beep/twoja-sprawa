@@ -5,6 +5,18 @@ import {readFile,stat,readdir} from "node:fs/promises";
 import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 const origin="https://twoja-sprawa.pages.dev";
 const read=path=>readFile("dist/"+path,"utf8");
+const releaseInfo=JSON.parse(await read("release-info.json"));
+assert.equal(releaseInfo.schemaVersion,1,"Unexpected release manifest schema");
+assert.equal(releaseInfo.site,origin,"Release fingerprint points to wrong website");
+assert.equal(releaseInfo.sourceDirectory,"v2","Unexpected source directory in fingerprint");
+assert.equal(releaseInfo.buildScript,"scripts/build.mjs","Unknown production build script");
+assert.ok(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/.test(releaseInfo.builtAt),
+ "Release fingerprint has invalid UTC build timestamp");
+assert.ok(releaseInfo.commit===null||/^[0-9a-f]{40}$/.test(releaseInfo.commit),
+ "Release fingerprint has invalid commit SHA");
+const expectedCommit=process.env.CF_PAGES_COMMIT_SHA||process.env.GITHUB_SHA;
+if(expectedCommit)assert.equal(releaseInfo.commit,expectedCommit.toLowerCase(),
+ "Release fingerprint does not match CI commit");
 const home=await read("index.html");
 assert.equal((home.match(/class="network-brand-bar"/g)||[]).length,1,"Production homepage must show one sticky partner bar");
 assert.ok(!home.includes('class="homepage-partner-strip"'),"Duplicate source partner bar leaked into production homepage");
@@ -39,6 +51,7 @@ for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swia
 }
 assert.ok(!headers.includes("X-Robots-Tag: noindex"),"preview response headers leaked");
 assert.ok(headers.includes("X-Frame-Options: SAMEORIGIN"),"Own diagnostics must be allowed to frame same-origin forms");
+assert.ok(headers.includes("/release-info.json")&&headers.includes("Cache-Control: no-cache, no-store, must-revalidate"),"Release fingerprint must not be served from a stale cache");
 assert.ok(headers.includes("Content-Security-Policy: frame-ancestors 'self'"),"External sites must not frame the contact forms");
 assert.ok(!headers.includes("X-Frame-Options: DENY"),"DENY would block same-origin form diagnostics");
 for(const path of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","uslugi/kredyty-frankowe.html","uslugi/kredyty-pln.html","wiedza/index.html","faq.html","plan-dzialania.html"]){

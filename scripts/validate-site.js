@@ -139,6 +139,14 @@ if(!contact.includes('isSKD||prefer==="Telefon"'))
  warn("Formularz: brak wymogu telefonu dla SKD");
 if(!contact.includes("wojciech.obieglo@votum-ds.pl") || !contact.includes("paulina.chandrala@votum-ds.pl"))
  warn("Formularz: brak przypisanych adresów doradców");
+
+if(!contact.includes("let refreshDirectContact=()=>{};")||
+   !contact.includes("refreshDirectContact=updateDirect;updateDirect();")||
+   !contact.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();"))
+ warn("Formularz: po resecie zgłoszenia awaryjny telefon/e-mail mogą wskazywać niewłaściwego doradcę");
+if(!contact.includes("phoneFieldLabel.textContent=isSKD||prefer")||
+   !contact.includes('emailFieldLabel.textContent=prefer==="E-mail"'))
+ warn("Formularz: brak aktualizacji etykiet wymaganych pól telefonu i e-maila");
 if(!contact.includes("api.web3forms.com/submit"))
  warn("Formularz: brak połączenia z aktualnym operatorem zgłoszeń");
 

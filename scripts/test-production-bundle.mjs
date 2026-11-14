@@ -12,6 +12,10 @@ assert.ok(!home.includes('class="homepage-partner-strip"'),"Duplicate source par
 const homeSchema=home.split('<script type="application/ld+json">').slice(1)
   .map(part=>JSON.parse(part.split("</script>")[0]))
   .flatMap(data=>data["@graph"]||[]);
+assert.equal(homeSchema.filter(item=>item["@type"]==="Organization").length,1,
+ "Production homepage must contain exactly one Organization schema node");
+assert.equal(homeSchema.filter(item=>item["@type"]==="WebSite").length,1,
+ "Production homepage must contain exactly one WebSite schema node");
 const agencySchema=homeSchema.find(item=>item["@type"]==="Organization"&&Array.isArray(item.contactPoint));
 assert.ok(agencySchema,"SuccessTree contact schema missing");
 assert.equal(agencySchema.email,"wojciech.obieglo@votum-ds.pl","Organization email must match direct contact");

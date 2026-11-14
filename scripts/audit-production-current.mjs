@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 
 const origin="https://twoja-sprawa.pages.dev";
 const targets=[
-  "/","/robots.txt","/sitemap.xml","/home-flow.css","/network-brand.css",
+  "/","/robots.txt","/sitemap.xml","/release-info.json","/home-flow.css","/network-brand.css",
   "/contact.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",
   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
   "/uslugi/kredyty-pln","/kampanie/skd"
@@ -37,6 +37,14 @@ const textResponse=async path=>{
 const responses=await Promise.all(targets.map(textResponse));
 const data=Object.fromEntries(targets.map((path,index)=>[path,responses[index]]));
 const home=data["/"], css=data["/home-flow.css"], contact=data["/contact.js"];
+const releaseInfo=JSON.parse(data["/release-info.json"]);
+assert.equal(releaseInfo.schemaVersion,1,"Nieznana struktura release-info.json");
+assert.equal(releaseInfo.site,origin,"Wdrozenie wskazuje inna domene");
+assert.equal(releaseInfo.buildScript,"scripts/build.mjs","Brak znacznika poprawnego procesu wdrozenia");
+assert.ok(/^\d{4}-\d\d-\d\dT/.test(releaseInfo.builtAt),"Brak daty kompilacji produkcji");
+assert.ok(releaseInfo.commit===null||/^[a-f0-9]{40}$/.test(releaseInfo.commit),
+ "Nieprawidlowy hash commita wdrozenia");
+
 const must=(condition,message)=>assert.ok(condition,message);
 const count=(html,text)=>html.split(text).length-1;
 const primary=[
@@ -133,5 +141,6 @@ const faqGraphs=[...data["/faq"].matchAll(/<script\b[^>]*type="application\/ld\+
 const faq=faqGraphs.find(item=>item["@type"]==="FAQPage");
 must(faq?.mainEntity?.length===24,"FAQ nie zawiera 24 pytan w danych strukturalnych");
 
+console.log("PRODUCTION_FINGERPRINT:",releaseInfo.commit||"commit niedostepny",releaseInfo.builtAt);
 console.log("LIVE_AUDIT_OK: "+targets.length+" zasobow, "+routes.length+
   " stron sitemap, jedna belka VOTUM, prawidlowe 3 uslugi i 3 sciezki formularza.");

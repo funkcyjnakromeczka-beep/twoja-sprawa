@@ -125,6 +125,9 @@ must(data["/kontakt"].includes("paulina.chandrala@votum-ds.pl")&&
   "Strona kontaktowa nie pokazuje obu doradcow");
 
 
+must(data["/narzedzia/test-formularzy"].includes('["Szkody — zmiana z karty","/kampanie/szkody-gornicze",false,"","szkody"]')&&
+ data["/narzedzia/test-formularzy"].includes('["Świadczenie — zmiana z karty","/kampanie/swiadczenie-wspierajace",false,"","swiadczenie"]'),
+ "Diagnostyka produkcyjna nie testuje przelaczania doradcy z kart kampanii");
 must(data["/narzedzia/test-formularzy"].includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]'),
  "Publiczna diagnostyka nie kontroluje formularza swiadczenia wspierajacego");
 

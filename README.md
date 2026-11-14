@@ -28,7 +28,7 @@ Mechanizm usuwania prefiksu/rozszerzenia i ustawienia projektu Cloudflare trzeba
 - `v2/kampanie/skd.html` — kontakt do analizy pełnej umowy kredytu PLN
 - `v2/attribution.js` — bezcookiesowe przenoszenie wyłącznie dozwolonych UTM przy klikaniu linków wewnętrznych; podłączone do kluczowych podstron
 - `v2/narzedzia/linki-kampanii.html` + `v2/campaign-links.js` — bezpłatny generator linków UTM i tekstów do publikacji (6 usług, w tym SKD jako trzecia)
-- `v2/narzedzia/test-formularzy.html` — ręcznie uruchamiana kontrola 10 podstron, 3 plików indeksowania, 3 elementów aktualnej wersji FAQ (JS, CSS, osadzenie w HTML) i renderowania 2 formularzy, bez wysyłania danych i bez płatnych usług
+- `v2/narzedzia/test-formularzy.html` — ręcznie uruchamiana kontrola 10 podstron, 3 plików indeksowania, 3 elementów aktualnej wersji FAQ (JS, CSS, osadzenie w HTML) i 7 testów formularzy oraz ścieżek kontaktu (m.in. SKD, Paulina, zmiana usługi przez kartę, walidacja telefonu, kontakt e-mail bez telefonu), bez wysyłania danych i bez płatnych usług
 - `v2/local-mining.css`, `v2/lokalnie/` — lokalne strony Lubina i Polkowic
 - `v2/_headers` — konserwatywne nagłówki bezpieczeństwa na ścieżce publikacji
 - `v2/404.html` — wersja strony błędu powiązana z publiczną witryną
@@ -53,7 +53,7 @@ Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono
 2. Sprawdź `https://twoja-sprawa.pages.dev/kontakt` oraz `https://twoja-sprawa.pages.dev/kampanie/skd`.
 3. Sprawdź `https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze` oraz `https://twoja-sprawa.pages.dev/uslugi/swiadczenie-wspierajace`.
 4. Sprawdź aktualną mapę `https://twoja-sprawa.pages.dev/sitemap.xml` — publiczna mapa jest generowana inaczej niż starszy plik `sitemap.xml` w katalogu repozytorium.
-5. Otwórz `https://twoja-sprawa.pages.dev/narzedzia/test-formularzy` i kliknij „Uruchom kontrolę” — sprawdza 10 stron, 3 pliki SEO, 3 elementy najnowszego FAQ i 2 formularze bez wysyłania danych.
+5. Otwórz `https://twoja-sprawa.pages.dev/narzedzia/test-formularzy` i kliknij „Uruchom kontrolę” — sprawdza 10 stron, 3 pliki SEO, 3 elementy najnowszego FAQ oraz 7 scenariuszy formularzy bez wysyłania danych.
 6. Przetestuj działanie formularza w przeglądarce i potwierdź dostarczenie testowego zgłoszenia dopiero po uzgodnieniu procedury, aby nie generować fałszywych leadów.
 7. Jeżeli formularz nie działa, statyczny kontakt wewnątrz `[data-contact-form]` powinien pozostać widoczny.
 

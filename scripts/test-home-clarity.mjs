@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Strona główna: 3 wyróżnione usługi (WZON, szkody, SKD), 3 pozostałe. */
+/** Strona główna: 3 wyróżnione usługi (szkody, WZON, SKD), 3 pozostałe. */
 import assert from "node:assert/strict";
 import {readFile,access} from "node:fs/promises";
 const html=await readFile("v2/index.html","utf8");
@@ -24,10 +24,10 @@ for(const [index,link] of links.entries()){
  assert.ok(valid,"Incorrect service destination "+link);
  await access(link.slice(1));
 }
-assert.ok(segment.indexOf("support-featured")<segment.indexOf("mining-featured")&&segment.indexOf("mining-featured")<segment.indexOf("skd-featured"),"Three flagship priorities must be WZON, mining, SKD");
+assert.ok(segment.indexOf("mining-featured")<segment.indexOf("support-featured")&&segment.indexOf("support-featured")<segment.indexOf("skd-featured"),"Three flagship priorities must be mining, WZON, SKD");
 const headerNav=html.slice(html.indexOf('<nav id="site-main-nav"'),html.indexOf("</nav>",html.indexOf('<nav id="site-main-nav"')));
 const priorityNav=[...headerNav.matchAll(/class="nav-(support|mining|skd)-priority"/g)].map(x=>x[1]);
-assert.deepEqual(priorityNav,["support","mining","skd"],"Main navigation must expose WZON, mining, SKD as the top three projects");
+assert.deepEqual(priorityNav,["mining","support","skd"],"Main navigation must expose mining, WZON, SKD as the top three projects");
 assert.ok(headerNav.includes('class="nav-skd-priority" href="/v2/uslugi/kredyty-pln.html"'),"SKD navigation route missing");
 assert.ok(css.includes(".nav-skd-priority"),"SKD main navigation contrast styles missing");
 assert.ok(links[2]==="/v2/kampanie/skd.html"&&links[3].endsWith("/renty-powypadkowe.html"),"Third flagship SKD must lead to the shorter full-contract campaign before rents");
@@ -45,7 +45,7 @@ const bar=html.match(/<aside class="mobile-contact-bar"[\s\S]*?<\/aside>/)?.[0]|
 assert.ok(bar.includes('tel:+48796441345')&&bar.includes('tel:+48500171531'),"Both phone actions missing");
 assert.ok(bar.includes('class="mobile-form-link" href="#kontakt"'),"Missing direct form shortcut");
 const mobileTop=html.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0]||"";
-assert.deepEqual([...mobileTop.matchAll(/class="mobile-(support|mining|skd)-priority"/g)].map(m=>m[1]),["support","mining","skd"],"Mobile quick links must expose all three flagship services in order");
+assert.deepEqual([...mobileTop.matchAll(/class="mobile-(support|mining|skd)-priority"/g)].map(m=>m[1]),["mining","support","skd"],"Mobile quick links must expose all three flagship services in order");
 assert.ok(mobileTop.includes('href="/v2/kampanie/skd.html"'),"Mobile SKD quick path should lead to direct agreement and callback actions");
 assert.equal((bar.match(/<a\b/g)||[]).length,3,"Mobile contact bar must have exactly three actions");
 assert.ok(css.includes('grid-template-columns:repeat(3,minmax(0,1fr))'),"Three actions are not fitted to a narrow screen");

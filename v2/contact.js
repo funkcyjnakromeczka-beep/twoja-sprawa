@@ -183,6 +183,8 @@
   city.addEventListener("input",syncCityQuick);select.addEventListener("change",syncCityQuick);syncCityQuick();
   const phone=field("Telefon kontaktowy","tel",false,30,"tel");phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";
   const email=field("Adres e-mail (opcjonalnie, jeśli podasz telefon)","email",false,150,"email");
+  const phoneFieldLabel=form.querySelector('label[for="'+phone.id+'"]');
+  const emailFieldLabel=form.querySelector('label[for="'+email.id+'"]');
   const phoneHint=document.createElement("small");phoneHint.className="contact-field-hint";phoneHint.textContent="Wystarczy telefon lub e-mail. Numer telefonu powinien zawierać 7–15 cyfr (spacje i myślniki są dozwolone). Nie wpisuj numeru PESEL ani danych dokumentów.";phoneHint.id="cf-phone-help-"+Math.random().toString(36).slice(2,8);phone.setAttribute("aria-describedby",phoneHint.id);phone.insertAdjacentElement("afterend",phoneHint);
   const methodLabel=document.createElement("label");methodLabel.textContent="Preferowany sposób kontaktu";const method=document.createElement("select");method.id="cf-method-"+Math.random().toString(36).slice(2,8);methodLabel.htmlFor=method.id;for(const [value,title] of [["Dowolny","Telefon lub e-mail"],["Telefon","Telefon"],["E-mail","E-mail"]]){const option=document.createElement("option");option.value=value;option.textContent=title;method.append(option);}form.append(methodLabel,method);
   // Nie pozwalaj, by sam znak +, myślniki albo krótki ciąg znaków zastępowały numer.
@@ -208,6 +210,10 @@
     // SKD requires a callback number; all other services still accept email-only enquiries.
     phone.required=isSKD||prefer==="Telefon"||(prefer==="Dowolny"&&!hasEmail);
     email.required=prefer==="E-mail"||(!isSKD&&prefer==="Dowolny"&&!hasPhone);
+    // Wskazówki przy samych polach odpowiadają wybranej usłudze i preferencji.
+    // SKD zawsze wymaga numeru telefonu, natomiast przy innych sprawach wystarczy jeden kontakt.
+    phoneFieldLabel.textContent=isSKD||prefer==="Telefon"?"Telefon kontaktowy (wymagany)":hasEmail?"Telefon kontaktowy (opcjonalnie)":"Telefon kontaktowy (lub e-mail)";
+    emailFieldLabel.textContent=prefer==="E-mail"?"Adres e-mail (wymagany)":isSKD||hasPhone?"Adres e-mail (opcjonalnie)":"Adres e-mail (lub telefon)";
     phoneHint.textContent=isSKD
      ?"W sprawie SKD pozostaw numer telefonu do kontaktu (7–15 cyfr). Adres e-mail możesz dodać opcjonalnie. Nie wpisuj numeru PESEL ani danych dokumentów."
      :"Wystarczy telefon lub e-mail. Numer telefonu powinien zawierać 7–15 cyfr (spacje i myślniki są dozwolone). Nie wpisuj numeru PESEL ani danych dokumentów.";

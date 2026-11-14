@@ -222,5 +222,18 @@ await fetchPortraits();
 await writeFile(join(dest,"robots.txt"),"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: "+origin+"/sitemap.xml\n");
 const xml=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll('"',"&quot;");
 await writeFile(join(dest,"sitemap.xml"),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+pages.sort().map(p=>'  <url><loc>'+xml(origin+p)+'</loc></url>').join("\n")+'\n</urlset>\n');
-await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n");
+// Production fingerprint: no secrets, personal data, or credentials.
+// A deployed /release-info.json helps distinguish GitHub changes from
+// actual Cloudflare publication. If SHA is unavailable, report null.
+const sourceCommit=(process.env.CF_PAGES_COMMIT_SHA||process.env.GITHUB_SHA||"").trim().toLowerCase();
+const releaseInfo={
+ schemaVersion:1,
+ site:origin,
+ sourceDirectory:"v2",
+ buildScript:"scripts/build.mjs",
+ commit:/^[a-f0-9]{40}$/.test(sourceCommit)?sourceCommit:null,
+ builtAt:new Date().toISOString()
+};
+await writeFile(join(dest,"release-info.json"),JSON.stringify(releaseInfo,null,2)+"\n");
+await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n");
 console.log("Built "+pages.length+" pages in dist/ for "+origin+". This command does not publish.");

@@ -1,0 +1,40 @@
+name: Kontakt bez Web3Forms — test mobilny bez wysyłki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/contact-alternatives-browser.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: twoja-sprawa-contact-readonly
+  cancel-in-progress: false
+
+jobs:
+  browser:
+    name: Android-size Chromium — 0 zgłoszeń
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Zainstaluj Chromium do testu odczytowego
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install chromium --only-shell
+      - name: Sprawdź kontakt na dwóch stronach i zmianę usługi bez wysyłki
+        run: node scripts/check-contact-alternatives-browser.mjs
+      - name: Zrzuty mobilnych opcji kontaktu
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kontakt-alternatywny-telefon
+          path: screenshots/contact-backup-*.png
+          if-no-files-found: warn
+          retention-days: 3

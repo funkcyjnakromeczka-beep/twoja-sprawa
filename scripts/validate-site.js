@@ -93,6 +93,18 @@ for(const page of critical){
 }
 
 const home = read("v2/index.html");
+// Source HTML also needs reliable contact metadata if published directly,
+// even though the normal production compiler regenerates the SEO graph.
+if(!home.includes('<link rel="canonical" href="https://twoja-sprawa.pages.dev/">'))
+ warn("Strona glowna: brak zrodłowego canonical");
+const homeGraphs=[...home.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+ .map(match=>{try{return JSON.parse(match[1]);}catch{return {};}});
+const homeAgency=homeGraphs.flatMap(graph=>graph["@graph"]||[])
+ .find(item=>item["@type"]==="Organization"&&item.name==="SuccessTree OBIEGŁO WOJCIECH");
+if(!homeAgency||!Array.isArray(homeAgency.contactPoint)||
+ !homeAgency.contactPoint.some(item=>item.telephone==="+48 796 441 345"&&item.email==="wojciech.obieglo@votum-ds.pl")||
+ !homeAgency.contactPoint.some(item=>item.telephone==="+48 500 171 531"&&item.email==="paulina.chandrala@votum-ds.pl"))
+ warn("Strona glowna: brak zgodnych danych strukturalnych obu doradcow");
 const primary = [...home.matchAll(/class="card primary-card (mining-featured|support-featured|skd-featured)"/g)].map(m=>m[1]);
 if(primary.join(",") !== "mining-featured,support-featured,skd-featured")
  warn("Na stronie głównej kolejność głównych usług musi być: szkody, świadczenie, SKD. Jest: "+primary.join(","));

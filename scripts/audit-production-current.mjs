@@ -9,7 +9,7 @@ import assert from "node:assert/strict";
 const origin="https://twoja-sprawa.pages.dev";
 const targets=[
   "/","/robots.txt","/sitemap.xml","/home-flow.css","/network-brand.css",
-  "/contact.js","/chat-assistant.js","/kontakt","/faq",
+  "/contact.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",
   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
   "/uslugi/kredyty-pln","/kampanie/skd"
 ];
@@ -98,6 +98,10 @@ must(contact.includes("api.web3forms.com/submit")&&contact.includes("if(sending)
   "Wdrozenie formularza jest niekompletne");
 must(contact.includes('querySelectorAll("[data-contact-shortcut]")'),
   "Przyciski skrotow do formularza nie sa obslugiwane");
+must(data["/service-navigator.js"].includes('service:"kredyty-pln.html",landing:"kampanie/skd.html"'),
+  "Przewodnik nie prowadzi SKD do dedykowanego formularza");
+must(data["/chat-assistant.js"].includes('form:"kampanie/skd.html"+params,alias:"skd"'),
+  "Chatbot nie prowadzi SKD do dedykowanego formularza");
 must(data["/chat-assistant.js"].includes('key:"skd"'),
   "Asystent nie rozpoznaje SKD");
 must(data["/robots.txt"].includes("OAI-SearchBot")&&

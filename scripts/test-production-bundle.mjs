@@ -67,6 +67,18 @@ for(const target of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadcze
  assert.ok(html.includes('<meta name="twitter:card" content="summary_large_image">'),"Large social preview missing: "+target);
 }
 
+// Prevent contradictory social descriptions even after the builder enriches HTML.
+for(const target of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html"]){
+ const html=await read(target);
+ const head=html.slice(0,html.indexOf("</head>"));
+ const ogDescription=[...head.matchAll(/<meta\s+property="og:description"\s+content="[^"]*">/g)];
+ assert.equal(ogDescription.length,1,"Open Graph description must be unique: "+target);
+ const title=html.match(/<title>([^<]+)<\/title>/i)?.[1]||"";
+ const desc=head.match(/<meta name="description" content="([^"]*)"/i)?.[1]||"";
+ assert.ok(title.length>=30&&title.length<=60,"Unexpected SEO title length: "+target);
+ assert.ok(desc.length>=70&&desc.length<=160,"Unexpected SEO description length: "+target);
+}
+
 // Every shared URL should have a specific title, accessible same-origin photo,
 // and a description sourced from its own page rather than a generic homepage.
 for(const [page,photo] of [

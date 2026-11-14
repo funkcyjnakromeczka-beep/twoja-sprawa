@@ -8,6 +8,7 @@ const html=await readFile("v2/faq.html","utf8");
 class MockNode{
  constructor(textContent="",data={}){this.textContent=textContent;this.dataset=data;this.events={};this.attrs={};this.value="";this.hidden=false;}
  addEventListener(k,fn){this.events[k]=fn;}
+ querySelector(selector){return ["summary",".faq-answer"].includes(selector)?{textContent:this.textContent}:null;}
  setAttribute(k,v){this.attrs[k]=v;}
  focus(){this.focused=true;}
 }

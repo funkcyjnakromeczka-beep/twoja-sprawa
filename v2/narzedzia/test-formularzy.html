@@ -69,7 +69,7 @@ footer a{color:#efcf9b}
 </section>
 <section class="panel" aria-labelledby="form-test-title">
 <h2 id="form-test-title">Kontrola formularzy JavaScript</h2>
-<p>Po teście sprawdzimy trzy formularze i dwa scenariusze zmiany usługi z karty kampanii: szkody górnicze oraz świadczenie wspierające. Weryfikujemy właściwą osobę do kontaktu i obowiązkowy telefon przy SKD. Kontrola odbywa się w niewidocznej ramce i nie wysyła zgłoszeń.</p>
+<p>Po teście sprawdzimy formularze, dwa scenariusze zmiany usługi z karty kampanii oraz walidację telefonu i zgłoszenia wyłącznie e-mailowego. Dane w tych testach są fikcyjne, pozostają w niewidocznej ramce i nigdy nie są wysyłane.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Test</th><th>Wynik</th><th>Opis</th></tr></thead>
 <tbody id="form-results"><tr><td colspan="3">Test nie został uruchomiony.</td></tr></tbody>
@@ -152,7 +152,7 @@ async function checkSeoFile(name,path,requiredText){
   return[name,"HTTP "+response.status,good?"Wymagane informacje obecne":"Brak wymaganego znacznika",good];
  }catch(e){return[name,"Błąd połączenia",e?.name==="AbortError"?"Przekroczono 10 sekund":"Nie udało się pobrać pliku",false];}
 }
-function dynamicTest(name,path,requiredPhone,expectedService="",switchTopic=""){
+function dynamicTest(name,path,requiredPhone,expectedService="",switchTopic="",validationCase=""){
  return new Promise(resolve=>{
   // Same-origin iframe only. The test never clicks Submit and never fills user data.
   const frame=document.createElement("iframe");
@@ -182,7 +182,32 @@ function dynamicTest(name,path,requiredPhone,expectedService="",switchTopic=""){
    const tel=form.querySelector('input[type="tel"]');
    const submit=form.querySelector('button[type="submit"]');
    if(!service||!tel||!submit)return;
-   if(switchTopic){
+   if(validationCase==="skd-phone"){
+    if(service.value!=="Kredyt w PLN / SKD"){finalize(false,"Kampania SKD nie ustawiła właściwej usługi");return;}
+    const eventType="input";
+    tel.value="abc";
+    tel.dispatchEvent(new frame.contentWindow.Event(eventType,{bubbles:true}));
+    const rejectsInvalid=!tel.checkValidity();
+    tel.value="+48 796 441 345";
+    tel.dispatchEvent(new frame.contentWindow.Event(eventType,{bubbles:true}));
+    const acceptsValid=tel.checkValidity();
+    finalize(rejectsInvalid&&acceptsValid&&tel.required,
+     rejectsInvalid&&acceptsValid&&tel.required?
+     "Nieprawidłowy numer odrzucony, polski numer zaakceptowany; pole obowiązkowe":
+     "Walidacja numeru SKD wymaga sprawdzenia");
+   }else if(validationCase==="email-only"){
+    service.value="Szkody górnicze";
+    service.dispatchEvent(new frame.contentWindow.Event("change",{bubbles:true}));
+    const email=form.querySelector('input[type="email"]');
+    if(!email){finalize(false,"Brak pola e-mail");return;}
+    tel.value="";
+    email.value="test@example.com";
+    email.dispatchEvent(new frame.contentWindow.Event("input",{bubbles:true}));
+    const good=!tel.required&&tel.checkValidity()&&email.checkValidity();
+    finalize(good,good?
+     "Poprawny adres e-mail wystarcza bez numeru telefonu poza SKD":
+     "Formularz wymaga telefonu mimo poprawnego adresu e-mail");
+   }else if(switchTopic){
     const mining=switchTopic==="szkody";
     const trigger=doc.querySelector(mining?'[data-damage-option]':'[data-stage-option]');
     const directCall=form.querySelector("a.contact-direct-call");
@@ -251,10 +276,10 @@ run.addEventListener("click",async()=>{
    ?"Wszystkie pliki FAQ dostępne w wersji produkcyjnej. Nadal warto przetestować kliknięcie na telefonie."
    :"Wykryto rozbieżność: "+deployed+"/"+deployChecks.length+" elementów FAQ potwierdzonych. Sprawdź najnowsze wdrożenie w Cloudflare.";
   status.textContent="Strony i pliki: "+passed+"/"+total+". Wersja FAQ: "+deployed+"/"+deployChecks.length+". Kontrola formularzy…";
-  const tests=[["Kontakt","/kontakt",false],["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"],["SKD — obowiązkowy telefon","/kampanie/skd",true],["Szkody — zmiana z karty","/kampanie/szkody-gornicze",false,"","szkody"],["Świadczenie — zmiana z karty","/kampanie/swiadczenie-wspierajace",false,"","swiadczenie"]];
+  const tests=[["Kontakt","/kontakt",false],["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"],["SKD — obowiązkowy telefon","/kampanie/skd",true],["Szkody — zmiana z karty","/kampanie/szkody-gornicze",false,"","szkody"],["Świadczenie — zmiana z karty","/kampanie/swiadczenie-wspierajace",false,"","swiadczenie"],["SKD — walidacja numeru","/kampanie/skd",true,"","","skd-phone"],["Szkody — e-mail bez telefonu","/kampanie/szkody-gornicze",false,"","","email-only"]];
   let goodForms=0;
-  for(const [name,path,mustPhone,expectedService,switchTopic] of tests){
-   const r=await dynamicTest(name,path,mustPhone,expectedService,switchTopic);
+  for(const [name,path,mustPhone,expectedService,switchTopic,validationCase] of tests){
+   const r=await dynamicTest(name,path,mustPhone,expectedService,switchTopic,validationCase);
    row(formOutput,r.slice(0,3),["",r[3]?"ok":"warn",""]);
    if(r[3])goodForms++;
   }

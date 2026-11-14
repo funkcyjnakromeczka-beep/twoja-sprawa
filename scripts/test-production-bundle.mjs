@@ -168,6 +168,10 @@ assert.ok(contactFormJS.includes('routingNote.className="contact-routing-note"')
 assert.ok(contactCss.includes(".contact-advisor .contact-routing-note"),
  "Form must show a legible routing disclosure");
 const diagnosticTool=await read("narzedzia/test-formularzy.html");
+assert.ok(diagnosticTool.includes('["Szkody — zmiana z karty","/kampanie/szkody-gornicze",false,"","szkody"]')&&
+ diagnosticTool.includes('["Świadczenie — zmiana z karty","/kampanie/swiadczenie-wspierajace",false,"","swiadczenie"]')&&
+ diagnosticTool.includes('directEmail.getAttribute("href")||"").startsWith("mailto:"+emailAddress+"?")'),
+ "Diagnostics must cover campaign-card adviser switching without submitting data");
 assert.ok(diagnosticTool.includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]')&&
  diagnosticTool.includes('a[href^="mailto:paulina.chandrala@votum-ds.pl"]')&&
  diagnosticTool.includes('a[href="tel:+48500171531"]'),

@@ -30,7 +30,7 @@ for (const file of files) {
   if (!/<meta\s+name="robots" content="(?:index|noindex)[^"]*"/i.test(html)) errors.push(label + ": missing explicit robots policy");
   if (!/<html\s+lang="pl"/i.test(html)) warnings.push(label + ": missing lang=pl");
   if (/<script\b[^>]*src="https?:/i.test(html)) warnings.push(label + ": third-party script needs privacy review");
-  if (html.includes("data-contact-form") && !html.includes('src="/v2/contact.js"')) errors.push(label + ": contact form without script");
+  if (/<div\b[^>]*\bdata-contact-form(?:\s|>)/i.test(html) && !html.includes('src="/v2/contact.js"')) errors.push(label + ": contact form without script");
   if (label.startsWith("uslugi/")) {
     if (!html.includes("data-contact-form")) errors.push(label + ": service page missing contact form");
     if (!html.includes('src="/v2/contact.js"')) errors.push(label + ": service page missing contact script");

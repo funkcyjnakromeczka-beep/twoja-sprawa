@@ -204,7 +204,7 @@ for(const [file,area] of [
  ["uslugi/swiadczenie-wspierajace.html","Polska"]
 ]){
  const html=await read(file);
- const graphs=[...html.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)]
+ const graphs=[...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
    .flatMap(([,raw])=>JSON.parse(raw)["@graph"]||[]);
  const service=graphs.find(item=>item["@type"]==="Service");
  assert.ok(service,"Missing Service schema: "+file);

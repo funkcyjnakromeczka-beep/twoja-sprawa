@@ -103,8 +103,11 @@ W repozytorium działają już niezależne zadania:
 - `.github/workflows/validate-site.yml` — szybka kontrola składni i integralności źródła po zmianie plików, uruchamia `node scripts/validate-site.js`.
 - `.github/workflows/release-candidate.yml` — buduje katalog `dist/` i sprawdza kandydata wydania, ale **nie publikuje** plików na Cloudflare.
 - `.github/workflows/live-audit.yml` — odczytowa kontrola publicznej produkcji, nie publikuje plików.
+- `.github/workflows/browser-flows.yml` — **bezpłatne testy Chromium w publicznym repozytorium**. Po zmianach strony czeka na zgodność hasha `release-info.json` z commitem GitHub, następnie otwiera opublikowaną diagnostykę i sprawdza w rzeczywistej przeglądarce 10 podstron, 3 pliki SEO, 3 elementy FAQ i 7 scenariuszy formularzy, nie wysyłając zgłoszeń. Dodatkowo porównuje nawigację mobilną (390 px) i komputerową (1280 px), trzy wyróżnione usługi, dwa logotypy i dolne przyciski telefoniczne Wojciecha oraz Pauliny. Skrypt: `scripts/test-browser-flows.mjs`.
 - `.github/workflows/indexnow.yml` — zgłaszanie wyłącznie potwierdzonych publicznych adresów, nie jest systemem publikacji.
 - `.github/workflows/backup-portraits.yml` — zabezpieczenie lokalnych zdjęć zespołu w repozytorium.
+
+**Zweryfikowane uruchomienie przeglądarkowe (14.11.2026):** [GitHub Actions #2](https://github.com/funkcyjnakromeczka-beep/twoja-sprawa/actions/runs/43639601413) zakończyło się sukcesem dla commita `1004039ae37c4a8efd6cd6ef94fb7d0063284ace`: **13/13** zasobów, **3/3** FAQ, **7/7** formularzy, plus mobilne i desktopowe przejścia kontaktowe. Kontrola nie dotyczy skuteczności faktycznego doręczenia e-maili przez Web3Forms; tę kwestię należy testować odrębnie, z uzgodnionym testowym zgłoszeniem.
 
 **Głównym generatorem strony jest `scripts/build.mjs` (źródło: `v2/`, wynik: `dist/`).** Nie wdraża on samodzielnie plików. Przed zmianami w konfiguracji Cloudflare należy porównać ostatni plik `dist/` z aktywnym wdrożeniem. Celem jest zachowanie obecnej domeny i wszystkich funkcji kontaktowych, nie przenoszenie strony do nowego hostingu.
 

@@ -167,6 +167,12 @@ for(const path of [
  if(!read(path).includes('<script src="/v2/campaign-mobile-actions.js" defer></script>'))
   warn(path+": brak kontrolera mobilnego paska kontaktowego");
 }
+
+const skdMobile=read("v2/kampanie/skd.html");
+if(!skdMobile.includes('class="campaign-mobile-call" href="#formularz" aria-label="Zostaw numer telefonu do analizy SKD"')||
+   !skdMobile.includes('class="campaign-mobile-primary" href="mailto:wojciech.obieglo@votum-ds.pl')||
+   !skdMobile.includes('href="tel:+48796441345"'))
+ warn("SKD: mobilne akcje muszą prowadzić do umowy i numeru telefonu, przy zachowaniu połączenia do Wojciecha");
 const contact = read("v2/contact.js");
 if(!contact.includes('isSKD||prefer==="Telefon"'))
  warn("Formularz: brak wymogu telefonu dla SKD");

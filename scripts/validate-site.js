@@ -136,6 +136,10 @@ for(const asset of ["/v2/faq.js","/v2/faq.css","/v2/faq-share-v1.js","/v2/faq-sh
 
 
 const diagnostic = read("v2/narzedzia/test-formularzy.html");
+if(!diagnostic.includes('["Szkody — zmiana z karty","/kampanie/szkody-gornicze",false,"","szkody"]')||
+   !diagnostic.includes('["Świadczenie — zmiana z karty","/kampanie/swiadczenie-wspierajace",false,"","swiadczenie"]')||
+   !diagnostic.includes('directEmail.getAttribute("href")||"").startsWith("mailto:"+emailAddress+"?")'))
+ warn("Diagnostyka: brakuje testu przełączenia doradcy z kart kampanii");
 if(!diagnostic.includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]')||
    !diagnostic.includes('a[href^="mailto:paulina.chandrala@votum-ds.pl"]')||
    !diagnostic.includes('a[href="tel:+48500171531"]'))

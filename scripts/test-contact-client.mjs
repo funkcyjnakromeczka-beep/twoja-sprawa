@@ -64,6 +64,10 @@ const run=async(error=false)=>{
  assert.equal(advisor.hidden,false,"Specialist is visible after choosing service");
  assert.ok(advisor.children.some(node=>(node.textContent||"").includes("Paulina Chandrała")),"Support cases should show Paulina");
  assert.ok(advisor.children.some(node=>node.href?.startsWith("mailto:paulina.chandrala@votum-ds.pl?subject=")),"Support adviser email must be directly accessible");
+ const direct=visit(form,n=>n.className==="contact-direct-alternatives");
+ assert.ok(direct,"Before Web3Forms submit, visitors can choose direct contact");
+ assert.ok(visit(direct,n=>n.href==="tel:+48500171531"),"Support direct phone must route to Paulina");
+ assert.ok(visit(direct,n=>n.href?.startsWith("mailto:paulina.chandrala@votum-ds.pl?subject=")),"Support direct e-mail must route to Paulina");
  const supportPhone=visit(form,n=>n.className==="contact-people");
  assert.ok(supportPhone.children.some(n=>n.href==="tel:+48500171531"),"Support hotline must link to Paulina");
  assert.ok(!supportPhone.children.some(n=>n.href==="tel:+48796441345"),"Support should not show unrelated mining hotline");
@@ -97,6 +101,8 @@ const run=async(error=false)=>{
  assert.ok(status);
  if(error){
   assert.equal(status.className,"contact-status-error");
+ assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
+  assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
   const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
   assert.ok(fallback);
   assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"),"Support fallback must route directly to Paulina");
@@ -131,6 +137,9 @@ await run(true);
  assert.ok(advisor.children.some(n=>n.textContent==="Twoja osoba do kontaktu: Wojciech Obiegło"),"SKD advisor must be Wojciech");
  assert.ok(advisor.children.some(n=>n.href?.startsWith("mailto:wojciech.obieglo@votum-ds.pl")),"SKD email destination missing");
  assert.ok(advisor.children.some(n=>n.href==="tel:+48796441345"),"SKD callback uses a different phone");
+ const direct=visit(form,n=>n.className==="contact-direct-alternatives");
+ assert.ok(visit(direct,n=>n.href==="tel:+48796441345"),"SKD direct phone must route to Wojciech");
+ assert.ok(visit(direct,n=>n.href?.startsWith("mailto:wojciech.obieglo@votum-ds.pl?subject=")),"SKD direct e-mail must route to Wojciech");
  assert.ok(guide.children.some(n=>n.textContent?.includes("wojciech.obieglo@votum-ds.pl")),"SKD checklist guidance must invite contract email");
  const phone=visit(form,n=>n.autocomplete==="tel");
  const email=visit(form,n=>n.autocomplete==="email");
@@ -154,6 +163,7 @@ await run(true);
  assert.ok(benefits.children.some(n=>n.textContent?.includes("pełną umowę e-mailem")),"SKD lead must not discourage sending the contract");
  service.value="Świadczenie wspierające";service.events.change();
  assert.equal(phone.required,false,"Switching away from SKD should restore email-only enquiries");
+ assert.ok(visit(direct,n=>n.href==="tel:+48500171531"),"Direct phone must follow service switching");
  assert.equal(email.required,true,"Support email-only route must require the sole contact method");
 
  assert.ok(benefits.children.every(n=>!n.textContent?.includes("pełną umowę e-mailem")),"Non-SKD leads must not show contract upload guidance");
@@ -186,6 +196,7 @@ await run(true);
  assert.equal(attempted,1,"Synthetic Web3Forms outage must be exercised");
  const status=visit(form,n=>n.attributes?.role==="status");
  assert.equal(status.className,"contact-status-error");
+ assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
  const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
  assert.ok(fallback?.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"),"SKD fallback must go to Wojciech's VOTUM email");
  assert.ok(decodeURIComponent(fallback.href).includes("Telefon: 796 441 345"),"SKD fallback must retain the callback number");

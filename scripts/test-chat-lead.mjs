@@ -88,7 +88,7 @@ const skdForm=visit(result,n=>n.className==="chat-reply-contact");
 assert.equal(new URL(skdForm.href,origin).searchParams.get("usluga"),"skd","SKD form must retain service alias");
 const skdCaution=visit(result,n=>n.className==="chat-caution");
 assert.ok(skdCaution.textContent.includes("nie wysyła zgłoszenia"),"SKD chatbot must explain no automatic submission");
-assert.deepEqual(choices.children.map(x=>x.dataset.topic),["swiadczenie","szkody","skd","renty","franki","przesyl"],"SKD must be the third visible chatbot topic");
+assert.deepEqual(choices.children.map(x=>x.dataset.topic),["szkody","swiadczenie","skd","renty","franki","przesyl"],"SKD must be the third visible chatbot topic");
 assert.ok(source.includes('["renty-powypadkowe","renty"]'),"Rent page should auto-select its own adviser by key");
 assert.ok(source.includes('["kredyty-pln","skd"]'),"SKD service page should auto-select the agreement path");
 assert.ok(source.includes('["kampanie/skd","skd"]'),"SKD campaign should auto-select its own topic");

@@ -78,6 +78,17 @@ for(const [phone,email] of [
     "Nieprawidlowy kontakt w danych SEO: "+phone);
 }
 
+// Kontrola zgodnosci danych geograficznych uslug z trescia witryny.
+for(const [route,expectedArea] of [
+ ["/uslugi/szkody-gornicze","Lubin, Polkowice i okolice"],
+ ["/uslugi/swiadczenie-wspierajace","Polska"]
+]){
+ const nodes=[...data[route].matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
+   .flatMap(([,raw])=>JSON.parse(raw)["@graph"]||[]);
+ const service=nodes.find(node=>node["@type"]==="Service");
+ must(service?.areaServed===expectedArea,"Niespojny zasieg Service SEO: "+route);
+}
+
 for(const path of ["/","/kontakt","/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-pln","/faq"]){
   const html=data[path];
   const canonical=origin+path;

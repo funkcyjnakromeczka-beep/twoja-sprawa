@@ -168,12 +168,13 @@ assert.ok(contactFormJS.includes('routingNote.className="contact-routing-note"')
 assert.ok(contactCss.includes(".contact-advisor .contact-routing-note"),
  "Form must show a legible routing disclosure");
 
+const diagnosticTool=await read("narzedzia/test-formularzy.html");
 assert.ok(diagnosticTool.includes('["SKD — walidacja numeru","/kampanie/skd",true,"","","skd-phone"]')&&
  diagnosticTool.includes('["Szkody — e-mail bez telefonu","/kampanie/szkody-gornicze",false,"","","email-only"]')&&
  diagnosticTool.includes('const acceptsValid=tel.checkValidity();')&&
  diagnosticTool.includes('const good=!tel.required&&tel.checkValidity()&&email.checkValidity();'),
  "Public browser diagnostics must safely check SKD phone validation and email-only cases");
-const diagnosticTool=await read("narzedzia/test-formularzy.html");
+
 assert.ok(diagnosticTool.includes('["Szkody — zmiana z karty","/kampanie/szkody-gornicze",false,"","szkody"]')&&
  diagnosticTool.includes('["Świadczenie — zmiana z karty","/kampanie/swiadczenie-wspierajace",false,"","swiadczenie"]')&&
  diagnosticTool.includes('directEmail.getAttribute("href")||"").startsWith("mailto:"+emailAddress+"?")'),

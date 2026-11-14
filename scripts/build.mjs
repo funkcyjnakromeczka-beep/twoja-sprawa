@@ -143,7 +143,7 @@ function upsertSocialMetadata(markup,route,origin){
   setContent("property","og:image:secure_url",image);
   setContent("property","og:image:type","image/jpeg");
   setContent("property","og:image:alt",person+" — osoba do pierwszego kontaktu, Twoja Sprawa");
-  setContent("name","twitter:card","summary");
+  setContent("name","twitter:card","summary_large_image");
   setContent("name","twitter:title",title);
   if(description)setContent("name","twitter:description",description);
   setContent("name","twitter:image",image);
@@ -169,7 +169,10 @@ async function walk(dir){
       // Avoid extra redirects: static links use the same extensionless public paths as sitemap.
       html=html.replace(/href="(\/[^"?#]+)\.html(?=[?#"])/g,(_m,path)=>'href="'+path);
       html=localizePortraits(html);
-      html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
+      // Atrybucja jest już podłączona w większości stron źródłowych. Nie montuj dwa razy tych samych listenerów.
+      if(!html.includes('src="/attribution.js"')){
+        html=html.replace("</body>",'<script src="/attribution.js" defer></script></body>');
+      }
       const robotsTag=/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i;
       if(!robotsTag.test(html)) throw new Error("Source robots tag missing: "+rel);
       html=html.replace(robotsTag,'<meta name="robots" content="'+robots+'">');

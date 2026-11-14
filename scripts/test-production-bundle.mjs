@@ -6,6 +6,8 @@ import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 const origin="https://twoja-sprawa.pages.dev";
 const read=path=>readFile("dist/"+path,"utf8");
 const home=await read("index.html");
+assert.equal((home.match(/class="network-brand-bar"/g)||[]).length,1,"Production homepage must show one sticky partner bar");
+assert.ok(!home.includes('class="homepage-partner-strip"'),"Duplicate source partner bar leaked into production homepage");
 // Search-engine metadata must match the direct mailboxes displayed to clients.
 const homeSchema=home.split('<script type="application/ld+json">').slice(1)
   .map(part=>JSON.parse(part.split("</script>")[0]))

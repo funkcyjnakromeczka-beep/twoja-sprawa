@@ -118,6 +118,12 @@ for(const [page,photo] of [
   assert.ok(html.includes('<meta property="og:image:alt" content="'),"missing accessible preview label: "+page);
 }
 
+const skdNavigator=await read("service-navigator.js");
+const skdChatbot=await read("chat-assistant.js");
+assert.ok(skdNavigator.includes('service:"kredyty-pln.html",landing:"kampanie/skd.html"'),
+ "Navigator must offer dedicated SKD campaign form");
+assert.ok(skdChatbot.includes('form:"kampanie/skd.html"+params,alias:"skd"'),
+ "Chatbot must offer dedicated SKD campaign form");
 const skdLanding=await read("kampanie/skd.html");
 assert.ok(skdLanding.includes('src="/contact.js" data-service="Kredyt w PLN / SKD"'),"SKD lead form must be selected");
 assert.ok(skdLanding.includes("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD contract email missing");

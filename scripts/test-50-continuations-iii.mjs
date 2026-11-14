@@ -16,13 +16,14 @@ const support=contents["v2/uslugi/swiadczenie-wspierajace.html"];
 const pattern=/<article class="faq-card" data-faq-category="([^"]+)" id="([^"]+)"><span class="faq-tag">([^<]+)<\/span><details><summary>([^<]+)<\/summary><div class="faq-answer"><p>([^<]+)<\/p>([\s\S]*?)<\/div><\/details><\/article>/g;
 const entries=[...faq.matchAll(pattern)].map(match=>({category:match[1],id:match[2],tag:match[3],question:match[4],answer:match[5],sources:match[6]}));
 assert.equal(entries.length,24,"Expected 24 real FAQ entries");
+assert.equal(new Set(entries.map(item=>item.id)).size,24,"Question anchors must be unique across reordered categories");
 const allowed=new Set(["szkody","swiadczenie","renty","skd","przesyl","kontakt"]);
 const checks=[];
 const add=(label,test)=>checks.push({label,test});
 entries.forEach((item,index)=>{
  add("Pytanie "+String(index+1).padStart(2,"0")+": "+item.question,()=>{
   assert.ok(allowed.has(item.category),"unknown category");
-  assert.ok(item.id.startsWith("pytanie-"+(index+1)+"-"),"wrong anchor");
+  assert.ok(/^pytanie-[0-9]+-[a-z0-9-]+$/.test(item.id),"invalid stable question anchor");
   assert.ok(item.tag.length>5,"missing category label");
   assert.ok(item.question.length>18,"short question");
   assert.ok(item.answer.length>=73,"answer too short to be useful");
@@ -55,7 +56,7 @@ add("47. Działający skrypt formularza na stronie kontaktowej",()=>assert.ok(co
 add("48. FAQ jest indeksowalne wyłącznie po zatwierdzonym release",()=>{
  assert.equal(shouldIndexRoute("/faq.html"),true);
  assert.equal(toPublicRoute("/faq.html"),"/faq");
- assert.ok(faq.includes('meta name="robots" content="noindex,follow"'));
+ assert.ok(faq.includes('meta name="robots" content="index,follow,max-image-preview:large"'));
 });
 add("49. Podgląd nie udostępnia indeksacji",()=>assert.ok(contents["scripts/preview.mjs"].includes("noindex,nofollow")&&contents["scripts/preview.mjs"].includes("Disallow: /")));
 add("50. Produkcyjny release wymaga trzech zatwierdzeń",()=>{

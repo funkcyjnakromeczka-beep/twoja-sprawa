@@ -57,6 +57,21 @@ for(const page of critical){
  const h1 = [...html.matchAll(/<h1\b/gi)].length;
  if(h1 !== 1) warn(page+": wymagana dokładnie jedna etykieta H1 (znaleziono "+h1+")");
  if(!/<html[^>]+lang="pl"/i.test(html)) warn(page+": brak lang=pl");
+ // Spójność metadanych: duplikaty mogą dawać sprzeczne podglądy linków.
+ const head=html.slice(0,html.indexOf("</head>"));
+ const metaItems=[...head.matchAll(/<meta\b[^>]*>/gi)].map(m=>m[0]);
+ for(const key of ["description","og:description","og:title","og:url","robots","twitter:card"]){
+  const matches=metaItems.filter(tag=>tag.includes('name="'+key+'"')||tag.includes('property="'+key+'"'));
+  if(matches.length>1)warn(page+": powielony znacznik "+key+" ("+matches.length+" szt.)");
+ }
+ const focusPages=new Set(["v2/index.html","v2/uslugi/szkody-gornicze.html","v2/uslugi/swiadczenie-wspierajace.html"]);
+ if(focusPages.has(page)){
+  const title=html.match(/<title>([^<]*)<\/title>/i)?.[1]||"";
+  const description=head.match(/<meta name="description" content="([^"]*)"/i)?.[1]||"";
+  if(title.length<30||title.length>60)warn(page+": tytuł SEO poza przyjętym zakresem 30–60 znaków: "+title.length);
+  if(description.length<70||description.length>160)warn(page+": opis SEO poza przyjętym zakresem 70–160 znaków: "+description.length);
+ }
+
  const internalLinks = [...html.matchAll(/\b(?:href|src)=["'](\/v2\/[^"']+)["']/gi)];
  for(const match of internalLinks){
   const clean = match[1].replace(/&amp;/g,"&").split(/[?#]/)[0];

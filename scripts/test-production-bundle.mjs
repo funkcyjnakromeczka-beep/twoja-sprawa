@@ -6,6 +6,15 @@ import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 const origin="https://twoja-sprawa.pages.dev";
 const read=path=>readFile("dist/"+path,"utf8");
 const home=await read("index.html");
+// Search-engine metadata must match the direct mailboxes displayed to clients.
+const homeSchema=home.split('<script type="application/ld+json">').slice(1)
+  .map(part=>JSON.parse(part.split("</script>")[0]))
+  .flatMap(data=>data["@graph"]||[]);
+const agencySchema=homeSchema.find(item=>item["@type"]==="Organization"&&Array.isArray(item.contactPoint));
+assert.ok(agencySchema,"SuccessTree contact schema missing");
+assert.equal(agencySchema.email,"wojciech.obieglo@votum-ds.pl","Organization email must match direct contact");
+assert.ok(agencySchema.contactPoint.some(point=>point.email==="wojciech.obieglo@votum-ds.pl"&&point.telephone==="+48 796 441 345"),"Wojciech contact point missing");
+assert.ok(agencySchema.contactPoint.some(point=>point.email==="paulina.chandrala@votum-ds.pl"&&point.telephone==="+48 500 171 531"),"Paulina contact point missing");
 assert.ok(home.includes("data-share-page")&&home.includes("data-share-feedback")&&home.includes('src="/share-page.js"'),"privacy-safe share control missing on published homepage");
 const robots=await read("robots.txt");
 const sitemap=await read("sitemap.xml");

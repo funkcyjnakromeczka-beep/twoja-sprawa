@@ -71,6 +71,19 @@ Nie znaleziono standardowych plików `.github/workflows/deploy.yml`, `cloudflare
 4. Po publikacji sprawdź działanie `https://twoja-sprawa.pages.dev/faq-share-v1.js`, `https://twoja-sprawa.pages.dev/faq-share-v1.css` oraz znaczników w `https://twoja-sprawa.pages.dev/faq`. Możesz też użyć `/narzedzia/test-formularzy`: podaje wynik 0–3 dla aktualności FAQ.
 5. Nie zmieniaj domeny ani nie usuwaj istniejącego projektu bez potwierdzenia, jak został pierwotnie wdrożony. W pierwszej kolejności przywróć spójność między repozytorium a obecnym projektem.
 
+## Obecne workflow GitHub i lokalny proces wydania
+
+W repozytorium działają już niezależne zadania:
+- `.github/workflows/validate-site.yml` — szybka kontrola składni i integralności źródła po zmianie plików, uruchamia `node scripts/validate-site.js`.
+- `.github/workflows/release-candidate.yml` — buduje katalog `dist/` i sprawdza kandydata wydania, ale **nie publikuje** plików na Cloudflare.
+- `.github/workflows/live-audit.yml` — odczytowa kontrola publicznej produkcji, nie publikuje plików.
+- `.github/workflows/indexnow.yml` — zgłaszanie wyłącznie potwierdzonych publicznych adresów, nie jest systemem publikacji.
+- `.github/workflows/backup-portraits.yml` — zabezpieczenie lokalnych zdjęć zespołu w repozytorium.
+
+**Głównym generatorem strony jest `scripts/build.mjs` (źródło: `v2/`, wynik: `dist/`).** Nie wdraża on samodzielnie plików. Przed zmianami w konfiguracji Cloudflare należy porównać ostatni plik `dist/` z aktywnym wdrożeniem. Celem jest zachowanie obecnej domeny i wszystkich funkcji kontaktowych, nie przenoszenie strony do nowego hostingu.
+
+Przy budowaniu `attribution.js` podłączany jest tylko raz, nawet jeżeli strona źródłowa już go posiada. Polityka `scripts/seo-policy.mjs` zezwala na indeksowanie centrum wiedzy i dwóch zatwierdzonych artykułów; pozostałe szkice i checklisty mają pozostać poza mapą witryny. `scripts/test-production-bundle.mjs` kontroluje te zasady na kandydacie wydania.
+
 Dokumentacja Cloudflare: [GitHub integration](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/) i [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/).
 
 ## Przekazywanie zgłoszeń i podglądy linków

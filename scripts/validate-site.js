@@ -127,6 +127,18 @@ if(!contact.includes("wojciech.obieglo@votum-ds.pl") || !contact.includes("pauli
 if(!contact.includes("api.web3forms.com/submit"))
  warn("Formularz: brak połączenia z aktualnym operatorem zgłoszeń");
 
+// SKD has a dedicated contract/callback landing. Both guides must use it
+// rather than sending a qualified visitor to the generic contact page.
+const navigatorJS = read("v2/service-navigator.js");
+const chatbotJS = read("v2/chat-assistant.js");
+const skdPage = read("v2/kampanie/skd.html");
+if(!navigatorJS.includes('service:"kredyty-pln.html",landing:"kampanie/skd.html"'))
+ warn("Przewodnik: SKD nie kieruje do dedykowanej strony przesylania umowy");
+if(!chatbotJS.includes('form:"kampanie/skd.html"+params,alias:"skd"'))
+ warn("Chatbot: SKD nie kieruje do dedykowanej strony przesylania umowy");
+if(!skdPage.includes('id="formularz"')||!skdPage.includes('data-service="Kredyt w PLN / SKD"'))
+ warn("Kampania SKD: brak celu formularza lub wyboru uslugi");
+
 console.log("Twoja Sprawa: "+jsCount+" plików JS, "+critical.length+" stron, "+inlineCount+" skryptów inline/JSON-LD, "+checkedLinks+" odnośników lokalnych.");
 if(errors.length){
  for(const error of errors)console.error("✖ "+error);

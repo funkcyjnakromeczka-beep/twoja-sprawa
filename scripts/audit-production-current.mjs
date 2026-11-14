@@ -68,6 +68,9 @@ must(css.includes("Mobilna hierarchia 2026-11")&&css.includes(".hero-priority-gr
 must(css.includes("Mobilna hierarchia 2026-11: jedno, niepowielone menu trzech głównych usług. */\n@media(max-width:760px)")&&
      css.includes(".premium-v2 .hero-skd-third{display:none}"),
   "Mobilna nawigacja na szerokich telefonach/tabletach nie jest poprawnie wdrozona");
+must(css.includes("@media(max-width:420px)")&&
+     css.includes(".premium-v2 .mobile-quick-nav>a.mobile-skd-priority{grid-column:1 / -1}"),
+  "Niewlasciwy uklad 3 uslug na bardzo waskich ekranach");
 must(home.includes('href="/home-flow.css"'),"Brak CSS strony glownej");
 
 const graphs=Array.from(home.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g),

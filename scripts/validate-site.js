@@ -134,6 +134,12 @@ for(const asset of ["/v2/faq.js","/v2/faq.css","/v2/faq-share-v1.js","/v2/faq-sh
  if(!faq.includes('="'+asset+'"'))warn("FAQ nie podłącza "+asset);
 }
 
+
+const diagnostic = read("v2/narzedzia/test-formularzy.html");
+if(!diagnostic.includes('["Świadczenie — kontakt do Pauliny","/kampanie/swiadczenie-wspierajace",false,"Świadczenie wspierające"]')||
+   !diagnostic.includes('a[href^="mailto:paulina.chandrala@votum-ds.pl"]')||
+   !diagnostic.includes('a[href="tel:+48500171531"]'))
+ warn("Diagnostyka: brak bezpiecznej kontroli konsultantki w formularzu świadczenia wspierającego");
 const contact = read("v2/contact.js");
 if(!contact.includes('isSKD||prefer==="Telefon"'))
  warn("Formularz: brak wymogu telefonu dla SKD");

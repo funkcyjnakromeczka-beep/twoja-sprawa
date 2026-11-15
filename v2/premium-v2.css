@@ -4130,3 +4130,12 @@ html{scroll-padding-top:16px}
 }
 @media(prefers-reduced-motion:reduce){.social-community .social-community-links a{transition:none}}
 @media print{.social-community{display:none!important}}
+
+/* Social cards: recognizable platform brand marks, loaded locally without trackers. */
+.social-community .social-community-platform{
+  display:flex;align-items:center;gap:10px;
+  font-size:.81rem;line-height:1.35;letter-spacing:.02em;text-transform:none;
+}
+.social-community .social-community-platform .social-brand-icon{
+  display:block;flex:0 0 27px;width:27px;height:27px;border-radius:6px;
+}

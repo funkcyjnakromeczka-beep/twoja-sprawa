@@ -13,8 +13,9 @@ class Node {
  setAttribute(key,value){this.attributes[key]=value;}
  getAttribute(key){return this.attributes[key]??null;}
  querySelector(selector){
-  const match=/^label\\[for="([^"]+)"\\]$/.exec(selector);
-  return match?visit(this,node=>node.tag==="label"&&node.htmlFor===match[1]):null;
+  if(!selector.startsWith('label[for="')||!selector.endsWith('"]'))return null;
+  const id=selector.slice(11,-2);
+  return visit(this,node=>node.tag==="label"&&node.htmlFor===id);
  }
  addEventListener(key,cb){const previous=this.events[key];this.events[key]=previous?(...args)=>{previous(...args);cb(...args);}:cb;}
  insertAdjacentElement(){}

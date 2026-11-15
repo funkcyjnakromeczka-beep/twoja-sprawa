@@ -21,6 +21,17 @@
   przesyl:"/v2/uslugi/sluzebnosc-przesylu.html#formularz"
  };
  const labels={szkody:"Szkody górnicze",swiadczenie:"Świadczenie wspierające",renty:"Renty i wypadki",skd:"Sankcja Kredytu Darmowego (SKD)",franki:"Pomoc frankowiczom — CHF",przesyl:"Służebność przesyłu",inne:"Pozostałe materiały"};
+ // Ready-to-browse six principal services when no query has been entered.
+ // Use indexed pages rather than duplicating titles and descriptions in JS.
+ const featuredIds=[
+  "page:v2/uslugi/szkody-gornicze.html",
+  "page:v2/uslugi/swiadczenie-wspierajace.html",
+  "page:v2/uslugi/kredyty-pln.html",
+  "page:v2/uslugi/renty-powypadkowe.html",
+  "page:v2/uslugi/kredyty-frankowe.html",
+  "page:v2/uslugi/sluzebnosc-przesylu.html"
+ ];
+ const featured=featuredIds.map(id=>engine.entries.find(entry=>entry.id===id)).filter(Boolean);
  let category="all";
  const params=new URLSearchParams(window.location.search);
  const initial=(params.get("q")||"").slice(0,120);
@@ -29,10 +40,16 @@
  input.value=initial;
  const render=()=>{
   const phrase=input.value.trim();
-  const matched=engine.search(phrase,category,100);
+  const browsing=!phrase;
+  const matched=browsing
+   ?(category==="all"?featured:engine.entries.filter(entry=>entry.category===category))
+   :engine.search(phrase,category,100);
   const visible=matched.slice(0,phrase?30:18);
   const suffix=matched.length===1?"wynik":matched.length>=2&&matched.length<=4?"wyniki":"wyników";
-  counter.textContent=(matched.some(item=>item.similar)?"Podobne materiały: ":"Znaleziono: ")+matched.length+" "+suffix+(matched.length>visible.length?" · pokazano pierwsze "+visible.length:"");
+  const heading=browsing
+   ?(category==="all"?"Wybierz temat: ":"Materiały w kategorii: ")
+   :(matched.some(item=>item.similar)?"Podobne materiały: ":"Znaleziono: ");
+  counter.textContent=heading+matched.length+" "+suffix+(matched.length>visible.length?" · pokazano pierwsze "+visible.length:"");
   results.replaceChildren();
   for(const item of visible){
    const card=document.createElement("a");
@@ -45,7 +62,8 @@
    card.append(tag,title,desc,tail);
    results.append(card);
   }
-  empty.hidden=matched.length!==0;
+  // No-results messaging is only meaningful after an actual search.
+  empty.hidden=matched.length!==0||browsing;
   if(emptyContact){
    emptyContact.href=contactByTopic[category]||"/v2/kontakt.html";
    emptyContact.textContent=contactByTopic[category]?"Zostaw kontakt w wybranej sprawie":"Zadaj własne pytanie";

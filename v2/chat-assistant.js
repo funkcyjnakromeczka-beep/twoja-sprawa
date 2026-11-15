@@ -3,7 +3,7 @@
   "use strict";
   const script=document.currentScript;
   const base=script?.getAttribute("data-base")||"/v2/";
-  const releasePath=pathname=>window.location.pathname.startsWith("/v2/")?pathname:pathname.replace(/\.html$/,"");
+  const releasePath=pathname=>window.location.pathname.startsWith("/"+"v2/")?pathname:pathname.replace(/\.html$/,"");
   // Zachowaj źródło kampanii wejściowej, gdy użytkownik przechodzi przez przewodnik.
   const incoming=new URLSearchParams(window.location.search);
   const allowedSources=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);

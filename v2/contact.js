@@ -360,7 +360,68 @@
     // Web3Forms kieruje wiadomosc do odbiorcy przypisanego do access_key.
     // advisor_email jest metadana w tresci zgłoszenia, nie zmienia odbiorcy.
     const payload={access_key:accessKey,subject:"Nowe zgłoszenie Twoja Sprawa — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,campaign_medium:safeMedium||"brak",campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
-    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();name.setCustomValidity("");refreshShortcutState();}catch{status.className="contact-status-error";status.replaceChildren();const errorText=document.createElement("span");errorText.textContent="Nie otrzymaliśmy potwierdzenia przyjęcia zgłoszenia. Wiadomość mogła jednak zostać przetworzona. Dane pozostają w formularzu — nie klikaj wielokrotnie „Wyślij”. Aby upewnić się, skontaktuj się telefonicznie lub wyślij e-mail: ";const errorCall=document.createElement("a");const paulina=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value);errorCall.href=paulina?"tel:+48500171531":"tel:+48796441345";errorCall.textContent=paulina?"500 171 531":"796 441 345";status.append(errorText,errorCall);const fallback=document.createElement("a");fallback.className="contact-fallback-link";fallback.href="mailto:"+mailRecipient+"?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+select.value)+"&body="+encodeURIComponent(["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Dogodna pora: "+callback.value,"Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),"Źródło: "+source,"Kanał: "+(safeMedium||"brak"),"Kampania: "+(safeCampaign||"brak"),"Wariant: "+(safeCreative||"brak"),"Sposób przejścia: "+leadPath,"","Opis: "+(msg.value.trim()||"Proszę o kontakt.")].join("\n"));fallback.textContent="Otwórz gotową wiadomość e-mail";status.append(document.createTextNode(" · "),fallback);}finally{sending=false;button.disabled=false;button.textContent="Wyślij zgłoszenie";}return;
+    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();name.setCustomValidity("");refreshShortcutState();}catch{
+     status.className="contact-status-error";
+     status.replaceChildren();
+     const errorText=document.createElement("span");
+     errorText.textContent=navigator.onLine===false
+      ?"Brak połączenia z internetem — zgłoszenie nie zostało potwierdzone. Dane pozostają w formularzu. Możesz przygotować wiadomość do wysłania po przywróceniu łączności lub skontaktować się telefonicznie: "
+      :"Nie otrzymaliśmy potwierdzenia przyjęcia zgłoszenia. Wiadomość mogła jednak zostać przetworzona. Dane pozostają w formularzu — nie klikaj wielokrotnie „Wyślij”. Aby upewnić się, skontaktuj się telefonicznie lub wyślij e-mail: ";
+     const currentRecipient=()=>["Świadczenie wspierające","Renty powypadkowe"].includes(select.value)
+      ?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";
+     const errorCall=document.createElement("a");
+     errorCall.href="tel:"+(currentRecipient().startsWith("paulina.")?"+48500171531":"+48796441345");
+     errorCall.textContent=currentRecipient().startsWith("paulina.")?"500 171 531":"796 441 345";
+     const makeDraft=()=>[
+      "Dzień dobry,","",
+      "Usługa: "+select.value,
+      "Imię: "+name.value.trim(),
+      "Miejscowość: "+city.value.trim(),
+      "Telefon: "+phone.value.trim(),
+      "E-mail: "+email.value.trim(),
+      "Preferowany kontakt: "+method.value,
+      "Dogodna pora: "+callback.value,
+      "Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),
+      ...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),
+      "Źródło: "+source,
+      "Kanał: "+(safeMedium||"brak"),
+      "Kampania: "+(safeCampaign||"brak"),
+      "Wariant: "+(safeCreative||"brak"),
+      "Sposób przejścia: "+leadPath,"",
+      "Opis: "+(msg.value.trim()||"Proszę o kontakt.")
+     ].join("\n");
+     status.append(errorText,errorCall);
+     const fallback=document.createElement("a");
+     fallback.className="contact-fallback-link";
+     fallback.textContent="Otwórz gotową wiadomość e-mail";
+     const updateFallback=()=>{
+      fallback.href="mailto:"+currentRecipient()
+       +"?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+select.value)
+       +"&body="+encodeURIComponent(makeDraft());
+     };
+     updateFallback();
+     fallback.addEventListener("click",updateFallback);
+     status.append(document.createTextNode(" · "),fallback);
+     // The request body is only copied following a deliberate user click.
+     // No local storage, automatic background transmission or PII in page URLs.
+     if(navigator.clipboard?.writeText){
+      const copyDraft=document.createElement("button");
+      copyDraft.type="button";
+      copyDraft.className="contact-draft-copy";
+      copyDraft.textContent="Skopiuj treść zgłoszenia";
+      const copyFeedback=document.createElement("small");
+      copyFeedback.className="contact-draft-feedback";
+      copyDraft.addEventListener("click",async()=>{
+       try{
+        await navigator.clipboard.writeText(makeDraft());
+        copyFeedback.textContent="Skopiowano treść. Wklej ją do własnej wiadomości i wyślij do "+currentRecipient()+". Schowek urządzenia może być dostępny dla innych aplikacji.";
+       }catch{
+        copyFeedback.textContent="Nie udało się skopiować treści. Skorzystaj z linku e-mail lub telefonu.";
+       }
+      });
+      status.append(copyDraft,copyFeedback);
+     }
+    }finally{sending=false;button.disabled=false;button.textContent="Wyślij zgłoszenie";}return;
    }
    const subject="Zapytanie Twoja Sprawa: "+select.value;
    const body=["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Dogodna pora: "+callback.value,"Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),"Źródło zgłoszenia: "+source,"Kanał: "+(safeMedium||"brak"),"Kampania: "+(safeCampaign||"brak"),"Wariant: "+(safeCreative||"brak"),"Sposób przejścia: "+leadPath,"","Opis sprawy:",""+(msg.value.trim()||"Proszę o kontakt."),"","Proszę o odpowiedź na wskazany adres e-mail lub telefon."].join("\n");

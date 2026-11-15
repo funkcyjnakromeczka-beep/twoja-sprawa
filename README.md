@@ -1,5 +1,7 @@
 # Twoja Sprawa — SuccessTree
 
+**Audyt 16.11.2026:** [100 wdrożonych poprawek dostępności i nawigacji — lista każdej zmiany](docs/audyt-100-ulepszen-2026-11-16.md). Kontrola: `node scripts/test-page-navigation.mjs` oraz testy produkcyjne GitHub Actions.
+
 ## Spójna ścieżka od usługi do planu pierwszych kroków (15.11.2026)
 
 - Na sześciu głównych podstronach (szkody górnicze, świadczenie wspierające, SKD, renty, kredyty CHF i służebność przesyłu) przy **istniejącej sekcji kontaktu** znajduje się dodatkowy odnośnik do `/plan-dzialania?usluga=<kod>`. Nie dodano drugiego formularza ani skryptów analitycznych.

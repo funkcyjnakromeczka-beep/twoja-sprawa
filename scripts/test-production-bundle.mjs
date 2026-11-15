@@ -300,7 +300,9 @@ assert.ok(skdNavigator.includes('service:"kredyty-pln.html",landing:"kampanie/sk
 assert.ok(skdChatbot.includes('form:"kampanie/skd.html"+params,alias:"skd"'),
  "Chatbot must offer dedicated SKD campaign form");
 const homeFlowCss=await read("home-flow.css");
-assert.ok(homeFlowCss.includes("Mobilna hierarchia 2026-11: jedno, niepowielone menu trzech głównych usług. */\n@media(max-width:760px)"),
+// Production builder removes comments to reduce CSS bytes. Assert the actual
+// mobile layout rule, never the discarded authoring comment.
+assert.ok(/@media\(max-width:760px\)\s*\{\s*\.premium-v2 \.hero-priority-grid\s*\{\s*display:none\s*\}/.test(homeFlowCss),
  "Mobile hero cards must not duplicate quick navigation on 601-760px screens");
 assert.ok(homeFlowCss.includes("@media(max-width:420px)")&&
  homeFlowCss.includes(".premium-v2 .mobile-quick-nav>a.mobile-skd-priority{grid-column:1 / -1}"),

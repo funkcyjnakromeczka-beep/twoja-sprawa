@@ -181,6 +181,14 @@ assert.ok(contactFormJS.includes('routingNote.className="contact-routing-note"')
 assert.ok(contactCss.includes(".contact-advisor .contact-routing-note"),
  "Form must show a legible routing disclosure");
 
+assert.ok(contactFormJS.includes('copyButton.className="contact-advisor-copy-button"')&&
+ contactFormJS.includes("await navigator.clipboard.writeText(advisorEmail);")&&
+ contactFormJS.includes('emailAddress.textContent=advisorEmail;'),
+ "Copy button must copy the currently selected adviser's public email");
+assert.ok(contactCss.includes(".contact-advisor .contact-advisor-copy-address")&&
+ contactCss.includes(".contact-advisor .contact-advisor-copy-status"),
+ "Adviser copy UI requires readable address and status styles");
+
 const diagnosticTool=await read("narzedzia/test-formularzy.html");
 assert.ok(diagnosticTool.includes('["SKD — walidacja numeru","/kampanie/skd",true,"","","skd-phone"]')&&
  diagnosticTool.includes('["Szkody — e-mail bez telefonu","/kampanie/szkody-gornicze",false,"","","email-only"]')&&

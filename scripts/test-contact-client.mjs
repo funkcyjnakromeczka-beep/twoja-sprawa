@@ -12,6 +12,10 @@ class Node {
  replaceChildren(...children){this.children=[...children];}
  setAttribute(key,value){this.attributes[key]=value;}
  getAttribute(key){return this.attributes[key]??null;}
+ querySelector(selector){
+  const match=/^label\\[for="([^"]+)"\\]$/.exec(selector);
+  return match?visit(this,node=>node.tag==="label"&&node.htmlFor===match[1]):null;
+ }
  addEventListener(key,cb){const previous=this.events[key];this.events[key]=previous?(...args)=>{previous(...args);cb(...args);}:cb;}
  insertAdjacentElement(){}
  setCustomValidity(message){this.validationMessage=message;}

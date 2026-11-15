@@ -168,6 +168,32 @@ function stripSourceHomeAgencySchema(markup,rel){
   return "";
  });
 }
+// Production-only CSS comment removal. Whitespace and selector ordering remain
+// untouched; preserve quoted strings/URLs so embedded content isn't modified.
+// Source files retain all author notes for ongoing maintenance.
+function stripCssComments(css){
+ let result="",start=0,quote=null;
+ for(let i=0;i<css.length;i++){
+  const ch=css[i];
+  if(quote){
+   if(ch==="\\"){i++;continue;}
+   if(ch===quote)quote=null;
+   continue;
+  }
+  if(ch==='"'||ch==="'"){quote=ch;continue;}
+  if(ch==="/"&&css[i+1]==="*"){
+   const close=css.indexOf("*/",i+2);
+   if(close<0)throw new Error("Unterminated CSS comment in homepage bundle");
+   // Keep legal notices beginning with /*! unchanged.
+   if(css[i+2]==="!"){i=close+1;continue;}
+   result+=css.slice(start,i);
+   i=close+1;
+   start=i+1;
+  }
+ }
+ if(quote)throw new Error("Unterminated CSS string in homepage bundle");
+ return result+css.slice(start);
+}
 // Combine home CSS in source cascade order. Keep separate CSS for service pages.
 const homeStyleOrder=["styles.css","premium-v2.css","portrait-upgrade.css","journey.css",
  "home-flow.css","network-brand.css","visual-contrast.css"];
@@ -184,7 +210,7 @@ async function bundleHomepageStyles(html){
   if(/^\s*@(import|charset)\b/im.test(css)){
    throw new Error("Cannot safely bundle CSS with import/charset: "+filename);
   }
-  chunks.push("/* "+filename+" */\n"+css.replaceAll("/v2/assets/","/assets/"));
+  chunks.push(stripCssComments(css.replaceAll("/v2/assets/","/assets/")));
  }
  await writeFile(join(dest,"home-bundle.css"),chunks.join("\n"));
  let inserted=false;

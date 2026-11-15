@@ -218,6 +218,35 @@ try{
 
 
 
+ // Repeatable public-site resource inspection; read-only, no visitor tracking.
+ const perfPage=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+ try{
+  await perfPage.goto(origin+"/",{waitUntil:"load",timeout:40000});
+  await perfPage.waitForTimeout(1200);
+  const perf=await perfPage.evaluate(()=>{
+   const resources=performance.getEntriesByType("resource")
+    .filter(x=>x.name.startsWith(location.origin))
+    .map(x=>({path:new URL(x.name).pathname,kind:x.initiatorType,
+     decoded:x.decodedBodySize,transfer:x.transferSize,duration:Math.round(x.duration)}));
+   const navigation=performance.getEntriesByType("navigation")[0];
+   const styles=resources.filter(x=>x.path.endsWith(".css"));
+   const scripts=resources.filter(x=>x.path.endsWith(".js"));
+   const images=[...document.images].filter(img=>img.loading!=="lazy")
+    .map(img=>({src:img.currentSrc||img.src,complete:img.complete,width:img.naturalWidth}));
+   return {domContentLoadedMs:Math.round(navigation?.domContentLoadedEventEnd||0),
+    loadMs:Math.round(navigation?.loadEventEnd||0),
+    styleSheets:styles.length,cssDecodedBytes:styles.reduce((n,x)=>n+x.decoded,0),
+    jsFiles:scripts.length,jsDecodedBytes:scripts.reduce((n,x)=>n+x.decoded,0),
+    largest:resources.sort((a,b)=>b.decoded-a.decoded).slice(0,12),
+    initialImages:images};
+  });
+  console.log("PUBLIC_RESOURCE_REPORT "+JSON.stringify(perf,null,2));
+  assert.ok(perf.styleSheets>=4,"Homepage stylesheets not loaded");
+  assert.ok(perf.initialImages.filter(x=>x.src.startsWith(origin)).every(x=>x.complete&&x.width>0),
+   "A critical same-origin image did not load");
+ }finally{await perfPage.close();}
+
+
 }finally{
  await browser.close();
 }

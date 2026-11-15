@@ -626,7 +626,11 @@ try{
  // Compact homepage must show essential fields without duplicated contact summaries.
  const compactPage=await browser.newPage({viewport:{width:390,height:844}});
  await compactPage.goto(origin+"/?utm_source=facebook",{waitUntil:"domcontentloaded"});
+ const mobileHomeBar=compactPage.locator(".mobile-contact-bar");
+ await mobileHomeBar.waitFor({state:"visible",timeout:5000});
  await compactPage.locator('[data-contact-shortcut="swiadczenie"]').click();
+ await compactPage.locator("#kontakt").scrollIntoViewIfNeeded();
+ await mobileHomeBar.waitFor({state:"hidden",timeout:5000});
  if(await compactPage.locator('#kontakt .contact-benefits').isVisible())throw Error("Homepage duplicated benefit banners should be hidden");
  if(await compactPage.locator('#kontakt .contact-people').isVisible())throw Error("Homepage duplicated phone summary should be hidden");
  if(await compactPage.locator('#kontakt .contact-guide-box').isVisible())throw Error("Guidance should be behind the optional-details disclosure");

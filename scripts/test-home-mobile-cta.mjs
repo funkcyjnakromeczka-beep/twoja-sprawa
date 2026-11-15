@@ -7,9 +7,12 @@ import {runInNewContext} from "node:vm";
 const js=await readFile("v2/home-mobile-cta.js","utf8");
 const css=await readFile("v2/home-flow.css","utf8");
 const html=await readFile("v2/index.html","utf8");
+const chatJs=await readFile("v2/chat-assistant.js","utf8");
+assert.ok(chatJs.includes('new window.CustomEvent("twoja-sprawa:chat-visibility",{detail:{open}})'),"Chat guide must signal visibility without analytics");
 assert.ok(html.includes('src="/v2/home-mobile-cta.js" defer'),"Homepage must load mobile visibility script");
 assert.ok(html.includes('class="mobile-contact-bar"'),"Existing native shortcuts must remain present");
 assert.ok(css.includes(".premium-v2 .mobile-contact-bar[hidden]{display:none!important}"),"Hidden bar must override mobile grid");
+assert.ok(css.includes("body.premium-v2 .chat-assistant{"),"Older Android must position the guide above mobile shortcuts without :has()");
 assert.ok(!/fetch\s*\(|sendBeacon|localStorage|sessionStorage|document\.cookie/.test(js),"No tracking or requests");
 
 {
@@ -41,6 +44,10 @@ assert.ok(!/fetch\s*\(|sendBeacon|localStorage|sessionStorage|document\.cookie/.
  assert.equal(bar.hidden,true,"Visible form must hide mobile bar");
  rect={top:-1200,bottom:-20};callbacks["visual:resize"]();
  assert.equal(bar.hidden,false,"Bar must return below form");
+ callbacks["doc:twoja-sprawa:chat-visibility"]({detail:{open:true}});
+ assert.equal(bar.hidden,true,"Old Android should hide the bar when service guide opens");
+ callbacks["doc:twoja-sprawa:chat-visibility"]({detail:{open:false}});
+ assert.equal(bar.hidden,false,"Old Android should restore the bar when guide closes");
  focused=input;callbacks["doc:focusin"]({target:input});
  assert.equal(bar.hidden,true,"Keyboard focus must hide mobile bar");
  focused=null;callbacks["doc:focusout"]({target:input});
@@ -68,6 +75,11 @@ assert.ok(!/fetch\s*\(|sendBeacon|localStorage|sessionStorage|document\.cookie/.
  assert.equal(observed,contact);
  callback([{isIntersecting:true}]);assert.equal(bar.hidden,true,"Intersection should hide bar");
  callback([{isIntersecting:false}]);assert.equal(bar.hidden,false,"No intersection should restore bar");
+ callbacks["twoja-sprawa:chat-visibility"]({detail:{open:true}});
+ assert.equal(bar.hidden,true,"Modern Android should hide the bar while chat panel is open");
+ callback([{isIntersecting:false}]);assert.equal(bar.hidden,true,"Offscreen form should not restore an open chat bar");
+ callbacks["twoja-sprawa:chat-visibility"]({detail:{open:false}});
+ assert.equal(bar.hidden,false,"Modern Android should restore the bar when chat panel closes");
  focused=input;callbacks.focusin({target:input});assert.equal(bar.hidden,true);
  callback([{isIntersecting:false}]);assert.equal(bar.hidden,true,"Focused input keeps bar hidden");
  callbacks.focusout({target:input});focused=null;
@@ -78,4 +90,4 @@ assert.ok(!/fetch\s*\(|sendBeacon|localStorage|sessionStorage|document\.cookie/.
  const document={querySelector:()=>null,getElementById:()=>null};
  runInNewContext(js,{document,window:{}});
 }
-console.log("HOME_MOBILE_CTA_OK: form visibility, focus, old Android fallback, native links and privacy.");
+console.log("HOME_MOBILE_CTA_OK: form visibility, focus, chat-open/close on modern and old Android, native links and privacy.");

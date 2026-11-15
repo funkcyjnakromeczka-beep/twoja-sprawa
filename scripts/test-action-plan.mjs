@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Plan działania: test pięciu obszarów, etapów, UTM, prywatności, drukowania i postępu bez sieci. */
+/** Plan działania: test sześciu obszarów, etapów, UTM, prywatności, drukowania i postępu bez sieci. */
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 import {runInNewContext} from "node:vm";
@@ -18,7 +18,7 @@ class Node{
  }
 }
 function setup(query){
- const keys=["szkody","swiadczenie","renty","skd","przesyl"];
+ const keys=["szkody","swiadczenie","skd","renty","franki","przesyl"];
  const buttons=keys.map(key=>{const b=new Node("button");b.dataset.planService=key;return b;});
  const dom={};
  for(const key of ["[data-plan-stage-container]","[data-plan-stage-select]","[data-plan-title]","[data-plan-intro]","[data-plan-checklist]","[data-plan-progress]","[data-plan-print]","[data-plan-reset]","[data-plan-contact]","[data-plan-call]"])dom[key]=new Node(key==="[data-plan-stage-select]"?"select":"div");
@@ -48,13 +48,28 @@ first.checked=true;first.events.change();
 assert.equal(get("[data-plan-progress]").textContent,"1 z 5");
 get("[data-plan-print]").events.click();
 assert.equal(state.printCount(),1);
-for(const [name,expectedTel] of [["swiadczenie","500 171 531"],["renty","500 171 531"],["skd","500 171 531"],["przesyl","796 441 345"]]){
+for(const [name,expectedTel] of [["swiadczenie","500 171 531"],["skd","796 441 345"],["renty","500 171 531"],["franki","796 441 345"],["przesyl","796 441 345"]]){
  state.click(name);assert.ok(get("[data-plan-title]").textContent.length>5);
  assert.equal(get("[data-plan-checklist]").children.length,4);
  assert.ok(get("[data-plan-contact]").textContent.includes(expectedTel));
  assert.ok(get("[data-plan-call]").textContent.includes(expectedTel));
  assert.equal(get("[data-plan-progress]").textContent,"0 z 4");
 }
+state.click("skd");
+assert.equal(get("[data-plan-call]").href,"tel:+48796441345","SKD must reach Wojciech, not Paulina");
+let serviceLink=new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev");
+assert.equal(serviceLink.searchParams.get("usluga"),"skd");
+state.click("franki");
+serviceLink=new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev");
+assert.equal(serviceLink.searchParams.get("usluga"),"franki");
+assert.equal(serviceLink.hash,"#formularz");
+assert.equal(get("[data-plan-call]").href,"tel:+48796441345");
+assert.equal(get("[data-plan-stage-select]").hidden,false);
+const frankStage=get("[data-plan-stage-select]");
+frankStage.value="ugoda";frankStage.events.change();
+assert.equal(get("[data-plan-checklist]").children.length,5);
+serviceLink=new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev");
+assert.equal(serviceLink.searchParams.get("etap"),"ugoda");
 state.click("swiadczenie");
 const select=get("[data-plan-stage-select]");
 select.value="odwolanie";select.events.change();
@@ -74,4 +89,8 @@ assert.equal(u.searchParams.get("etap"),null);
 assert.equal(u.searchParams.get("email"),null);
 assert.ok(html.includes('meta name="robots" content="noindex,follow"'));
 assert.ok(html.includes("Nie wpisujesz tu imienia"));
-console.log("OK: 5 usług, 9 wariantów etapów, print, reset, checkbox progress, prawidłowe kontakty, bezpieczne adresy i UTM.");
+assert.ok(html.includes("sześciu kategorii"));
+const order=[...html.matchAll(/data-plan-service="([^"]+)"/g)].map(m=>m[1]);
+assert.deepEqual(order,["szkody","swiadczenie","skd","renty","franki","przesyl"]);
+assert.ok(html.includes("Kredyty frankowe CHF"),"Missing CHF preparation path");
+console.log("OK: 6 usług, 13 wariantów etapów, SKD do Wojciecha, CHF, drukowanie, reset, progres, prywatność i UTM.");

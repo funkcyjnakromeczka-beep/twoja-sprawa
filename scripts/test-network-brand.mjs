@@ -36,4 +36,17 @@ async function walk(dir){
 }
 await walk(sourceRoot);
 assert.ok(tested>=35,"Expected full-site coverage");
+// Brand recognition must remain readable if the official external PNG is unavailable.
+const supportCss=await readFile("v2/support-brand-fallback.css","utf8");
+assert.ok(supportCss.includes(".vws-service-brand img[hidden]"));
+assert.ok(supportCss.includes("brand-fallback-active strong"));
+for(const file of ["v2/uslugi/swiadczenie-wspierajace.html","v2/kampanie/swiadczenie-wspierajace.html"]){
+ const html=await readFile(file,"utf8");
+ assert.ok(html.includes('href="/v2/support-brand-fallback.css"'),file+": fallback stylesheet missing");
+ assert.ok(html.includes('class="vws-service-brand"'),file+": support brand missing");
+ assert.ok(html.includes("votum-sa.pl/wp-content/uploads/"),file+": official image missing");
+ assert.ok(html.includes("brand-fallback-active"),file+": image-error fallback missing");
+ assert.ok(html.includes("<strong>Votum Wsparcie</strong>"),file+": plain text fallback missing");
+}
+console.log("SUPPORT_BRAND_FALLBACK_OK: official artwork kept; compact text available on image error.");
 console.log("OK:",tested,"pages with one accessible persistent logo pair; removed",legacy,"legacy bars; repeatable builds.");

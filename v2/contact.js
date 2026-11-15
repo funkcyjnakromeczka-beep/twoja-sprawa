@@ -139,7 +139,8 @@
   const stageWrap=document.createElement("div");stageWrap.className="contact-stage";const stageLabel=document.createElement("label");const stage=document.createElement("select");stage.id="cf-stage-"+Math.random().toString(36).slice(2,8);stageLabel.htmlFor=stage.id;stageWrap.append(stageLabel,stage);form.append(stageWrap);
   const stageOptions={
    "Szkody górnicze":["Wybierz etap sprawy","Zauważyłem/am uszkodzenia","Zgłosiłem/am szkodę do kopalni","Otrzymałem/am propozycję ugody","Kopalnia odmówiła","Inna sytuacja"],
-   "Świadczenie wspierające":["Wybierz etap sprawy","Dopiero planuję wniosek do WZON","Czekam na decyzję WZON","Mam decyzję WZON","Chcę przeanalizować decyzję lub odwołanie","Mam sprawę w ZUS","Inna sytuacja"]
+   "Świadczenie wspierające":["Wybierz etap sprawy","Dopiero planuję wniosek do WZON","Czekam na decyzję WZON","Mam decyzję WZON","Chcę przeanalizować decyzję lub odwołanie","Mam sprawę w ZUS","Inna sytuacja"],
+   "Kredyty frankowe CHF":["Wybierz etap sprawy","Nadal spłacam kredyt CHF","Kredyt CHF został spłacony","Bank proponuje ugodę dotyczącą kredytu CHF","Sprawa kredytu CHF jest już prowadzona","Inna sytuacja"]
   };
   // Etap pochodzi tylko ze ścisłej listy kodów, bez przyjmowania dowolnego tekstu z URL.
   const stageCodes={
@@ -155,6 +156,12 @@
       decyzja:"Mam decyzję WZON",
       zus:"Mam sprawę w ZUS",
       odwolanie:"Chcę przeanalizować decyzję lub odwołanie"
+    },
+    "Kredyty frankowe CHF":{
+      aktywny:"Nadal spłacam kredyt CHF",
+      splacony:"Kredyt CHF został spłacony",
+      ugoda:"Bank proponuje ugodę dotyczącą kredytu CHF",
+      postepowanie:"Sprawa kredytu CHF jest już prowadzona"
     }
   };
   const requestedStage=(campaignParams.get("etap")||"").toLowerCase().trim();
@@ -163,7 +170,7 @@
     const options=stageOptions[select.value];
     stage.replaceChildren();stageWrap.hidden=!options;
     if(!options){stagePrefillPending=false;return;}
-    stageLabel.textContent=select.value==="Szkody górnicze"?"Na jakim etapie jest sprawa szkody?":"Na jakim etapie jest sprawa świadczenia?";
+    stageLabel.textContent=select.value==="Szkody górnicze"?"Na jakim etapie jest sprawa szkody?":select.value==="Świadczenie wspierające"?"Na jakim etapie jest sprawa świadczenia?":"Na jakim etapie jest sprawa kredytu CHF?";
     for(let i=0;i<options.length;i++){
       const option=document.createElement("option");option.value=i===0?"":options[i];option.textContent=options[i];stage.append(option);
     }
@@ -201,7 +208,7 @@
   const requestedLeadPath=(campaignParams.get("lead_path")||"").toLowerCase().trim();   const leadPath=["chatbot","navigator","plan"].includes(requestedLeadPath)?requestedLeadPath:"formularz";
   // Dyskretny komunikat dla osób, które wybrały konkretną sytuację w przewodniku.
   const contextNotice=document.createElement("div");contextNotice.className="contact-context-notice";
-  const contextLabel=document.createElement("strong");contextLabel.textContent="Twój wybór w przewodniku";
+  const contextLabel=document.createElement("strong");contextLabel.textContent=leadPath==="plan"?"Twój wybór w planie przygotowań":"Twój wybór w przewodniku";
   const contextValue=document.createElement("span");
   const contextChange=document.createElement("button");contextChange.type="button";contextChange.textContent="Zmień etap";
   contextNotice.append(contextLabel,contextValue,contextChange);

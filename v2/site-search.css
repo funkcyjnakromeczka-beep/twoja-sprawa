@@ -38,7 +38,7 @@
 .search-page .search-workspace{padding-top:39px;padding-bottom:53px}
 .search-page .search-workspace-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:14px;margin-bottom:24px}
 .search-page .search-workspace-top h2{font:700 clamp(1.6rem,3.3vw,2.25rem)/1.19 Georgia,serif;color:#173c4c;margin:8px 0}
-.search-page .search-workspace-top .eyebrow{font-size:.73rem;font-weight:800;letter-spacing:.1em;color:#88714d;text-transform:uppercase}
+.search-page .search-workspace-top .eyebrow{font-size:.73rem;font-weight:800;letter-spacing:.1em;color:#634625;text-transform:uppercase}
 .search-page [data-search-count]{font-size:.88rem;color:#527080}
 .search-page label[for="site-search-input"]{display:block;font-size:.93rem;font-weight:800;color:#265263;margin-bottom:9px}
 .search-page #site-search-input{display:block;width:100%;min-height:56px;padding:15px 18px;border:1px solid #8ba9ae;border-radius:12px;background:#fff;color:#123643;font:500 1rem/1.4 system-ui,sans-serif;box-shadow:0 4px 13px #092c3d10}

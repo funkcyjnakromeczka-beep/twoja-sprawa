@@ -35,9 +35,10 @@ const run=async(error=false)=>{
   createElement:tag=>new Node(tag),
   createTextNode:text=>({tag:"text",textContent:text})
  };
+ const scheduled=[];
  const window={
   location:{search:"?utm_source=facebook&utm_medium=social&utm_campaign=grupa_lubin&utm_content=post_2"},
-  setTimeout:()=>1,clearTimeout:()=>{}
+  setTimeout:callback=>{scheduled.push(callback);return scheduled.length;},clearTimeout:()=>{}
  };
  let requestBody=null;
  const fetch=async(url,opts)=>{
@@ -111,8 +112,18 @@ const run=async(error=false)=>{
   const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
   assert.ok(fallback);
   assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"),"Support fallback must route directly to Paulina");
-  assert.ok(decodeURIComponent(fallback.href).includes("Dogodna pora: Po południu"));
-  assert.ok(decodeURIComponent(fallback.href).includes("grupa_lubin"));
+  assert.ok(!fallback.href.includes("&body="),"Personal email draft must not be stored in dormant DOM links");
+  assert.ok(!decodeURIComponent(fallback.href).includes("test@example.com"),"Customer email leaked into dormant link");
+  assert.ok(fallback.events.click,"Fallback email must be built only on explicit click");
+  fallback.events.click();
+  const draft=decodeURIComponent(fallback.href);
+  assert.ok(draft.includes("Dogodna pora: Po południu"));
+  assert.ok(draft.includes("grupa_lubin"));
+  assert.ok(draft.includes("Imię: Test"));
+  assert.ok(draft.includes("E-mail: test@example.com"));
+  assert.equal(typeof scheduled.at(-1),"function","Draft link must be scheduled for immediate privacy cleanup");
+  scheduled.at(-1)();
+  assert.ok(!fallback.href.includes("&body="),"Personal email draft must be removed after mail app opens");
   const errorPhone=visit(status,n=>n.tag==="a"&&n.href?.startsWith("tel:"));
   assert.equal(errorPhone?.href,"tel:+48500171531","Failure recovery should initially call Paulina");
   // The visitor may switch from support to mining after a failed submission.
@@ -122,6 +133,12 @@ const run=async(error=false)=>{
   assert.equal(errorPhone.href,"tel:+48796441345","Failure callback must follow the currently selected service");
   assert.equal(errorPhone.textContent,"796 441 345","Visible callback number must match its destination");
   assert.ok(fallback.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"),"Fallback email must follow the new service");
+  assert.ok(!fallback.href.includes("&body="),"Changing service must not expose personal details");
+  fallback.events.click();
+  assert.ok(decodeURIComponent(fallback.href).includes("Usługa: Szkody górnicze"),"Failure draft should follow the current service");
+  assert.ok(fallback.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"),"Changed service email should use Wojciech");
+  scheduled.at(-1)();
+  assert.ok(!fallback.href.includes("&body="),"Dormant link must be restored after clicking changed service");
   select.value="Świadczenie wspierające";
   select.events.change();
   assert.equal(errorPhone.href,"tel:+48500171531");

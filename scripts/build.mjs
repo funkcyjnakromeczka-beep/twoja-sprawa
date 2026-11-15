@@ -168,6 +168,32 @@ function stripSourceHomeAgencySchema(markup,rel){
   return "";
  });
 }
+// Combine home CSS in source cascade order. Keep separate CSS for service pages.
+const homeStyleOrder=["styles.css","premium-v2.css","portrait-upgrade.css","journey.css",
+ "home-flow.css","network-brand.css","visual-contrast.css"];
+async function bundleHomepageStyles(html){
+ const linkPattern=/<link rel="stylesheet" href="\/([a-z0-9-]+\.css)">/g;
+ const links=[...html.matchAll(linkPattern)];
+ const found=links.map(match=>match[1]);
+ if(found.join("|")!==homeStyleOrder.join("|")){
+  throw new Error("Unexpected homepage stylesheet order: "+found.join(", "));
+ }
+ const chunks=[];
+ for(const filename of found){
+  const css=await readFile(join(source,filename),"utf8");
+  if(/^\s*@(import|charset)\b/im.test(css)){
+   throw new Error("Cannot safely bundle CSS with import/charset: "+filename);
+  }
+  chunks.push("/* "+filename+" */\n"+css.replaceAll("/v2/assets/","/assets/"));
+ }
+ await writeFile(join(dest,"home-bundle.css"),chunks.join("\n"));
+ let inserted=false;
+ return html.replace(linkPattern,()=>{
+  if(inserted)return "";
+  inserted=true;
+  return '<link rel="stylesheet" href="/home-bundle.css">';
+ });
+}
 async function walk(dir){
   for(const entry of await readdir(dir,{withFileTypes:true})){
     const absolute=join(dir,entry.name);
@@ -183,6 +209,7 @@ async function walk(dir){
       const indexable=shouldIndexRoute(route);
       const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
+      if(rel==="index.html")html=await bundleHomepageStyles(html);
       // Avoid extra redirects: static links use the same extensionless public paths as sitemap.
       html=html.replace(/href="(\/[^"?#]+)\.html(?=[?#"])/g,(_m,path)=>'href="'+path);
       html=localizePortraits(html);

@@ -9,6 +9,7 @@ on:
       - 'scripts/public-routes.mjs'
       - 'scripts/seo-policy.mjs'
       - 'scripts/test-production-bundle.mjs'
+      - 'scripts/test-html-tags.mjs'
       - 'scripts/test-internal-links.mjs'
       - 'scripts/test-ai-referrals.mjs'
       - '.github/workflows/release-candidate.yml'
@@ -31,6 +32,7 @@ jobs:
         run: |
           node --check scripts/build.mjs
           node --check scripts/test-production-bundle.mjs
+          node --check scripts/test-html-tags.mjs
           node --check scripts/test-internal-links.mjs
           node --check scripts/test-ai-referrals.mjs
       - name: Zbuduj i przetestuj kandydata wydania (bez publikacji)
@@ -43,6 +45,7 @@ jobs:
         run: |
           node scripts/build.mjs
           node scripts/test-production-bundle.mjs
+          node scripts/test-html-tags.mjs
           node scripts/test-internal-links.mjs
           node scripts/test-ai-referrals.mjs
       - name: Identyfikator zbudowanej wersji

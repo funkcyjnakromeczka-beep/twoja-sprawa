@@ -1,5 +1,13 @@
 # Twoja Sprawa — SuccessTree
 
+## Spójna ścieżka od usługi do planu pierwszych kroków (15.11.2026)
+
+- Na sześciu głównych podstronach (szkody górnicze, świadczenie wspierające, SKD, renty, kredyty CHF i służebność przesyłu) przy **istniejącej sekcji kontaktu** znajduje się dodatkowy odnośnik do `/plan-dzialania?usluga=<kod>`. Nie dodano drugiego formularza ani skryptów analitycznych.
+- Każda podstrona zawiera krótką wskazówkę przygotowawczą dostosowaną do usługi. Wersje źródłowe odnośników `/v2/...` są przepisywane na adresy produkcyjne przez istniejący generator.
+- Zaktualizowano treść pięciu ogólnych nagłówków CTA, pozostawiając w CHF dotychczasowy nagłówek. Na telefonach link ma co najmniej 48 px wysokości. Nowa klasa CSS: `.service-plan-bridge` w `v2/styles.css`.
+- Odpowiedzialni za kontakt bez zmian: Wojciech +48 796 441 345 (szkody, SKD, CHF, przesył), Paulina +48 500 171 531 (świadczenie, renty). W SKD e-mail do wysyłki umowy: `wojciech.obieglo@votum-ds.pl`.
+- Kontrola: `node scripts/test-action-plan.mjs` sprawdza sześć powiązań, sposób kontaktu, dostępność CSS i brak obowiązku podawania danych osobowych. Produkcyjne linki sprawdzono na wszystkich sześciu publicznych podstronach; to nie jest pomiar skuteczności konwersji.
+
 Strona informacyjna SuccessTree OBIEGŁO WOJCIECH, przedstawiciela współpracującego z VOTUM. Publiczny adres: https://twoja-sprawa.pages.dev/ .
 
 ## Właściwy punkt edycji i publikacji

@@ -420,9 +420,20 @@ try{
     const openViolations=await accessibilityPage.evaluate(async()=>{
      const result=await window.axe.run(document,{runOnly:{
       type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}});
-     return result.violations.map(v=>({id:v.id,impact:v.impact,targets:v.nodes.slice(0,4).map(n=>n.target)}));
+     return result.violations.map(v=>({id:v.id,impact:v.impact,targets:v.nodes.slice(0,4).map(n=>({target:n.target,summary:n.failureSummary,html:n.html?.slice(0,300)}))}));
     });
     console.log("WCAG_OPEN_ASSISTANT "+JSON.stringify(openViolations));
+    const chatGeometry=await accessibilityPage.evaluate(()=>{
+      const sel=[".chat-panel",".chat-content",".chat-actions",".chat-reply-contact"];
+      return sel.map(q=>{
+       const el=document.querySelector(q),r=el?.getBoundingClientRect();
+       return {selector:q,rect:r?{top:r.top,bottom:r.bottom,height:r.height,width:r.width}:null,
+        scrollTop:el?.scrollTop,scrollHeight:el?.scrollHeight,clientHeight:el?.clientHeight,
+        computedDisplay:el?getComputedStyle(el).display:null};
+      });
+    });
+    console.log("CHAT_GEOMETRY "+JSON.stringify(chatGeometry));
+
     assert.equal(openViolations.length,0,"Expanded assistant violates WCAG: "+JSON.stringify(openViolations));
     await accessibilityPage.keyboard.press("Escape");
     assert.equal(await toggle.getAttribute("aria-expanded"),"false");
@@ -434,7 +445,7 @@ try{
     const navViolations=await accessibilityPage.evaluate(async()=>{
      const result=await window.axe.run(document,{runOnly:{
       type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}});
-     return result.violations.map(v=>({id:v.id,impact:v.impact,targets:v.nodes.slice(0,4).map(n=>n.target)}));
+     return result.violations.map(v=>({id:v.id,impact:v.impact,targets:v.nodes.slice(0,4).map(n=>({target:n.target,summary:n.failureSummary,html:n.html?.slice(0,300)}))}));
     });
     console.log("WCAG_OPEN_NAVIGATOR "+JSON.stringify(navViolations));
     assert.equal(navViolations.length,0,"Expanded navigator violates WCAG: "+JSON.stringify(navViolations));

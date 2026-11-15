@@ -122,6 +122,11 @@
     const hadFocusInside=panel.contains(document.activeElement);
     panel.hidden=!open;root.classList.toggle("is-open",open);
     toggle.setAttribute("aria-expanded",String(open));
+    // Keep homepage call shortcuts from covering the open guide on older
+    // mobile browsers without CSS :has(). No analytics or user data sent.
+    if(typeof window.CustomEvent==="function"&&typeof document.dispatchEvent==="function"){
+      document.dispatchEvent(new window.CustomEvent("twoja-sprawa:chat-visibility",{detail:{open}}));
+    }
     if(focus){if(open)close.focus();else toggle.focus();}
     else if(!open&&hadFocusInside)toggle.focus({preventScroll:true});
   };

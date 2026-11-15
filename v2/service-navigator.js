@@ -64,10 +64,11 @@
  };
  const sourceAllowed=new Set(["facebook","instagram","tiktok","google","chatgpt.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
  const incoming=new URLSearchParams(window.location.search);
+ const inferredAIReferrer=(()=>{try{const host=new URL(document.referrer).hostname.toLowerCase();return ["chatgpt.com","www.chatgpt.com","chat.openai.com"].includes(host)?"chatgpt.com":"";}catch{return "";}})();
  const safe=v=>/^[a-z0-9_-]{1,40}$/.test(v);
  const source=(incoming.get("utm_source")||"").toLowerCase().trim();
  const tracking={
-  utm_source:sourceAllowed.has(source)?source:"strona",
+  utm_source:sourceAllowed.has(source)?source:(!source&&inferredAIReferrer?inferredAIReferrer:"strona"),
   utm_medium:"wybor_na_stronie",
   utm_campaign:"wybor_uslugi"
  };

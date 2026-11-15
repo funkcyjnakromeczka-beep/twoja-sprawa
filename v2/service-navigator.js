@@ -75,6 +75,7 @@
   const val=(incoming.get(field)||"").toLowerCase().trim();
   if(safe(val))tracking[field]=val;
  }
+ const releasePath=url=>window.location.pathname.startsWith("/v2/")?url.pathname:url.pathname.replace(/\.html$/,"");
  const createLink=(path,key,stage="")=>{
   const url=new URL("/v2/"+path,window.location.origin);
   for(const [name,value] of Object.entries(tracking))url.searchParams.set(name,value);
@@ -82,14 +83,14 @@
   if(!items[key].landing)url.searchParams.set("usluga",key);
   if(stage)url.searchParams.set("etap",stage);
   url.hash="formularz";
-  return url.pathname+url.search+url.hash;
+  return releasePath(url)+url.search+url.hash;
  };
  const planLink=(key,stage="")=>{
   const url=new URL("/v2/plan-dzialania.html",window.location.origin);
   url.searchParams.set("usluga",key);
   if(stage)url.searchParams.set("etap",stage);
   for(const [name,value] of Object.entries(tracking))url.searchParams.set(name,value);
-  return url.pathname+url.search;
+  return releasePath(url)+url.search;
  };
  const element=(tag,className,content)=>{
   const node=document.createElement(tag);
@@ -108,7 +109,7 @@
   const tip=element("p","navigator-stage-tip","Wybrany etap pomaga przygotować dalszą rozmowę. Nie jest oceną uprawnienia do świadczenia ani odszkodowania.");
   const contact=element("a","btn navigator-contact-cta","Przejdź do krótkiego formularza");
   const details=element("a","btn secondary","Poznaj szczegóły usługi");
-  details.href="/v2/uslugi/"+data.service;
+  details.href=releasePath(new URL("/v2/uslugi/"+data.service,window.location.origin));
   const call=element("a","navigator-direct-phone","Zadzwoń: "+data.phone);
   call.href="tel:"+data.tel;
   const plan=element("a","btn secondary navigator-plan-cta","Przygotuj plan do druku");

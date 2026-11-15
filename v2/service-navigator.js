@@ -75,7 +75,7 @@
   const val=(incoming.get(field)||"").toLowerCase().trim();
   if(safe(val))tracking[field]=val;
  }
- const releasePath=url=>window.location.pathname.startsWith("/v2/")?url.pathname:url.pathname.replace(/\.html$/,"");
+ const releasePath=url=>window.location.pathname.startsWith("/"+"v2/")?url.pathname:url.pathname.replace(/\.html$/,"");
  const createLink=(path,key,stage="")=>{
   const url=new URL("/v2/"+path,window.location.origin);
   for(const [name,value] of Object.entries(tracking))url.searchParams.set(name,value);

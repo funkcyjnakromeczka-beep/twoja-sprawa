@@ -633,8 +633,8 @@ for(const sample of [
  assert.equal(select.value,"Świadczenie wspierające");
  await form.events.submit({preventDefault(){}});
  assert.equal(attempted,1,"Simulated failure should perform exactly one mocked submission");
- const status=visit(form,n=>n.className==="contact-status-error");
- assert.ok(status,"Failure should offer recovery controls");
+ const status=visit(form,n=>n?.attributes?.role==="status");
+ assert.equal(status?.className,"contact-status-error","Failure should offer recovery controls");
  const fallback=visit(status,n=>n.className==="contact-fallback-link");
  const call=visit(status,n=>n.href?.startsWith("tel:"));
  assert.ok(fallback?.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"));

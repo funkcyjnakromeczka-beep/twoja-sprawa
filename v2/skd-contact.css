@@ -47,6 +47,7 @@
 
 /* Persistent, mobile-only SKD conversion route. No JavaScript and no analytics. */
 .premium-subpage.theme-skd .skd-mobile-quickbar{display:none}
+.premium-subpage.theme-skd .skd-mobile-quickbar[hidden]{display:none!important}
 @media(max-width:650px){
  .premium-subpage.theme-skd{
   padding-bottom:calc(87px + env(safe-area-inset-bottom));

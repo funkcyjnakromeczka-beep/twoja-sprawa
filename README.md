@@ -55,6 +55,13 @@ Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono
 - Test Chromium obejmuje **6 ścieżek przewodnika i 6 ścieżek chatbota**, sprawdza doradcę, formularz, etapy, bezpośrednie linki i zachowanie oznaczeń kampanii. Dodatkowo kontroluje **otwarty chatbot i otwarty przewodnik** za pomocą axe-core WCAG A/AA oraz nawigację klawiaturą. Przebieg po poprawce wykazał 0 naruszeń w obu rozwiniętych panelach.
 - Jest to wynik zautomatyzowany na wybranych ścieżkach i viewportach; nie stanowi deklaracji pełnej zgodności WCAG na każdym urządzeniu.
 
+## Rozszerzony audyt stron usługowych (15.11.2026)
+
+- `scripts/test-browser-flows.mjs` w realnym Chromium sprawdza teraz **11 publicznych adresów**: stronę główną, kontakt, trzy kampanie i sześć pełnych stron usługowych (szkody górnicze, świadczenie wspierające, SKD, renty, kredyty frankowe, służebność przesyłu). W zakończonym przebiegu dla commitu `4a081c0` wszystkie adresy miały **zero wykrytych naruszeń w automatycznym zestawie WCAG 2.x A/AA**. Sprawdza także stan rozwiniętego chatbota i przewodnika.
+- Strony sześciu usług przeszły automatyczne kontrole przy szerokościach **320 oraz 390 px**: brak poziomego przewijania oraz za małych mobilnych linków kontaktowych.
+- Poprawiono zbyt jasne podpisy na kremowych kartach, odziedziczony jasny tekst w jasnym panelu MIDAS, kontrast złotego przycisku telefonicznego, etykiety przycisków powrotu i szybkiego kontaktu, a także nazwę linku e-mail na podstronie SKD.
+- Automatyczne testy nie zastępują pełnego audytu manualnego, w szczególności na iOS, z VoiceOver / TalkBack i przy powiększeniu tekstu.
+
 ## Odnośniki i dostępność (15.11.2026)
 
 - `scripts/test-internal-links.mjs` w workflow `.github/workflows/release-candidate.yml` kontroluje lokalnie wygenerowane linki i odwołania do sekcji. Zakończony poprawnie przebieg zbadał **47 plików HTML, 1040 odnośników/zasobów i 219 fragmentów**. Nie łączy się z zewnętrznymi serwisami; odnośniki wychodzące trzeba weryfikować osobno.

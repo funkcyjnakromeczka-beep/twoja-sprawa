@@ -114,6 +114,11 @@ assert.deepEqual(order,["szkody","swiadczenie","skd","renty","franki","przesyl"]
 assert.ok(html.includes("Kredyty frankowe CHF"),"Missing CHF preparation path");
 assert.ok(html.includes('data-plan-email href="mailto:wojciech.obieglo@votum-ds.pl" hidden'),"SKD email must be hidden until selected");
 assert.ok(html.includes("Otwarcie poczty przygotuje jedynie szkic wiadomości"),"SKD mail action needs user guidance");
+
+const actionRegion=html.split('<div class="plan-actions">')[1]?.split("</div>")[0]||"";
+assert.deepEqual([...actionRegion.matchAll(/\bdata-plan-(contact|call|email|print|reset)\b/g)].map(m=>m[1]),
+ ["contact","call","email","print","reset"],
+ "Mobile plan must prioritize contact paths over printing or reset");
 assert.ok(html.includes('data-plan-service-link href="/v2/#uslugi" hidden'),"Missing hidden service detail link in initial view");
 
 /* Every flagship service must expose a usable context-specific preparation path.
@@ -147,4 +152,6 @@ for(const token of ["SERVICE_PREPARATION_BRIDGE_20261115",".service-plan-action:
 const detailCSS=await readFile("v2/plan-dzialania.css","utf8");
 assert.ok(detailCSS.includes(".plan-more-info a:focus-visible")&&detailCSS.includes(".plan-more-info a[hidden]"),"Service details link needs accessible focus and hidden states");
 assert.ok(detailCSS.includes(".plan-skd-mail-hint[hidden]{display:none!important}"),"SKD email hint must be hidden outside SKD");
+assert.ok(detailCSS.includes("button[data-plan-reset]"),"Reset styling must not rely on positional selectors");
+assert.ok(!detailCSS.includes("button:nth-child(2)"),"Action ordering must not break reset styles");
 console.log("OK: 6 usług, 13 wariantów etapów, SKD do Wojciecha, CHF, drukowanie, reset, progres, prywatność i UTM.");

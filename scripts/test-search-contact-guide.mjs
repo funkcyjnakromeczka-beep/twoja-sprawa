@@ -79,7 +79,7 @@ assert.equal(contact.href,"/uslugi/renty-powypadkowe#formularz","Explicit visito
 assert.ok(suggestion.textContent.startsWith("Wybrany filtr:"),"Explicit category must be labeled as selected, not guessed");
 reset.events.click();
 assert.equal(input.value,"");
-assert.equal(reset.focused,true);
+assert.equal(input.focused,true,"Reset should return keyboard focus to the search input");
 assert.equal(empty.hidden,true);
 assert.equal(suggestion.hidden,true);
 assert.equal(contact.href,"/kontakt","Reset must clear specialist targeting");

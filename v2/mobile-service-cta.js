@@ -18,7 +18,8 @@
  const phone=document.createElement("a");
  phone.href=service.email?"mailto:"+service.email+"?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+"&body="+encodeURIComponent("Dzień dobry,\n\nW załączniku przesyłam umowę kredytową do analizy SKD.\nMój numer telefonu: [wpisz numer]\n\nPozdrawiam"):"tel:"+service.phone;
  phone.className="mobile-service-call";
- phone.setAttribute("aria-label",service.email?service.label+": "+service.email:service.label+": "+service.number);
+ // The accessible name must contain the visible label and number in the same order.
+ phone.setAttribute("aria-label",service.email?"Wyślij umowę E-mail do Wojciecha — "+service.email:"Zadzwoń "+service.number+" — "+service.label);
  const callLabel=document.createElement("span");callLabel.textContent=service.email?"Wyślij umowę":"Zadzwoń";
  const callNumber=document.createElement("strong");callNumber.textContent=service.number;
  if(service.email){callNumber.textContent="E-mail do Wojciecha";}phone.append(callLabel,callNumber);

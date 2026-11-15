@@ -205,6 +205,17 @@ assert.ok(diagnosticTool.includes('["Świadczenie — kontakt do Pauliny","/kamp
  diagnosticTool.includes('a[href="tel:+48500171531"]'),
  "Diagnostic tool must check the dynamically selected benefit advisor without submitting forms");
 const skdNavigator=await read("service-navigator.js");
+
+const guideLinksJS=await read("service-navigator.js");
+const assistantLinksJS=await read("chat-assistant.js");
+for(const [name,script] of [["Przewodnik",guideLinksJS],["Chatbot",assistantLinksJS]]){
+ assert.ok(script.includes('window.location.pathname.startsWith("/"+"v2/")')&&
+           script.includes('replace(/\.html$/,"")'),
+  name+": production build must keep extensionless URLs without changing the preview detector");
+ assert.ok(!script.includes('window.location.pathname.startsWith("/")'),
+  name+": production builder replaced the preview detector and broke clean links");
+}
+
 const skdChatbot=await read("chat-assistant.js");
 assert.ok(skdNavigator.includes('service:"kredyty-pln.html",landing:"kampanie/skd.html"'),
  "Navigator must offer dedicated SKD campaign form");

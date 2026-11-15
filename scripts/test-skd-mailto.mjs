@@ -117,4 +117,68 @@ assert.equal(timers.length,0);
  deferred.shift()();
  assert.equal(isolated.href,initial);
 }
+// When the SKD service contact form is visible, its mobile bar must not
+// obscure the input or submit button, including without IntersectionObserver.
+const css=await readFile("v2/skd-contact.css","utf8");
+assert.ok(css.includes(".skd-mobile-quickbar[hidden]{display:none!important}"),"CSS must honor hidden state on mobile");
+{
+ const callbacks={},timers=[];
+ let formRect={top:910,bottom:1500},focused=null;
+ const inputNode={};
+ const bar={hidden:false};
+ const region={
+  contains:node=>node===inputNode,
+  getBoundingClientRect:()=>formRect
+ };
+ const doc={
+  querySelector:sel=>sel===".skd-mobile-quickbar"?bar:null,
+  querySelectorAll:()=>[],
+  getElementById:id=>id==="formularz"?region:null,
+  addEventListener:(type,fn)=>{callbacks["document:"+type]=fn;},
+  get activeElement(){return focused;}
+ };
+ const win={
+  innerHeight:800,
+  visualViewport:{height:800,addEventListener:(type,fn)=>{callbacks["visual:"+type]=fn;}},
+  addEventListener:(type,fn)=>{callbacks[type]=fn;},
+  setTimeout:fn=>timers.push(fn)
+ };
+ runInNewContext(source,{document:doc,navigator:{},window:win,encodeURIComponent});
+ assert.equal(bar.hidden,false,"Offscreen form should leave quickbar available");
+ assert.equal(typeof callbacks.scroll,"function");
+ formRect={top:190,bottom:880};callbacks.scroll();
+ assert.equal(bar.hidden,true,"Visible contact form must hide quickbar");
+ formRect={top:-880,bottom:-100};callbacks["visual:resize"]();
+ assert.equal(bar.hidden,false,"Quickbar should return after passing the form");
+ focused=inputNode;callbacks["document:focusin"]({target:inputNode});
+ assert.equal(bar.hidden,true,"Keyboard focus must hide quickbar");
+ focused=null;callbacks["document:focusout"]({target:inputNode});
+ timers.shift()();
+ assert.equal(bar.hidden,false,"Quickbar should return after focus leaves offscreen form");
+}
+{
+ let observerCallback,observed=null,focused=null;
+ const inputNode={};
+ const region={contains:node=>node===inputNode};
+ const bar={hidden:false};
+ const doc={
+  querySelector:sel=>sel===".skd-mobile-quickbar"?bar:null,
+  querySelectorAll:()=>[],
+  getElementById:()=>region,
+  addEventListener:()=>{},
+  get activeElement(){return focused;}
+ };
+ class IntersectionObserver{
+  constructor(cb,options){observerCallback=cb;assert.equal(options.threshold,0);}
+  observe(node){observed=node;}
+ }
+ const win={IntersectionObserver,setTimeout:fn=>fn()};
+ runInNewContext(source,{document:doc,navigator:{},window:win,IntersectionObserver,encodeURIComponent});
+ assert.equal(observed,region,"Support for native visibility observer missing");
+ observerCallback([{isIntersecting:true}]);
+ assert.equal(bar.hidden,true,"Native observer should hide bar over form");
+ observerCallback([{isIntersecting:false}]);
+ assert.equal(bar.hidden,false,"Native observer should restore bar off form");
+}
+console.log("SKD_MOBILE_BAR_OK: form and keyboard are never obscured in modern and older browsers.");
 console.log("SKD_MAILTO_OK: two campaign and five service actions, private callback on click, native fallback preserved.");

@@ -628,18 +628,7 @@ h3{line-height:1.25}
  .service-plan-bridge{padding:15px;margin-top:20px}
  .service-plan-bridge .service-plan-action{display:flex;width:100%}
 }
-
 /* Kontekstowe przejście z formularza do planu przygotowań — bez danych klienta. */
-.contact-guide-box .contact-guide-plan-link{
- display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;
- min-height:46px;max-width:100%;margin-top:3px;padding:10px 14px;
- border-radius:10px;border:1px solid #a48a5b;background:#f0e3c9;
- color:#263c46!important;font:750 .88rem/1.4 system-ui,sans-serif;
- text-decoration:none;text-align:center;overflow-wrap:anywhere;
-}
-.contact-guide-box .contact-guide-plan-link:hover{background:#e8d1a7;border-color:#866c3d}
-.contact-guide-box .contact-guide-plan-link:focus-visible{outline:3px solid #b69760;outline-offset:3px}
+.contact-guide-box .contact-guide-plan-link{display:inline-flex;align-items:center;min-height:46px;max-width:100%;padding:8px 12px;border:1px solid #a48a5b;border-radius:9px;background:#f0e3c9;color:#263c46!important;align-self:flex-start;overflow-wrap:anywhere}
 .contact-guide-box .contact-guide-plan-link[hidden]{display:none!important}
-@media(max-width:600px){
- .contact-guide-box .contact-guide-plan-link{align-self:stretch;width:100%}
-}
+@media(max-width:600px){.contact-guide-box .contact-guide-plan-link{align-self:stretch;justify-content:center}}

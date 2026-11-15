@@ -11,7 +11,7 @@ const style=await readFile("v2/site-search.css","utf8");
 assert.ok(page.includes('data-search-suggestion hidden'),"Search no-result suggestion placeholder missing");
 assert.ok(style.includes(".search-page .search-topic-suggestion[hidden]"),"Hidden search suggestion must remain hidden");
 assert.ok(ui.includes('contactByTopic[suggestedTopic]'),"Search contact must use the selected or inferred category");
-assert.ok(!/\\bfetch\\s*\\(|XMLHttpRequest|localStorage|sessionStorage|sendBeacon/.test(ui),"The search assistant must not track or transmit search phrases");
+assert.ok(!/\bfetch\s*\(|XMLHttpRequest|localStorage|sessionStorage|sendBeacon/.test(ui),"The search assistant must not track or transmit search phrases");
 
 class MockNode{
  constructor(){this.dataset={};this.events={};this.attributes={};this.children=[];this.value="";this.hidden=false;this.textContent="";this.href="";}
@@ -36,7 +36,7 @@ const selectorMap={
 const host=new MockNode();
 host.querySelector=selector=>selectorMap[selector]||null;
 host.querySelectorAll=selector=>selector==="[data-search-category]"?tabs:[];
-const normalize=value=>String(value||"").toLocaleLowerCase("pl-PL").normalize("NFD").replace(/\\p{M}/gu,"").replaceAll("ł","l").replace(/[^a-z0-9]+/g," ").trim().replace(/\\s+/g," ");
+const normalize=value=>String(value||"").toLocaleLowerCase("pl-PL").normalize("NFD").replace(/\p{M}/gu,"").replaceAll("ł","l").replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
 const engine={
  normalize,entries:[],categories:tabs.map(x=>x.dataset.searchCategory),
  search:()=>[]

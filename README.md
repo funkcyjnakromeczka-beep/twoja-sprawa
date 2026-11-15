@@ -150,6 +150,13 @@ Dokumentacja Cloudflare: [GitHub integration](https://developers.cloudflare.com/
 - Realny test Chromium `scripts/test-browser-flows.mjs` weryfikuje **12 tras** (6 × 2 interfejsy), numery doradców, źródło kampanii oraz rzeczywiste otwarcie wypełnionych kontekstowo formularzy świadczeń i szkód. W testach nie wysyła się zgłoszeń.
 - Kompilator przepisuje odnośniki w wydaniu — dlatego kontrola kandydata produkcji dodatkowo wykrywa przypadkowe uszkodzenie mechanizmu rozpoznawania podglądu `/v2/`.
 
+## Kontakty bez JavaScript — test 320 px (15.11.2026)
+
+- Strona główna i podstrona kontaktowa pokazują w statycznym komunikacie **telefon i e-mail obojga doradców** także wówczas, gdy skrypty są wyłączone lub formularz nie został załadowany. Ten komunikat jest zastępowany po uruchomieniu formularza; nie jest drugim formularzem i sam nie przesyła danych.
+- Na jedenastu kluczowych adresach — stronie głównej, kontakcie, trzech kampaniach i sześciu stronach usługowych — test Chromium tworzy osobny kontekst `javaScriptEnabled:false` o szerokości 320 px. Czeka na pełne załadowanie CSS (`waitUntil:"load"`), a następnie sprawdza brak formularza JS, widoczność statycznej informacji, właściwy telefon i e-mail, brak poziomego przewijania.
+- Osobny test produkcyjnego pakietu (`scripts/test-production-bundle.mjs`) uniemożliwia przypadkowe usunięcie któregokolwiek z czterech linków kontaktowych z dwóch głównych fallbacków.
+- Potwierdzony przebieg Chromium nie wykrył błędów w tych jedenastu ścieżkach; test nie obejmuje rzeczywistego doręczania e-maili ani wszystkich przeglądarek i urządzeń.
+
 ## Awaryjne zachowanie formularzy Web3Forms (15.11.2026)
 
 - W razie braku potwierdzenia od Web3Forms formularz **nie jest resetowany**; komunikat rozróżnia utratę połączenia (`navigator.onLine === false`) od innych błędów, bez twierdzenia, że wiadomość na pewno nie dotarła.

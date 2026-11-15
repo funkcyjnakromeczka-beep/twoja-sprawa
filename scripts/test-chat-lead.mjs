@@ -85,7 +85,7 @@ assert.ok(decodeURIComponent(skdMail.href).includes("Mój numer telefonu: [wpisz
 assert.ok(skdMail.href.includes("%0A"),"SKD email should contain real line breaks, not a literal backslash-n");
 assert.ok(decodeURIComponent(skdMail.href).includes("umowę dołączę do wiadomości"),"SKD email must ask for contract attachment");
 const skdForm=visit(result,n=>n.className==="chat-reply-contact");
-assert.equal(new URL(skdForm.href,origin).searchParams.get("usluga"),"skd","SKD form must retain service alias");
+assert.equal(new URL(skdForm.href,origin).pathname,"/v2/kampanie/skd.html","SKD chatbot must lead to the dedicated agreement campaign");
 const skdCaution=visit(result,n=>n.className==="chat-caution");
 assert.ok(skdCaution.textContent.includes("nie wysyła zgłoszenia"),"SKD chatbot must explain no automatic submission");
 assert.deepEqual(choices.children.map(x=>x.dataset.topic),["szkody","swiadczenie","skd","renty","franki","przesyl"],"SKD must be the third visible chatbot topic");

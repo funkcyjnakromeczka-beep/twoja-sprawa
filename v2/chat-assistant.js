@@ -3,6 +3,7 @@
   "use strict";
   const script=document.currentScript;
   const base=script?.getAttribute("data-base")||"/v2/";
+  const releasePath=pathname=>window.location.pathname.startsWith("/v2/")?pathname:pathname.replace(/\.html$/,"");
   // Zachowaj źródło kampanii wejściowej, gdy użytkownik przechodzi przez przewodnik.
   const incoming=new URLSearchParams(window.location.search);
   const allowedSources=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
@@ -107,7 +108,7 @@
   content.append(intro,label,buttons,reply);
   const actions=document.createElement("div");actions.className="chat-actions";
   const phone=document.createElement("a");phone.href="tel:+48796441345";phone.textContent="☎ Zadzwoń: 796 441 345";
-  const contact=document.createElement("a");contact.href=base+"kontakt.html#formularz";contact.textContent="✉ Zostaw kontakt";
+  const contact=document.createElement("a");contact.href=releasePath(new URL(base+"kontakt.html",window.location.origin).pathname)+"#formularz";contact.textContent="✉ Zostaw kontakt";
   const emailAction=document.createElement("a");
   emailAction.className="chat-email-action";
   emailAction.href="mailto:wojciech.obieglo@votum-ds.pl?subject="+encodeURIComponent("Zapytanie — Twoja Sprawa");
@@ -134,7 +135,7 @@
     const address=new URL(target,window.location.origin);
     if(stageCode && (topic.key==="szkody"||topic.key==="swiadczenie"))address.searchParams.set("etap",stageCode);
     if(topic.key==="szkody"&&["sciany","kostka"].includes(damageCode))address.searchParams.set("uszkodzenie",damageCode);
-    return address.pathname+address.search+address.hash;
+    return releasePath(address.pathname)+address.search+address.hash;
   };
   const choose=topic=>{
     for(const b of buttons.querySelectorAll("button"))b.setAttribute("aria-pressed",String(b.dataset.topic===topic.key));
@@ -162,8 +163,8 @@
     }
     const links=mk("div","chat-reply-links");
     const form=mk("a","chat-reply-contact","Zostaw kontakt ↗");form.href=destination(topic);
-    const details=mk("a","chat-reply-detail","Przeczytaj o usłudze");details.href=base+"uslugi/"+topic.service;
-    const checklist=mk("a","chat-reply-checklist","Lista kroków przed rozmową");checklist.href=base+"poradniki/"+topic.checklist;
+    const details=mk("a","chat-reply-detail","Przeczytaj o usłudze");details.href=releasePath(new URL(base+"uslugi/"+topic.service,window.location.origin).pathname);
+    const checklist=mk("a","chat-reply-checklist","Lista kroków przed rozmową");checklist.href=releasePath(new URL(base+"poradniki/"+topic.checklist,window.location.origin).pathname);
     if(topic.key==="skd"){
       const mail=mk("a","chat-reply-email","Wyślij umowę do analizy SKD e-mailem ↗");
       mail.href="mailto:wojciech.obieglo@votum-ds.pl?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+"&body="+encodeURIComponent("Dzień dobry,\nProszę o wstępną analizę załączonej umowy kredytowej pod kątem SKD.\nMój numer telefonu: [wpisz numer]\nPełną umowę dołączę do wiadomości jako załącznik.");

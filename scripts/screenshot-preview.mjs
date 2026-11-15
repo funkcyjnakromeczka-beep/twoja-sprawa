@@ -356,7 +356,7 @@ try{
  await guidePage.locator('.navigator-stage-choice[data-stage="ugoda"]').click();
  const route=await guidePage.locator(".navigator-contact-cta").getAttribute("href");
  const selected=new URL(route,origin);
- if(selected.pathname!=="/kampanie/szkody-gornicze.html"||selected.searchParams.get("etap")!=="ugoda"||selected.searchParams.get("lead_path")!=="navigator"||selected.searchParams.get("utm_medium")!=="grupa")throw Error("Navigator did not pass safe stage and campaign context: "+route);
+ if(selected.pathname!=="/kampanie/szkody-gornicze"||selected.searchParams.get("etap")!=="ugoda"||selected.searchParams.get("lead_path")!=="navigator"||selected.searchParams.get("utm_medium")!=="grupa")throw Error("Navigator did not pass safe stage and campaign context: "+route);
  await guidePage.locator("#dobierz-pomoc").screenshot({path:"screenshots/przewodnik-ugoda-telefon.png",animations:"disabled"});
  await guidePage.goto(localPreviewUrl(selected.pathname,selected.search,selected.hash),{waitUntil:"domcontentloaded"});
  const stageFromGuide=await guidePage.locator('.contact-form select[id^="cf-stage-"]').inputValue();
@@ -400,7 +400,7 @@ try{
  await planPage.locator("[data-plan-checklist] input").first().check();
  if((await planPage.locator("[data-plan-progress]").textContent()).trim()!=="1 z 5")throw Error("Checklist progress incorrect");
  const planTarget=new URL(await planPage.locator("[data-plan-contact]").getAttribute("href"),origin);
- if(planTarget.pathname!=="/kontakt.html"||planTarget.searchParams.get("usluga")!=="szkody"||planTarget.searchParams.get("etap")!=="ugoda"||planTarget.searchParams.get("lead_path")!=="plan"||planTarget.searchParams.get("utm_medium")!=="grupa")throw Error("Plan handoff broken: "+planTarget);
+ if(planTarget.pathname!=="/kontakt"||planTarget.searchParams.get("usluga")!=="szkody"||planTarget.searchParams.get("etap")!=="ugoda"||planTarget.searchParams.get("lead_path")!=="plan"||planTarget.searchParams.get("utm_medium")!=="grupa")throw Error("Plan handoff broken: "+planTarget);
  await planPage.screenshot({path:"screenshots/plan-szkody-ugoda-telefon.png",fullPage:true,animations:"disabled"});
  await planPage.goto(localPreviewUrl(planTarget.pathname,planTarget.search,planTarget.hash),{waitUntil:"domcontentloaded"});
  const planFormService=await planPage.locator('.contact-form select[id^="cf-service-"]').inputValue();

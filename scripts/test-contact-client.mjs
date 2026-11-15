@@ -407,6 +407,56 @@ stageCase("Świadczenie wspierające","decyzja","Mam decyzję WZON");
 stageCase("Świadczenie wspierające","odwolanie","Chcę przeanalizować decyzję lub odwołanie");
 stageCase("Szkody górnicze","nieznany_kod","");
 
+// A non-circular preparation checklist and privacy-safe plan shortcut must be
+// available in the form for each of the six flagship services.
+for(const [kind,service,stageCode,expectedStage] of [
+ ["szkody","Szkody górnicze","ugoda","ugoda"],
+ ["swiadczenie","Świadczenie wspierające","odwolanie","odwolanie"],
+ ["skd","Kredyt w PLN / SKD","",""],
+ ["renty","Renty powypadkowe","",""],
+ ["franki","Kredyty frankowe CHF","ugoda","ugoda"],
+ ["przesyl","Służebność przesyłu","",""]
+]){
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:()=>""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?usluga="+kind+(stageCode?"&etap="+stageCode:"")+"&lead_path=plan"}};
+ runInNewContext(source,{document,window,navigator:{},URLSearchParams,Math});
+ const form=host.children[0];
+ const chosen=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const plan=visit(form,n=>n.className==="contact-guide-plan-link");
+ const checklist=visit(form,n=>n.tag==="a"&&n.textContent?.startsWith("Otwórz listę kontrolną"));
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ assert.equal(chosen.value,service,"Wrong preselected service for "+kind);
+ assert.ok(plan&&!plan.hidden,"Preparation plan must be available for "+kind);
+ const url=new URL(plan.href,"https://twoja-sprawa.pages.dev");
+ assert.equal(url.pathname,"/v2/plan-dzialania.html");
+ assert.equal(url.searchParams.get("usluga"),kind);
+ assert.equal(url.searchParams.get("etap"),expectedStage||null);
+ assert.equal(url.searchParams.get("phone"),null,"Never embed contact data in URLs");
+ assert.equal(url.searchParams.get("email"),null,"Never embed contact data in URLs");
+ assert.equal(plan.target,"_blank");
+ assert.equal(plan.rel,"noopener noreferrer");
+ assert.ok(checklist?.href,"A real checklist must remain available for "+kind);
+ assert.notEqual(checklist.href,"/v2/uslugi/kredyty-frankowe.html","CHF checklist cannot loop to its own service page");
+ if(kind==="franki"){
+  assert.equal(checklist.href,"/v2/poradniki/frankowicze-lista-kontrolna.html");
+  assert.equal(stage.value,"Bank proponuje ugodę dotyczącą kredytu CHF");
+  chosen.value="Świadczenie wspierające";chosen.events.change();
+  const changed=new URL(plan.href,"https://twoja-sprawa.pages.dev");
+  assert.equal(changed.searchParams.get("usluga"),"swiadczenie");
+  assert.equal(changed.searchParams.get("etap"),null,"Old CHF stage must not leak into WZON plan");
+  stage.value="Mam decyzję WZON";stage.events.change();
+  assert.equal(new URL(plan.href,"https://twoja-sprawa.pages.dev").searchParams.get("etap"),"decyzja");
+ }
+}
+
+
 // Complete six-service planner -> contact flow for CHF: selected stage survives
 // the transition, remains editable and is sent as an enumerated case stage.
 for(const [code,label] of [

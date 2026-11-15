@@ -5,9 +5,12 @@
  const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
  const valid=value=>/^[a-z0-9_-]{1,40}$/.test(value);
  const query=new URLSearchParams(window.location.search);
- const source=(query.get("utm_source")||"").toLowerCase().trim();
+ const inferredAIReferrer=(()=>{try{const host=new URL(document.referrer).hostname.toLowerCase();return ["chatgpt.com","www.chatgpt.com","chat.openai.com"].includes(host)?"chatgpt.com":"";}catch{return "";}})();
+ const source=(query.get("utm_source")||inferredAIReferrer).toLowerCase().trim();
  if(!allowedSources.has(source))return;
  const tracking={utm_source:source};
+ // Gdy brak oznaczenia UTM, rozpoznaj tylko znany nagłówek strony odsyłającej.
+ if(inferredAIReferrer&&!query.get("utm_source"))tracking.utm_medium="referral";
  for(const field of ["utm_medium","utm_campaign","utm_content"]){
   const value=(query.get(field)||"").toLowerCase().trim();
   if(valid(value))tracking[field]=value;

@@ -9,6 +9,7 @@
  const counter=host.querySelector("[data-search-count]");
  const empty=host.querySelector("[data-search-empty]");
  const emptyContact=host.querySelector("[data-search-contact]");
+ const emptySuggestion=host.querySelector("[data-search-suggestion]");
  const reset=host.querySelector("[data-search-reset]");
  const tabs=[...host.querySelectorAll("[data-search-category]")];
  if(!input||!results||!counter||!empty||!reset||!tabs.length)return;
@@ -21,6 +22,24 @@
   przesyl:"/v2/uslugi/sluzebnosc-przesylu.html#formularz"
  };
  const labels={szkody:"Szkody górnicze",swiadczenie:"Świadczenie wspierające",renty:"Renty i wypadki",skd:"Sankcja Kredytu Darmowego (SKD)",franki:"Pomoc frankowiczom — CHF",przesyl:"Służebność przesyłu",inne:"Pozostałe materiały"};
+ // Conservative, local-only signposting for an otherwise empty results page.
+ // Distinctive words only; ties and unknown terms never guess a service.
+ const topicRoots={
+  szkody:["kopaln","gornicz","zapadlisk","pekniec","peknie","osiadan","rys","kostk"],
+  swiadczenie:["wzon","wspieraj","niepelnos","punktow","punktac"],
+  renty:["rent","powypad","waloryzac","wypad","uszczerb"],
+  skd:["skd","sankcj","rrso","gotowkow","konsumenck","pln"],
+  franki:["frank","chf","walutow","indeksowan"],
+  przesyl:["sluzebn","przesyl","slup","gazociag","energetyczn"]
+ };
+ const inferTopic=phrase=>{
+  const words=engine.normalize(phrase).split(" ").filter(Boolean);
+  if(!words.length)return "";
+  const ranking=Object.entries(topicRoots).map(([key,roots])=>({
+   key,score:words.filter(word=>roots.some(root=>word.startsWith(root))).length
+  })).sort((a,b)=>b.score-a.score);
+  return ranking[0].score>0&&ranking[0].score>ranking[1].score?ranking[0].key:"";
+ };
  const publicHref=href=>{
   // Browser search data keeps source /v2/*.html paths to match the build.
   // Visitors should receive canonical extensionless Cloudflare Pages links.
@@ -71,9 +90,18 @@
   }
   // No-results messaging is only meaningful after an actual search.
   empty.hidden=matched.length!==0||browsing;
+  const inferredTopic=!browsing&&matched.length===0&&category==="all"?inferTopic(phrase):"";
+  const suggestedTopic=category!=="all"?category:inferredTopic;
+  const guided=Boolean(contactByTopic[suggestedTopic]);
   if(emptyContact){
-   emptyContact.href=publicHref(contactByTopic[category]||"/v2/kontakt.html");
-   emptyContact.textContent=contactByTopic[category]?"Zostaw kontakt w wybranej sprawie":"Zadaj własne pytanie";
+   emptyContact.href=publicHref(contactByTopic[suggestedTopic]||"/v2/kontakt.html");
+   emptyContact.textContent=guided?"Przejdź do kontaktu — "+labels[suggestedTopic]:"Zadaj własne pytanie";
+  }
+  if(emptySuggestion){
+   emptySuggestion.hidden=empty.hidden||!guided;
+   emptySuggestion.textContent=!guided?"":category==="all"
+    ?"Wstępna podpowiedź na podstawie użytych słów: "+labels[suggestedTopic]+". To nie jest ocena Twojej sprawy ani gwarancja świadczenia."
+    :"Wybrany filtr: "+labels[suggestedTopic]+". Możesz skontaktować się bezpośrednio w tym temacie.";
   }
   reset.hidden=!phrase&&category==="all";
   for(const tab of tabs)tab.setAttribute("aria-pressed",String(tab.dataset.searchCategory===category));

@@ -47,6 +47,12 @@ Skrypt `attribution.js` zachowuje oznaczenia kampanii podczas typowej nawigacji 
 
 Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono 70 unikatowych lokalnych zasobów; istnienie powiązanych plików, w tym obu JPG, zostało potwierdzone w GitHub. To nie zastępuje testów całej strony w działającej przeglądarce.
 
+## Odnośniki i dostępność (15.11.2026)
+
+- `scripts/test-internal-links.mjs` w workflow `.github/workflows/release-candidate.yml` kontroluje lokalnie wygenerowane linki i odwołania do sekcji. Zakończony poprawnie przebieg zbadał **47 plików HTML, 1040 odnośników/zasobów i 219 fragmentów**. Nie łączy się z zewnętrznymi serwisami; odnośniki wychodzące trzeba weryfikować osobno.
+- `scripts/test-browser-flows.mjs` używa bezpłatnego `axe-core@4.14.0` na rzeczywistym wdrożeniu Cloudflare i zatrzymuje test, jeśli wykryje problem z kryteriami WCAG A/AA na stronie głównej, kontakcie lub trzech kampaniach. W zakończonym przebiegu pięć stron miało **0 wykrytych naruszeń** w użytym zestawie reguł.
+- Poprawiono czytelność sekcji kontaktowej i jasnych podpisów na stronach kampanii oraz zgodność nazw linków z widocznym tekstem. Automatyczny wynik nie oznacza pełnego audytu dostępności: nadal należy wykonać manualną kontrolę klawiatury, czytnika ekranu i rzeczywistych urządzeń.
+
 ## Optymalizacja strony głównej (15.11.2026)
 
 - Produkcyjny kompilator (`scripts/build.mjs`) zachowuje wszystkie 7 arkuszy CSS osobno dla podstron usług, lecz dla strony głównej generuje jeden `/home-bundle.css` w identycznej kolejności reguł. Źródłowe arkusze pozostają oddzielne, a generator kończy pracę błędem, jeśli kolejność CSS się zmieni. Nie wprowadzono płatnych usług.

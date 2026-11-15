@@ -630,6 +630,8 @@ try{
   });
   console.log("PUBLIC_RESOURCE_REPORT "+JSON.stringify(perf,null,2));
   assert.equal(perf.styleSheets,1,"Homepage should download a single combined CSS file");
+  assert.ok(perf.cssDecodedBytes>0&&perf.cssDecodedBytes<285000,
+   "Homepage CSS exceeded 285 KB decoded budget: "+perf.cssDecodedBytes);
   assert.equal(perf.largest.filter(x=>x.path==="/home-bundle.css").length,1,"Homepage bundle missing");
   assert.ok(perf.initialImages.filter(x=>x.src.startsWith(origin)).every(x=>x.complete&&x.width>0),
    "A critical same-origin image did not load");

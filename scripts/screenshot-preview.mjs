@@ -847,6 +847,34 @@ try{
 
  // Direct fallback email stays with the correct adviser after a simulated
  // provider outage. This intercepts the request, never contacting Web3Forms.
+ // A rare query with no matching document should still lead to the correct
+ // adviser. Verify real Chromium rendering, explicit filter precedence and
+ // a generic fallback for unknown terms; never submit personal information.
+ const searchGuidePage=await browser.newPage({viewport:{width:390,height:844}});
+ await searchGuidePage.goto(origin+"/szukaj.html?q=zapadlisko+xyz012",{waitUntil:"domcontentloaded"});
+ const searchEmpty=searchGuidePage.locator("[data-search-empty]");
+ await searchEmpty.waitFor({state:"visible",timeout:8000});
+ const searchHint=searchGuidePage.locator("[data-search-suggestion]");
+ const searchContact=searchGuidePage.locator("[data-search-contact]");
+ if(!await searchHint.isVisible()||!((await searchHint.textContent())||"").includes("Szkody górnicze"))
+  throw Error("No-result mining query did not suggest its relevant service");
+ if(await searchContact.getAttribute("href")!=="/uslugi/szkody-gornicze#formularz")
+  throw Error("No-result mining contact did not route to the right page");
+ await searchGuidePage.locator('[data-search-category="skd"]').click();
+ if(await searchContact.getAttribute("href")!=="/kampanie/skd#formularz")
+  throw Error("Explicit SKD filter did not override inferred mining topic");
+ if(!((await searchHint.textContent())||"").includes("Wybrany filtr:"))
+  throw Error("Search suggestion did not distinguish selected filters");
+ await searchGuidePage.locator("[data-search-reset]").click();
+ if(await searchEmpty.isVisible()||await searchHint.isVisible())
+  throw Error("Search guidance did not reset to featured services");
+ await searchGuidePage.locator("#site-search-input").fill("zyxznothing xyz012");
+ await searchEmpty.waitFor({state:"visible",timeout:5000});
+ if(await searchHint.isVisible()||await searchContact.getAttribute("href")!=="/kontakt")
+  throw Error("Unrelated query was inappropriately assigned a specialist");
+ console.log("SEARCH_ZERO_RESULTS_GUIDE_OK",JSON.stringify({verified:"mining, SKD filter, reset, unknown topic",leadSubmissions:0}));
+ await searchGuidePage.close();
+
  const supportFailPage=await browser.newPage({viewport:{width:390,height:844}});
  await supportFailPage.route("https://api.web3forms.com/submit",route=>route.fulfill({status:503,contentType:"application/json",body:'{"success":false}'}));
  await supportFailPage.goto(origin+"/kampanie/swiadczenie-wspierajace.html",{waitUntil:"domcontentloaded"});

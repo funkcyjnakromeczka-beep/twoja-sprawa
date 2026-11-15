@@ -28,7 +28,19 @@
   return !opened&&digits.length>=7&&digits.length<=15;
  };
  // Native mailto links continue to work when this optional script is blocked.
- const links=[...document.querySelectorAll(".campaign-skd-email, .campaign-skd .campaign-mobile-actions .campaign-mobile-primary")];
+ // Use the same one-click draft on the SKD campaign and the full service page.
+ // The service page has multiple deliberate "send agreement" buttons, including
+ // a fixed mobile one; otherwise those buttons leave the callback as a placeholder.
+ const mailtoSelectors=[
+  ".campaign-skd-email",
+  ".campaign-skd .campaign-mobile-actions .campaign-mobile-primary",
+  ".premium-subpage.theme-skd .service-hero-actions a[href^='mailto:']",
+  ".premium-subpage.theme-skd .skd-document-actions .skd-email-action",
+  ".premium-subpage.theme-skd #kontakt .actions a[href^='mailto:']",
+  ".premium-subpage.theme-skd .service-cta .actions a[href^='mailto:']",
+  ".premium-subpage.theme-skd .skd-mobile-quickbar .skd-mobile-mail"
+ ];
+ const links=[...document.querySelectorAll(mailtoSelectors.join(", "))];
  for(const link of links){
   const original=link.getAttribute("href")||"";
   if(!original.startsWith("mailto:"+mailbox+"?"))continue;

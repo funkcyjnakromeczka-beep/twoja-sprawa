@@ -61,4 +61,39 @@
    window.setTimeout(()=>link.setAttribute("href",original),0);
   });
  }
+
+ // The service page's fixed mobile bar must never cover its contact form
+ // or keyboard. The native email and #formularz links still work without JS.
+ const quickBar=document.querySelector(".skd-mobile-quickbar");
+ const formRegion=document.getElementById("formularz");
+ if(quickBar&&formRegion){
+  let overlapsForm=false;
+  const sync=()=>{
+   quickBar.hidden=overlapsForm||formRegion.contains(document.activeElement);
+  };
+  const checkPosition=()=>{
+   const rect=formRegion.getBoundingClientRect();
+   const viewportHeight=window.visualViewport?.height||window.innerHeight;
+   overlapsForm=rect.top<viewportHeight-85&&rect.bottom>0;
+   sync();
+  };
+  if("IntersectionObserver" in window){
+   const observer=new IntersectionObserver(entries=>{
+    overlapsForm=Boolean(entries[0]?.isIntersecting);
+    sync();
+   },{threshold:0,rootMargin:"0px 0px -85px 0px"});
+   observer.observe(formRegion);
+  }else{
+   window.addEventListener("scroll",checkPosition,{passive:true});
+   window.addEventListener("resize",checkPosition,{passive:true});
+   window.visualViewport?.addEventListener("resize",checkPosition,{passive:true});
+   checkPosition();
+  }
+  document.addEventListener("focusin",event=>{
+   if(formRegion.contains(event.target))quickBar.hidden=true;
+  });
+  document.addEventListener("focusout",event=>{
+   if(formRegion.contains(event.target))window.setTimeout(sync,0);
+  });
+ }
 })();

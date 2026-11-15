@@ -605,4 +605,54 @@ for(const sample of [
  assert.equal(feedback.textContent,"","Shortcut confirmation must clear when the form resets");
 }
 
+// A homepage shortcut does not dispatch the select's native change event.
+// Verify it still refreshes every recovery route after a failed submission.
+{
+ const host=new Node("host"),mining=new Node("a"),support=new Node("a"),skd=new Node("a");
+ const code=(link,name)=>link.getAttribute=key=>key==="data-contact-shortcut"?name:(link.attributes[key]??null);
+ code(mining,"szkody");code(support,"swiadczenie");code(skd,"skd");
+ const document={
+  body:{classList:{contains:token=>token==="premium-v2"}},
+  currentScript:{getAttribute:()=>""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:
+   selector==="[data-contact-shortcut]"?[mining,support,skd]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:value=>({tag:"text",textContent:value})
+ };
+ const window={location:{search:"?utm_source=ulotka"},setTimeout:()=>1,clearTimeout:()=>{}};
+ let attempted=0;
+ const fetch=async()=>{attempted++;throw Error("Synthetic outage for shortcut recovery");};
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0];
+ const select=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const name=visit(form,n=>n.autocomplete==="given-name");
+ const phone=visit(form,n=>n.autocomplete==="tel");
+ const method=visit(form,n=>n.id?.startsWith("cf-method-"));
+ name.value="Testowy";phone.value="500 000 000";method.value="Dowolny";method.events.change();
+ support.events.click({preventDefault(){}});
+ assert.equal(select.value,"Świadczenie wspierające");
+ await form.events.submit({preventDefault(){}});
+ assert.equal(attempted,1,"Simulated failure should perform exactly one mocked submission");
+ const status=visit(form,n=>n.className==="contact-status-error");
+ assert.ok(status,"Failure should offer recovery controls");
+ const fallback=visit(status,n=>n.className==="contact-fallback-link");
+ const call=visit(status,n=>n.href?.startsWith("tel:"));
+ assert.ok(fallback?.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"));
+ assert.equal(call?.href,"tel:+48500171531");
+ for(const [link,recipient,telephone] of [
+  [mining,"wojciech.obieglo@votum-ds.pl","tel:+48796441345"],
+  [skd,"wojciech.obieglo@votum-ds.pl","tel:+48796441345"],
+  [support,"paulina.chandrala@votum-ds.pl","tel:+48500171531"]
+ ]){
+  link.events.click({preventDefault(){}});
+  assert.ok(fallback.href.startsWith("mailto:"+recipient+"?"),"Recovery email stayed on wrong person");
+  assert.ok(!fallback.href.includes("&body="),"Switching services must not expose client details in dormant links");
+  assert.equal(call.href,telephone,"Recovery phone stayed on wrong person");
+  assert.equal(attempted,1,"Service shortcut must never resubmit a lead");
+ }
+ assert.equal(name.value,"Testowy","Service shortcuts must preserve customer name");
+ assert.equal(phone.value,"500 000 000","Service shortcuts must preserve callback number");
+}
+console.log("HOME_SHORTCUT_RECOVERY_OK: fallback follows adviser changes with no duplicate submissions.");
+
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

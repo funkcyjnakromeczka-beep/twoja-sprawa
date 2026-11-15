@@ -7,6 +7,7 @@
 import assert from "node:assert/strict";
 import {setTimeout as sleep} from "node:timers/promises";
 import {chromium} from "playwright";
+import axe from "axe-core";
 
 const origin="https://twoja-sprawa.pages.dev";
 const expectedCommit=(process.env.GITHUB_SHA||"").trim().toLowerCase();

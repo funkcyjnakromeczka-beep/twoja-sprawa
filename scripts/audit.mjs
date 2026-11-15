@@ -116,8 +116,8 @@ try {
 try {
  const contact=await readFile(join(root,"contact.js"),"utf8");
  const css=await readFile(join(root,"premium-v2.css"),"utf8");
- if(!contact.includes("Nie jest to jeszcze potwierdzenie dostarczenia wiadomości")) errors.push("Contact premium: delivery caveat missing");
- if(!contact.includes("form.reset();updateAdvisor();updatePeople();updateGuide();updateStage()")) errors.push("Contact premium: guide or responsible phone state not reset");
+ if(!contact.includes("Operator formularza potwierdził przyjęcie zgłoszenia.")||!contact.includes("ani potwierdzenia dostarczenia e-maila")) errors.push("Contact premium: delivery caveat missing");
+ if(!contact.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage()")) errors.push("Contact premium: guide or responsible phone state not reset");
  for(const token of [".contact-status-success",".contact-status-error",".contact-advisor",".contact-guide-box"]){
   if(!css.includes(token)) errors.push("Contact premium: missing CSS "+token);
  }

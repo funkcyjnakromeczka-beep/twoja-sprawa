@@ -51,8 +51,8 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/plan-dzialania.html",
     "href": "/v2/plan-dzialania.html",
-    "title": "Plan pierwszych kroków — szkody górnicze, WZON i ZUS",
-    "description": "Przygotuj bezpłatny plan pierwszych kroków dla szkody górniczej, świadczenia wspierającego, renty powypadkowej, kredytu PLN lub służebności przesyłu. Wydrukuj prostą checklistę bez podawania danych osobowych.",
+    "title": "Plan pierwszych kroków — 6 rodzajów spraw",
+    "description": "Przygotuj bezpłatną listę kroków: szkody górnicze, świadczenie wspierające, SKD, renty, kredyty CHF i służebność przesyłu. Wydrukuj checklistę bez podawania danych osobowych.",
     "category": "szkody",
     "keywords": "Twój plan pierwszych kroków v2 plan dzialania html Plan pierwszych kroków"
   },

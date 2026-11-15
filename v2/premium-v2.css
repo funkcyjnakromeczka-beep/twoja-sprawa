@@ -3869,7 +3869,8 @@ html{scroll-padding-top:16px}
 .chat-assistant .chat-reply-links a:hover{filter:brightness(1.15)}
 .chat-assistant .chat-caution{display:block;margin-top:12px;color:#526973;font-size:.75rem;line-height:1.5}
 .chat-assistant .chat-actions{
-  position:sticky;bottom:0;z-index:2;
+  /* Footer flows after topic links instead of obscuring their touch targets. */
+  position:static;bottom:auto;z-index:auto;
   background:#f7f5f0;padding:11px 14px;
   border-top:1px solid #d4dad7;
 }

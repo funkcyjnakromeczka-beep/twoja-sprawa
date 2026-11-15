@@ -171,6 +171,26 @@ for(const [page,photo] of [
 }
 
 
+// The search page must degrade gracefully if scripts or its local index fail.
+// No-JavaScript users should see real service links instead of inert controls.
+const searchHtml=await read("szukaj.html");
+const searchJs=await read("site-search.js");
+const searchCss=await read("site-search.css");
+assert.ok(searchHtml.includes("data-search-fallback")&&
+ searchHtml.includes("data-search-interactive")&&
+ searchJs.includes('host.dataset.searchReady="true"')&&
+ searchJs.includes("staticFallback.hidden=true")&&
+ searchCss.includes('[data-site-search]:not([data-search-ready="true"]) [data-search-interactive]'),
+ "Search must show static destinations until local results initialize");
+for(const href of [
+ "/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace",
+ "/kampanie/skd","/uslugi/renty-powypadkowe",
+ "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu"
+]){
+ assert.ok(searchHtml.includes('href="'+href+'"'),
+  "Missing safe direct link in fallback search: "+href);
+}
+
 const contactFormJS=await read("contact.js");
 assert.ok(contactFormJS.includes("let refreshDirectContact=()=>{};")&&
  contactFormJS.includes("refreshDirectContact=updateDirect;updateDirect();")&&

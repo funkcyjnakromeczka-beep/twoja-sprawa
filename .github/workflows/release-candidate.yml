@@ -9,6 +9,7 @@ on:
       - 'scripts/public-routes.mjs'
       - 'scripts/seo-policy.mjs'
       - 'scripts/test-production-bundle.mjs'
+      - 'scripts/test-internal-links.mjs'
       - '.github/workflows/release-candidate.yml'
   workflow_dispatch:
 concurrency:
@@ -29,6 +30,7 @@ jobs:
         run: |
           node --check scripts/build.mjs
           node --check scripts/test-production-bundle.mjs
+          node --check scripts/test-internal-links.mjs
       - name: Zbuduj i przetestuj kandydata wydania (bez publikacji)
         env:
           SITE_URL: https://twoja-sprawa.pages.dev
@@ -39,6 +41,7 @@ jobs:
         run: |
           node scripts/build.mjs
           node scripts/test-production-bundle.mjs
+          node scripts/test-internal-links.mjs
       - name: Identyfikator zbudowanej wersji
         run: cat dist/release-info.json
       - name: Zapisz tymczasowy pakiet wydania do pobrania

@@ -162,6 +162,11 @@ must(contact.includes('routingNote.className="contact-routing-note"')&&
   "Formularz nie odroznia metadanych doradcy od odbiorcy Web3Forms");
 must(data["/styles.css"].includes(".contact-advisor .contact-routing-note"),
   "Brak czytelnego objasnienia odbiorcy Web3Forms");
+must(contact.includes('copyButton.className="contact-advisor-copy-button"')&&
+     contact.includes("await navigator.clipboard.writeText(advisorEmail);")&&
+     contact.includes('emailAddress.textContent=advisorEmail;')&&
+     data["/styles.css"].includes(".contact-advisor .contact-advisor-copy-address"),
+  "Na produkcji brakuje opcji kopiowania e-maila wlasciwego doradcy");
 must(contact.includes("api.web3forms.com/submit")&&contact.includes("if(sending)return;"),
   "Wdrozenie formularza jest niekompletne");
 

@@ -6,12 +6,15 @@ import {runInNewContext} from "node:vm";
 
 const attribution=await readFile("v2/attribution.js","utf8");
 const form=await readFile("v2/contact.js","utf8");
+const chatbot=await readFile("v2/chat-assistant.js","utf8");
+const navigator=await readFile("v2/service-navigator.js","utf8");
+const plan=await readFile("v2/plan-dzialania.js","utf8");
 function allowedSources(source,variable){
  const match=source.match(new RegExp("const "+variable+"=new Set\\((\\[[^\\]]+\\])\\)"));
  assert.ok(match,variable+" allow-list not found");
  return new Set(JSON.parse(match[1]));
 }
-for(const [name,sources] of [["internal links",allowedSources(attribution,"allowedSources")],["lead form",allowedSources(form,"sourceAllowed")]]){
+for(const [name,sources] of [["internal links",allowedSources(attribution,"allowedSources")],["lead form",allowedSources(form,"sourceAllowed")],["chatbot",allowedSources(chatbot,"allowedSources")],["service navigator",allowedSources(navigator,"sourceAllowed")],["action plan",allowedSources(plan,"allowedSources")]]){
  assert.ok(sources.has("chatgpt.com"),name+" must recognize ChatGPT search");
  assert.ok(sources.has("facebook")&&sources.has("google"),name+" must preserve existing sources");
  assert.ok(!sources.has("untrusted.example"),name+" must not permit arbitrary attribution");

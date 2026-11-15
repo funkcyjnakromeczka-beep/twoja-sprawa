@@ -403,13 +403,22 @@
      const fallback=document.createElement("a");
      fallback.className="contact-fallback-link";
      fallback.textContent="Otwórz gotową wiadomość e-mail";
+     // Keep only the recipient and service in the dormant mailto link.
+     // Customer details belong in the message draft only after a deliberate
+     // click; do not leave a name, phone or case summary in a DOM URL.
      const updateFallback=()=>{
       fallback.href="mailto:"+currentRecipient()
-       +"?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+select.value)
-       +"&body="+encodeURIComponent(makeDraft());
+       +"?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+select.value);
      };
      updateFallback();
-     fallback.addEventListener("click",updateFallback);
+     fallback.addEventListener("click",()=>{
+      const safeHref=fallback.href;
+      fallback.href=safeHref+"&body="+encodeURIComponent(makeDraft());
+      // Native mailto navigation reads href after the click event.
+      // Restore the privacy-safe address in the next task, never persisting
+      // the personal draft in the document or browser history.
+      window.setTimeout(updateFallback,0);
+     });
      synchronizeFailureLinks=()=>{updateErrorCall();updateFallback();};
      status.append(document.createTextNode(" · "),fallback);
      // The request body is only copied following a deliberate user click.

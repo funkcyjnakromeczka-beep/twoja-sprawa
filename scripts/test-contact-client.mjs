@@ -406,6 +406,53 @@ stageCase("Szkody górnicze","odmowa","Kopalnia odmówiła");
 stageCase("Świadczenie wspierające","decyzja","Mam decyzję WZON");
 stageCase("Świadczenie wspierające","odwolanie","Chcę przeanalizować decyzję lub odwołanie");
 stageCase("Szkody górnicze","nieznany_kod","");
+
+// Complete six-service planner -> contact flow for CHF: selected stage survives
+// the transition, remains editable and is sent as an enumerated case stage.
+for(const [code,label] of [
+ ["aktywny","Nadal spłacam kredyt CHF"],
+ ["splacony","Kredyt CHF został spłacony"],
+ ["ugoda","Bank proponuje ugodę dotyczącą kredytu CHF"],
+ ["postepowanie","Sprawa kredytu CHF jest już prowadzona"],
+ ["nieznany",""]
+]){
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:()=>""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ let lead=null;
+ const fetch=async(_url,opts)=>{lead=JSON.parse(opts.body);return {ok:true,json:async()=>({success:true})};};
+ const window={location:{search:"?usluga=franki&etap="+code+"&lead_path=plan&utm_source=facebook"},setTimeout:()=>1,clearTimeout:()=>{}};
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const stageWrap=visit(form,n=>n.className==="contact-stage");
+ const info=visit(form,n=>n.className==="contact-context-notice");
+ const advisor=visit(form,n=>n.className==="contact-advisor");
+ assert.equal(service.value,"Kredyty frankowe CHF","Plan should preselect CHF");
+ assert.equal(stageWrap.hidden,false,"CHF stage must be visible and editable");
+ assert.equal(stage.value,label,"Planner stage lost for "+code);
+ assert.equal(info.hidden,!Boolean(label),"Plan context summary mismatch for "+code);
+ assert.equal(info.children[0].textContent,"Twój wybór w planie przygotowań");
+ assert.ok(advisor.children.some(n=>n.href==="tel:+48796441345"),"CHF call should go to Wojciech");
+ if(code==="ugoda"){
+  const name=visit(form,n=>n.autocomplete==="given-name");
+  const phone=visit(form,n=>n.autocomplete==="tel");
+  const method=visit(form,n=>n.id?.startsWith("cf-method-"));
+  name.value="Test";phone.value="796441345";method.value="Telefon";method.events.change();
+  await form.events.submit({preventDefault(){}});
+  assert.equal(lead?.service,"Kredyty frankowe CHF");
+  assert.equal(lead?.case_stage,label,"Selected CHF stage missing in lead payload");
+  assert.equal(lead?.lead_path,"plan","Plan source missing in lead payload");
+  assert.equal(lead?.advisor_email,"wojciech.obieglo@votum-ds.pl");
+ }
+}
+
 // Navigator path must show the same safe, editable case-stage summary as chatbot.
 {
  const host=new Node("host");

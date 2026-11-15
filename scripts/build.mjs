@@ -259,7 +259,7 @@ async function walk(dir){
       if(indexable) pages.push(publicRoute);
     } else if (rel.endsWith(".css")) {
       let css=await readFile(absolute,"utf8");
-      css=css.replaceAll("/v2/assets/","/assets/");
+      css=stripCssComments(css.replaceAll("/v2/assets/","/assets/"));
       await writeFile(target,css);
     } else if (rel.endsWith(".js")) {
       let js=await readFile(absolute,"utf8");

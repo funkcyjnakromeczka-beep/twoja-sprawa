@@ -635,7 +635,22 @@ try{
   if(!await compactPage.locator(field).isVisible())throw Error("Essential lead field was hidden: "+field);
  }
  await compactPage.locator('#kontakt .contact-alternatives summary').click();
- await compactPage.locator('#kontakt .contact-alternative-links a[href="tel:+48500171531"]').waitFor({state:"visible",timeout:5000}).catch(()=>{throw Error("Optional phone fallback missing after expanding alternatives");});
+ const optionalPhone=compactPage.locator('#kontakt .contact-alternative-links a[href="tel:+48500171531"]');
+ if(!await optionalPhone.isVisible()){
+  const state=await compactPage.evaluate(()=>{
+   const details=document.querySelector("#kontakt .contact-alternatives");
+   const phone=details?.querySelector('a[href="tel:+48500171531"]');
+   const links=details?.querySelector(".contact-alternative-links");
+   return {expanded:details?.open,summary:details?.querySelector("summary")?.textContent,
+    phoneExists:!!phone,phoneDisplay:phone?getComputedStyle(phone).display:null,
+    phoneVisibility:phone?getComputedStyle(phone).visibility:null,
+    linksDisplay:links?getComputedStyle(links).display:null,
+    linksVisibility:links?getComputedStyle(links).visibility:null,
+    parentDisplay:details?getComputedStyle(details).display:null,
+    contentHeight:Math.round(links?.getBoundingClientRect().height||0)};
+  });
+  throw Error("Optional phone fallback missing after expanding alternatives: "+JSON.stringify(state));
+ }
  await compactPage.locator('#kontakt .contact-case-details > summary').click();
  if(!await compactPage.locator('#kontakt .contact-guide-box').isVisible())throw Error("Checklist must be accessible in expanded details");
  console.log("HOME_COMPACT_LEAD_OK",JSON.stringify({essentialFields:3,duplicatePhoneHidden:true,guideOptional:true,alternativeContacts:true,leadsSent:0}));

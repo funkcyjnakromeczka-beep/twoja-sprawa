@@ -19,11 +19,11 @@ for(const [name,sources] of [["internal links",allowedSources(attribution,"allow
  assert.ok(sources.has("facebook")&&sources.has("google"),name+" must preserve existing sources");
  assert.ok(!sources.has("untrusted.example"),name+" must not permit arbitrary attribution");
 }
-assert.ok(form.includes('sourceAllowed.has(campaignSource)?campaignSource:"nieoznaczone"'),
+assert.ok(form.includes('sourceAllowed.has(campaignSource)?campaignSource:(!campaignSource&&inferredAIReferrer?inferredAIReferrer:"nieoznaczone")'),
  "Lead source should be classified with the same allow-list");
 
 const origin="https://twoja-sprawa.pages.dev";
-function navigate(sourceQuery,href){
+function navigate(sourceQuery,href,referrer=""){
  let click;
  const location={origin,href:origin+"/"+sourceQuery,search:sourceQuery};
  const link={
@@ -31,7 +31,7 @@ function navigate(sourceQuery,href){
   getAttribute(key){return key==="href"?href:null;},
   hasAttribute(){return false;}
  };
- const document={addEventListener(type,handler){if(type==="click")click=handler;}};
+ const document={referrer,addEventListener(type,handler){if(type==="click")click=handler;}};
  runInNewContext(attribution,{window:{location},document,URL,URLSearchParams});
  if(click){
   click({target:{closest:()=>link},defaultPrevented:false,button:0,
@@ -49,4 +49,13 @@ assert.equal(next.searchParams.get("email"),null,"Personal query data must not b
 assert.equal(navigate(search,"https://votum-sa.pl/"),"https://votum-sa.pl/","External links must not be modified");
 assert.equal(navigate(search,"/kontakt?utm_source=facebook"),"/kontakt?utm_source=facebook","Explicit non-organic attribution must take priority");
 assert.equal(navigate("?utm_source=untrusted.example&utm_campaign=test","/kontakt"),"/kontakt","Unknown referrals must not be forwarded");
-console.log("OK: ChatGPT referral survives navigation and lead-source classification; no tracking cookies or test messages.");
+for(const [name,code] of [["links",attribution],["form",form],["chatbot",chatbot],["navigator",navigator],["action plan",plan]]){
+ assert.ok(code.includes("const inferredAIReferrer="),name+" must handle trusted referrer domains");
+ assert.ok(code.includes('"chat.openai.com"'),name+" must support legacy OpenAI chat links");
+}
+const ai=new URL(navigate("","/kontakt","https://chatgpt.com/c/example"),origin);
+assert.equal(ai.searchParams.get("utm_source"),"chatgpt.com","Trusted AI referrer must be attributed");
+assert.equal(ai.searchParams.get("utm_medium"),"referral","Untagged AI visit must carry referral medium");
+assert.equal(navigate("","/kontakt","https://evilchatgpt.com/"),"/kontakt","Lookalike domains must be ignored");
+assert.equal(navigate("?utm_source=facebook","/kontakt","https://chatgpt.com/").includes("utm_source=facebook"),true,"Explicit campaign must have priority");
+console.log("OK: tagged and untagged ChatGPT referrals preserve safe attribution; no cookies or test submissions.");

@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 
 const origin="https://twoja-sprawa.pages.dev";
 const targets=[
-  "/","/robots.txt","/sitemap.xml","/release-info.json","/home-flow.css","/styles.css","/network-brand.css","/mobile-service-cta.css",
+  "/","/robots.txt","/sitemap.xml","/release-info.json","/home-bundle.css","/home-flow.css","/styles.css","/network-brand.css","/mobile-service-cta.css",
   "/contact.js","/campaign-mobile-actions.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",
   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
   "/uslugi/kredyty-pln","/kampanie/skd","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/narzedzia/test-formularzy"
@@ -91,7 +91,12 @@ must(css.includes("Mobilna hierarchia 2026-11: jedno, niepowielone menu trzech g
 must(css.includes("@media(max-width:420px)")&&
      css.includes(".premium-v2 .mobile-quick-nav>a.mobile-skd-priority{grid-column:1 / -1}"),
   "Niewlasciwy uklad 3 uslug na bardzo waskich ekranach");
-must(home.includes('href="/home-flow.css"'),"Brak CSS strony glownej");
+must(home.includes('href="/home-bundle.css"')&&
+     (home.match(/<link rel="stylesheet"/g)||[]).length===1,
+  "Strona glowna powinna korzystac z jednego arkusza CSS");
+for(const selector of [".mobile-quick-nav",".network-brand-bar",".contact-advisor",".hero-priority-grid"]){
+ must(data["/home-bundle.css"].includes(selector),"Brak stylow w pakiecie: "+selector);
+}
 
 const graphs=Array.from(home.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g),
   match=>JSON.parse(match[1]));

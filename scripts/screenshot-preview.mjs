@@ -903,6 +903,20 @@ try{
  if(!await searchDirect.isVisible()||await searchPhone.getAttribute("href")!=="tel:+48500171531"||
    !((await searchEmail.getAttribute("href"))||"").startsWith("mailto:paulina.chandrala@votum-ds.pl?"))
   throw Error("Explicit supporting-benefit filter must offer direct Paulina contact");
+ const crossServiceQuery="waloryzacja powypadkowej";
+ await searchGuidePage.locator("#site-search-input").fill(crossServiceQuery);
+ await searchEmpty.waitFor({state:"visible",timeout:5000});
+ const everywhere=searchGuidePage.locator("[data-search-everywhere]");
+ await everywhere.waitFor({state:"visible",timeout:5000});
+ await everywhere.click();
+ if(await searchGuidePage.locator("#site-search-input").inputValue()!==crossServiceQuery)
+  throw Error("Search expansion discarded the customer's query");
+ await searchEmpty.waitFor({state:"hidden",timeout:5000});
+ if(await searchGuidePage.locator('[data-search-category="all"]').getAttribute("aria-pressed")!=="true")
+  throw Error("Search expansion did not select all services");
+ if(await searchGuidePage.locator(".site-search-card").count()===0)
+  throw Error("Cross-category search did not reveal available results");
+ console.log("SEARCH_SCOPE_PRESERVED_OK",JSON.stringify({queryRetained:true,scope:"all",crossServiceResults:true,leadSubmissions:0}));
  console.log("SEARCH_ZERO_RESULTS_GUIDE_OK",JSON.stringify({verified:"mining, SKD, supporting benefit, reset, ambiguous topic",leadSubmissions:0}));
  await searchGuidePage.close();
 

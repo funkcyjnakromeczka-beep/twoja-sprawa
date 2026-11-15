@@ -113,6 +113,19 @@ const run=async(error=false)=>{
   assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"),"Support fallback must route directly to Paulina");
   assert.ok(decodeURIComponent(fallback.href).includes("Dogodna pora: Po południu"));
   assert.ok(decodeURIComponent(fallback.href).includes("grupa_lubin"));
+  const errorPhone=visit(status,n=>n.tag==="a"&&n.href?.startsWith("tel:"));
+  assert.equal(errorPhone?.href,"tel:+48500171531","Failure recovery should initially call Paulina");
+  // The visitor may switch from support to mining after a failed submission.
+  // Every recovery link must update without resubmitting personal details.
+  select.value="Szkody górnicze";
+  select.events.change();
+  assert.equal(errorPhone.href,"tel:+48796441345","Failure callback must follow the currently selected service");
+  assert.equal(errorPhone.textContent,"796 441 345","Visible callback number must match its destination");
+  assert.ok(fallback.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"),"Fallback email must follow the new service");
+  select.value="Świadczenie wspierające";
+  select.events.change();
+  assert.equal(errorPhone.href,"tel:+48500171531");
+  assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"));
  }else{
   assert.equal(status.className,"contact-status-success");
  }

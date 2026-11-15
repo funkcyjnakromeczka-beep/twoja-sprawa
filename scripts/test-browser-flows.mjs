@@ -419,6 +419,36 @@ try{
  console.log("PASS: 320px campaign viewport has no horizontal overflow and touch targets meet 44px minimum.");
 
 
+ // Core service pages should also remain readable and usable at narrow widths.
+ for(const width of [320,390]){
+  await page.setViewportSize({width,height:740});
+  for(const route of [
+   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
+   "/uslugi/kredyty-pln","/uslugi/renty-powypadkowe",
+   "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu"
+  ]){
+   const resp=await page.goto(origin+route,{waitUntil:"domcontentloaded",timeout:40000});
+   assert.equal(resp?.status(),200,"Core service page not available: "+route);
+   const metrics=await page.evaluate(()=>{
+    const full=document.documentElement.scrollWidth-window.innerWidth;
+    const bar=document.querySelector(".mobile-service-cta");
+    return {overflow:full,
+     barTargets:bar?[...bar.querySelectorAll("a")].map(x=>{
+      const r=x.getBoundingClientRect();return {width:r.width,height:r.height};
+     }):[]};
+   });
+   assert.ok(metrics.overflow<=2,"Horizontal overflow "+metrics.overflow+" on "+route+" at "+width+"px");
+   for(const size of metrics.barTargets){
+    assert.ok(size.width>=44&&size.height>=44,
+     "Core service phone CTA too small on "+route+" at "+width+"px: "+JSON.stringify(size));
+   }
+  }
+ }
+ console.log("PASS: six core service pages at 320/390px have no horizontal overflow or undersized sticky contact links.");
+
+
+
+
 
  // Repeatable public-site resource inspection; read-only, no visitor tracking.
  const perfPage=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
@@ -454,7 +484,10 @@ try{
  await accessibilityPage.emulateMedia({reducedMotion:"reduce"});
  try{
   for(const route of ["/","/kontakt","/kampanie/szkody-gornicze",
-    "/kampanie/swiadczenie-wspierajace","/kampanie/skd"]){
+    "/kampanie/swiadczenie-wspierajace","/kampanie/skd",
+    "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
+    "/uslugi/kredyty-pln","/uslugi/renty-powypadkowe",
+    "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu"]){
    await accessibilityPage.goto(origin+route,{waitUntil:"load",timeout:40000});
    await accessibilityPage.waitForTimeout(250);
    await accessibilityPage.addScriptTag({content:axe.source});

@@ -91,6 +91,32 @@ try{
  assert.equal(errors.length,0,"Browser errors: "+errors.join("; "));
  console.log("PASS: 13 page/SEO resources, 3 FAQ assets and 7 form scenarios.");
 
+ // Direct adviser address copying on real mobile-width contact page.
+ // No form data is entered or submitted; only public professional addresses.
+ await page.context().grantPermissions(["clipboard-read","clipboard-write"],{origin});
+ await page.goto(origin+"/kontakt",{waitUntil:"domcontentloaded",timeout:40000});
+ const adviserSelector=page.locator('.contact-form select[id^="cf-service"]');
+ for(const [service,email] of [
+  ["Kredyt w PLN / SKD","wojciech.obieglo@votum-ds.pl"],
+  ["Świadczenie wspierające","paulina.chandrala@votum-ds.pl"],
+  ["Szkody górnicze","wojciech.obieglo@votum-ds.pl"],
+  ["Renty powypadkowe","paulina.chandrala@votum-ds.pl"]
+ ]){
+  await adviserSelector.selectOption(service);
+  const address=page.locator(".contact-advisor-copy-address");
+  assert.equal((await address.textContent()).trim(),email,
+   "Wrong adviser address displayed after selecting "+service);
+  await page.locator(".contact-advisor-copy-button").click();
+  const clipboard=await page.evaluate(()=>navigator.clipboard.readText());
+  assert.equal(clipboard,email,"Wrong adviser address copied for "+service);
+  assert.match(await page.locator(".contact-advisor-copy-status").textContent(),
+   /Skopiowano adres e-mail/,"Copy action did not report success");
+ }
+ const contactOverflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+ assert.ok(contactOverflow<=2,"Contact address box causes horizontal scrolling: "+contactOverflow);
+ console.log("PASS: copy e-mail switches correctly between Wojciech and Paulina for four services.");
+
+
  // Real responsive navigation: the primary three links are easy to find at phone width.
  await page.goto(origin+"/",{waitUntil:"domcontentloaded",timeout:40000});
  const quickNav=page.locator("nav.mobile-quick-nav");

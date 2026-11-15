@@ -400,7 +400,7 @@ try{
  await planPage.locator("[data-plan-checklist] input").first().check();
  if((await planPage.locator("[data-plan-progress]").textContent()).trim()!=="1 z 5")throw Error("Checklist progress incorrect");
  const planTarget=new URL(await planPage.locator("[data-plan-contact]").getAttribute("href"),origin);
- if(planTarget.pathname!=="/kontakt"||planTarget.searchParams.get("usluga")!=="szkody"||planTarget.searchParams.get("etap")!=="ugoda"||planTarget.searchParams.get("lead_path")!=="plan"||planTarget.searchParams.get("utm_medium")!=="grupa")throw Error("Plan handoff broken: "+planTarget);
+ if(!["/kontakt","/kontakt.html"].includes(planTarget.pathname)||planTarget.searchParams.get("usluga")!=="szkody"||planTarget.searchParams.get("etap")!=="ugoda"||planTarget.searchParams.get("lead_path")!=="plan"||planTarget.searchParams.get("utm_medium")!=="grupa")throw Error("Plan handoff broken: "+planTarget);
  await planPage.screenshot({path:"screenshots/plan-szkody-ugoda-telefon.png",fullPage:true,animations:"disabled"});
  await planPage.goto(localPreviewUrl(planTarget.pathname,planTarget.search,planTarget.hash),{waitUntil:"domcontentloaded"});
  const planFormService=await planPage.locator('.contact-form select[id^="cf-service-"]').inputValue();

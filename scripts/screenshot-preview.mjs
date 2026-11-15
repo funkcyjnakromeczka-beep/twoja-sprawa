@@ -452,11 +452,19 @@ try{
  await searchPage.goto(origin+"/szukaj.html?q=PEKNIECIE&temat=szkody",{waitUntil:"domcontentloaded"});
  const found=await searchPage.locator(".site-search-card").count();
  if(found<1)throw Error("Global search does not find crack-related content");
- const faqSearchResult=searchPage.locator('a.site-search-card[href*="/faq.html#pytanie-1-"]').first();
+ const faqSearchResult=searchPage.locator('a.site-search-card[href*="/faq#pytanie-1-"]').first();
  if(await faqSearchResult.count()!==1)throw Error("Global search lacks question about facade cracks");
  const countLabel=await searchPage.locator("[data-search-count]").textContent();
  if(!countLabel.includes("Znaleziono:"))throw Error("Accessible search result status missing");
  await searchPage.screenshot({path:"screenshots/wyszukiwarka-pekniecia-telefon.png",fullPage:false,animations:"disabled"});
+ // Ensure the public search uses the canonical URL. This preview-only
+ // Python server needs the .html representation to actually open that page.
+ const canonicalFaq=await faqSearchResult.getAttribute("href");
+ if(!canonicalFaq.startsWith("/faq#pytanie-1-"))throw Error("Noncanonical FAQ search result: "+canonicalFaq);
+ await faqSearchResult.evaluate(anchor=>{
+   const url=new URL(anchor.href);
+   anchor.href=url.pathname+".html"+url.search+url.hash;
+ });
  await faqSearchResult.click();
  await searchPage.waitForURL(/faq\.html#pytanie-1-/);
  if(!await searchPage.locator('[id^="pytanie-1-"] details[open]').count())throw Error("Linked FAQ answer did not expand automatically");
@@ -466,7 +474,7 @@ try{
  if(await searchPage.locator(".site-search-card").count()<1)throw Error("WZON search category should have matches");
  await searchPage.locator("[data-search-reset]").click();
  const afterReset=await searchPage.locator(".site-search-card").count();
- if(afterReset!==18)throw Error("Search reset should restore the first 18 cards: "+afterReset);
+ if(afterReset!==6)throw Error("Search reset should restore the six priority service cards: "+afterReset);
  console.log("GLOBAL_SEARCH_OK",JSON.stringify({sourceCount:62,cracks:found,faqDeepLink:true,wzon:true,reset:afterReset}));
  await searchPage.close();
 

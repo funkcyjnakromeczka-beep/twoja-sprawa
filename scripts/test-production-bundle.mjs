@@ -19,6 +19,19 @@ if(expectedCommit)assert.equal(releaseInfo.commit,expectedCommit.toLowerCase(),
  "Release fingerprint does not match CI commit");
 const home=await read("index.html");
 
+const homeBundle=await read("home-bundle.css");
+assert.ok(home.includes('href="/home-bundle.css"')&&
+ (home.match(/<link rel="stylesheet"/g)||[]).length===1,
+ "Production homepage should load one combined stylesheet");
+for(const selector of [".mobile-quick-nav",".network-brand-bar",".contact-advisor",
+ ".hero-priority-grid",".primary-services"]){
+ assert.ok(homeBundle.includes(selector),
+  "Homepage bundle lacks styles for "+selector);
+}
+assert.ok(!home.includes('href="/premium-v2.css"'),
+ "Homepage must not request individual premium CSS after bundling");
+
+
 const stickyCtaStyles=await read("mobile-service-cta.css");
 assert.ok(stickyCtaStyles.includes('body:has(.mobile-service-cta:not([hidden])){padding-bottom:'),
  "Hidden mobile CTA must not reserve bottom space");

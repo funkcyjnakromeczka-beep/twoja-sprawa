@@ -3,6 +3,7 @@
 import {readdir,readFile,writeFile,mkdir,cp,rm} from "node:fs/promises";
 import {join,relative,dirname} from "node:path";
 import {withNetworkBrand} from "./network-brand.mjs";
+import {enhancePageNavigation} from "./page-navigation.mjs";
 // Cloudflare Pages deploys the existing output folder "dist-preview". On the
 // approved main branch use the tested release builder in that same output folder.
 // Local tests and preview branches remain explicitly noindex. User approved
@@ -33,6 +34,7 @@ async function walk(dir){
   await mkdir(dirname(target),{recursive:true});
   if(rel.endsWith(".html")){
    let html=withNetworkBrand(await readFile(absolute,"utf8"));
+   html=enhancePageNavigation(html,rel.replaceAll("\\","/")).html;
    if(!/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i.test(html))throw Error("Source robots tag missing: "+rel);
    html=html.replaceAll("/v2/","/");
    // Render team portraits from repository assets, not the redirected Lovable host.

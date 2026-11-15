@@ -4046,3 +4046,20 @@ html{scroll-padding-top:16px}
 .chat-assistant .chat-actions>a.chat-email-action{grid-column:1/-1;background:#f4e1bd;color:#163747!important;border-color:#bd995c}
 .chat-assistant .chat-actions>a.chat-email-action:hover{background:#f8ebd3;color:#092b3b!important}
 .chat-assistant .chat-actions>a:focus-visible{outline:3px solid #bd8744;outline-offset:2px}
+
+
+/* WCAG AA, 15.11.2026: pale service information cards require dark labels.
+   Keep the deliberately dark video feature's gold label unchanged. */
+.premium-subpage .focus-detail:not([aria-labelledby^="film-"]) > .eyebrow{
+ color:#654419;
+}
+/* MIDAS information is on ivory; inherited white text was unreadable. */
+.premium-subpage .midas-action{
+ color:#1b3d4b;
+}
+.premium-subpage .midas-action h3{
+ color:#173746;
+}
+.premium-subpage .midas-action p{
+ color:#415461;
+}

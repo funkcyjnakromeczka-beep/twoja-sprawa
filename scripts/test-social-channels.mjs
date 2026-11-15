@@ -43,7 +43,9 @@ for(const [path,expected,id] of cases){
   assert.ok(html.indexOf(region)<html.indexOf("</main>"),"Social navigation should be in main content");
  }
 }
-const css=await readFile("v2/styles.css","utf8");
+const css=await readFile("v2/premium-v2.css","utf8");
+const baseCss=await readFile("v2/styles.css","utf8");
+assert.ok(!baseCss.includes("SOCIAL_COMMUNITY_CHANNELS_20261115"),"Keep social styling out of performance-critical base CSS");
 for(const token of ["SOCIAL_COMMUNITY_CHANNELS_20261115",".social-community-links a:focus-visible","@media(max-width:750px)"]){
  assert.ok(css.includes(token),"Missing mobile/accessibility social UI: "+token);
 }

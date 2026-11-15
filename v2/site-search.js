@@ -13,6 +13,7 @@
  const emptyDirect=host.querySelector("[data-search-direct]");
  const emptyPhone=host.querySelector("[data-search-direct-phone]");
  const emptyMail=host.querySelector("[data-search-direct-email]");
+ const searchEverywhere=host.querySelector("[data-search-everywhere]");
  const reset=host.querySelector("[data-search-reset]");
  const tabs=[...host.querySelectorAll("[data-search-category]")];
  if(!input||!results||!counter||!empty||!reset||!tabs.length)return;
@@ -121,10 +122,16 @@
     emptyMail.textContent="Napisz e-mail do "+(support?"Pauliny":"Wojciecha");
    }
   }
+  // A query under a narrow filter may have relevant results elsewhere.
+  // Offer a one-tap scope change while retaining the visitor's exact phrase.
+  if(searchEverywhere)searchEverywhere.hidden=empty.hidden||category==="all";
   reset.hidden=!phrase&&category==="all";
   for(const tab of tabs)tab.setAttribute("aria-pressed",String(tab.dataset.searchCategory===category));
  };
  input.addEventListener("input",render);
+ searchEverywhere?.addEventListener("click",()=>{
+  category="all";render();input.focus({preventScroll:true});
+ });
  tabs.forEach(tab=>tab.addEventListener("click",()=>{
   category=tab.dataset.searchCategory;
   render();

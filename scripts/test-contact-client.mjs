@@ -163,7 +163,7 @@ await run(true);
  assert.equal(phone.validationMessage,"","Correct SKD phone should clear custom error");
  phone.value="";phone.events.input();
  method.value="Dowolny";method.events.change();
- assert.ok(advisor.children.some(n=>n.textContent?.includes("bez zasłaniania danych")),"SKD advisor must accept full, unredacted agreement");
+ assert.ok(advisor.children.some(n=>n.textContent?.includes("Do analizy dołącz pełną umowę kredytową")),"SKD advisor must explicitly request the full agreement by email");
  const benefits=visit(form,n=>n.className==="contact-benefits");
  assert.ok(benefits.children.some(n=>n.textContent?.includes("pełną umowę e-mailem")),"SKD lead must not discourage sending the contract");
  service.value="Świadczenie wspierające";service.events.change();

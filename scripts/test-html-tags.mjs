@@ -53,10 +53,12 @@ function socialLinks(html,path){
  assert.ok(/<h2 id="social-[^"]+">/.test(section),path+": social section heading missing");
  assert.ok(/aria-labelledby="social-[^"]+"/.test(section),path+": social section landmark label missing");
  assert.ok(!/<(?:script|iframe)\b/i.test(section),path+": external social embed/script not allowed");
- const links=[...section.matchAll(/<a href="([^"]+)" target="_blank" rel="([^"]+)" aria-label="([^"]+)">/g)];
+ const links=[...section.matchAll(/<a href="([^"]+)" target="_blank" rel="([^"]+)">([\s\S]*?)<\/a>/g)];
  for(const link of links){
   assert.ok(link[2].split(/\s+/).includes("noopener")&&link[2].split(/\s+/).includes("noreferrer"),path+": missing safe target=_blank rel");
-  assert.ok(link[3].includes("nowej karcie"),path+": screen readers need external tab notice");
+  assert.ok(link[3].includes('class="social-community-sr"')&&link[3].includes("otworzy się w nowej karcie"),
+   path+": screen readers need a new-tab hint without hiding the visible link name");
+  assert.ok(!link[0].includes('aria-label='),path+": overriding accessible label breaks WCAG label-in-name");
  }
  return links.map(l=>l[1]);
 }

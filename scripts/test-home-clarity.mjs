@@ -72,7 +72,8 @@ for(const [name,phone,email] of [
 ]){
  assert.ok(alternativeBlock.includes('href="'+phone+'"'),name+": direct call missing in alternatives");
  assert.ok(alternativeBlock.includes('href="'+email),name+": direct email missing in alternatives");
- assert.ok(alternativeBlock.includes('>E-mail do '+name+'</a>'),name+": email destination must be explicit");
+ const nameAfterDo=name==="Wojciech"?"Wojciecha":"Pauliny";
+ assert.ok(alternativeBlock.includes('>E-mail do '+nameAfterDo+'</a>'),name+": email destination must be explicit");
 }
 assert.equal((alternativeBlock.match(/href="mailto:/g)||[]).length,2,"Exactly two direct adviser email links expected");
 assert.ok(html.includes("świadczenia wspierającego i rent powypadkowych."),"Support advisor biography must not incorrectly claim SKD");

@@ -222,7 +222,7 @@ if(!contactStyles.includes(".contact-advisor .contact-routing-note"))
  warn("Formularz: brakuje czytelnego opisu sposobu kierowania wiadomości");
 if(!contact.includes('copyDraft.className="contact-draft-copy"')||
    !contact.includes('await navigator.clipboard.writeText(makeDraft());')||
-   !!contact.includes('fallback.href=safeHref+"&body="+encodeURIComponent(makeDraft());')||
+   !contact.includes('fallback.href=safeHref+"&body="+encodeURIComponent(makeDraft());')||
    !contact.includes('window.setTimeout(updateFallback,0);')||
    !contactStyles.includes(".contact-form .contact-draft-copy"))
  warn("Formularz: po błędzie Web3Forms brakuje kopiowania aktualnej treści zgłoszenia");

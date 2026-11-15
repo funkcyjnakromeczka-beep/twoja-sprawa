@@ -173,6 +173,13 @@ if(!skdMobile.includes('class="campaign-mobile-call" href="#formularz" aria-labe
    !skdMobile.includes('class="campaign-mobile-primary" href="mailto:wojciech.obieglo@votum-ds.pl')||
    !skdMobile.includes('href="tel:+48796441345"'))
  warn("SKD: mobilne akcje muszą prowadzić do umowy i numeru telefonu, przy zachowaniu połączenia do Wojciecha");
+const advisorCopyJS=read("v2/contact.js");
+const advisorCopyCSS=read("v2/styles.css");
+if(!advisorCopyJS.includes('copyButton.className="contact-advisor-copy-button"')||
+   !advisorCopyJS.includes("await navigator.clipboard.writeText(advisorEmail);")||
+   !advisorCopyJS.includes('emailAddress.textContent=advisorEmail;')||
+   !advisorCopyCSS.includes(".contact-advisor .contact-advisor-copy-address"))
+ warn("Kontakt: brak mozliwosci skopiowania aktualnego adresu e-mail doradcy");
 const contact = read("v2/contact.js");
 
 const productionBuilder=read("scripts/build.mjs");

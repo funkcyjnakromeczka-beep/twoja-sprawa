@@ -62,7 +62,7 @@
    service:"sluzebnosc-przesylu.html",phone:"796 441 345",tel:"+48796441345"
   }
  };
- const sourceAllowed=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+ const sourceAllowed=new Set(["facebook","instagram","tiktok","google","chatgpt.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
  const incoming=new URLSearchParams(window.location.search);
  const safe=v=>/^[a-z0-9_-]{1,40}$/.test(v);
  const source=(incoming.get("utm_source")||"").toLowerCase().trim();

@@ -228,6 +228,29 @@ body:has(.subhero) .article .contact-form a{color:#694615}
  display:block;flex:1 1 100%;color:#234e42;line-height:1.5;font-size:.83rem;
 }
 .contact-advisor .contact-advisor-copy-status:empty{display:none}
+
+/* No-response fallback: keep a ready-to-paste lead even without a mail app.
+   Only a user click copies the locally assembled message to the clipboard. */
+.contact-form .contact-draft-copy{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:44px;max-width:100%;margin:10px 0 4px;
+ padding:10px 15px;border:1.5px solid #9b6a40;border-radius:10px;
+ background:#fff;color:#522f1d;font:800 .88rem/1.35 system-ui,sans-serif;
+ cursor:pointer;overflow-wrap:anywhere;text-align:center;
+}
+.contact-form .contact-draft-copy:hover{background:#f8e8dc}
+.contact-form .contact-draft-copy:focus-visible{
+ outline:3px solid #9b6a40;outline-offset:3px;
+}
+.contact-form .contact-draft-feedback{
+ display:block;margin-top:5px;color:#5c311f;
+ font-size:.84rem;line-height:1.55;overflow-wrap:anywhere;
+}
+.contact-form .contact-draft-feedback:empty{display:none}
+@media(max-width:600px){
+ .contact-form .contact-draft-copy{width:100%;white-space:normal}
+}
+
 @media(max-width:600px){
  .contact-advisor .contact-advisor-copy-button{width:100%}
 }

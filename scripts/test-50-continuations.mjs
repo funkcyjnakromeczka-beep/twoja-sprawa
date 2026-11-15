@@ -47,7 +47,13 @@ add("23. Rozróżnienie tematów przez formularz",()=>assert.ok(form.includes('"
 add("24. Formularz obsługiwany przez Web3Forms",()=>assert.ok(form.includes("https://api.web3forms.com/submit")));
 add("25. Honeypot przeciw przypadkowym botom",()=>assert.ok(form.includes('honeypot.name="botcheck"')));
 add("26. Ograniczenie czasu żądania formularza",()=>assert.ok(form.includes("AbortController()")&&form.includes("12000")));
-add("27. Awaryjny kontakt przez e-mail",()=>assert.ok(form.includes('const advisorIsPaulina=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value);')&&form.includes('const mailRecipient=advisorIsPaulina?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";')&&form.includes('fallback.href="mailto:"+mailRecipient')));
+add("27. Awaryjny kontakt przez e-mail",()=>assert.ok(
+ form.includes('const currentRecipient=()=>["Świadczenie wspierające","Renty powypadkowe"].includes(select.value)') &&
+ form.includes('?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";') &&
+ form.includes('fallback.href="mailto:"+currentRecipient()') &&
+ form.includes('fallback.addEventListener("click",updateFallback)'),
+ "Awaryjny adres e-mail musi odpowiadać bieżącej usłudze także po zmianie wyboru"
+));
 add("28. Zgoda na kontakt w formularzu",()=>assert.ok(form.includes("ack.required=true")));
 add("29. Telefon lub e-mail: dynamiczny wymóg",()=>assert.ok(form.includes("syncContactPreference")));
 add("30. Formularz przyjmuje wybór z planu",()=>assert.ok(form.includes('"plan"].includes(requestedLeadPath)')));

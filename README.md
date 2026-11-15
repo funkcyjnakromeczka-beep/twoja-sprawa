@@ -47,6 +47,13 @@ Skrypt `attribution.js` zachowuje oznaczenia kampanii podczas typowej nawigacji 
 
 Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono 70 unikatowych lokalnych zasobów; istnienie powiązanych plików, w tym obu JPG, zostało potwierdzone w GitHub. To nie zastępuje testów całej strony w działającej przeglądarce.
 
+## Optymalizacja strony głównej (15.11.2026)
+
+- Produkcyjny kompilator (`scripts/build.mjs`) zachowuje wszystkie 7 arkuszy CSS osobno dla podstron usług, lecz dla strony głównej generuje jeden `/home-bundle.css` w identycznej kolejności reguł. Źródłowe arkusze pozostają oddzielne, a generator kończy pracę błędem, jeśli kolejność CSS się zmieni. Nie wprowadzono płatnych usług.
+- Pomiar Chromium (390 px): **7 → 1 żądanie CSS**; transfer CSS około **70,0 KB → 63,3 KB**. Objętość reguł po rozpakowaniu pozostaje prawie bez zmian (około 291 KB), więc jest to optymalizacja sposobu pobierania, a nie usuwanie stylów.
+- W dwóch przebiegach CI zdarzenie `load` wystąpiło po odpowiednio 845 ms przed zmianą i 609 ms po zmianie. To **pojedyncze pomiary w środowisku testowym**, nie dowód 236 ms poprawy dla rzeczywistych użytkowników i nie wynik Core Web Vitals.
+- `scripts/test-browser-flows.mjs` sprawdza liczbę arkuszy CSS, ładowanie kluczowych lokalnych obrazów, siedem scenariuszy formularzy, nawigację oraz układ kampanii na wąskich ekranach. Testy nie wysyłają żadnych zgłoszeń.
+
 ## Kontrola zmian po każdym wdrożeniu
 
 1. Otwórz `https://twoja-sprawa.pages.dev/`; sprawdź widoczność szkód górniczych, świadczenia wspierającego i trzeciej ścieżki SKD.

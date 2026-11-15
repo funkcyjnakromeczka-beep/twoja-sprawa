@@ -4063,3 +4063,8 @@ html{scroll-padding-top:16px}
 .premium-subpage .midas-action p{
  color:#415461;
 }
+
+/* Gold telephone CTA in the local mining guide: navy text meets contrast requirements. */
+.premium-subpage .mining-local a.btn{
+ color:#142b39!important;
+}

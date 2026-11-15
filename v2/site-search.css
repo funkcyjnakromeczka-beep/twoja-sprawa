@@ -1,4 +1,31 @@
-/* Twoja Sprawa — lokalne wyszukiwanie 60 materiałów, jasny content i premium navy/gold. */
+/* Twoja Sprawa — wyszukiwanie lokalne, jasny content i premium navy/gold. */
+.search-page [data-site-search]:not([data-search-ready="true"]) [data-search-interactive]{display:none!important}
+.search-page [data-search-fallback][hidden]{display:none!important}
+.search-page .search-loading-fallback{
+ margin:10px 0 25px;padding:clamp(18px,4vw,26px);
+ background:linear-gradient(130deg,#f9faf7,#eaf2ed);
+ border:1px solid #abc9bd;border-left:4px solid #a47b42;
+ border-radius:16px;color:#173b47;line-height:1.65;
+}
+.search-page .search-loading-fallback>strong{display:block;font-size:1.06rem;color:#143a49}
+.search-page .search-loading-fallback p{margin:11px 0;max-width:90ch}
+.search-page .search-loading-fallback a{overflow-wrap:anywhere}
+.search-page .search-fallback-links{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;margin:15px 0;
+}
+.search-page .search-fallback-links a{
+ display:flex;align-items:center;min-height:48px;
+ border:1px solid #a9c3b7;border-radius:10px;padding:10px 14px;
+ background:#fff;color:#174353;font-weight:800;text-decoration:none;
+}
+.search-page .search-fallback-links a:hover{background:#f0f5ef;border-color:#916a38}
+.search-page .search-fallback-links a:focus-visible,
+.search-page .search-loading-fallback>p a:focus-visible{
+ outline:3px solid #98733f;outline-offset:3px;
+}
+@media(max-width:570px){.search-page .search-fallback-links{grid-template-columns:1fr}}
+
 .search-page{background:#f5f6f1;color:#183b48;min-height:100vh}
 .search-page .search-container{width:min(1200px,calc(100% - 40px));margin-inline:auto}
 .search-page .search-hero{background:radial-gradient(ellipse at 85% 5%,rgba(225,182,113,.24),transparent 42%),linear-gradient(115deg,#091e2d,#17414f 76%,#1e4d48);padding:clamp(50px,8vw,94px) 0;color:#f8f8f4;border-bottom:3px solid #c7a575}

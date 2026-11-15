@@ -116,6 +116,74 @@ try{
  assert.ok(contactOverflow<=2,"Contact address box causes horizontal scrolling: "+contactOverflow);
  console.log("PASS: copy e-mail switches correctly between Wojciech and Paulina for four services.");
 
+ // Mock Web3Forms failures and success; NEVER transmit test contact data.
+ // A failed request must preserve fields and offer a locally generated copy.
+ const failedSubmitPage=await browser.newPage({viewport:{width:390,height:844}});
+ try{
+  await failedSubmitPage.context().grantPermissions(["clipboard-read","clipboard-write"],{origin});
+  let intercepted=0;
+  let returnSuccess=false;
+  await failedSubmitPage.route("https://api.web3forms.com/submit",async route=>{
+   intercepted++;
+   const payload=route.request().postDataJSON();
+   assert.ok(payload.service&&payload.name&&payload.phone,
+    "Mocked Web3Forms payload should contain the chosen topic and callback");
+   await route.fulfill({
+    status:returnSuccess?200:503,
+    contentType:"application/json",
+    body:JSON.stringify({success:returnSuccess})
+   });
+  });
+  await failedSubmitPage.goto(origin+"/kampanie/skd",{
+   waitUntil:"domcontentloaded",timeout:40000
+  });
+  const contactForm=failedSubmitPage.locator(".contact-form");
+  await contactForm.locator('[autocomplete="given-name"]').fill("Testowy");
+  await contactForm.locator('[autocomplete="tel"]').fill("000000000");
+  await contactForm.locator('input[type="checkbox"][required]').check();
+  await contactForm.locator('button[type="submit"]').click();
+  await contactForm.locator(".contact-status-error").waitFor({state:"visible",timeout:8000});
+  assert.equal(intercepted,1,"Exactly one mocked submission expected");
+  assert.equal(await contactForm.locator('[autocomplete="given-name"]').inputValue(),
+   "Testowy","Failed submission cleared visitor's name");
+  assert.equal(await contactForm.locator('[autocomplete="tel"]').inputValue(),
+   "000000000","Failed submission cleared visitor's callback number");
+  await contactForm.locator(".contact-draft-copy").click();
+  const firstDraft=await failedSubmitPage.evaluate(()=>navigator.clipboard.readText());
+  assert.match(firstDraft,/Usługa: Kredyt w PLN \/ SKD/);
+  assert.match(firstDraft,/Imię: Testowy/);
+  assert.match(firstDraft,/Telefon: 000000000/);
+  assert.match(await contactForm.locator(".contact-draft-feedback").textContent(),
+   /wojciech\.obieglo@votum-ds\.pl/);
+  // Edits after a failed submit must update the copied draft and recipient.
+  await contactForm.locator('select[id^="cf-service"]').selectOption("Świadczenie wspierające");
+  await contactForm.locator('[autocomplete="given-name"]').fill("Testowe");
+  await contactForm.locator(".contact-draft-copy").click();
+  const secondDraft=await failedSubmitPage.evaluate(()=>navigator.clipboard.readText());
+  assert.match(secondDraft,/Usługa: Świadczenie wspierające/);
+  assert.match(secondDraft,/Imię: Testowe/);
+  assert.match(await contactForm.locator(".contact-draft-feedback").textContent(),
+   /paulina\.chandrala@votum-ds\.pl/);
+  const mailtoLink=contactForm.locator(".contact-fallback-link");
+  await mailtoLink.evaluate(link=>link.click());
+  assert.ok((await mailtoLink.getAttribute("href")).startsWith(
+    "mailto:paulina.chandrala@votum-ds.pl?"),"Fallback e-mail retained stale adviser");
+  assert.equal(intercepted,1,"Copying or opening fallback must not resubmit data");
+  // Explicit retry, now with a MOCKED success: no real customer message is sent.
+  returnSuccess=true;
+  await contactForm.locator('button[type="submit"]').click();
+  await contactForm.locator(".contact-status-success").waitFor({state:"visible",timeout:8000});
+  assert.equal(intercepted,2,"Expected explicit second mocked submit only");
+  assert.equal(await contactForm.locator('[autocomplete="given-name"]').inputValue(),
+   "","Only confirmed successful acceptance may clear entered data");
+  assert.equal(await contactForm.locator(".contact-draft-copy").count(),0,
+   "Previous failure copy affordance should disappear after success");
+  console.log("PASS: mocked Web3Forms error preserves lead, copy drafts adapt and only success resets.");
+ }finally{
+  await failedSubmitPage.close();
+ }
+
+
  // Check the actual six-topic lead funnel: guide -> relevant adviser and form,
  // with only validated campaign labels carried across local navigation.
  const guided=await browser.newPage({viewport:{width:1280,height:800}});

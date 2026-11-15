@@ -498,6 +498,10 @@
     if(select.value!==chosen){
      select.value=chosen;
      updateAdvisor();updatePeople();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();
+     // A shortcut sets select.value programmatically, so native "change"
+     // listeners do not run. Keep error recovery links pointed at the
+     // newly chosen adviser even after a failed provider submission.
+     refreshDirectContact();synchronizeFailureLinks();
     }
     syncShortcuts();
    };

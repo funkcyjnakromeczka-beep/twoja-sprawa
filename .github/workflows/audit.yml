@@ -23,6 +23,8 @@ jobs:
           node --check v2/contact.js
           node --check v2/mobile-service-cta.js
           node --check scripts/test-mobile-service-cta.mjs
+          node --check v2/home-mobile-cta.js
+          node --check scripts/test-home-mobile-cta.mjs
           node --check scripts/indexnow-routes.mjs
           node --check scripts/submit-indexnow.mjs
           node --check scripts/test-indexnow-routes.mjs
@@ -80,6 +82,8 @@ jobs:
         run: node scripts/test-contact-fallback-static.mjs
       - name: Test mobilnej ścieżki kontaktu dwóch usług
         run: node scripts/test-mobile-service-cta.mjs
+      - name: Test widoczności mobilnego kontaktu na stronie głównej
+        run: node scripts/test-home-mobile-cta.mjs
       - name: Test przyszłych adresów IndexNow i wykluczeń SEO
         run: node scripts/test-indexnow-routes.mjs
       - name: Przetestuj ścieżki chatbota do formularza z zachowaniem źródła kampanii

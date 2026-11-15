@@ -46,7 +46,7 @@ const run=async(error=false)=>{
   if(error)throw Error("mock network failure");
   return {ok:true,json:async()=>({success:true})};
  };
- runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  assert.equal(form.tag,"form");
  const firstName=visit(form,n=>n.autocomplete==="given-name");
@@ -130,7 +130,7 @@ await run(true);
   createTextNode:text=>({tag:"text",textContent:text})
  };
  const window={location:{search:"?utm_source=ulotka"}};
- runInNewContext(source,{document,window,URLSearchParams,Math});
+ runInNewContext(source,{document,window,navigator:{},URLSearchParams,Math});
  const form=host.children[0];
  const service=visit(form,n=>n.id?.startsWith("cf-service-"));
  const advisor=visit(form,n=>n.className==="contact-advisor");
@@ -190,7 +190,7 @@ await run(true);
  const window={location:{search:"?utm_source=ulotka"},setTimeout:()=>1,clearTimeout:()=>{}};
  let attempted=0;
  const fetch=async()=>{attempted++;throw Error("Synthetic delivery outage");};
- runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  const name=visit(form,n=>n.autocomplete==="given-name");
  const phone=visit(form,n=>n.autocomplete==="tel");
@@ -226,7 +226,7 @@ await run(true);
   captured.push(JSON.parse(options.body));
   return {ok:true,json:async()=>({success:true})};
  };
- runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  const service=visit(form,n=>n.id?.startsWith("cf-service-"));
  const damage=visit(form,n=>n.id?.startsWith("cf-damage-"));
@@ -288,7 +288,7 @@ await run(true);
   payloads.push(JSON.parse(options.body));
   return {ok:true,json:async()=>({success:true})};
  };
- runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  const service=visit(form,n=>n.id?.startsWith("cf-service-"));
  const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
@@ -332,7 +332,7 @@ for(const sample of [
   createTextNode:text=>({tag:"text",textContent:text})
  };
  const window={location:{search:"?uszkodzenie="+encodeURIComponent(sample.slug)+"&etap=uszkodzenia&lead_path=chatbot"}};
- runInNewContext(source,{document,window,URLSearchParams,Math});
+ runInNewContext(source,{document,window,navigator:{},URLSearchParams,Math});
  const form=host.children[0];
  const damage=visit(form,n=>n.id?.startsWith("cf-damage-"));
  const damageWrap=visit(form,n=>n.className==="contact-damage-area");
@@ -357,7 +357,7 @@ const stageCase=(service,code,expected)=>{
   createTextNode:text=>({tag:"text",textContent:text})
  };
  const window={location:{search:"?etap="+code+"&lead_path=chatbot"}};
- runInNewContext(source,{document,window,URLSearchParams,Math});
+ runInNewContext(source,{document,window,navigator:{},URLSearchParams,Math});
  const form=host.children[0];
  const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
  const chosen=visit(form,n=>n.id?.startsWith("cf-service-"));
@@ -384,7 +384,7 @@ stageCase("Szkody górnicze","nieznany_kod","");
   createTextNode:text=>({tag:"text",textContent:text})
  };
  const window={location:{search:"?etap=ugoda&lead_path=navigator&utm_source=facebook&utm_campaign=test"}};
- runInNewContext(source,{document,window,URLSearchParams,Math});
+ runInNewContext(source,{document,window,navigator:{},URLSearchParams,Math});
  const form=host.children[0];
  const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
  const context=visit(form,n=>n.className==="contact-context-notice");
@@ -411,7 +411,7 @@ for(const code of ["Ściany i elewacja","Kostka i ogrodzenie","Drzwi i okna"]){
  let requests=0,resolveRequest;
  const fetch=async()=>{requests++;return await new Promise(resolve=>{resolveRequest=resolve;});};
  const window={location:{search:"?utm_source=ulotka"},setTimeout:()=>1,clearTimeout:()=>{}};
- runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  const name=visit(form,n=>n.autocomplete==="given-name");
  const phone=visit(form,n=>n.autocomplete==="tel");
@@ -468,7 +468,7 @@ for(const sample of [
   const window={location:{search:"?utm_source=ulotka"},setTimeout:()=>1,clearTimeout:()=>{}};
   const payloads=[];
   const fetch=async(_url,request)=>{payloads.push(JSON.parse(request.body));return {ok:true,json:async()=>({success:true})};};
-  runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+  runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
   const form=host.children[0];
   const name=visit(form,n=>n.autocomplete==="given-name");
   const phone=visit(form,n=>n.autocomplete==="tel");
@@ -506,7 +506,7 @@ for(const sample of [
  };
  const window={location:{search:"?utm_source=organiczne"},setTimeout:()=>1,clearTimeout:()=>{}};
  const fetch=async()=>({ok:true,json:async()=>({success:true})});
- runInNewContext(source,{document,window,fetch,URLSearchParams,AbortController,Math});
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  const service=visit(form,n=>n.id?.startsWith("cf-service-"));
  const advisor=visit(form,n=>n.className==="contact-advisor");

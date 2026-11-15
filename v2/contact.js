@@ -347,6 +347,10 @@
   const honeypot=document.createElement("input");honeypot.type="text";honeypot.name="botcheck";honeypot.tabIndex=-1;honeypot.autocomplete="off";honeypot.setAttribute("aria-hidden","true");honeypot.style.cssText="position:absolute;left:-10000px;width:1px;height:1px;opacity:0";form.append(honeypot);
   let refreshShortcutState=()=>{}; // Reconcile homepage selection after form reset.
   let sending=false; // Chroni przed podwójnym wysłaniem, także przez klawisz Enter.
+  // Keep the visible fallback telephone and email in sync if a client
+  // changes the selected service after an unsuccessful Web3Forms attempt.
+  let synchronizeFailureLinks=()=>{};
+  select.addEventListener("change",()=>synchronizeFailureLinks());
   form.addEventListener("submit",async event=>{
    event.preventDefault();if(sending)return;
    if(!checkName()){name.reportValidity();name.focus();return;}
@@ -357,11 +361,11 @@
    const mailRecipient=advisorIsPaulina?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";
    if(automatic){
     if(honeypot.value){status.textContent="Nie udało się zweryfikować formularza.";return;}
-    sending=true;button.disabled=true;button.textContent="Wysyłanie…";status.className="";status.textContent="Przesyłam zgłoszenie…";
+    sending=true;button.disabled=true;button.textContent="Wysyłanie…";status.className="";status.textContent="Przesyłam zgłoszenie…";synchronizeFailureLinks=()=>{};
     // Web3Forms kieruje wiadomosc do odbiorcy przypisanego do access_key.
     // advisor_email jest metadana w tresci zgłoszenia, nie zmienia odbiorcy.
     const payload={access_key:accessKey,subject:"Nowe zgłoszenie Twoja Sprawa — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,campaign_medium:safeMedium||"brak",campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
-    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();name.setCustomValidity("");refreshShortcutState();}catch{
+    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");synchronizeFailureLinks=()=>{};status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();name.setCustomValidity("");refreshShortcutState();}catch{
      status.className="contact-status-error";
      status.replaceChildren();
      const errorText=document.createElement("span");
@@ -371,8 +375,12 @@
      const currentRecipient=()=>["Świadczenie wspierające","Renty powypadkowe"].includes(select.value)
       ?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";
      const errorCall=document.createElement("a");
-     errorCall.href="tel:"+(currentRecipient().startsWith("paulina.")?"+48500171531":"+48796441345");
-     errorCall.textContent=currentRecipient().startsWith("paulina.")?"500 171 531":"796 441 345";
+     const updateErrorCall=()=>{
+      const support=currentRecipient().startsWith("paulina.");
+      errorCall.href="tel:"+(support?"+48500171531":"+48796441345");
+      errorCall.textContent=support?"500 171 531":"796 441 345";
+     };
+     updateErrorCall();
      const makeDraft=()=>[
       "Dzień dobry,","",
       "Usługa: "+select.value,
@@ -402,6 +410,7 @@
      };
      updateFallback();
      fallback.addEventListener("click",updateFallback);
+     synchronizeFailureLinks=()=>{updateErrorCall();updateFallback();};
      status.append(document.createTextNode(" · "),fallback);
      // The request body is only copied following a deliberate user click.
      // No local storage, automatic background transmission or PII in page URLs.

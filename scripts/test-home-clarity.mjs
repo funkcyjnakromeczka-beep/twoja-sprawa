@@ -65,6 +65,16 @@ assert.ok(/<div class="lead-panel"><div data-contact-form(?:\s|>)/.test(html),"S
 assert.ok(!html.includes('class="contact-steps"'),"Homepage form should not repeat an unnecessary three-step banner");
 assert.ok(html.includes('class="contact-alternatives"')&&html.includes('class="contact-alternative-links"'),"Phone and email alternatives must remain accessible");
 assert.ok(html.includes("Wojciech · 796 441 345")&&html.includes("Paulina · 500 171 531"),"Both service contacts must be reachable");
+const alternativeBlock=html.match(/<details class="contact-alternatives">([\s\S]*?)<\/details>/)?.[1]||"";
+for(const [name,phone,email] of [
+ ["Wojciech","tel:+48796441345","mailto:wojciech.obieglo@votum-ds.pl?subject="],
+ ["Paulina","tel:+48500171531","mailto:paulina.chandrala@votum-ds.pl?subject="]
+]){
+ assert.ok(alternativeBlock.includes('href="'+phone+'"'),name+": direct call missing in alternatives");
+ assert.ok(alternativeBlock.includes('href="'+email),name+": direct email missing in alternatives");
+ assert.ok(alternativeBlock.includes('>E-mail do '+name+'</a>'),name+": email destination must be explicit");
+}
+assert.equal((alternativeBlock.match(/href="mailto:/g)||[]).length,2,"Exactly two direct adviser email links expected");
 assert.ok(html.includes("świadczenia wspierającego i rent powypadkowych."),"Support advisor biography must not incorrectly claim SKD");
 assert.ok(css.includes(".contact-benefits[hidden]")&&css.includes(".contact-alternatives"),"Compact homepage lead-form styling missing");
 

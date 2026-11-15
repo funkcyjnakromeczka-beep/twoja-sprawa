@@ -1,16 +1,52 @@
-/* Opcjonalne kopiowanie adresu do SKD, bez zapisu danych i śledzenia. */
+/* SKD: copy public mailbox, and prepare a complete email only on explicit click.
+   No background submissions, cookies, analytics or phone data in page URLs. */
 (()=>{
  "use strict";
+ const mailbox="wojciech.obieglo@votum-ds.pl";
  const button=document.querySelector("[data-skd-copy-email]");
  const status=document.querySelector("[data-skd-copy-status]");
- if(!button||!status||!navigator.clipboard?.writeText)return;
- button.hidden=false;
- button.addEventListener("click",async()=>{
-  try{
-   await navigator.clipboard.writeText("wojciech.obieglo@votum-ds.pl");
-   status.textContent="Adres skopiowany. Wyślij pełną umowę jako załącznik i wpisz numer telefonu w treści wiadomości.";
-  }catch{
-   status.textContent="Nie udało się skopiować adresu. Możesz zaznaczyć adres e-mail podany nad przyciskami.";
+ if(button&&status&&navigator.clipboard?.writeText){
+  button.hidden=false;
+  button.addEventListener("click",async()=>{
+   try{
+    await navigator.clipboard.writeText(mailbox);
+    status.textContent="Adres skopiowany. Wyślij pełną umowę jako załącznik i wpisz numer telefonu w treści wiadomości.";
+   }catch{
+    status.textContent="Nie udało się skopiować adresu. Możesz zaznaczyć adres e-mail widoczny nad przyciskami.";
+   }
+  });
+ }
+ const validPhone=value=>{
+  const raw=value.trim();
+  const digits=raw.replace(/\D/g,"");
+  if(!/^(?:\+?\d|\(\+?\d)[0-9()\s-]*$/.test(raw))return false;
+  let opened=false;
+  for(const character of raw){
+   if(character==="("){if(opened)return false;opened=true;}
+   if(character===")"){if(!opened)return false;opened=false;}
   }
- });
+  return !opened&&digits.length>=7&&digits.length<=15;
+ };
+ // Native mailto links continue to work when this optional script is blocked.
+ const links=[...document.querySelectorAll(".campaign-skd-email, .campaign-skd .campaign-mobile-actions .campaign-mobile-primary")];
+ for(const link of links){
+  const original=link.getAttribute("href")||"";
+  if(!original.startsWith("mailto:"+mailbox+"?"))continue;
+  link.addEventListener("click",()=>{
+   // The contact form is initialized separately. Read its phone only when
+   // the visitor chooses to open their own email program.
+   const raw=document.querySelector('#formularz .contact-form input[autocomplete="tel"]')?.value?.trim()||"";
+   const phone=validPhone(raw)?raw:"[wpisz numer]";
+   const body=[
+    "Dzień dobry,",
+    "Proszę o wstępną analizę załączonej umowy kredytowej pod kątem SKD.",
+    "Mój numer telefonu: "+phone,
+    "Pełną umowę dołączę jako załącznik."
+   ].join("\n");
+   link.href="mailto:"+mailbox+"?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+"&body="+encodeURIComponent(body);
+   // Clear the temporary phone from the page after the browser processes
+   // the mailto click; no persistent state or automatic message sending.
+   window.setTimeout(()=>link.setAttribute("href",original),0);
+  });
+ }
 })();

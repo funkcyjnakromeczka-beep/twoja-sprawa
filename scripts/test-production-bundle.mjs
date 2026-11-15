@@ -39,6 +39,21 @@ for(const page of ["index.html","kontakt.html"]){
 
 
 const homeBundle=await read("home-bundle.css");
+// Build-only comment stripping reduces transfer bytes while preserving every
+// original stylesheet for editing and retaining the exact CSS cascade order.
+const homeSourceSheets=[
+ "styles.css","premium-v2.css","portrait-upgrade.css","journey.css",
+ "home-flow.css","network-brand.css","visual-contrast.css"
+];
+const sourceStyles=await Promise.all(homeSourceSheets.map(file=>readFile("v2/"+file,"utf8")));
+const sourceBytes=Buffer.byteLength(sourceStyles.join("\n"),"utf8");
+const bundleBytes=Buffer.byteLength(homeBundle,"utf8");
+assert.ok(sourceBytes-bundleBytes>12000,
+ "Production homepage CSS should omit at least 12 KB of non-runtime author comments");
+assert.ok(bundleBytes<285000,
+ "Production homepage CSS should remain under its verified 285 KB decoded budget");
+console.log("HOME_CSS_BUDGET "+JSON.stringify({sourceBytes,bundleBytes,savedBytes:sourceBytes-bundleBytes}));
+
 assert.ok(home.includes('href="/home-bundle.css"')&&
  (home.match(/<link rel="stylesheet"/g)||[]).length===1,
  "Production homepage should load one combined stylesheet");

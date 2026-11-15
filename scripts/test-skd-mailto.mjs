@@ -55,7 +55,8 @@ const document={
   if(sel==='#formularz .contact-form input[autocomplete="tel"]')return phoneInput;
   return null;
  },
- querySelectorAll(sel){observedQuery=sel;return links;}
+ querySelectorAll(sel){observedQuery=sel;return links;},
+ getElementById:()=>null
 };
 const navigator={clipboard:{writeText:async(value)=>{copied=value;}}};
 const window={setTimeout:cb=>timers.push(cb)};
@@ -107,7 +108,8 @@ assert.equal(timers.length,0);
  const isolated=new Link();
  const doc={
   querySelector:()=>null,
-  querySelectorAll:()=>[isolated]
+  querySelectorAll:()=>[isolated],
+  getElementById:()=>null
  };
  const deferred=[];
  runInNewContext(source,{document:doc,navigator:{},window:{setTimeout:fn=>deferred.push(fn)},encodeURIComponent});

@@ -856,23 +856,35 @@ try{
  await searchEmpty.waitFor({state:"visible",timeout:8000});
  const searchHint=searchGuidePage.locator("[data-search-suggestion]");
  const searchContact=searchGuidePage.locator("[data-search-contact]");
+ const searchDirect=searchGuidePage.locator("[data-search-direct]");
+ const searchPhone=searchGuidePage.locator("[data-search-direct-phone]");
+ const searchEmail=searchGuidePage.locator("[data-search-direct-email]");
  if(!await searchHint.isVisible()||!((await searchHint.textContent())||"").includes("Szkody górnicze"))
   throw Error("No-result mining query did not suggest its relevant service");
  if(await searchContact.getAttribute("href")!=="/uslugi/szkody-gornicze#formularz")
   throw Error("No-result mining contact did not route to the right page");
+ if(!await searchDirect.isVisible()||await searchPhone.getAttribute("href")!=="tel:+48796441345"||
+   !((await searchEmail.getAttribute("href"))||"").startsWith("mailto:wojciech.obieglo@votum-ds.pl?"))
+  throw Error("No-result mining query did not offer direct Wojciech phone/email");
  await searchGuidePage.locator('[data-search-category="skd"]').click();
  if(await searchContact.getAttribute("href")!=="/kampanie/skd#formularz")
   throw Error("Explicit SKD filter did not override inferred mining topic");
  if(!((await searchHint.textContent())||"").includes("Wybrany filtr:"))
   throw Error("Search suggestion did not distinguish selected filters");
+ if(!await searchDirect.isVisible()||await searchPhone.getAttribute("href")!=="tel:+48796441345")
+  throw Error("Explicit SKD filter should offer direct Wojciech callback");
  await searchGuidePage.locator("[data-search-reset]").click();
- if(await searchEmpty.isVisible()||await searchHint.isVisible())
+ if(await searchEmpty.isVisible()||await searchHint.isVisible()||await searchDirect.isVisible())
   throw Error("Search guidance did not reset to featured services");
  await searchGuidePage.locator("#site-search-input").fill("zyxznothing xyz012");
  await searchEmpty.waitFor({state:"visible",timeout:5000});
- if(await searchHint.isVisible()||await searchContact.getAttribute("href")!=="/kontakt")
+ if(await searchHint.isVisible()||await searchDirect.isVisible()||await searchContact.getAttribute("href")!=="/kontakt")
   throw Error("Unrelated query was inappropriately assigned a specialist");
- console.log("SEARCH_ZERO_RESULTS_GUIDE_OK",JSON.stringify({verified:"mining, SKD filter, reset, unknown topic",leadSubmissions:0}));
+ await searchGuidePage.locator('[data-search-category="swiadczenie"]').click();
+ if(!await searchDirect.isVisible()||await searchPhone.getAttribute("href")!=="tel:+48500171531"||
+   !((await searchEmail.getAttribute("href"))||"").startsWith("mailto:paulina.chandrala@votum-ds.pl?"))
+  throw Error("Explicit supporting-benefit filter must offer direct Paulina contact");
+ console.log("SEARCH_ZERO_RESULTS_GUIDE_OK",JSON.stringify({verified:"mining, SKD, supporting benefit, reset, ambiguous topic",leadSubmissions:0}));
  await searchGuidePage.close();
 
  const supportFailPage=await browser.newPage({viewport:{width:390,height:844}});

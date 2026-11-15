@@ -6,9 +6,16 @@
  const contact=document.getElementById("kontakt");
  if(!bar||!contact)return;
  let inView=false;
+ let chatOpen=false;
  const sync=()=>{
-  bar.hidden=inView||contact.contains(document.activeElement);
+  bar.hidden=inView||chatOpen||contact.contains(document.activeElement);
  };
+ // The assistant explicitly notifies the homepage when it opens or closes.
+ // This avoids relying on CSS :has(), unsupported in some older Android browsers.
+ document.addEventListener("twoja-sprawa:chat-visibility",event=>{
+  chatOpen=event.detail?.open===true;
+  sync();
+ });
  const checkPosition=()=>{
   const rect=contact.getBoundingClientRect();
   const height=window.visualViewport?.height||window.innerHeight;

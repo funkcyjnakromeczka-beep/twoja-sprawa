@@ -674,22 +674,22 @@ try{
 
  // The assistant must never overlap the homepage's three-call action bar.
  // Chromium verifies the same behavior as the JS fallback for older Android.
- const guidePage=await browser.newPage({viewport:{width:390,height:844}});
- await guidePage.goto(origin+"/",{waitUntil:"domcontentloaded"});
- await guidePage.locator("#uslugi").scrollIntoViewIfNeeded();
- const guideBar=guidePage.locator(".mobile-contact-bar");
- const guideToggle=guidePage.locator(".chat-assistant .chat-toggle");
+ const mobileGuideOverlayPage=await browser.newPage({viewport:{width:390,height:844}});
+ await mobileGuideOverlayPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ await mobileGuideOverlayPage.locator("#uslugi").scrollIntoViewIfNeeded();
+ const guideBar=mobileGuideOverlayPage.locator(".mobile-contact-bar");
+ const guideToggle=mobileGuideOverlayPage.locator(".chat-assistant .chat-toggle");
  await guideBar.waitFor({state:"visible",timeout:8000});
  await guideToggle.waitFor({state:"visible",timeout:8000});
  await guideToggle.click();
- await guidePage.locator(".chat-assistant .chat-panel").waitFor({state:"visible",timeout:5000});
+ await mobileGuideOverlayPage.locator(".chat-assistant .chat-panel").waitFor({state:"visible",timeout:5000});
  await guideBar.waitFor({state:"hidden",timeout:5000});
- await guidePage.locator(".chat-assistant .chat-close").click();
+ await mobileGuideOverlayPage.locator(".chat-assistant .chat-close").click();
  await guideBar.waitFor({state:"visible",timeout:5000});
- if(await guidePage.locator(".chat-assistant .chat-toggle").getAttribute("aria-expanded")!=="false")
+ if(await mobileGuideOverlayPage.locator(".chat-assistant .chat-toggle").getAttribute("aria-expanded")!=="false")
   throw Error("Closed adviser guide still advertises expanded content");
  console.log("HOME_CHAT_BAR_SYNC_OK",JSON.stringify({barHiddenWhenChatOpen:true,restoredAfterClose:true,leadsSent:0}));
- await guidePage.close();
+ await mobileGuideOverlayPage.close();
 
  // Do not discard a partially completed lead when the visitor reads a checklist
  // or the privacy notice. Both resources must open in a separate browser tab.

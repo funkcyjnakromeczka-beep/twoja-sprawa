@@ -4087,6 +4087,22 @@ html{scroll-padding-top:16px}
  margin:0 0 10px;color:#fff2d8;font:700 clamp(1.2rem,2vw,1.6rem)/1.25 Georgia,serif;
 }
 .social-community p{margin:0;max-width:52ch;color:#e0ebed;font-size:.92rem;line-height:1.65}
+/* Privacy-first hand-off: Facebook/TikTok comments are not a place for case documents. */
+.social-community .social-community-privacy{
+ margin-top:15px;padding:11px 13px;
+ border-left:3px solid #e3c18c;border-radius:0 8px 8px 0;
+ background:rgba(0,0,0,.17);color:#f2e9db;
+ font-size:.84rem;line-height:1.6;
+}
+.social-community .social-community-privacy strong{color:#ffe3af}
+.social-community .social-community-privacy a{
+ color:#ffe8b7;text-decoration:underline;text-underline-offset:3px;
+ font-weight:750;overflow-wrap:anywhere;
+}
+.social-community .social-community-privacy a:hover{color:#fff}
+.social-community .social-community-privacy a:focus-visible{
+ outline:3px solid #fce2b9;outline-offset:3px;border-radius:2px
+}
 .social-community .social-community-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
 .social-community .social-community-links a{
  display:flex;min-width:0;min-height:94px;flex-direction:column;align-items:flex-start;

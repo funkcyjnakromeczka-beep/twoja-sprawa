@@ -5,6 +5,8 @@ on:
     paths:
       - 'v2/**'
       - 'scripts/build.mjs'
+      - 'scripts/page-navigation.mjs'
+      - 'scripts/test-page-navigation.mjs'
       - 'scripts/network-brand.mjs'
       - 'scripts/public-routes.mjs'
       - 'scripts/seo-policy.mjs'
@@ -31,6 +33,8 @@ jobs:
       - name: Sprawdź składnię i pliki wydania
         run: |
           node --check scripts/build.mjs
+          node --check scripts/page-navigation.mjs
+          node --check scripts/test-page-navigation.mjs
           node --check scripts/test-production-bundle.mjs
           node --check scripts/test-html-tags.mjs
           node --check scripts/test-internal-links.mjs
@@ -44,6 +48,7 @@ jobs:
           FORM_APPROVED: '1'
         run: |
           node scripts/build.mjs
+          node scripts/test-page-navigation.mjs
           node scripts/test-production-bundle.mjs
           node scripts/test-html-tags.mjs
           node scripts/test-internal-links.mjs

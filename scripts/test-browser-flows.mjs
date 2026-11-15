@@ -250,10 +250,12 @@ try{
 
 
  const accessibilityPage=await browser.newPage({viewport:{width:390,height:844}});
+ await accessibilityPage.emulateMedia({reducedMotion:"reduce"});
  try{
   for(const route of ["/","/kontakt","/kampanie/szkody-gornicze",
     "/kampanie/swiadczenie-wspierajace","/kampanie/skd"]){
-   await accessibilityPage.goto(origin+route,{waitUntil:"domcontentloaded",timeout:40000});
+   await accessibilityPage.goto(origin+route,{waitUntil:"load",timeout:40000});
+   await accessibilityPage.waitForTimeout(250);
    await accessibilityPage.addScriptTag({content:axe.source});
    const findings=await accessibilityPage.evaluate(async()=>{
     const result=await window.axe.run(document,{
@@ -261,8 +263,8 @@ try{
     return result.violations.map(v=>({id:v.id,impact:v.impact,
      affected:v.nodes.slice(0,4).map(n=>n.target)}));
    });
-   if(route==="/kontakt"||route.startsWith("/kampanie/")){
-    const selectors=route==="/kontakt"?
+   if(route==="/"||route==="/kontakt"||route.startsWith("/kampanie/")){
+    const selectors=route==="/"?["a[data-contact-shortcut='szkody']","a[data-contact-shortcut='swiadczenie']","a[data-contact-shortcut='skd']","select[id^='cf-service']"]:route==="/kontakt"?
      ["#spec-title",".contact-specialists .section-lead"]:
      [".campaign-process > .eyebrow"];
     const colors=await accessibilityPage.evaluate(selectors=>selectors.map(selector=>{

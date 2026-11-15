@@ -4068,3 +4068,43 @@ html{scroll-padding-top:16px}
 .premium-subpage .mining-local a.btn{
  color:#142b39!important;
 }
+
+/* SOCIAL_COMMUNITY_CHANNELS_20261115: visible, accessible external social routes.
+   No embeds, scripts, pixels, tracking, external fonts or paid dependencies. */
+.social-community{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);
+ align-items:center;gap:clamp(18px,3vw,32px);
+ max-width:1080px;margin:34px auto 40px;padding:clamp(20px,3.5vw,34px);
+ background:linear-gradient(115deg,#0c2d3e,#154153);
+ border:1px solid #b69a6b;border-radius:18px;
+ box-shadow:0 12px 30px rgba(7,27,36,.14);color:#edf3f1;
+}
+.social-community .social-community-kicker{
+ display:block;margin:0 0 7px;color:#edd2a5;font-size:.76rem;
+ line-height:1.4;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+}
+.social-community h2{
+ margin:0 0 10px;color:#fff2d8;font:700 clamp(1.2rem,2vw,1.6rem)/1.25 Georgia,serif;
+}
+.social-community p{margin:0;max-width:52ch;color:#e0ebed;font-size:.92rem;line-height:1.65}
+.social-community .social-community-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.social-community .social-community-links a{
+ display:flex;min-width:0;min-height:94px;flex-direction:column;align-items:flex-start;
+ justify-content:center;gap:5px;padding:15px 17px;
+ border:1px solid rgba(238,213,169,.56);border-radius:12px;
+ color:#183746;background:#f9f6ee;text-decoration:none;
+ transition:background .16s ease,border-color .16s ease;
+}
+.social-community .social-community-links a:hover{background:#fff3dc;border-color:#e5b869}
+.social-community .social-community-links a:focus-visible{outline:3px solid #efd09a;outline-offset:4px}
+.social-community .social-community-platform{color:#416077;font:800 .72rem/1.3 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.055em}
+.social-community .social-community-links strong{color:#173c4b;font-size:.94rem;line-height:1.4}
+.social-community .social-community-arrow{color:#795623;font-weight:750;font-size:.79rem}
+.social-community.social-community-home{max-width:1050px;margin:20px 0 24px}
+@media(max-width:750px){
+ .social-community{grid-template-columns:1fr;margin:24px 14px 32px}
+ .social-community.social-community-home{margin:20px 0 24px}
+ .social-community .social-community-links a{min-height:78px}
+}
+@media(prefers-reduced-motion:reduce){.social-community .social-community-links a{transition:none}}
+@media print{.social-community{display:none!important}}

@@ -260,7 +260,8 @@ assert.ok(contactCss.includes(".contact-advisor .contact-advisor-copy-address")&
 
 assert.ok(contactFormJS.includes('copyDraft.className="contact-draft-copy"')&&
  contactFormJS.includes('await navigator.clipboard.writeText(makeDraft());')&&
- contactFormJS.includes('fallback.addEventListener("click",updateFallback);')&&
+ contactFormJS.includes('fallback.href=safeHref+"&body="+encodeURIComponent(makeDraft());')&&
+ contactFormJS.includes('window.setTimeout(updateFallback,0);')&&
  contactFormJS.includes('navigator.onLine===false'),
  "Failed Web3Forms request must offer a privacy-aware copy of the current lead and recipient");
 assert.ok(contactCss.includes(".contact-form .contact-draft-copy")&&

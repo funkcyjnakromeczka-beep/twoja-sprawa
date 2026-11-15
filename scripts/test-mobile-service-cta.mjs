@@ -51,6 +51,40 @@ for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swi
  observerCallback([{isIntersecting:true}]);assert.equal(nav.hidden,true,"Visible form keeps bar hidden");
  observerCallback([{isIntersecting:false}]);assert.equal(nav.hidden,false);
 }
+// Older Android browsers without IntersectionObserver should still hide this
+// bar when the form is visible, so it cannot cover form actions.
+{
+ const listeners={};
+ const body=new Element("body"),form=new Element("form"),target=new Element("section");
+ target.append(form);
+ let rect={top:930,bottom:1450},focused=null;
+ target.getBoundingClientRect=()=>rect;
+ const document={
+  currentScript:{getAttribute:key=>key==="data-service"?"swiadczenie":null},
+  querySelector:sel=>sel==="#formularz [data-contact-form]"?form:null,
+  getElementById:id=>id==="formularz"?target:null,
+  createElement:tag=>new Element(tag),
+  body,
+  addEventListener:(key,fn)=>{listeners["document:"+key]=fn;},
+  get activeElement(){return focused;}
+ };
+ const window={innerHeight:780,addEventListener:(key,fn)=>{listeners[key]=fn;}};
+ runInNewContext(js,{document,window,setTimeout:fn=>fn()});
+ const bar=body.children[0];
+ assert.ok(bar,"A fallback browser must receive the contact bar");
+ assert.equal(bar.hidden,false);
+ assert.equal(bar.children[0].href,"tel:+48500171531","Support phone must reach Paulina");
+ assert.equal(typeof listeners.scroll,"function");
+ assert.equal(typeof listeners.resize,"function");
+ rect={top:260,bottom:740};listeners.scroll();
+ assert.equal(bar.hidden,true,"The form must not be covered");
+ rect={top:-900,bottom:-150};listeners.resize();
+ assert.equal(bar.hidden,false,"The bar should return past the form");
+ focused=form;listeners["document:focusin"]({target:form});
+ assert.equal(bar.hidden,true);
+ focused=null;listeners["document:focusout"]({target:form});
+ assert.equal(bar.hidden,false);
+}
 // SKD has its own existing mobile quickbar on the service page and a separate
 // campaign action bar. Do not stack another fixed bar over their controls.
 for(const [path,selector] of [["v2/uslugi/kredyty-pln.html","skd-mobile-quickbar"],["v2/kampanie/skd.html","campaign-mobile-actions"]]){

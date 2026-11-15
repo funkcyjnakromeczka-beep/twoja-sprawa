@@ -398,6 +398,49 @@ try{
    });
    console.log("WCAG_REPORT "+JSON.stringify({route,findings}));
    assert.equal(findings.length,0,"WCAG A/AA issue(s) on "+route+": "+JSON.stringify(findings));
+
+   // WCAG checks on expanded interactive panels, not only their closed states.
+   if(route==="/"){
+    await accessibilityPage.locator("#uslugi").scrollIntoViewIfNeeded();
+    const toggle=accessibilityPage.locator(".chat-toggle");
+    await toggle.waitFor({state:"visible",timeout:10000});
+    await toggle.click();
+    assert.equal(await toggle.getAttribute("aria-expanded"),"true");
+    assert.equal(await accessibilityPage.evaluate(()=>document.activeElement?.className),
+     "chat-close","Open assistant must focus its close button");
+    assert.equal(await accessibilityPage.locator(".chat-choices .chat-choice-featured").count(),
+     3,"Mining, support and SKD must be prominently featured");
+    assert.ok(await accessibilityPage.locator('.chat-choices button[data-topic="skd"]')
+      .evaluate(el=>el.classList.contains("chat-choice-skd")),"SKD must be visibly third priority");
+    await accessibilityPage.locator('.chat-choices button[data-topic="swiadczenie"]').click();
+    await accessibilityPage.locator(".chat-stage-choice").first().focus();
+    await accessibilityPage.keyboard.press("Space");
+    assert.equal(await accessibilityPage.locator(".chat-stage-choice").first().getAttribute("aria-pressed"),
+     "true","Space must select a stage with keyboard");
+    const openViolations=await accessibilityPage.evaluate(async()=>{
+     const result=await window.axe.run(document,{runOnly:{
+      type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}});
+     return result.violations.map(v=>({id:v.id,impact:v.impact,targets:v.nodes.slice(0,4).map(n=>n.target)}));
+    });
+    console.log("WCAG_OPEN_ASSISTANT "+JSON.stringify(openViolations));
+    assert.equal(openViolations.length,0,"Expanded assistant violates WCAG: "+JSON.stringify(openViolations));
+    await accessibilityPage.keyboard.press("Escape");
+    assert.equal(await toggle.getAttribute("aria-expanded"),"false");
+    assert.equal(await accessibilityPage.evaluate(()=>document.activeElement?.className),
+     "chat-toggle","Escape must restore focus to the assistant opener");
+    const disclosure=accessibilityPage.locator("#dobierz-pomoc");
+    await disclosure.locator("summary").click();
+    await disclosure.locator('[data-navigator="skd"]').click();
+    const navViolations=await accessibilityPage.evaluate(async()=>{
+     const result=await window.axe.run(document,{runOnly:{
+      type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}});
+     return result.violations.map(v=>({id:v.id,impact:v.impact,targets:v.nodes.slice(0,4).map(n=>n.target)}));
+    });
+    console.log("WCAG_OPEN_NAVIGATOR "+JSON.stringify(navViolations));
+    assert.equal(navViolations.length,0,"Expanded navigator violates WCAG: "+JSON.stringify(navViolations));
+    console.log("PASS: expanded assistant and navigator keyboard/WCAG accessibility.");
+   }
+
   }
  }finally{await accessibilityPage.close();}
 

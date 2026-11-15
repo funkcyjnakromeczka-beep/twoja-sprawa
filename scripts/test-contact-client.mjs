@@ -24,7 +24,7 @@ class Node {
  focus(){this.focused=true;}
  reset(){}
 }
-const visit=(node,pred)=>{if(pred(node))return node;for(const child of node.children||[]){const found=visit(child,pred);if(found)return found;}return null;};
+const visit=(node,pred)=>{if(!node)return null;if(pred(node))return node;for(const child of node.children||[]){const found=visit(child,pred);if(found)return found;}return null;};
 const source=await readFile("v2/contact.js","utf8");
 const run=async(error=false)=>{
  const host=new Node("host");

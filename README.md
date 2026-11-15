@@ -150,6 +150,14 @@ Dokumentacja Cloudflare: [GitHub integration](https://developers.cloudflare.com/
 - Realny test Chromium `scripts/test-browser-flows.mjs` weryfikuje **12 tras** (6 × 2 interfejsy), numery doradców, źródło kampanii oraz rzeczywiste otwarcie wypełnionych kontekstowo formularzy świadczeń i szkód. W testach nie wysyła się zgłoszeń.
 - Kompilator przepisuje odnośniki w wydaniu — dlatego kontrola kandydata produkcji dodatkowo wykrywa przypadkowe uszkodzenie mechanizmu rozpoznawania podglądu `/v2/`.
 
+## Wyszukiwarka: awaryjny dostęp do sześciu usług (15.11.2026)
+
+- Strona `/szukaj` działa lokalnie i nie przesyła tekstu wpisanego w pole wyszukiwania do serwera. Po prawidłowym inicjowaniu `v2/site-search.js` ustawia `data-search-ready="true"`, pokazuje pole/filtry/wyniki i ukrywa statyczny panel awaryjny.
+- Bez JavaScript albo przy błędzie ładowania skryptów/indeksu użytkownik widzi **sześć bezpośrednich odnośników**: szkody górnicze, świadczenie wspierające, SKD (trzecie), renty, kredyty CHF i służebność przesyłu. Nie pokazuje się wtedy niedziałające pole wyszukiwania. Pozostają także telefony Wojciecha i Pauliny.
+- Po usunięciu sztywnego liczbowego opisu wyników tekst nie wymaga ręcznej aktualizacji wraz z rozbudową serwisu. Poprawiono też zbyt słaby kontrast małej etykiety wyszukiwarki.
+- Test Chromium przy **320 px** potwierdza: realne wyniki SKD, filtrowanie i reset; widoczne linki awaryjne przy wyłączonym JavaScript; panel awaryjny przy zablokowanym `site-search.js`; brak przewijania poziomego. Audyt axe-core objął dodatkowo `/szukaj`, czyli **12 sprawdzanych tras**, bez wykrytych naruszeń użytych reguł WCAG A/AA w ostatnim przebiegu.
+- `scripts/test-production-bundle.mjs` sprawdza, czy produkcyjne HTML/CSS/JS utrzymują tę degradację i komplet sześciu odnośników. Testy nie dowodzą pełnej dostępności na wszystkich platformach ani nie mierzą rzeczywistych konwersji.
+
 ## Kontakty bez JavaScript — test 320 px (15.11.2026)
 
 - Strona główna i podstrona kontaktowa pokazują w statycznym komunikacie **telefon i e-mail obojga doradców** także wówczas, gdy skrypty są wyłączone lub formularz nie został załadowany. Ten komunikat jest zastępowany po uruchomieniu formularza; nie jest drugim formularzem i sam nie przesyła danych.

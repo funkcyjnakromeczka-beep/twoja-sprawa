@@ -128,6 +128,12 @@ Przy budowaniu `attribution.js` podłączany jest tylko raz, nawet jeżeli stron
 
 Dokumentacja Cloudflare: [GitHub integration](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/) i [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/).
 
+## Bezpośrednie kopiowanie e-maila doradcy (15.11.2026)
+
+- Po wyborze usługi każdy formularz pokazuje rzeczywisty adres e-mail odpowiedniej osoby i — jeżeli przeglądarka obsługuje schowek — przycisk **„Skopiuj e-mail”**. Kopiowanie działa bez aplikacji pocztowej, bez cookie, bez zapisywania danych klienta i bez dodatkowych usług.
+- Dla świadczeń wspierających i rent kopiuje adres Pauliny; dla szkód górniczych, SKD, kredytów CHF i pozostałych zgłoszeń — adres Wojciecha. Funkcja nie zmienia odbiorcy formularza Web3Forms.
+- Testy na publicznej stronie, z użyciem Chromium, sprawdzają rzeczywistą zawartość schowka po czterech zmianach usługi oraz czy nowy interfejs nie pogarsza mobilnego układu i dostępności WCAG A/AA. `scripts/validate-site.js`, `scripts/test-production-bundle.mjs` i `scripts/audit-production-current.mjs` kontrolują obecność funkcji w źródle, wydaniu i produkcji.
+
 ## Przekazywanie zgłoszeń i podglądy linków
 
 Formularze Web3Forms korzystają z jednego publicznego identyfikatora formularza. O tym, do której rzeczywistej skrzynki trafiają wiadomości, decyduje konfiguracja Web3Forms. Pole `advisor` / `advisor_email` i tytuł zgłoszenia pomagają w ręcznym przypisaniu sprawy: Wojciech — szkody górnicze, SKD i pozostałe usługi; Paulina — świadczenia wspierające i renty. Nie oznacza to automatycznego przekierowania na dwie skrzynki. W razie błędu formularza link mailto przygotowuje wiadomość bezpośrednio do wskazanego doradcy.

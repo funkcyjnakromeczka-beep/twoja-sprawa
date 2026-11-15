@@ -116,6 +116,83 @@ try{
  assert.ok(contactOverflow<=2,"Contact address box causes horizontal scrolling: "+contactOverflow);
  console.log("PASS: copy e-mail switches correctly between Wojciech and Paulina for four services.");
 
+ // Check the actual six-topic lead funnel: guide -> relevant adviser and form,
+ // with only validated campaign labels carried across local navigation.
+ const guided=await browser.newPage({viewport:{width:1280,height:800}});
+ try{
+  await guided.goto(origin+"/?utm_source=facebook&utm_medium=social&utm_campaign=lead_2026",{
+   waitUntil:"domcontentloaded",timeout:40000
+  });
+  const disclosure=guided.locator("#dobierz-pomoc");
+  await disclosure.locator("summary").click();
+  assert.equal(await disclosure.getAttribute("open"),"","Navigator disclosure must open");
+  const choices=[
+   ["szkody","/kampanie/szkody-gornicze","+48796441345"],
+   ["swiadczenie","/kampanie/swiadczenie-wspierajace","+48500171531"],
+   ["skd","/kampanie/skd","+48796441345"],
+   ["renty","/kontakt","+48500171531"],
+   ["franki","/kontakt","+48796441345"],
+   ["przesyl","/kontakt","+48796441345"]
+  ];
+  for(const [key,route,number] of choices){
+   await guided.locator('#dobierz-pomoc [data-navigator="'+key+'"]').click();
+   assert.equal(await guided.locator(".navigator-direct-phone").getAttribute("href"),
+    "tel:"+number,"Wrong number in navigator: "+key);
+   const link=await guided.locator(".navigator-contact-cta").getAttribute("href");
+   const url=new URL(link,origin);
+   assert.equal(url.pathname,route,"Wrong navigator destination for "+key);
+   assert.equal(url.hash,"#formularz","Navigator should open target form for "+key);
+   assert.equal(url.searchParams.get("utm_source"),"facebook","Source attribution missing: "+key);
+   assert.equal(url.searchParams.get("utm_campaign"),"lead_2026","Campaign label missing: "+key);
+   assert.equal(url.searchParams.get("lead_path"),"navigator","Navigator lead path missing: "+key);
+   if(route==="/kontakt")assert.equal(url.searchParams.get("usluga"),key,
+    "Generic contact page must pre-select "+key);
+  }
+  // Verify that choosing a support stage actually carries that code into
+  // the destination, but no personal information is attached to the URL.
+  await guided.locator('#dobierz-pomoc [data-navigator="swiadczenie"]').click();
+  await guided.locator('#dobierz-pomoc [data-stage="decyzja"]').click();
+  let staged=new URL(await guided.locator(".navigator-contact-cta").getAttribute("href"),origin);
+  assert.equal(staged.searchParams.get("etap"),"decyzja");
+  assert.equal(staged.pathname,"/kampanie/swiadczenie-wspierajace");
+  assert.ok(!staged.searchParams.has("phone")&&!staged.searchParams.has("email"));
+
+  const toggle=guided.locator(".chat-assistant .chat-toggle");
+  await toggle.click();
+  assert.equal(await toggle.getAttribute("aria-expanded"),"true","Assistant should expand");
+  const chatChoices=guided.locator(".chat-choices button[data-topic]");
+  assert.equal(await chatChoices.count(),6,"Chatbot must provide six service topics");
+  for(const [key,route,number] of choices){
+   await guided.locator('.chat-choices button[data-topic="'+key+'"]').click();
+   assert.equal(await guided.locator(".chat-actions a").first().getAttribute("href"),
+    "tel:"+number,"Wrong assistant phone for "+key);
+   const contactHref=await guided.locator(".chat-reply-contact").getAttribute("href");
+   const contactUrl=new URL(contactHref,origin);
+   assert.equal(contactUrl.pathname,route,"Wrong assistant form destination: "+key);
+   assert.equal(contactUrl.hash,"#formularz","Assistant form anchor missing: "+key);
+   assert.equal(contactUrl.searchParams.get("utm_source"),"facebook",
+    "Assistant failed to retain original source for "+key);
+   assert.equal(contactUrl.searchParams.get("lead_path"),"chatbot",
+    "Assistant failed to tag its own contact path: "+key);
+   if(route==="/kontakt")assert.equal(contactUrl.searchParams.get("usluga"),key,
+    "Assistant generic form must pre-select "+key);
+   const emailHref=await guided.locator(".chat-email-action").getAttribute("href");
+   const advisor=number==="+48500171531"?
+    "paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";
+   assert.ok(emailHref.startsWith("mailto:"+advisor+"?"),"Assistant email wrong: "+key);
+  }
+  await guided.locator('.chat-choices button[data-topic="szkody"]').click();
+  await guided.locator(".chat-stage-choice").first().click();
+  const stageUrl=new URL(await guided.locator(".chat-reply-contact").getAttribute("href"),origin);
+  assert.equal(stageUrl.searchParams.get("etap"),"uszkodzenia");
+  assert.equal(stageUrl.searchParams.get("uszkodzenie"),"sciany");
+  await guided.keyboard.press("Escape");
+  assert.equal(await toggle.getAttribute("aria-expanded"),"false",
+   "Escape must close assistant and return button to collapsed state");
+  console.log("PASS: six guide and assistant lead paths, adviser routing, UTM and stage links.");
+ }finally{await guided.close();}
+
+
 
  // Real responsive navigation: the primary three links are easy to find at phone width.
  await page.goto(origin+"/",{waitUntil:"domcontentloaded",timeout:40000});

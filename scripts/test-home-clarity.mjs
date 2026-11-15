@@ -50,6 +50,8 @@ assert.ok(mobileTop.includes('href="/v2/kampanie/skd.html"'),"Mobile SKD quick p
 assert.equal((bar.match(/<a\b/g)||[]).length,3,"Mobile contact bar must have exactly three actions");
 assert.ok(css.includes('grid-template-columns:repeat(3,minmax(0,1fr))'),"Three actions are not fitted to a narrow screen");
 assert.ok(css.includes(':focus-within')&&css.includes('.chat-assistant.is-open'),"Sticky contact bar can cover an active form or chat");
+assert.ok(html.includes('src="/v2/home-mobile-cta.js" defer'),"Homepage needs contact-bar visibility controller");
+assert.ok(css.includes(".premium-v2 .mobile-contact-bar[hidden]{display:none!important}"),"Hidden mobile bar must override grid display");
 assert.ok(html.includes("data-share-page")&&html.includes("data-share-feedback"),"Share control has no user feedback");
 assert.ok(html.includes('src="/v2/share-page.js"'),"Share control script missing");
 

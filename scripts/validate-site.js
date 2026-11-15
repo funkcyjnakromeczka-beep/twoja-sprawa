@@ -220,6 +220,12 @@ if(!contact.includes('routingNote.className="contact-routing-note"')||
 const contactStyles=read("v2/styles.css");
 if(!contactStyles.includes(".contact-advisor .contact-routing-note"))
  warn("Formularz: brakuje czytelnego opisu sposobu kierowania wiadomości");
+if(!contact.includes('copyDraft.className="contact-draft-copy"')||
+   !contact.includes('await navigator.clipboard.writeText(makeDraft());')||
+   !contact.includes('fallback.addEventListener("click",updateFallback);')||
+   !contactStyles.includes(".contact-form .contact-draft-copy"))
+ warn("Formularz: po błędzie Web3Forms brakuje kopiowania aktualnej treści zgłoszenia");
+
 if(!contact.includes("api.web3forms.com/submit"))
  warn("Formularz: brak połączenia z aktualnym operatorem zgłoszeń");
 

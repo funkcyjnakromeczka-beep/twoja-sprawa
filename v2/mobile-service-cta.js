@@ -40,6 +40,19 @@
    syncVisibility();
   },{threshold:0,rootMargin:"0px 0px -70px 0px"});
   observer.observe(target);
+ }else if(target){
+  // Older Android browsers may not expose IntersectionObserver. Keep the
+  // floating buttons from obscuring the form in those browsers as well.
+  const checkFormPosition=()=>{
+   const rect=target.getBoundingClientRect();
+   const viewportHeight=window.visualViewport?.height||window.innerHeight;
+   formVisible=rect.top<viewportHeight-70&&rect.bottom>0;
+   syncVisibility();
+  };
+  window.addEventListener("scroll",checkFormPosition,{passive:true});
+  window.addEventListener("resize",checkFormPosition,{passive:true});
+  window.visualViewport?.addEventListener("resize",checkFormPosition,{passive:true});
+  checkFormPosition();
  }
  // Hide while the contact form has keyboard focus, including mobile keyboards.
  document.addEventListener("focusin",event=>{

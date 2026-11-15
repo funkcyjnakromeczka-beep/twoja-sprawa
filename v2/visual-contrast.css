@@ -163,3 +163,21 @@
 }
 .contact-form .contact-city-other:hover{color:#825b26}
 .contact-form .contact-city-other:focus-visible{outline:3px solid #bd9251;outline-offset:3px}
+
+
+/* WCAG AA (2026-11): dark text over an explicit light surface in the
+   contact specialists section; inherited page background is deep navy. */
+.premium-subpage.theme-contact .contact-specialists{
+ background:#fbfaf7;
+ color:#173746;
+}
+.premium-subpage.theme-contact .contact-specialists #spec-title{
+ color:#133748;
+}
+.premium-subpage.theme-contact .contact-specialists .section-lead{
+ color:#445968;
+}
+/* Gold eyebrow was too light on the pale three-step campaign section. */
+.premium-campaign .campaign-process > .eyebrow{
+ color:#654419;
+}

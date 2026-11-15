@@ -6,7 +6,7 @@
   const releasePath=pathname=>window.location.pathname.startsWith("/"+"v2/")?pathname:pathname.replace(/\.html$/,"");
   // Zachowaj źródło kampanii wejściowej, gdy użytkownik przechodzi przez przewodnik.
   const incoming=new URLSearchParams(window.location.search);
-  const allowedSources=new Set(["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+  const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
   const requestedSource=(incoming.get("utm_source")||"").toLowerCase().trim();
   const source=allowedSources.has(requestedSource)?requestedSource:"strona";
   const validAttribution=value=>/^[a-z0-9_-]{1,40}$/.test(value);

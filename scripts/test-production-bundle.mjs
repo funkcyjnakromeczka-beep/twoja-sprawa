@@ -54,6 +54,21 @@ assert.ok(bundleBytes<285000,
  "Production homepage CSS should remain under its verified 285 KB decoded budget");
 console.log("HOME_CSS_BUDGET "+JSON.stringify({sourceBytes,bundleBytes,savedBytes:sourceBytes-bundleBytes}));
 
+let independentStylesSaved=0;
+for(let i=0;i<homeSourceSheets.length;i++){
+ const file=homeSourceSheets[i];
+ const served=await read(file);
+ const originalBytes=Buffer.byteLength(sourceStyles[i],"utf8");
+ const servedBytes=Buffer.byteLength(served,"utf8");
+ assert.ok(servedBytes<originalBytes,
+  "Production CSS should omit non-runtime comments from "+file);
+ independentStylesSaved+=originalBytes-servedBytes;
+}
+assert.ok(independentStylesSaved>12000,
+ "Standalone service CSS resources must also remove at least 12 KB of non-runtime comments");
+console.log("SERVICE_CSS_BUDGET "+JSON.stringify({sourceStyles:homeSourceSheets.length,independentStylesSaved}));
+
+
 assert.ok(home.includes('href="/home-bundle.css"')&&
  (home.match(/<link rel="stylesheet"/g)||[]).length===1,
  "Production homepage should load one combined stylesheet");

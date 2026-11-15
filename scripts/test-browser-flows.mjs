@@ -111,6 +111,7 @@ try{
    ["/uslugi/kredyty-frankowe","wojciech"],
    ["/uslugi/sluzebnosc-przesylu","wojciech"]
   ];
+  const noJsOverflow=[];
   for(const [route,advisor] of routes){
    const response=await noJsPage.goto(origin+route,{
     waitUntil:"domcontentloaded",timeout:40000
@@ -133,10 +134,25 @@ try{
     requirePerson("wojciech.obieglo@votum-ds.pl","+48796441345");
    if(advisor==="both"||advisor==="paulina")
     requirePerson("paulina.chandrala@votum-ds.pl","+48500171531");
-   const overflow=await noJsPage.evaluate(()=>
-    document.documentElement.scrollWidth-window.innerWidth);
-   assert.ok(overflow<=2,"No-JavaScript fallback causes horizontal overflow at 320px on "+route);
+   const geometry=await noJsPage.evaluate(()=>{
+    const overflow=document.documentElement.scrollWidth-window.innerWidth;
+    const offenders=[...document.querySelectorAll("body *")].filter(el=>{
+     const r=el.getBoundingClientRect(),st=getComputedStyle(el);
+     return st.display!=="none"&&r.width>0&&r.height>0&&(r.right>window.innerWidth+2||r.left< -2);
+    }).map(el=>{
+     const r=el.getBoundingClientRect(),st=getComputedStyle(el);
+     return {element:el.tagName.toLowerCase(),className:typeof el.className==="string"?el.className.slice(0,100):"",
+      text:(el.textContent||"").trim().slice(0,65),left:Math.round(r.left),right:Math.round(r.right),
+      width:Math.round(r.width),whiteSpace:st.whiteSpace,overflowWrap:st.overflowWrap};
+    }).sort((a,b)=>b.right-a.right).slice(0,18);
+    return {overflow,offenders};
+   });
+   if(geometry.overflow>2){
+    noJsOverflow.push({route,geometry});
+    console.log("NO_JS_OVERFLOW_REPORT "+JSON.stringify({route,...geometry}));
+   }
   }
+  assert.deepEqual(noJsOverflow,[],"No-JavaScript mobile horizontal overflow: "+JSON.stringify(noJsOverflow));
   console.log("PASS: 11 core routes retain direct adviser phone/e-mail at 320px with JavaScript disabled.");
  }finally{
   await noJsContext.close();

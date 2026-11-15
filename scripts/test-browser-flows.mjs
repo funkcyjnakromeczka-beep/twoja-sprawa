@@ -156,11 +156,71 @@ try{
   }
   assert.deepEqual(noJsOverflow,[],"No-JavaScript mobile horizontal overflow: "+JSON.stringify(noJsOverflow));
   console.log("PASS: 11 core routes retain direct adviser phone/e-mail at 320px with JavaScript disabled.");
+
+  // Search page has no dynamic result list when scripts are disabled. Preserve
+  // direct self-service links rather than displaying an unusable search box.
+  const searchNoJs=await noJsPage.goto(origin+"/szukaj",{waitUntil:"load",timeout:40000});
+  assert.equal(searchNoJs?.status(),200,"No-JavaScript search fallback unavailable");
+  const noJsSearch=noJsPage.locator("[data-site-search]");
+  assert.equal(await noJsSearch.locator("[data-search-fallback]").isVisible(),true,
+   "Search must show six service paths when scripts are disabled");
+  assert.equal(await noJsSearch.locator(".search-fallback-links a").count(),6,
+   "Search fallback must retain all six core service links");
+  assert.equal(await noJsSearch.locator("[data-search-interactive]").isVisible(),false,
+   "Inactive search field must be hidden without JavaScript");
+  const noJsDestinations=await noJsSearch.locator(".search-fallback-links a").evaluateAll(nodes=>
+   nodes.map(link=>new URL(link.href).pathname));
+  assert.deepEqual(noJsDestinations,[
+   "/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace",
+   "/kampanie/skd","/uslugi/renty-powypadkowe",
+   "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu"
+  ],"Fallback service order and direct public paths must remain stable");
+  assert.ok(await noJsPage.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth)<=2,
+   "Search fallback overflows a 320px no-JavaScript viewport");
+  console.log("PASS: no-JavaScript search page shows six service links, not an unusable input.");
+
  }finally{
   await noJsContext.close();
  }
 
 
+
+
+ // Browser-level search: an actual local query should populate results and
+ // hide the bootstrap fallback. A blocked main script must do the opposite.
+ const searchPage=await browser.newPage({viewport:{width:320,height:740}});
+ try{
+  await searchPage.goto(origin+"/szukaj?q=skd",{waitUntil:"load",timeout:40000});
+  await searchPage.locator('[data-site-search][data-search-ready="true"]').waitFor({timeout:8000});
+  assert.equal(await searchPage.locator("[data-search-fallback]").isVisible(),false);
+  assert.equal(await searchPage.locator("[data-search-interactive]").isVisible(),true);
+  assert.equal(await searchPage.locator("#site-search-input").inputValue(),"skd");
+  assert.ok(await searchPage.locator(".site-search-card").count()>0,
+   "Local SKD search should show relevant pages");
+  const resultBefore=await searchPage.locator(".site-search-card").count();
+  await searchPage.locator('button[data-search-category="skd"]').click();
+  assert.equal(await searchPage.locator('button[data-search-category="skd"]').getAttribute("aria-pressed"),"true");
+  assert.ok(await searchPage.locator(".site-search-card").count()>0,
+   "SKD filter must still retain SKD pages");
+  await searchPage.locator("[data-search-reset]").click();
+  assert.equal(await searchPage.locator("#site-search-input").inputValue(),"");
+  assert.equal(await searchPage.locator('button[data-search-category="all"]').getAttribute("aria-pressed"),"true");
+  assert.ok(resultBefore>0);
+  assert.ok(await searchPage.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth)<=2,
+   "Live local search overflows 320px");
+  console.log("PASS: local search initializes, filters SKD, resets and preserves 320px layout.");
+ }finally{await searchPage.close();}
+
+ const blockedSearch=await browser.newPage({viewport:{width:320,height:740}});
+ try{
+  await blockedSearch.route("**/site-search.js",route=>route.abort("blockedbyclient"));
+  await blockedSearch.goto(origin+"/szukaj",{waitUntil:"load",timeout:40000});
+  assert.equal(await blockedSearch.locator("[data-search-fallback]").isVisible(),true,
+   "Blocked search script must keep static help links visible");
+  assert.equal(await blockedSearch.locator("[data-search-interactive]").isVisible(),false,
+   "Blocked search script must not expose unusable controls");
+  console.log("PASS: blocked search script still exposes direct assistance without extra requests.");
+ }finally{await blockedSearch.close();}
 
  // Direct adviser address copying on real mobile-width contact page.
  // No form data is entered or submitted; only public professional addresses.

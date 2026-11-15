@@ -261,6 +261,24 @@ try{
     return result.violations.map(v=>({id:v.id,impact:v.impact,
      affected:v.nodes.slice(0,4).map(n=>n.target)}));
    });
+   if(route==="/kontakt"||route.startsWith("/kampanie/")){
+    const selectors=route==="/kontakt"?
+     ["#spec-title",".contact-specialists .section-lead"]:
+     [".campaign-process > .eyebrow"];
+    const colors=await accessibilityPage.evaluate(selectors=>selectors.map(selector=>{
+     const el=document.querySelector(selector);
+     if(!el)return {selector,missing:true};
+     const ancestors=[];
+     let current=el;
+     for(let depth=0;current&&depth<4;depth++,current=current.parentElement){
+      const st=getComputedStyle(current);
+      ancestors.push({node:current.tagName,className:current.className,
+       textColor:st.color,background:st.backgroundColor});
+     }
+     return {selector,ancestors};
+    }),selectors);
+    console.log("WCAG_COLORS "+JSON.stringify({route,colors}));
+   }
    console.log("WCAG_REPORT "+JSON.stringify({route,findings}));
   }
  }finally{await accessibilityPage.close();}

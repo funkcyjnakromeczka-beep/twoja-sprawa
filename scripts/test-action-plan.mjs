@@ -21,7 +21,7 @@ function setup(query){
  const keys=["szkody","swiadczenie","skd","renty","franki","przesyl"];
  const buttons=keys.map(key=>{const b=new Node("button");b.dataset.planService=key;return b;});
  const dom={};
- for(const key of ["[data-plan-stage-container]","[data-plan-stage-select]","[data-plan-title]","[data-plan-intro]","[data-plan-checklist]","[data-plan-progress]","[data-plan-print]","[data-plan-reset]","[data-plan-contact]","[data-plan-call]"])dom[key]=new Node(key==="[data-plan-stage-select]"?"select":"div");
+ for(const key of ["[data-plan-stage-container]","[data-plan-stage-select]","[data-plan-title]","[data-plan-intro]","[data-plan-checklist]","[data-plan-progress]","[data-plan-print]","[data-plan-reset]","[data-plan-contact]","[data-plan-call]","[data-plan-service-link]"])dom[key]=new Node(key==="[data-plan-stage-select]"?"select":"div");
  const root={querySelector:key=>dom[key],querySelectorAll:sel=>sel==="[data-plan-service]"?buttons:[]};
  let printCount=0;
  const window={location:{search:query,origin:"https://twoja-sprawa.pages.dev"},print:()=>printCount++};
@@ -38,6 +38,8 @@ let u=new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev");
 assert.equal(u.pathname,"/v2/kontakt.html");
 assert.equal(get("[data-plan-call]").href,"tel:+48796441345");
 assert.equal(get("[data-plan-call]").hidden,false);
+assert.equal(get("[data-plan-service-link]").href,"/v2/uslugi/szkody-gornicze.html");
+assert.equal(get("[data-plan-service-link]").hidden,false);
 for(const [field,value] of Object.entries({usluga:"szkody",etap:"ugoda",lead_path:"plan",utm_source:"facebook",utm_medium:"social",utm_campaign:"szkody_lubin",utm_content:"post_a"}))assert.equal(u.searchParams.get(field),value);
 assert.equal(u.hash,"#formularz");
 assert.equal(u.searchParams.get("name"),null);
@@ -54,6 +56,9 @@ for(const [name,expectedTel] of [["swiadczenie","500 171 531"],["skd","796 441 3
  assert.ok(get("[data-plan-contact]").textContent.includes(expectedTel));
  assert.ok(get("[data-plan-call]").textContent.includes(expectedTel));
  assert.equal(get("[data-plan-progress]").textContent,"0 z 4");
+ const serviceLink=get("[data-plan-service-link]");
+ assert.equal(serviceLink.hidden,false);
+ assert.equal(serviceLink.href,"/v2/uslugi/"+({swiadczenie:"swiadczenie-wspierajace",skd:"kredyty-pln",renty:"renty-powypadkowe",franki:"kredyty-frankowe",przesyl:"sluzebnosc-przesylu"}[name])+".html");
 }
 state.click("skd");
 assert.equal(get("[data-plan-call]").href,"tel:+48796441345","SKD must reach Wojciech, not Paulina");
@@ -80,6 +85,7 @@ get("[data-plan-reset]").events.click();
 assert.equal(get("[data-plan-title]").textContent,"Wybierz temat po lewej stronie");
 assert.equal(get("[data-plan-print]").disabled,true);
 assert.equal(get("[data-plan-call]").hidden,true);
+assert.equal(get("[data-plan-service-link]").hidden,true,"Cleared plan must not show a stale service link");
 const invalid=setup("?usluga=<script>&etap=xxxx&utm_source=not_allowed&utm_campaign=%3Cscript%3E");
 invalid.click("szkody");
 u=new URL(invalid.dom["[data-plan-contact]"].href,"https://twoja-sprawa.pages.dev");
@@ -93,6 +99,7 @@ assert.ok(html.includes("sześciu kategorii"));
 const order=[...html.matchAll(/data-plan-service="([^"]+)"/g)].map(m=>m[1]);
 assert.deepEqual(order,["szkody","swiadczenie","skd","renty","franki","przesyl"]);
 assert.ok(html.includes("Kredyty frankowe CHF"),"Missing CHF preparation path");
+assert.ok(html.includes('data-plan-service-link href="/v2/#uslugi" hidden'),"Missing hidden service detail link in initial view");
 
 /* Every flagship service must expose a usable context-specific preparation path.
    These links stay local, preserve the corresponding service, and do not collect data. */
@@ -122,4 +129,6 @@ for(const token of ["SERVICE_PREPARATION_BRIDGE_20261115",".service-plan-action:
  assert.ok(bridgeCSS.includes(token),"Mobile/accessibility treatment missing: "+token);
 }
 
+const detailCSS=await readFile("v2/plan-dzialania.css","utf8");
+assert.ok(detailCSS.includes(".plan-more-info a:focus-visible")&&detailCSS.includes(".plan-more-info a[hidden]"),"Service details link needs accessible focus and hidden states");
 console.log("OK: 6 usług, 13 wariantów etapów, SKD do Wojciecha, CHF, drukowanie, reset, progres, prywatność i UTM.");

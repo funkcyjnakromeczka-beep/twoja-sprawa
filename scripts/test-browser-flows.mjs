@@ -480,6 +480,7 @@ try{
  }finally{await perfPage.close();}
 
 
+ const accessibilityFailures=[];
  const accessibilityPage=await browser.newPage({viewport:{width:390,height:844}});
  await accessibilityPage.emulateMedia({reducedMotion:"reduce"});
  try{
@@ -498,7 +499,22 @@ try{
      affected:v.nodes.slice(0,4).map(n=>n.target)}));
    });
    console.log("WCAG_REPORT "+JSON.stringify({route,findings}));
-   assert.equal(findings.length,0,"WCAG A/AA issue(s) on "+route+": "+JSON.stringify(findings));
+   if(findings.length){
+    accessibilityFailures.push({route,findings});
+    const contrast=await accessibilityPage.evaluate(targets=>targets.map(selector=>{
+     const el=document.querySelector(selector);
+     if(!el)return {selector,missing:true};
+     const ancestors=[];let node=el;
+     while(node&&ancestors.length<4){
+      const st=getComputedStyle(node);
+      ancestors.push({tag:node.tagName,klass:typeof node.className==="string"?node.className:"",
+       textColor:st.color,background:st.backgroundColor});
+      node=node.parentElement;
+     }
+     return {selector,ancestors};
+    }),findings.flatMap(f=>f.affected).filter(a=>a?.length).map(a=>a[0]));
+    console.log("WCAG_COMPUTED_COLORS "+JSON.stringify({route,contrast}));
+   }
 
    // WCAG checks on expanded interactive panels, not only their closed states.
    if(route==="/"){
@@ -555,6 +571,7 @@ try{
 
   }
  }finally{await accessibilityPage.close();}
+ assert.deepEqual(accessibilityFailures,[],"WCAG A/AA issues on public routes: "+JSON.stringify(accessibilityFailures));
 
 }finally{
  await browser.close();

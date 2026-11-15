@@ -75,6 +75,13 @@ Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono
 - W dwóch przebiegach CI zdarzenie `load` wystąpiło po odpowiednio 845 ms przed zmianą i 609 ms po zmianie. To **pojedyncze pomiary w środowisku testowym**, nie dowód 236 ms poprawy dla rzeczywistych użytkowników i nie wynik Core Web Vitals.
 - `scripts/test-browser-flows.mjs` sprawdza liczbę arkuszy CSS, ładowanie kluczowych lokalnych obrazów, siedem scenariuszy formularzy, nawigację oraz układ kampanii na wąskich ekranach. Testy nie wysyłają żadnych zgłoszeń.
 
+## Lżejsze style CSS w wydaniu produkcyjnym (15.11.2026)
+
+- Generator `scripts/build.mjs` usuwa komentarze autorskie z **produkcyjnego** `/home-bundle.css` oraz siedmiu odrębnych arkuszy CSS używanych przez podstrony. Zachowuje treść reguł, ich kolejność i teksty w cudzysłowie; oryginały `v2/*.css` pozostają nienaruszone i nadal zawierają komentarze pomocne przy edycji.
+- Zmierzony pakiet strony głównej: **295 202 B źródeł → 279 271 B CSS**. Oszczędność **15 931 B (ok. 5,4%) przed kompresją HTTP**. W analogicznym zestawie siedmiu osobnych arkuszy produkcyjnych oszczędność komentarzy wynosi sumarycznie 15 931 B; **nie należy sumować obu oszczędności w odniesieniu do jednej wizyty**, ponieważ podstrony i strona główna korzystają z alternatywnych układów tych samych arkuszy.
+- `scripts/test-production-bundle.mjs` pilnuje granicy 285 KB dla pakietu głównego oraz zmniejszenia osobnych arkuszy. Test przeglądarkowy monitoruje rozmiar pobranego arkusza strony głównej i pełne ścieżki formularzy oraz dostępność interfejsu.
+- Jest to ograniczenie rozmiaru zasobu, a nie potwierdzona poprawa Core Web Vitals lub konwersji w rzeczywistym ruchu. Nie użyto dodatkowych płatnych narzędzi.
+
 ## Kontrola zmian po każdym wdrożeniu
 
 1. Otwórz `https://twoja-sprawa.pages.dev/`; sprawdź widoczność szkód górniczych, świadczenia wspierającego i trzeciej ścieżki SKD.

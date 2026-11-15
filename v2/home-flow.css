@@ -96,6 +96,9 @@
   .premium-v2 .mobile-contact-bar a{font-size:.7rem}
   .premium-v2 .mobile-contact-bar a strong{font-size:.74rem}
 }
+/* Native hidden state overrides all display/grid rules when the contact
+   section is visible; the three native links still work without scripts. */
+.premium-v2 .mobile-contact-bar[hidden]{display:none!important}
 @media print{.premium-v2 .mobile-contact-bar{display:none!important}}
 
 

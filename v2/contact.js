@@ -125,13 +125,17 @@
   const guideTitle=document.createElement("strong");guideTitle.textContent="Przygotuj się do rozmowy";
   const guideText=document.createElement("span");
   const guideLink=document.createElement("a");guideLink.textContent="Otwórz listę kontrolną (nowa karta)";guideLink.target="_blank";guideLink.rel="noopener noreferrer";
-  guideBox.append(guideTitle,guideText,guideLink);form.append(guideBox);
+  const guidePlanLink=document.createElement("a");guidePlanLink.className="contact-guide-plan-link";
+  guidePlanLink.textContent="Ułóż plan pierwszych kroków (nowa karta)";
+  guidePlanLink.target="_blank";guidePlanLink.rel="noopener noreferrer";
+  guidePlanLink.hidden=true;
+  guideBox.append(guideTitle,guideText,guideLink,guidePlanLink);form.append(guideBox);
   const guidePaths={
    "Szkody górnicze":["/v2/poradniki/checklista-szkody-gorniczej.html","Zdjęcia uszkodzeń i wcześniejsza korespondencja mogą ułatwić rozmowę."],
    "Świadczenie wspierające":["/v2/poradniki/swiadczenie-wspierajace-pierwsze-kroki.html","Przygotuj etap sprawy WZON lub ZUS oraz daty otrzymanych pism."],
    "Renty powypadkowe":["/v2/poradniki/renta-powypadkowa-dokumenty.html","Sprawdź, jakie informacje o wypadku i jego skutkach warto zebrać."],
    "Kredyt w PLN / SKD":["/v2/poradniki/skd-kredyt-pln-lista-kontrolna.html","Wyślij pełną umowę kredytową bez zasłaniania danych na wojciech.obieglo@votum-ds.pl i podaj numer telefonu. Nie dołączaj dokumentów do formularza internetowego."],
-   "Kredyty frankowe CHF":["/v2/uslugi/kredyty-frankowe.html","Przygotuj umowę CHF, aneksy i historię spłat, ale nie wysyłaj ich przez formularz."],
+   "Kredyty frankowe CHF":["/v2/poradniki/frankowicze-lista-kontrolna.html","Przygotuj umowę CHF, aneksy i historię spłat, ale nie wysyłaj ich przez formularz."],
    "Służebność przesyłu":["/v2/poradniki/sluzebnosc-przesylu-dzialka.html","Zbierz podstawowe informacje o działce i urządzeniach przesyłowych."]
   };
   const updateGuide=()=>{const item=guidePaths[select.value];guideBox.hidden=!item;if(!item)return;guideLink.href=item[0];guideText.textContent=item[1];};
@@ -180,6 +184,30 @@
     stage.required=false;
   };
   select.addEventListener("change",updateStage);updateStage();
+  // Dodatkowa droga do planu, zachowująca tylko sprawdzoną usługę i kod etapu.
+  // Nie przenosi danych wpisanych w formularzu (imię, telefon, e-mail, wiadomość).
+  const guidePlanServices={
+   "Szkody górnicze":"szkody",
+   "Świadczenie wspierające":"swiadczenie",
+   "Kredyt w PLN / SKD":"skd",
+   "Renty powypadkowe":"renty",
+   "Kredyty frankowe CHF":"franki",
+   "Służebność przesyłu":"przesyl"
+  };
+  const updateGuidePlan=()=>{
+   const service=guidePlanServices[select.value];
+   guidePlanLink.hidden=!service;
+   if(!service){guidePlanLink.removeAttribute("href");return;}
+   const params=new URLSearchParams();
+   params.set("usluga",service);
+   // Dobieramy kod na podstawie jawnej, lokalnej listy etapów.
+   const code=Object.entries(stageCodes[select.value]||{}).find(([,label])=>label===stage.value)?.[0];
+   if(code)params.set("etap",code);
+   guidePlanLink.href="/v2/plan-dzialania.html?"+params.toString();
+  };
+  select.addEventListener("change",updateGuidePlan);
+  stage.addEventListener("change",updateGuidePlan);
+  updateGuidePlan();
   // Szybkie, opcjonalne rozpoznanie rodzaju uszkodzeń bez podawania danych wrażliwych.
   // Są to obserwacje klienta, a nie potwierdzenie górniczej przyczyny szkody.
   const damageWrap=document.createElement("div");damageWrap.className="contact-damage-area";

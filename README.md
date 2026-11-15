@@ -143,6 +143,15 @@ Dokumentacja Cloudflare: [GitHub integration](https://developers.cloudflare.com/
 - Realny test Chromium `scripts/test-browser-flows.mjs` weryfikuje **12 tras** (6 × 2 interfejsy), numery doradców, źródło kampanii oraz rzeczywiste otwarcie wypełnionych kontekstowo formularzy świadczeń i szkód. W testach nie wysyła się zgłoszeń.
 - Kompilator przepisuje odnośniki w wydaniu — dlatego kontrola kandydata produkcji dodatkowo wykrywa przypadkowe uszkodzenie mechanizmu rozpoznawania podglądu `/v2/`.
 
+## Awaryjne zachowanie formularzy Web3Forms (15.11.2026)
+
+- W razie braku potwierdzenia od Web3Forms formularz **nie jest resetowany**; komunikat rozróżnia utratę połączenia (`navigator.onLine === false`) od innych błędów, bez twierdzenia, że wiadomość na pewno nie dotarła.
+- Przycisk **„Skopiuj treść zgłoszenia”** jest dostępny tylko w przeglądarkach obsługujących bezpieczny schowek i dopiero po nieudanym potwierdzeniu. Generuje treść lokalnie z aktualnych pól w momencie kliknięcia. Nie zapisuje danych klienta na dysku, w cookies ani w adresie URL strony.
+- Skopiowany tekst zawiera wybrane dane kontaktowe. **Schowek urządzenia może być dostępny dla innych aplikacji** — użytkownik jest o tym informowany po skopiowaniu. Zalecany jest kontakt przez prywatną pocztę lub telefon, bez wpisywania PESEL, haseł i danych medycznych.
+- Link do gotowej wiadomości e-mail jest aktualizowany przy kliknięciu, aby po zmianie usługi trafił do właściwej osoby: Wojciecha lub Pauliny. Samo otwarcie linku nie wysyła wiadomości.
+- GitHub Actions `scripts/test-browser-flows.mjs` przechwytuje każde testowe wywołanie `https://api.web3forms.com/submit` i symuluje odpowiedzi HTTP 503 i HTTP 200. Sprawdza zachowanie danych po błędzie, zawartość schowka, zmianę doradcy i reset dopiero po potwierdzeniu `success: true`. **Żadne testowe dane nie są wysyłane na zewnętrzny serwer.**
+- To nie jest test rzeczywistej skrzynki odbiorczej ani prawdziwego doręczenia wiadomości e-mail. Potwierdzenie doręczania produkcyjnego wymaga osobnej kontroli z uprawnionym odbiorcą.
+
 ## Bezpośrednie kopiowanie e-maila doradcy (15.11.2026)
 
 - Po wyborze usługi każdy formularz pokazuje rzeczywisty adres e-mail odpowiedniej osoby i — jeżeli przeglądarka obsługuje schowek — przycisk **„Skopiuj e-mail”**. Kopiowanie działa bez aplikacji pocztowej, bez cookie, bez zapisywania danych klienta i bez dodatkowych usług.

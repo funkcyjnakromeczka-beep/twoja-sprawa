@@ -210,7 +210,7 @@ const guideLinksJS=await read("service-navigator.js");
 const assistantLinksJS=await read("chat-assistant.js");
 for(const [name,script] of [["Przewodnik",guideLinksJS],["Chatbot",assistantLinksJS]]){
  assert.ok(script.includes('window.location.pathname.startsWith("/"+"v2/")')&&
-           script.includes('replace(/\.html$/,"")'),
+           script.includes(String.raw`replace(/\.html$/,"")`),
   name+": production build must keep extensionless URLs without changing the preview detector");
  assert.ok(!script.includes('window.location.pathname.startsWith("/")'),
   name+": production builder replaced the preview detector and broke clean links");

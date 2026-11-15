@@ -241,7 +241,8 @@ try{
     initialImages:images};
   });
   console.log("PUBLIC_RESOURCE_REPORT "+JSON.stringify(perf,null,2));
-  assert.ok(perf.styleSheets>=4,"Homepage stylesheets not loaded");
+  assert.equal(perf.styleSheets,1,"Homepage should download a single combined CSS file");
+  assert.equal(perf.largest.filter(x=>x.path==="/home-bundle.css").length,1,"Homepage bundle missing");
   assert.ok(perf.initialImages.filter(x=>x.src.startsWith(origin)).every(x=>x.complete&&x.width>0),
    "A critical same-origin image did not load");
  }finally{await perfPage.close();}

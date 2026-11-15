@@ -249,6 +249,22 @@ try{
  }finally{await perfPage.close();}
 
 
+ const accessibilityPage=await browser.newPage({viewport:{width:390,height:844}});
+ try{
+  for(const route of ["/","/kontakt","/kampanie/szkody-gornicze",
+    "/kampanie/swiadczenie-wspierajace","/kampanie/skd"]){
+   await accessibilityPage.goto(origin+route,{waitUntil:"domcontentloaded",timeout:40000});
+   await accessibilityPage.addScriptTag({content:axe.source});
+   const findings=await accessibilityPage.evaluate(async()=>{
+    const result=await window.axe.run(document,{
+     runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}});
+    return result.violations.map(v=>({id:v.id,impact:v.impact,
+     affected:v.nodes.slice(0,4).map(n=>n.target)}));
+   });
+   console.log("WCAG_REPORT "+JSON.stringify({route,findings}));
+  }
+ }finally{await accessibilityPage.close();}
+
 }finally{
  await browser.close();
 }

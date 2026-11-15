@@ -25,7 +25,7 @@ function run(query){
   const button=new Node("button");button.dataset.navigator=k;return button;
  });
  const document={querySelector:selector=>selector==="#dobierz-pomoc"?root:null,createElement:tag=>new Node(tag)};
- const window={location:{search:query,origin:"https://twoja-sprawa.pages.dev"},matchMedia:()=>({matches:false})};
+ const window={location:{pathname:"/",search:query,origin:"https://twoja-sprawa.pages.dev"},matchMedia:()=>({matches:false})};
  runInNewContext(source,{document,window,URL,URLSearchParams,Set,Object});
  const select=key=>{
   const button=root.buttons.find(x=>x.dataset.navigator===key);
@@ -48,14 +48,14 @@ assert.equal(s.phone.href,"tel:+48796441345");
 assert.ok(s.stage("ugoda"));
 s.stage("ugoda").events.click();
 let link=new URL(s.form.href,"https://twoja-sprawa.pages.dev");
-assert.equal(link.pathname,"/v2/kampanie/szkody-gornicze.html");
+assert.equal(link.pathname,"/v2/kampanie/szkody-gornicze");
 for(const [k,v] of Object.entries({utm_source:"facebook",utm_medium:"facebook_grupa",utm_campaign:"grupa_lubin",utm_content:"post_2",lead_path:"navigator",etap:"ugoda"})){
  assert.equal(link.searchParams.get(k),v,k+" was not carried");
 }
 assert.equal(link.hash,"#formularz");
 assert.equal(s.stage("ugoda").attrs["aria-pressed"],"true");
 const printable=new URL(s.plan.href,"https://twoja-sprawa.pages.dev");
-assert.equal(printable.pathname,"/v2/plan-dzialania.html");
+assert.equal(printable.pathname,"/v2/plan-dzialania");
 assert.equal(printable.searchParams.get("usluga"),"szkody");
 assert.equal(printable.searchParams.get("etap"),"ugoda");
 assert.equal(printable.searchParams.get("utm_medium"),"facebook_grupa");
@@ -63,18 +63,23 @@ assert.equal(printable.searchParams.get("utm_source"),"facebook");
 let p=result.select("swiadczenie");
 p.stage("odwolanie").events.click();
 link=new URL(p.form.href,"https://twoja-sprawa.pages.dev");
-assert.equal(link.pathname,"/v2/kampanie/swiadczenie-wspierajace.html");
+assert.equal(link.pathname,"/v2/kampanie/swiadczenie-wspierajace");
 assert.equal(link.searchParams.get("etap"),"odwolanie");
 assert.equal(p.phone.href,"tel:+48500171531");
 assert.equal(new URL(p.plan.href,"https://twoja-sprawa.pages.dev").searchParams.get("etap"),"odwolanie");
-for(const [key,path] of [["renty","renty"],["skd","skd"],["przesyl","przesyl"]]){
+for(const [key,path] of [["renty","renty"],["przesyl","przesyl"]]){
  const choice=result.select(key);
  const u=new URL(choice.form.href,"https://twoja-sprawa.pages.dev");
- assert.equal(u.pathname,"/v2/kontakt.html");
+ assert.equal(u.pathname,"/v2/kontakt");
  assert.equal(u.searchParams.get("usluga"),path);
  assert.equal(u.searchParams.get("lead_path"),"navigator");
  assert.equal(u.searchParams.get("etap"),null);
 }
+const skd=result.select("skd");
+const skdUrl=new URL(skd.form.href,"https://twoja-sprawa.pages.dev");
+assert.equal(skdUrl.pathname,"/v2/kampanie/skd","SKD must lead directly to the agreement submission campaign");
+assert.equal(skdUrl.searchParams.get("usluga"),null,"Dedicated SKD campaign preselects the service");
+assert.equal(skdUrl.searchParams.get("lead_path"),"navigator");
 const invalid=run("?utm_source=malware&utm_campaign=bad%20campaign&utm_medium=%3Cscript%3E");
 const safe=invalid.select("szkody");
 const url=new URL(safe.form.href,"https://twoja-sprawa.pages.dev");

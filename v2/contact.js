@@ -197,7 +197,7 @@
   const updateGuidePlan=()=>{
    const service=guidePlanServices[select.value];
    guidePlanLink.hidden=!service;
-   if(!service){guidePlanLink.removeAttribute("href");return;}
+   if(!service){guidePlanLink.href="/v2/plan-dzialania.html";return;}
    const params=new URLSearchParams();
    params.set("usluga",service);
    // Dobieramy kod na podstawie jawnej, lokalnej listy etapów.

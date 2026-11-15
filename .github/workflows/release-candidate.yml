@@ -10,6 +10,7 @@ on:
       - 'scripts/seo-policy.mjs'
       - 'scripts/test-production-bundle.mjs'
       - 'scripts/test-internal-links.mjs'
+      - 'scripts/test-ai-referrals.mjs'
       - '.github/workflows/release-candidate.yml'
   workflow_dispatch:
 concurrency:
@@ -31,6 +32,7 @@ jobs:
           node --check scripts/build.mjs
           node --check scripts/test-production-bundle.mjs
           node --check scripts/test-internal-links.mjs
+          node --check scripts/test-ai-referrals.mjs
       - name: Zbuduj i przetestuj kandydata wydania (bez publikacji)
         env:
           SITE_URL: https://twoja-sprawa.pages.dev
@@ -42,6 +44,7 @@ jobs:
           node scripts/build.mjs
           node scripts/test-production-bundle.mjs
           node scripts/test-internal-links.mjs
+          node scripts/test-ai-referrals.mjs
       - name: Identyfikator zbudowanej wersji
         run: cat dist/release-info.json
       - name: Zapisz tymczasowy pakiet wydania do pobrania

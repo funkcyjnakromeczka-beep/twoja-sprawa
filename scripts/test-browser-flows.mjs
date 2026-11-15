@@ -637,6 +637,27 @@ try{
    "A critical same-origin image did not load");
  }finally{await perfPage.close();}
 
+ // First-load service page: independent CSS files must benefit from the same
+ // production-only comment removal, without breaking the mobile contact route.
+ const servicePerfPage=await browser.newPage({viewport:{width:390,height:844}});
+ try{
+  const response=await servicePerfPage.goto(origin+"/uslugi/szkody-gornicze",{
+   waitUntil:"load",timeout:40000
+  });
+  assert.equal(response?.status(),200);
+  const serviceStyles=await servicePerfPage.evaluate(()=>
+   performance.getEntriesByType("resource")
+    .filter(entry=>entry.name.startsWith(location.origin)&&entry.name.endsWith(".css"))
+    .map(entry=>({path:new URL(entry.name).pathname,
+      decoded:entry.decodedBodySize,transfer:entry.transferSize})));
+  const byPath=new Map(serviceStyles.map(entry=>[entry.path,entry.decoded]));
+  assert.ok((byPath.get("/styles.css")||0)>0&&(byPath.get("/styles.css")||Infinity)<63000,
+   "Production base CSS should be reduced on service pages");
+  assert.ok((byPath.get("/premium-v2.css")||0)>0&&(byPath.get("/premium-v2.css")||Infinity)<180000,
+   "Production premium CSS should omit author comments on service pages");
+  console.log("SERVICE_RESOURCE_REPORT "+JSON.stringify(serviceStyles));
+ }finally{await servicePerfPage.close();}
+
 
  const accessibilityFailures=[];
  const accessibilityPage=await browser.newPage({viewport:{width:390,height:844}});

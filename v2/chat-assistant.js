@@ -118,9 +118,11 @@
   root.append(toggle,panel);
   document.body.append(root);
   const setOpen=(open,focus=true)=>{
+    const hadFocusInside=panel.contains(document.activeElement);
     panel.hidden=!open;root.classList.toggle("is-open",open);
     toggle.setAttribute("aria-expanded",String(open));
     if(focus){if(open)close.focus();else toggle.focus();}
+    else if(!open&&hadFocusInside)toggle.focus({preventScroll:true});
   };
   toggle.addEventListener("click",()=>setOpen(panel.hidden));
   close.addEventListener("click",()=>setOpen(false));
@@ -187,7 +189,8 @@
     emailAction.setAttribute("aria-label",topic.key==="skd"?"Otwórz e-mail do Wojciecha w sprawie przesłania pełnej umowy SKD":("Napisz do "+(["swiadczenie","renty"].includes(topic.key)?"Pauliny":"Wojciecha")+" w sprawie: "+topic.name));
   };
   for(const topic of topics){
-    const btn=mk("button",topics.indexOf(topic)<2?"chat-choice-featured":"",topic.name);
+    const rank=topics.indexOf(topic);
+    const btn=mk("button",rank<3?"chat-choice-featured"+(rank===2?" chat-choice-skd":""):"",topic.name);
     btn.type="button";btn.dataset.topic=topic.key;
     btn.setAttribute("aria-pressed","false");
     btn.title=topic.short;

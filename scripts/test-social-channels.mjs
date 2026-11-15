@@ -32,6 +32,9 @@ for(const [path,expected,id] of cases){
   assert.ok(m[2].includes('class="social-community-sr"')&&m[2].includes("otworzy się w nowej karcie"),
    "Accessible name must contain visible text and announce new tab on "+path);
   assert.ok(!m[0].includes("aria-label="),"Do not override the visible label; WCAG 2.5.3 on "+path);
+  const brand=m[1].includes("tiktok.com")?"tiktok":"facebook";
+  assert.ok(m[2].includes('<img class="social-brand-icon" src="/v2/assets/icon-'+brand+'.svg" alt="" width="27" height="27" decoding="async">'),
+   "Missing or mismatched platform brand mark on "+path);
   assert.ok(m[1].startsWith("https://"),"Social destination must be HTTPS");
   assert.ok(!m[1].includes("?"),"Keep social links free of campaign/tracking query strings");
  }
@@ -61,4 +64,9 @@ assert.ok(!baseCss.includes("SOCIAL_COMMUNITY_CHANNELS_20261115"),"Keep social s
 for(const token of ["SOCIAL_COMMUNITY_CHANNELS_20261115",".social-community-links a:focus-visible",".social-community-privacy a:focus-visible",".social-community .social-community-sr","@media(max-width:750px)"]){
  assert.ok(css.includes(token),"Missing mobile/accessibility social UI: "+token);
 }
+for(const brand of ["facebook","tiktok"]){
+ const logo=await readFile("v2/assets/icon-"+brand+".svg","utf8");
+ assert.ok(logo.startsWith("<svg")&&logo.includes("<path")&&logo.includes("</svg>"),"Malformed local brand SVG for "+brand);
+}
+console.log("SOCIAL_BRAND_ICONS_OK: 10 correctly matched Facebook/TikTok icons, all served locally.");
 console.log("SOCIAL_CHANNELS_OK: 8 page placements, five destinations, accessible external links, private on-site hand-off, data safety and no tracking.");

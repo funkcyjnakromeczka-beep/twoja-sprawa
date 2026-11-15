@@ -186,7 +186,7 @@
     emailAction.href="mailto:"+advisorEmail+"?subject="+encodeURIComponent(emailSubject)
       +(skdEmailBody?"&body="+encodeURIComponent(skdEmailBody):"");
     emailAction.textContent=topic.key==="skd"?"✉ Wyślij umowę e-mailem":"✉ Napisz e-mail";
-    emailAction.setAttribute("aria-label",topic.key==="skd"?"Otwórz e-mail do Wojciecha w sprawie przesłania pełnej umowy SKD":("Napisz do "+(["swiadczenie","renty"].includes(topic.key)?"Pauliny":"Wojciecha")+" w sprawie: "+topic.name));
+    emailAction.setAttribute("aria-label",topic.key==="skd"?"Wyślij umowę e-mailem do Wojciecha — dołącz pełną umowę SKD":("Napisz e-mail do "+(["swiadczenie","renty"].includes(topic.key)?"Pauliny":"Wojciecha")+" w sprawie: "+topic.name));
   };
   for(const topic of topics){
     const rank=topics.indexOf(topic);

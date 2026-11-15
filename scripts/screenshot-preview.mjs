@@ -164,9 +164,27 @@ try{
     console.log("MOBILE_CTA_UI_OK",JSON.stringify({path,phone:call,overlap:false,hiddenNearForm:true}));
   }
   if(path.includes("swiadczenie-wspierajace")&&path.startsWith("/uslugi/")){
-    const brand=await page.locator(".vws-service-brand img").evaluate(img=>({loaded:img.complete&&img.naturalWidth>0,width:img.getBoundingClientRect().width}));
-    if(!brand.loaded||brand.width<200)throw Error("Votum Wsparcie logo should be visible and at least 200px: "+JSON.stringify(brand));
-    console.log("VOTUM_WSPARCIE_LOGO_OK",JSON.stringify(brand));
+    // The logo is served by an external website; outages should not hide the brand
+    // or fail an otherwise usable page. Confirm either the real image or text fallback.
+    const brand=await page.locator(".vws-service-brand").evaluate(card=>{
+      const img=card.querySelector("img");
+      const label=card.querySelector("strong");
+      return {
+        loaded:img.complete&&img.naturalWidth>0,
+        width:Math.round(img.getBoundingClientRect().width),
+        imageHidden:img.hidden,
+        imageDisplay:getComputedStyle(img).display,
+        fallback:card.classList.contains("brand-fallback-active"),
+        visibleText:!!label&&label.getClientRects().length>0,
+        cardHeight:Math.round(card.getBoundingClientRect().height)
+      };
+    });
+    if(brand.loaded){
+      if(brand.width<130||!brand.visibleText)throw Error("Official support logo too small or missing label: "+JSON.stringify(brand));
+    }else if(!brand.imageHidden||brand.imageDisplay!=="none"||!brand.fallback||!brand.visibleText||brand.cardHeight>145){
+      throw Error("Official logo unavailable without accessible text fallback: "+JSON.stringify(brand));
+    }
+    console.log("VOTUM_WSPARCIE_BRAND_OK",JSON.stringify(brand));
   }
   if(["/poradniki/skd-kredyt-pln-lista-kontrolna.html","/poradniki/frankowicze-lista-kontrolna.html","/"].includes(path)){
     const selector=path==="/"?'.contact-form .check':'.interactive-checklist .checklist-item span';

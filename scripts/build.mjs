@@ -78,8 +78,8 @@ const structured = (route,canonical,title,markup) => {
   // Social links explicitly published in this page's contextual section are
   // related resources, NOT sameAs identities of SuccessTree or the advisers.
   // Do not claim ownership of a Facebook group or third-party profile in JSON-LD.
-  const socialRegion=markup.match(/<section class="[^"]*\\bsocial-community\\b[^"]*"[\\s\\S]*?<\\/section>/)?.[0]||"";
-  const relatedLinks=[...socialRegion.matchAll(/<a href="(https:\\/\\/(?:www\\.facebook\\.com|www\\.tiktok\\.com)\\/[^"]+)"/g)]
+  const socialRegion=markup.match(/<section class="[^"]*social-community[^"]*"[\s\S]*?<\/section>/)?.[0]||"";
+  const relatedLinks=[...socialRegion.matchAll(/<a href="(https:\/\/(?:www\.facebook\.com|www\.tiktok\.com)\/[^"]+)"/g)]
    .map(match=>match[1]);
   if(relatedLinks.length)page.relatedLink=[...new Set(relatedLinks)];
   // Use Schema.org's specific WebPage subtypes on their matching visible pages.

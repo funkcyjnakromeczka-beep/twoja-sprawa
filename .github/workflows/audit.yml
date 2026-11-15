@@ -59,6 +59,7 @@ jobs:
           node --check scripts/test-500-continuations.mjs
           node --check scripts/test-search-index-freshness.mjs
           node --check scripts/test-search-contact-guide.mjs
+          node --check scripts/test-social-channels.mjs
           node --check scripts/audit.mjs
           node --check scripts/build.mjs
           node --check scripts/public-routes.mjs
@@ -123,6 +124,8 @@ jobs:
         run: node scripts/test-search-index-freshness.mjs
       - name: Bezpieczna sugestia kontaktu w wyszukiwarce bez wyników
         run: node scripts/test-search-contact-guide.mjs
+      - name: Sprawdź oficjalne odnośniki społecznościowe użytkownika w ośmiu miejscach
+        run: node scripts/test-social-channels.mjs
       - name: Sprawdź pliki HTML i odnośniki
         run: node scripts/audit.mjs
       - name: Sprawdź logotypy partnerów na każdej podstronie

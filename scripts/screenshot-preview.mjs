@@ -520,17 +520,17 @@ try{
  await noResults.goto(origin+"/szukaj.html",{waitUntil:"domcontentloaded"});
  await noResults.locator("#site-search-input").fill("niespotykane xxyzzq xxxpq");
  for(const [topic,destination] of [
-  ["swiadczenie","/kampanie/swiadczenie-wspierajace.html#formularz"],
-  ["szkody","/uslugi/szkody-gornicze.html#formularz"],
-  ["skd","/kampanie/skd.html#formularz"],
-  ["renty","/uslugi/renty-powypadkowe.html#formularz"]
+  ["swiadczenie","/kampanie/swiadczenie-wspierajace#formularz"],
+  ["szkody","/uslugi/szkody-gornicze#formularz"],
+  ["skd","/kampanie/skd#formularz"],
+  ["renty","/uslugi/renty-powypadkowe#formularz"]
  ]){
   await noResults.locator('[data-search-category="'+topic+'"]').click();
   if(!await noResults.locator("[data-search-empty]").isVisible())throw Error("Missing empty state for "+topic);
   if(await noResults.locator("[data-search-contact]").getAttribute("href")!==destination)throw Error("No-result contact routes to wrong service: "+topic);
  }
  await noResults.locator('[data-search-category="all"]').click();
- if(await noResults.locator("[data-search-contact]").getAttribute("href")!=="/kontakt.html")throw Error("General search should route to general contact");
+ if(await noResults.locator("[data-search-contact]").getAttribute("href")!=="/kontakt")throw Error("General search should route to general contact");
  console.log("SEARCH_EMPTY_CONTEXT_CONTACT_OK",JSON.stringify({serviceRoutes:4,generalFallback:true,actualLeadsSent:0}));
  await noResults.close();
 

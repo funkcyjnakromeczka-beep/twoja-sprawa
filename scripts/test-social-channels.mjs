@@ -37,6 +37,16 @@ for(const [path,expected,id] of cases){
   assert.ok(!region.includes(url),"Unrelated social account appears in "+path);
  }
  assert.ok(!region.includes("<iframe")&&!region.includes("<script"),"Social section must not embed third-party scripts");
+ // Never direct visitors to post confidential case details in social comments.
+ const privacy=region.match(/<p class="social-community-privacy">([\s\S]*?)<\/p>/)?.[1]||"";
+ assert.ok(privacy.includes("Ochrona danych:"),"Missing public-comment privacy guidance on "+path);
+ const form=path==="v2/index.html"?"#kontakt":"#formularz";
+ assert.ok(privacy.includes('href="'+form+'"'),"Privacy notice must lead to the page's existing contact form: "+path);
+ assert.ok(html.includes('id="'+form.slice(1)+'"'),"Privacy note points to a missing contact section on "+path);
+ assert.ok(!privacy.includes("facebook.com")&&!privacy.includes("tiktok.com"),"Privacy link must stay on-site, not take visitors back to social networks");
+ if(path.includes("swiadczenie"))assert.ok(privacy.includes("PESEL")&&privacy.includes("WZON"),"Support group must warn against sharing sensitive decision data");
+ if(path.includes("renty"))assert.ok(privacy.includes("dokumentacji medycznej"),"Rents must warn about medical documents");
+ if(path.includes("kredyty-pln")||path.includes("kampanie/skd"))assert.ok(privacy.includes("umowy kredytowej"),"SKD must warn against posting loan documents");
  if(path==="v2/index.html"){
   assert.ok(html.indexOf(region)>html.indexOf("<footer>"),"Home group link should be in footer, not clutter the hero or forms");
  }else{
@@ -46,7 +56,7 @@ for(const [path,expected,id] of cases){
 const css=await readFile("v2/premium-v2.css","utf8");
 const baseCss=await readFile("v2/styles.css","utf8");
 assert.ok(!baseCss.includes("SOCIAL_COMMUNITY_CHANNELS_20261115"),"Keep social styling out of performance-critical base CSS");
-for(const token of ["SOCIAL_COMMUNITY_CHANNELS_20261115",".social-community-links a:focus-visible","@media(max-width:750px)"]){
+for(const token of ["SOCIAL_COMMUNITY_CHANNELS_20261115",".social-community-links a:focus-visible",".social-community-privacy a:focus-visible","@media(max-width:750px)"]){
  assert.ok(css.includes(token),"Missing mobile/accessibility social UI: "+token);
 }
-console.log("SOCIAL_CHANNELS_OK: 8 page placements, five approved destinations, correct topics, accessible external links and no tracking.");
+console.log("SOCIAL_CHANNELS_OK: 8 page placements, five destinations, accessible external links, private on-site hand-off, data safety and no tracking.");

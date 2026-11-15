@@ -636,6 +636,9 @@ try{
  }
  await compactPage.locator('#kontakt .contact-alternatives summary').click();
  const optionalPhone=compactPage.locator('#kontakt .contact-alternative-links a[href="tel:+48500171531"]');
+ // Let native details layout settle before diagnosing; avoids false negatives
+ // on Android-sized viewports during the summary click animation.
+ await optionalPhone.waitFor({state:"visible",timeout:5000}).catch(()=>{});
  if(!await optionalPhone.isVisible()){
   const state=await compactPage.evaluate(()=>{
    const details=document.querySelector("#kontakt .contact-alternatives");
@@ -650,6 +653,9 @@ try{
     contentHeight:Math.round(links?.getBoundingClientRect().height||0)};
   });
   throw Error("Optional phone fallback missing after expanding alternatives: "+JSON.stringify(state));
+ }
+ for(const email of ["wojciech.obieglo@votum-ds.pl","paulina.chandrala@votum-ds.pl"]){
+  await compactPage.locator('#kontakt .contact-alternative-links a[href^="mailto:'+email+'"]').waitFor({state:"visible",timeout:5000});
  }
  await compactPage.locator('#kontakt .contact-case-details > summary').click();
  if(!await compactPage.locator('#kontakt .contact-guide-box').isVisible())throw Error("Checklist must be accessible in expanded details");

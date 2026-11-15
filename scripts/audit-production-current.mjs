@@ -37,6 +37,14 @@ const textResponse=async path=>{
 const responses=await Promise.all(targets.map(textResponse));
 const data=Object.fromEntries(targets.map((path,index)=>[path,responses[index]]));
 const home=data["/"], css=data["/home-flow.css"], contact=data["/contact.js"];
+
+for(const [name,script] of [["Przewodnik",data["/service-navigator.js"]],
+ ["Chatbot",data["/chat-assistant.js"]]]){
+ assert.ok(script.includes('window.location.pathname.startsWith("/"+"v2/")')&&
+           script.includes('replace(/\.html$/,"")'),
+  name+": brakuje bezposrednich adresow bez .html w najnowszym wydaniu");
+}
+
 assert.ok(data["/mobile-service-cta.css"].includes('body:has(.mobile-service-cta:not([hidden])){padding-bottom:'),
  "Po ukryciu mobilnego CTA nadal jest rezerwowane miejsce");
 assert.ok(data["/mobile-service-cta.css"].includes('body.premium-subpage:has(.mobile-service-cta:not([hidden])) .chat-assistant'),

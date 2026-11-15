@@ -128,6 +128,13 @@ Przy budowaniu `attribution.js` podłączany jest tylko raz, nawet jeżeli stron
 
 Dokumentacja Cloudflare: [GitHub integration](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/) i [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/).
 
+## Spójne ścieżki chatbota i przewodnika (15.11.2026)
+
+- Dwa interaktywne elementy: `service-navigator.js` i `chat-assistant.js` kierują do odpowiedniego formularza z **adresem bez `.html` na produkcji Cloudflare Pages**. W lokalnym podglądzie `/v2/` zachowane są linki do plików `.html`. Zapobiega to niepotrzebnym przekierowaniom i zachowuje podgląd projektu.
+- Przed kliknięciem w formularz klient może wybrać jedną z 6 usług. Kody etapu sprawy, rodzaju uszkodzeń i dozwolone oznaczenia UTM pozostają w odnośniku. Nie przechodzą przez niego telefon, adres e-mail, PESEL ani inne dane osobowe.
+- Realny test Chromium `scripts/test-browser-flows.mjs` weryfikuje **12 tras** (6 × 2 interfejsy), numery doradców, źródło kampanii oraz rzeczywiste otwarcie wypełnionych kontekstowo formularzy świadczeń i szkód. W testach nie wysyła się zgłoszeń.
+- Kompilator przepisuje odnośniki w wydaniu — dlatego kontrola kandydata produkcji dodatkowo wykrywa przypadkowe uszkodzenie mechanizmu rozpoznawania podglądu `/v2/`.
+
 ## Bezpośrednie kopiowanie e-maila doradcy (15.11.2026)
 
 - Po wyborze usługi każdy formularz pokazuje rzeczywisty adres e-mail odpowiedniej osoby i — jeżeli przeglądarka obsługuje schowek — przycisk **„Skopiuj e-mail”**. Kopiowanie działa bez aplikacji pocztowej, bez cookie, bez zapisywania danych klienta i bez dodatkowych usług.

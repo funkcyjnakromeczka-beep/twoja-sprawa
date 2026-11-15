@@ -634,7 +634,13 @@ try{
  for(const field of ['.contact-form input[autocomplete="given-name"]','.contact-form input[autocomplete="tel"]','.contact-form input[autocomplete="email"]']){
   if(!await compactPage.locator(field).isVisible())throw Error("Essential lead field was hidden: "+field);
  }
- await compactPage.locator('#kontakt .contact-alternatives summary').click();
+ const alternativePanel=compactPage.locator("#kontakt .contact-alternatives");
+ // Do not blindly toggle a native <details>: earlier interactions or the
+ // browser may have opened it already. Clicking an open summary closes it.
+ if(!await alternativePanel.evaluate(details=>details.open)){
+  await alternativePanel.locator("summary").click();
+ }
+ if(!await alternativePanel.evaluate(details=>details.open))throw Error("Alternative-contact panel did not open");
  const optionalPhone=compactPage.locator('#kontakt .contact-alternative-links a[href="tel:+48500171531"]');
  // Let native details layout settle before diagnosing; avoids false negatives
  // on Android-sized viewports during the summary click animation.

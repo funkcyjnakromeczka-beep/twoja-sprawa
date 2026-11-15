@@ -174,6 +174,13 @@ if(!skdMobile.includes('class="campaign-mobile-call" href="#formularz" aria-labe
    !skdMobile.includes('href="tel:+48796441345"'))
  warn("SKD: mobilne akcje muszą prowadzić do umowy i numeru telefonu, przy zachowaniu połączenia do Wojciecha");
 const contact = read("v2/contact.js");
+
+const productionBuilder=read("scripts/build.mjs");
+if(!productionBuilder.includes("async function bundleHomepageStyles(html)")||
+   !productionBuilder.includes('await writeFile(join(dest,"home-bundle.css")')||
+   !productionBuilder.includes('if(rel==="index.html")html=await bundleHomepageStyles(html);'))
+ warn("Wydanie: nie laczy siedmiu arkuszy strony glownej z zachowaniem ich kolejnosci");
+
 if(!contact.includes('isSKD||prefer==="Telefon"'))
  warn("Formularz: brak wymogu telefonu dla SKD");
 if(!contact.includes("wojciech.obieglo@votum-ds.pl") || !contact.includes("paulina.chandrala@votum-ds.pl"))

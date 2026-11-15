@@ -26,10 +26,12 @@ for(const [path,expected,id] of cases){
  assert.ok(region,"Social community section missing on "+path);
  assert.ok(region.includes('<h2 id="'+id+'">'),"Social section needs an accessible heading on "+path);
  assert.ok(region.includes('aria-labelledby="'+id+'"'),"Social section label missing on "+path);
- const links=[...region.matchAll(/<a href="([^"]+)" target="_blank" rel="noopener noreferrer" aria-label="([^"]+)">/g)];
+ const links=[...region.matchAll(/<a href="([^"]+)" target="_blank" rel="noopener noreferrer">([\s\S]*?)<\/a>/g)];
  assert.deepEqual(links.map(x=>x[1]),expected,"Wrong social destination on "+path);
  for(const m of links){
-  assert.ok(m[2].includes("nowej karcie"),"External link must indicate opening a new tab on "+path);
+  assert.ok(m[2].includes('class="social-community-sr"')&&m[2].includes("otworzy się w nowej karcie"),
+   "Accessible name must contain visible text and announce new tab on "+path);
+  assert.ok(!m[0].includes("aria-label="),"Do not override the visible label; WCAG 2.5.3 on "+path);
   assert.ok(m[1].startsWith("https://"),"Social destination must be HTTPS");
   assert.ok(!m[1].includes("?"),"Keep social links free of campaign/tracking query strings");
  }
@@ -56,7 +58,7 @@ for(const [path,expected,id] of cases){
 const css=await readFile("v2/premium-v2.css","utf8");
 const baseCss=await readFile("v2/styles.css","utf8");
 assert.ok(!baseCss.includes("SOCIAL_COMMUNITY_CHANNELS_20261115"),"Keep social styling out of performance-critical base CSS");
-for(const token of ["SOCIAL_COMMUNITY_CHANNELS_20261115",".social-community-links a:focus-visible",".social-community-privacy a:focus-visible","@media(max-width:750px)"]){
+for(const token of ["SOCIAL_COMMUNITY_CHANNELS_20261115",".social-community-links a:focus-visible",".social-community-privacy a:focus-visible",".social-community .social-community-sr","@media(max-width:750px)"]){
  assert.ok(css.includes(token),"Missing mobile/accessibility social UI: "+token);
 }
 console.log("SOCIAL_CHANNELS_OK: 8 page placements, five destinations, accessible external links, private on-site hand-off, data safety and no tracking.");

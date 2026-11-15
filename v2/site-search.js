@@ -21,6 +21,13 @@
   przesyl:"/v2/uslugi/sluzebnosc-przesylu.html#formularz"
  };
  const labels={szkody:"Szkody górnicze",swiadczenie:"Świadczenie wspierające",renty:"Renty i wypadki",skd:"Sankcja Kredytu Darmowego (SKD)",franki:"Pomoc frankowiczom — CHF",przesyl:"Służebność przesyłu",inne:"Pozostałe materiały"};
+ const publicHref=href=>{
+  // Browser search data keeps source /v2/*.html paths to match the build.
+  // Visitors should receive canonical extensionless Cloudflare Pages links.
+  if(!href.startsWith("/v2/"))return href;
+  return href.replace(/^\/v2(?=\/)/,"").replace(/\.html(?=$|[?#])/,"");
+ };
+
  // Ready-to-browse six principal services when no query has been entered.
  // Use indexed pages rather than duplicating titles and descriptions in JS.
  const featuredIds=[
@@ -53,7 +60,7 @@
   results.replaceChildren();
   for(const item of visible){
    const card=document.createElement("a");
-   card.href=item.href;
+   card.href=publicHref(item.href);
    card.className="site-search-card";
    const tag=document.createElement("span");tag.className="site-search-tag";tag.textContent=item.id.startsWith("faq:")?"Pytanie i odpowiedź":labels[item.category]||"Informacje";
    const title=document.createElement("h3");title.textContent=item.title;
@@ -65,7 +72,7 @@
   // No-results messaging is only meaningful after an actual search.
   empty.hidden=matched.length!==0||browsing;
   if(emptyContact){
-   emptyContact.href=contactByTopic[category]||"/v2/kontakt.html";
+   emptyContact.href=publicHref(contactByTopic[category]||"/v2/kontakt.html");
    emptyContact.textContent=contactByTopic[category]?"Zostaw kontakt w wybranej sprawie":"Zadaj własne pytanie";
   }
   reset.hidden=!phrase&&category==="all";

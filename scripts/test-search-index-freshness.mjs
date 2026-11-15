@@ -36,6 +36,23 @@ for(const entry of faq){
  assert.equal(entry.title,question,"FAQ question stale: "+id);
  assert.equal(entry.description,answer?.slice(0,250),"FAQ answer stale: "+id);
 }
+// Browser search cards must open canonical public routes, preserving anchors.
+// Test the actual route-normalization function isolated from UI/DOM code.
+const siteSearch=await readFile("v2/site-search.js","utf8");
+const publicHrefSource=siteSearch.match(/const publicHref=href=>\{[\s\S]*?\n \};/)?.[0];
+assert.ok(publicHrefSource,"Local search canonical URL helper missing");
+const routeContext={};
+runInNewContext(publicHrefSource+"\nthis.route=publicHref;",routeContext);
+for(const [input,want] of [
+ ["/v2/uslugi/szkody-gornicze.html","/uslugi/szkody-gornicze"],
+ ["/v2/uslugi/swiadczenie-wspierajace.html#formularz","/uslugi/swiadczenie-wspierajace#formularz"],
+ ["/v2/kampanie/skd.html?utm_source=facebook","/kampanie/skd?utm_source=facebook"],
+ ["/v2/faq.html#pytanie","/faq#pytanie"],
+ ["https://votum-sa.pl/","https://votum-sa.pl/"]
+])assert.equal(routeContext.route(input),want,"Wrong public route for "+input);
+assert.ok(siteSearch.includes("card.href=publicHref(item.href)"),"Search cards need public routes");
+assert.ok(siteSearch.includes("emptyContact.href=publicHref("),"No-result contact needs a public route");
+console.log("SEARCH_CANONICAL_ROUTES_OK: service cards, FAQ anchors and contact routes.");
 console.log("SEARCH_INDEX_FRESHNESS_OK: 38 stron, "+verifiedDescriptions+" opisów SEO oraz 24 pytania FAQ odpowiadają aktualnemu kodowi.");
 
 // Real questions from potential clients used to return zero results because every

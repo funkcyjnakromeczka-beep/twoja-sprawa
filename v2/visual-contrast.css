@@ -181,3 +181,9 @@
 .premium-campaign .campaign-process > .eyebrow{
  color:#654419;
 }
+
+/* Remaining labels on pale homepage FAQ and contact backgrounds. */
+.premium-v2 .home-faq-heading .eyebrow,
+.premium-subpage.theme-contact .contact-specialists > .eyebrow{
+ color:#654419;
+}

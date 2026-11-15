@@ -10,6 +10,9 @@
  const empty=host.querySelector("[data-search-empty]");
  const emptyContact=host.querySelector("[data-search-contact]");
  const emptySuggestion=host.querySelector("[data-search-suggestion]");
+ const emptyDirect=host.querySelector("[data-search-direct]");
+ const emptyPhone=host.querySelector("[data-search-direct-phone]");
+ const emptyMail=host.querySelector("[data-search-direct-email]");
  const reset=host.querySelector("[data-search-reset]");
  const tabs=[...host.querySelectorAll("[data-search-category]")];
  if(!input||!results||!counter||!empty||!reset||!tabs.length)return;
@@ -102,6 +105,21 @@
    emptySuggestion.textContent=!guided?"":category==="all"
     ?"Wstępna podpowiedź na podstawie użytych słów: "+labels[suggestedTopic]+". To nie jest ocena Twojej sprawy ani gwarancja świadczenia."
     :"Wybrany filtr: "+labels[suggestedTopic]+". Możesz skontaktować się bezpośrednio w tym temacie.";
+  }
+  // Show one-tap contact only for a known or explicitly selected topic.
+  // Never copy the visitor's query into a telephone or email URL.
+  if(emptyDirect&&emptyPhone&&emptyMail){
+   emptyDirect.hidden=empty.hidden||!guided;
+   if(!emptyDirect.hidden){
+    const support=suggestedTopic==="swiadczenie"||suggestedTopic==="renty";
+    const adviser=support?"Paulina":"Wojciech";
+    const phone=support?"500 171 531":"796 441 345";
+    emptyPhone.href=support?"tel:+48500171531":"tel:+48796441345";
+    emptyPhone.textContent="Zadzwoń do "+(support?"Pauliny":"Wojciecha")+": "+phone;
+    emptyMail.href="mailto:"+(support?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl")
+     +"?subject="+encodeURIComponent("Zapytanie Twoja Sprawa: "+labels[suggestedTopic]);
+    emptyMail.textContent="Napisz e-mail do "+(support?"Pauliny":"Wojciecha");
+   }
   }
   reset.hidden=!phrase&&category==="all";
   for(const tab of tabs)tab.setAttribute("aria-pressed",String(tab.dataset.searchCategory===category));

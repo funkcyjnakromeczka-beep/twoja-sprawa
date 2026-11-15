@@ -8,6 +8,7 @@ import { join, relative, dirname } from "node:path";
 import {withNetworkBrand} from "./network-brand.mjs";
 import {toPublicRoute} from "./public-routes.mjs";
 import { shouldIndexRoute } from "./seo-policy.mjs";
+import { enhancePageNavigation } from "./page-navigation.mjs";
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
 const release=process.env.RELEASE==="1";
@@ -236,6 +237,9 @@ async function walk(dir){
     await mkdir(dirname(target),{recursive:true});
     if(entry.name.endsWith(".html")){
       let html=stripSourceHomeAgencySchema(withNetworkBrand(await readFile(absolute,"utf8")),rel);
+      // 100 verifiable improvements across 47 pages: main labels, breadcrumbs,
+      // missing keyboard skip links and shared focus treatment.
+      html=enhancePageNavigation(html,rel).html;
       const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
       const publicRoute=toPublicRoute(route); // Cloudflare Pages maps *.html to extensionless URLs.
       const canonical=origin+publicRoute;

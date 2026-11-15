@@ -4,6 +4,8 @@ import {spawn} from "node:child_process";
 import {mkdir} from "node:fs/promises";
 import {chromium} from "playwright";
 const origin="http://127.0.0.1:4173";
+// The preview uses Python http.server, which does not rewrite extensionless Cloudflare routes.
+const localPreviewUrl=(pathname,search="",hash="")=>origin+(pathname==="/"||pathname.endsWith("/")||/\.[a-z0-9]+$/i.test(pathname)?pathname:pathname+".html")+search+hash;
 const server=spawn("python3",["-m","http.server","4173","--bind","127.0.0.1","--directory","dist-preview"],{stdio:"ignore"});
 const wait=async()=>{
  for(let i=0;i<70;i++){
@@ -319,7 +321,7 @@ try{
  const href=await page.locator(".chat-reply-contact").getAttribute("href");
  const chosen=new URL(href,origin);
  if(chosen.searchParams.get("etap")!=="ugoda"||chosen.searchParams.get("utm_medium")!=="grupa"||chosen.searchParams.get("lead_path")!=="chatbot")throw Error("Chatbot conversion link lost case stage or campaign medium: "+href);
- await page.goto(origin+chosen.pathname+chosen.search,{waitUntil:"domcontentloaded"});
+ await page.goto(localPreviewUrl(chosen.pathname,chosen.search),{waitUntil:"domcontentloaded"});
  const picked=await page.locator('.contact-form select[id^="cf-stage-"]').inputValue();
  if(picked!=="Otrzymałem/am propozycję ugody")throw Error("Form stage was not preselected: "+picked);
  console.log("FUNNEL_OK",JSON.stringify({url:chosen.pathname+chosen.search,stage:picked}));
@@ -338,7 +340,7 @@ try{
   const targetLink=await guided.locator(".chat-reply-contact").getAttribute("href");
   const url=new URL(targetLink,origin);
   if(url.searchParams.get("uszkodzenie")!==slug||url.searchParams.get("etap")!=="uszkodzenia")throw Error("Mining chatbot lost safe defect category: "+targetLink);
-  await guided.goto(origin+url.pathname+url.search+url.hash,{waitUntil:"domcontentloaded"});
+  await guided.goto(localPreviewUrl(url.pathname,url.search,url.hash),{waitUntil:"domcontentloaded"});
   const prefilled=await guided.locator('.contact-form select[id^="cf-damage-"]').inputValue();
   const stageFromChat=await guided.locator('.contact-form select[id^="cf-stage-"]').inputValue();
   if(prefilled!==expected||stageFromChat!=="Zauważyłem/am uszkodzenia")throw Error("Damage and stage not carried from chatbot: "+JSON.stringify({label,prefilled,stageFromChat}));
@@ -356,7 +358,7 @@ try{
  const selected=new URL(route,origin);
  if(selected.pathname!=="/kampanie/szkody-gornicze.html"||selected.searchParams.get("etap")!=="ugoda"||selected.searchParams.get("lead_path")!=="navigator"||selected.searchParams.get("utm_medium")!=="grupa")throw Error("Navigator did not pass safe stage and campaign context: "+route);
  await guidePage.locator("#dobierz-pomoc").screenshot({path:"screenshots/przewodnik-ugoda-telefon.png",animations:"disabled"});
- await guidePage.goto(origin+selected.pathname+selected.search+selected.hash,{waitUntil:"domcontentloaded"});
+ await guidePage.goto(localPreviewUrl(selected.pathname,selected.search,selected.hash),{waitUntil:"domcontentloaded"});
  const stageFromGuide=await guidePage.locator('.contact-form select[id^="cf-stage-"]').inputValue();
  if(stageFromGuide!=="Otrzymałem/am propozycję ugody")throw Error("Navigator stage not preselected in destination: "+stageFromGuide);
  const contextVisible=await guidePage.locator(".contact-context-notice").isVisible();
@@ -400,7 +402,7 @@ try{
  const planTarget=new URL(await planPage.locator("[data-plan-contact]").getAttribute("href"),origin);
  if(planTarget.pathname!=="/kontakt.html"||planTarget.searchParams.get("usluga")!=="szkody"||planTarget.searchParams.get("etap")!=="ugoda"||planTarget.searchParams.get("lead_path")!=="plan"||planTarget.searchParams.get("utm_medium")!=="grupa")throw Error("Plan handoff broken: "+planTarget);
  await planPage.screenshot({path:"screenshots/plan-szkody-ugoda-telefon.png",fullPage:true,animations:"disabled"});
- await planPage.goto(origin+planTarget.pathname+planTarget.search+planTarget.hash,{waitUntil:"domcontentloaded"});
+ await planPage.goto(localPreviewUrl(planTarget.pathname,planTarget.search,planTarget.hash),{waitUntil:"domcontentloaded"});
  const planFormService=await planPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
  const planFormStage=await planPage.locator('.contact-form select[id^="cf-stage-"]').inputValue();
  if(planFormService!=="Szkody górnicze"||planFormStage!=="Otrzymałem/am propozycję ugody")throw Error("Plan stage not prefilled in contact form");

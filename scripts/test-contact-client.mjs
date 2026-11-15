@@ -234,7 +234,10 @@ await run(true);
  assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
  const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
  assert.ok(fallback?.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"),"SKD fallback must go to Wojciech's VOTUM email");
- assert.ok(decodeURIComponent(fallback.href).includes("Telefon: 796 441 345"),"SKD fallback must retain the callback number");
+ assert.ok(!fallback.href.includes("&body="),"SKD dormant email link must not expose callback data");
+ assert.ok(!decodeURIComponent(fallback.href).includes("796 441 345"),"SKD callback phone must stay out of DOM links until click");
+ fallback.events.click();
+ assert.ok(decodeURIComponent(fallback.href).includes("Telefon: 796 441 345"),"SKD clicked email draft must retain the callback number");
  assert.ok(status.children.some(n=>n.href==="tel:+48796441345"),"Fallback call number for SKD differs from Wojciech");
 }
 

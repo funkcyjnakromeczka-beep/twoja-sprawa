@@ -4,7 +4,9 @@
  *  canonical URLs and JSON-LD graph consistency without third-party requests.
  *  Run after preview build: node scripts/test-html-tags.mjs */
 import assert from "node:assert/strict";
-import {readFile} from "node:fs/promises";
+import {readFile,readdir} from "node:fs/promises";
+import {join} from "node:path";
+import {toPublicRoute} from "./public-routes.mjs";
 
 const origin="https://twoja-sprawa.pages.dev";
 const routes=[
@@ -101,4 +103,35 @@ for(const [path,expected,indexable] of routes){
  assert.equal(pageNodes[0].sameAs,undefined,path+": do not identify social groups as the website owner");
  checked++;
 }
-console.log("HTML_TAGS_SEO_OK: "+checked+" pages, canonical/robots/OG/Twitter tags, "+graphs+" JSON-LD blocks, valid links, unique IDs and consistent relatedLink.");
+// Audit every generated page, not only the eight updated social routes.
+const allHtml=[];
+async function walk(dir,prefix=""){
+ for(const item of await readdir(dir,{withFileTypes:true})){
+  const rel=prefix+item.name;
+  if(item.isDirectory())await walk(join(dir,item.name),rel+"/");
+  else if(item.name.endsWith(".html"))allHtml.push(rel);
+ }
+}
+await walk("dist");
+assert.ok(allHtml.length>=35,"The release contains unexpectedly few HTML pages");
+for(const path of allHtml){
+ const html=await readFile("dist/"+path,"utf8");
+ const head=getHead(html);
+ assert.ok(head,"Missing <head> on "+path);
+ const route=path==="index.html"?"/":path.endsWith("/index.html")?"/"+path.slice(0,-"index.html".length):"/"+path;
+ const canonical=origin+toPublicRoute(route);
+ const count=pattern=>[...head.matchAll(pattern)].length;
+ assert.equal(count(/<link\b[^>]*rel="canonical"[^>]*>/g),1,"Duplicate/missing canonical on "+path);
+ assert.ok(head.includes('rel="canonical" href="'+canonical+'"'),"Incorrect canonical on "+path);
+ assert.equal(count(/<meta\b[^>]*name="robots"[^>]*>/g),1,"Duplicate/missing robots on "+path);
+ assert.equal(count(/<meta\b[^>]*property="og:url"[^>]*>/g),1,"Duplicate/missing og:url on "+path);
+ assert.ok(head.includes('property="og:url" content="'+canonical+'"'),"OG URL disagrees with canonical on "+path);
+ assert.equal(count(/<meta\b[^>]*property="og:title"[^>]*>/g),1,"Duplicate/missing og:title on "+path);
+ const schemas=[...head.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .map(m=>JSON.parse(m[1]));
+ const pages=schemas.flatMap(obj=>obj["@graph"]||[])
+  .filter(node=>node["@id"]===canonical+"#webpage");
+ assert.equal(pages.length,1,"Missing or duplicate canonical WebPage schema on "+path);
+ assert.equal(pages[0].url,canonical,"WebPage schema URL disagreement on "+path);
+}
+console.log("HTML_TAGS_SEO_OK: "+checked+" focused pages, "+allHtml.length+" release pages, "+graphs+" focused JSON-LD blocks, consistent canonical/OG/ARIA/social metadata.");

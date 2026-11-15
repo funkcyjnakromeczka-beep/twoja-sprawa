@@ -465,7 +465,9 @@ try{
    const url=new URL(anchor.href);
    anchor.href=url.pathname+".html"+url.search+url.hash;
  });
- await faqSearchResult.click();
+ // The href changed above; the original locator selector no longer matches.
+ // Click the preview URL using a new locator, not the stale canonical selector.
+ await searchPage.locator('a.site-search-card[href*="/faq.html#pytanie-1-"]').first().click();
  await searchPage.waitForURL(/faq\.html#pytanie-1-/);
  if(!await searchPage.locator('[id^="pytanie-1-"] details[open]').count())throw Error("Linked FAQ answer did not expand automatically");
  await searchPage.goto(origin+"/szukaj.html",{waitUntil:"domcontentloaded"});

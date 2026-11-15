@@ -47,6 +47,14 @@ Skrypt `attribution.js` zachowuje oznaczenia kampanii podczas typowej nawigacji 
 
 Audyt statycznych odnośników (13.11.2026): w 12 kluczowych stronach znaleziono 70 unikatowych lokalnych zasobów; istnienie powiązanych plików, w tym obu JPG, zostało potwierdzone w GitHub. To nie zastępuje testów całej strony w działającej przeglądarce.
 
+## Chatbot i przewodnik — interakcje, nawigacja, WCAG (15.11.2026)
+
+- W chatbocie wyróżniono **trzy główne usługi w ustalonej kolejności**: szkody górnicze, świadczenie wspierające, Sankcja Kredytu Darmowego (SKD) jako trzecia. Pozostałe tematy pozostają dostępne.
+- Po zamknięciu panelu klawiaturą (Esc) lub kliknięciem poza panelem fokus nie zostaje na ukrytym elemencie. Odpowiedzi na pytania i etapy sprawy nadal działają bez wysyłania danych.
+- Dolny pasek akcji chatbota nie pozostaje przyklejony do panelu podczas przewijania. Dotychczas potrafił zasłaniać link **„Przejdź do formularza”** po wybraniu etapu sprawy, zmniejszając jego rzeczywisty dostępny obszar do ok. 11 px — mimo właściwej nominalnej wysokości linku.
+- Test Chromium obejmuje **6 ścieżek przewodnika i 6 ścieżek chatbota**, sprawdza doradcę, formularz, etapy, bezpośrednie linki i zachowanie oznaczeń kampanii. Dodatkowo kontroluje **otwarty chatbot i otwarty przewodnik** za pomocą axe-core WCAG A/AA oraz nawigację klawiaturą. Przebieg po poprawce wykazał 0 naruszeń w obu rozwiniętych panelach.
+- Jest to wynik zautomatyzowany na wybranych ścieżkach i viewportach; nie stanowi deklaracji pełnej zgodności WCAG na każdym urządzeniu.
+
 ## Odnośniki i dostępność (15.11.2026)
 
 - `scripts/test-internal-links.mjs` w workflow `.github/workflows/release-candidate.yml` kontroluje lokalnie wygenerowane linki i odwołania do sekcji. Zakończony poprawnie przebieg zbadał **47 plików HTML, 1040 odnośników/zasobów i 219 fragmentów**. Nie łączy się z zewnętrznymi serwisami; odnośniki wychodzące trzeba weryfikować osobno.

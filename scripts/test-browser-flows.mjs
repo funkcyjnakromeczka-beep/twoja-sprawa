@@ -619,7 +619,7 @@ try{
     "/kampanie/swiadczenie-wspierajace","/kampanie/skd",
     "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
     "/uslugi/kredyty-pln","/uslugi/renty-powypadkowe",
-    "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu"]){
+    "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu","/szukaj"]){
    await accessibilityPage.goto(origin+route,{waitUntil:"load",timeout:40000});
    await accessibilityPage.waitForTimeout(250);
    await accessibilityPage.addScriptTag({content:axe.source});

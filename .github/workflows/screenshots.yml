@@ -10,6 +10,7 @@ on:
       - 'v2/network-brand.css'
       - 'v2/visual-contrast.css'
       - 'v2/home-flow.css'
+      - 'v2/home-mobile-cta.js'
       - 'v2/start.html'
       - 'v2/ulotka-start.css'
       - 'scripts/preview.mjs'

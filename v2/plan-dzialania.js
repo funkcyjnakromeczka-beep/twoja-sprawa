@@ -86,9 +86,10 @@ const DATA={
 };
 const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
 const incoming=new URLSearchParams(window.location.search);
+ const inferredAIReferrer=(()=>{try{const host=new URL(document.referrer).hostname.toLowerCase();return ["chatgpt.com","www.chatgpt.com","chat.openai.com"].includes(host)?"chatgpt.com":"";}catch{return "";}})();
 const sanitize=value=>/^[a-z0-9_-]{1,40}$/.test(value);
 const source=(incoming.get("utm_source")||"").toLowerCase().trim();
-const attribution={utm_source:allowedSources.has(source)?source:"strona",utm_medium:"narzedzie",utm_campaign:"plan_pierwszych_krokow"};
+const attribution={utm_source:allowedSources.has(source)?source:(!source&&inferredAIReferrer?inferredAIReferrer:"strona"),utm_medium:"narzedzie",utm_campaign:"plan_pierwszych_krokow"};
 for(const field of ["utm_medium","utm_campaign","utm_content"]){
  const val=(incoming.get(field)||"").toLowerCase().trim();
  if(sanitize(val))attribution[field]=val;

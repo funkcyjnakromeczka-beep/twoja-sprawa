@@ -66,6 +66,20 @@ assert.ok(css.includes("contact-shortcuts-actions")&&css.includes('data-selected
 assert.ok(/<div class="lead-panel"><div data-contact-form(?:\s|>)/.test(html),"Shortcuts must reuse the existing homepage form");
 assert.ok(!html.includes('class="contact-steps"'),"Homepage form should not repeat an unnecessary three-step banner");
 assert.ok(html.includes('class="contact-alternatives"')&&html.includes('class="contact-alternative-links"'),"Phone and email alternatives must remain accessible");
+
+assert.ok(html.includes('href="/v2/plan-dzialania.html">Przygotuj listę kroków'),
+  "The homepage must visibly link to the six-service preparation tool");
+const visibleNameLabels=[
+  ["Wojciech · 796 441 345","Wojciech · 796 441 345 —"],
+  ["Paulina · 500 171 531","Paulina · 500 171 531 —"],
+  ["E-mail do Wojciecha","E-mail do Wojciecha —"],
+  ["E-mail do Pauliny","E-mail do Pauliny —"]
+];
+for(const [visible,ariaBeginning] of visibleNameLabels){
+ assert.ok(html.includes('aria-label="'+ariaBeginning),
+  "Accessibility label must start with visible link text: "+visible);
+}
+
 assert.ok(html.includes("Wojciech · 796 441 345")&&html.includes("Paulina · 500 171 531"),"Both service contacts must be reachable");
 const alternativeBlock=html.match(/<details class="contact-alternatives">([\s\S]*?)<\/details>/)?.[1]||"";
 for(const [name,phone,email] of [

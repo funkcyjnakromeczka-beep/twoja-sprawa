@@ -19,6 +19,25 @@ if(expectedCommit)assert.equal(releaseInfo.commit,expectedCommit.toLowerCase(),
  "Release fingerprint does not match CI commit");
 const home=await read("index.html");
 
+// No-JavaScript contact is part of the release contract, not an optional
+// JavaScript widget. Keep both adviser phones and e-mails visible in markup.
+for(const page of ["index.html","kontakt.html"]){
+ const html=await read(page);
+ const fallback=html.match(/<p class="contact-load-fallback">([\s\S]*?)<\/p>/)?.[1]||"";
+ for(const expected of [
+  'href="tel:+48796441345"','href="tel:+48500171531"',
+  'href="mailto:wojciech.obieglo@votum-ds.pl"',
+  'href="mailto:paulina.chandrala@votum-ds.pl"'
+ ]){
+  assert.ok(fallback.includes(expected),
+   "No-JavaScript fallback missing "+expected+" in "+page);
+ }
+ assert.ok(fallback.includes("skrypty")||fallback.includes("JavaScript"),
+  "Fallback must explain unavailable JavaScript in "+page);
+}
+
+
+
 const homeBundle=await read("home-bundle.css");
 assert.ok(home.includes('href="/home-bundle.css"')&&
  (home.match(/<link rel="stylesheet"/g)||[]).length===1,

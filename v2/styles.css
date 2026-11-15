@@ -600,3 +600,31 @@ h3{line-height:1.25}
 .contact-form .contact-direct-actions a:focus-visible{outline:3px solid #c49850;outline-offset:3px}
 @media(max-width:550px){.contact-form .contact-direct-actions{grid-template-columns:1fr}}
 @media print{.contact-form .contact-direct-alternatives{display:none!important}}
+
+/* SERVICE_PREPARATION_BRIDGE_20261115: no-login preparation guide, readable on phones. */
+.service-plan-bridge{max-width:770px;margin-top:23px;padding:18px 20px;border-radius:15px}
+.service-plan-bridge .service-plan-kicker{margin:0 0 6px;font:800 .79rem/1.4 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.service-plan-bridge p:not(.service-plan-kicker){margin:0 0 14px;font-size:.94rem;line-height:1.65}
+.service-plan-bridge .service-plan-action{
+ display:inline-flex;align-items:center;justify-content:center;gap:7px;
+ min-height:48px;max-width:100%;padding:11px 16px;border-radius:10px;
+ border:1px solid #e1c28c;background:#f2d9ad;color:#173847!important;
+ font:800 .9rem/1.4 system-ui,sans-serif;text-decoration:none;text-align:center;
+ overflow-wrap:anywhere;
+}
+.service-plan-bridge .service-plan-action:hover{background:#fff0cf;border-color:#fff0cf}
+.service-plan-bridge .service-plan-action:focus-visible{outline:3px solid #fbda93;outline-offset:4px}
+.service-cta .service-plan-bridge{
+ background:rgba(255,255,255,.075);border:1px solid rgba(224,187,128,.55);color:#e5f0f0;
+}
+.service-cta .service-plan-bridge .service-plan-kicker{color:#efd1a0}
+.service-cta .service-plan-bridge p:not(.service-plan-kicker){color:#e6eeee}
+.frank-contact .service-plan-bridge{
+ background:#fff8ed;border:1px solid #cdb48d;color:#213f4b;
+}
+.frank-contact .service-plan-bridge .service-plan-kicker{color:#805721}
+.frank-contact .service-plan-bridge p:not(.service-plan-kicker){color:#284752}
+@media(max-width:600px){
+ .service-plan-bridge{padding:15px;margin-top:20px}
+ .service-plan-bridge .service-plan-action{display:flex;width:100%}
+}

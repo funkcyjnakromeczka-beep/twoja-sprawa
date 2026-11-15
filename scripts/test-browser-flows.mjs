@@ -91,6 +91,59 @@ try{
  assert.equal(errors.length,0,"Browser errors: "+errors.join("; "));
  console.log("PASS: 13 page/SEO resources, 3 FAQ assets and 7 form scenarios.");
 
+ // Resilience test: JS may be unavailable on older phones, slow networks or
+ // hardened browsers. Every conversion page must still show real adviser links.
+ // This context has JavaScript completely disabled, and sends no form data.
+ const noJsContext=await browser.newContext({
+  javaScriptEnabled:false,viewport:{width:320,height:740}
+ });
+ try{
+  const noJsPage=await noJsContext.newPage();
+  const routes=[
+   ["/","both"],["/kontakt","both"],
+   ["/kampanie/szkody-gornicze","wojciech"],
+   ["/kampanie/swiadczenie-wspierajace","paulina"],
+   ["/kampanie/skd","wojciech"],
+   ["/uslugi/szkody-gornicze","wojciech"],
+   ["/uslugi/swiadczenie-wspierajace","paulina"],
+   ["/uslugi/kredyty-pln","wojciech"],
+   ["/uslugi/renty-powypadkowe","paulina"],
+   ["/uslugi/kredyty-frankowe","wojciech"],
+   ["/uslugi/sluzebnosc-przesylu","wojciech"]
+  ];
+  for(const [route,advisor] of routes){
+   const response=await noJsPage.goto(origin+route,{
+    waitUntil:"domcontentloaded",timeout:40000
+   });
+   assert.equal(response?.status(),200,"No-JavaScript fallback route unavailable: "+route);
+   const host=noJsPage.locator("[data-contact-form]");
+   assert.equal(await host.count(),1,"Missing fallback contact host on "+route);
+   const fallback=host.locator(".contact-load-fallback");
+   assert.equal(await fallback.isVisible(),true,"No-JavaScript contact fallback hidden: "+route);
+   assert.equal(await host.locator("form").count(),0,
+    "Unexpected dynamically rendered form without JavaScript on "+route);
+   const links=await fallback.locator("a").evaluateAll(nodes=>nodes.map(a=>a.href));
+   const requirePerson=(email,phone)=>{
+    assert.ok(links.some(h=>h.startsWith("mailto:"+email)),
+     "Missing direct contact e-mail "+email+" on "+route);
+    assert.ok(links.some(h=>h==="tel:"+phone),
+     "Missing direct contact phone "+phone+" on "+route);
+   };
+   if(advisor==="both"||advisor==="wojciech")
+    requirePerson("wojciech.obieglo@votum-ds.pl","+48796441345");
+   if(advisor==="both"||advisor==="paulina")
+    requirePerson("paulina.chandrala@votum-ds.pl","+48500171531");
+   const overflow=await noJsPage.evaluate(()=>
+    document.documentElement.scrollWidth-window.innerWidth);
+   assert.ok(overflow<=2,"No-JavaScript fallback causes horizontal overflow at 320px on "+route);
+  }
+  console.log("PASS: 11 core routes retain direct adviser phone/e-mail at 320px with JavaScript disabled.");
+ }finally{
+  await noJsContext.close();
+ }
+
+
+
  // Direct adviser address copying on real mobile-width contact page.
  // No form data is entered or submitted; only public professional addresses.
  await page.context().grantPermissions(["clipboard-read","clipboard-write"],{origin});

@@ -73,7 +73,7 @@ const check=(phrase,contactPath,topic,recipient="",phone="")=>{
   assert.ok(!email.href.includes("&body="),"An empty enquiry must not preload search text as private email body");
  }
 };
-for(const [phrase,path,label] of [
+for(const [phrase,path,label,recipient,phone] of [
  ["kopalnia zapadlisko xyzz99","/uslugi/szkody-gornicze#formularz","Szkody górnicze","wojciech.obieglo@votum-ds.pl","+48796441345"],
  ["mam 65 punktów ośrodek xxy9","/kampanie/swiadczenie-wspierajace#formularz","Świadczenie wspierające","paulina.chandrala@votum-ds.pl","+48500171531"],
  ["waloryzacja po wypadku xyz012","/uslugi/renty-powypadkowe#formularz","Renty i wypadki","paulina.chandrala@votum-ds.pl","+48500171531"],

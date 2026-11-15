@@ -903,7 +903,7 @@ try{
  if(!await searchDirect.isVisible()||await searchPhone.getAttribute("href")!=="tel:+48500171531"||
    !((await searchEmail.getAttribute("href"))||"").startsWith("mailto:paulina.chandrala@votum-ds.pl?"))
   throw Error("Explicit supporting-benefit filter must offer direct Paulina contact");
- const crossServiceQuery="waloryzacja powypadkowej";
+ const crossServiceQuery="Renty powypadkowe";
  await searchGuidePage.locator("#site-search-input").fill(crossServiceQuery);
  await searchEmpty.waitFor({state:"visible",timeout:5000});
  const everywhere=searchGuidePage.locator("[data-search-everywhere]");

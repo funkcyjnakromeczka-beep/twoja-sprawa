@@ -116,7 +116,7 @@
    }
    const routingNote=document.createElement("small");
    routingNote.className="contact-routing-note";
-   routingNote.textContent="Formularz trafia do skrzynki przypisanej do serwisu Web3Forms. Wskazanie doradcy nie przekierowuje e-maila automatycznie. Aby napisać wprost do tej osoby, użyj linku powyżej.";
+   routingNote.textContent="Wiadomość z formularza trafia do skrzynki obsługiwanej przez Web3Forms — wybór doradcy nie powoduje automatycznego wysłania wiadomości bezpośrednio na jego adres. Aby napisać wprost do tej osoby, użyj odnośnika „Napisz…” lub skopiuj adres e-mail powyżej.";
    advisor.append(routingNote);
   };
   select.addEventListener("change",updateAdvisor);updateAdvisor();

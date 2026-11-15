@@ -63,7 +63,7 @@ const DATA={
  },
  skd:{
   title:"Kredyt konsumencki PLN / SKD",intro:"Możliwość zastosowania sankcji kredytu darmowego zależy od rodzaju umowy, jej treści, kosztów i ustawowych terminów.",
-  phone:"500 171 531",tel:"+48500171531",
+  phone:"796 441 345",tel:"+48796441345",
   steps:[
    "Zachowaj umowę kredytową oraz wszystkie aneksy i załączniki.",
    "Zbierz harmonogram, zestawienie spłat oraz informacje o prowizjach i opłatach.",
@@ -71,6 +71,24 @@ const DATA={
    "Przekaż dokumenty do indywidualnej weryfikacji — sam kredyt w PLN nie oznacza automatycznej podstawy SKD."
   ],
   links:"/v2/uslugi/kredyty-pln.html"
+ },
+
+ franki:{
+  title:"Kredyty frankowe CHF",intro:"Aktywna lub spłacona umowa kredytu powiązana z CHF wymaga indywidualnego sprawdzenia dokumentów, rozliczeń i ewentualnych wcześniejszych ugód. Nie każdy kredyt daje podstawy do roszczenia.",
+  phone:"796 441 345",tel:"+48796441345",
+  steps:[
+   "Zachowaj umowę kredytu CHF wraz z regulaminem, załącznikami i wszystkimi aneksami.",
+   "Zapisz nazwę banku, rok zawarcia umowy oraz czy kredyt jest nadal spłacany, czy już spłacony.",
+   "Zbierz posiadane harmonogramy, historię spłat i korespondencję z bankiem, w tym propozycje ugód.",
+   "Jeżeli otrzymano propozycję ugody lub trwa postępowanie, zanotuj daty i ustal znaczenie dokumentów oraz terminów przed podjęciem decyzji."
+  ],
+  stages:{
+   aktywny:["Nadal spłacam kredyt","Przygotuj aktualne saldo, ostatni harmonogram rat i podstawowe informacje o dotychczasowej spłacie."],
+   splacony:["Kredyt został spłacony","Zachowaj potwierdzenie całkowitej spłaty i historię rozliczeń; sama spłata nie zastępuje analizy roszczeń i terminów."],
+   ugoda:["Bank proponuje ugodę","Zachowaj pełną propozycję ugody i nie pomijaj postanowień o zrzeczeniu się roszczeń; przeanalizuj możliwe skutki przed podpisaniem."],
+   postepowanie:["Sprawa jest już prowadzona","Zbierz informacje o stanie sprawy, dotychczasowych pismach, pełnomocniku oraz ewentualnych terminach; nie udostępniaj dokumentacji w tym narzędziu."]
+  },
+  links:"/v2/uslugi/kredyty-frankowe.html"
  },
  przesyl:{
   title:"Służebność przesyłu",intro:"Urządzenia na działce nie oznaczają automatycznie prawa do wynagrodzenia. Trzeba sprawdzić stan prawny i historię korzystania z nieruchomości.",

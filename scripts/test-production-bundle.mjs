@@ -189,6 +189,15 @@ assert.ok(contactCss.includes(".contact-advisor .contact-advisor-copy-address")&
  contactCss.includes(".contact-advisor .contact-advisor-copy-status"),
  "Adviser copy UI requires readable address and status styles");
 
+assert.ok(contactFormJS.includes('copyDraft.className="contact-draft-copy"')&&
+ contactFormJS.includes('await navigator.clipboard.writeText(makeDraft());')&&
+ contactFormJS.includes('fallback.addEventListener("click",updateFallback);')&&
+ contactFormJS.includes('navigator.onLine===false'),
+ "Failed Web3Forms request must offer a privacy-aware copy of the current lead and recipient");
+assert.ok(contactCss.includes(".contact-form .contact-draft-copy")&&
+ contactCss.includes(".contact-form .contact-draft-feedback"),
+ "Failed lead copy action requires accessible mobile styling");
+
 const diagnosticTool=await read("narzedzia/test-formularzy.html");
 assert.ok(diagnosticTool.includes('["SKD — walidacja numeru","/kampanie/skd",true,"","","skd-phone"]')&&
  diagnosticTool.includes('["Szkody — e-mail bez telefonu","/kampanie/szkody-gornicze",false,"","","email-only"]')&&

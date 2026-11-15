@@ -157,6 +157,21 @@ try{
   assert.equal(staged.pathname,"/kampanie/swiadczenie-wspierajace");
   assert.ok(!staged.searchParams.has("phone")&&!staged.searchParams.has("email"));
 
+  const destinationPage=await browser.newPage({viewport:{width:390,height:844}});
+  try{
+   const res=await destinationPage.goto(staged.href,{
+    waitUntil:"domcontentloaded",timeout:40000
+   });
+   assert.equal(res?.status(),200,"Support deep link did not load");
+   assert.equal(await destinationPage.locator(".contact-form select[id^='cf-service']").inputValue(),
+    "Świadczenie wspierające","Support form did not inherit topic");
+   assert.equal(await destinationPage.locator(".contact-stage select").inputValue(),
+    "Mam decyzję WZON","Support form did not pre-select stage from navigator");
+   assert.equal(await destinationPage.locator(".contact-advisor-copy-address").textContent(),
+    "paulina.chandrala@votum-ds.pl","Support form points to wrong adviser");
+  }finally{await destinationPage.close();}
+
+
   const toggle=guided.locator(".chat-assistant .chat-toggle");
   await toggle.click();
   assert.equal(await toggle.getAttribute("aria-expanded"),"true","Assistant should expand");
@@ -186,6 +201,21 @@ try{
   const stageUrl=new URL(await guided.locator(".chat-reply-contact").getAttribute("href"),origin);
   assert.equal(stageUrl.searchParams.get("etap"),"uszkodzenia");
   assert.equal(stageUrl.searchParams.get("uszkodzenie"),"sciany");
+
+  const miningPage=await browser.newPage({viewport:{width:390,height:844}});
+  try{
+   const res=await miningPage.goto(stageUrl.href,{waitUntil:"domcontentloaded",timeout:40000});
+   assert.equal(res?.status(),200,"Mining deep link did not load");
+   assert.equal(await miningPage.locator(".contact-form select[id^='cf-service']").inputValue(),
+    "Szkody górnicze","Mining form did not inherit topic");
+   assert.equal(await miningPage.locator(".contact-stage select").inputValue(),
+    "Zauważyłem/am uszkodzenia","Mining stage not selected");
+   assert.equal(await miningPage.locator(".contact-damage-area select").inputValue(),
+    "Ściany i elewacja","Mining form did not pre-select wall damage");
+   assert.equal(await miningPage.locator(".contact-advisor-copy-address").textContent(),
+    "wojciech.obieglo@votum-ds.pl","Mining deep link shows wrong adviser");
+  }finally{await miningPage.close();}
+
   await guided.keyboard.press("Escape");
   assert.equal(await toggle.getAttribute("aria-expanded"),"false",
    "Escape must close assistant and return button to collapsed state");

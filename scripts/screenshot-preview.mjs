@@ -860,6 +860,41 @@ try{
  console.log("SUPPORT_FAILURE_MAIL_OK",JSON.stringify({recipient:"Paulina",draftPreserved:true,actualMessagesSent:0}));
  await supportFailPage.close();
 
+ // On the homepage the featured-service shortcuts set select.value directly
+ // rather than firing a native change event. After a simulated Web3Forms
+ // failure, both visible recovery links must follow each shortcut selection.
+ const shortcutRecoveryPage=await browser.newPage({viewport:{width:390,height:844}});
+ let shortcutSubmitCount=0;
+ await shortcutRecoveryPage.route("https://api.web3forms.com/submit",route=>{
+  shortcutSubmitCount++;
+  return route.fulfill({status:503,contentType:"application/json",body:'{"success":false}'});
+ });
+ await shortcutRecoveryPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ await shortcutRecoveryPage.locator('[data-contact-shortcut="swiadczenie"]').click();
+ await shortcutRecoveryPage.locator('.contact-form input[autocomplete="given-name"]').fill("Klient testowy");
+ await shortcutRecoveryPage.locator('.contact-form input[autocomplete="tel"]').fill("500 000 000");
+ await shortcutRecoveryPage.locator('.contact-form input[type="checkbox"]').check();
+ await shortcutRecoveryPage.locator('.contact-form button[type="submit"]').click();
+ const recoveryPanel=shortcutRecoveryPage.locator(".contact-status-error");
+ await recoveryPanel.waitFor({state:"visible",timeout:10000});
+ const recoveryLink=recoveryPanel.locator(".contact-fallback-link");
+ const recoveryPhone=recoveryPanel.locator('a[href^="tel:"]');
+ for(const [shortcut,email,phone] of [
+  ["swiadczenie","paulina.chandrala@votum-ds.pl","+48500171531"],
+  ["szkody","wojciech.obieglo@votum-ds.pl","+48796441345"],
+  ["skd","wojciech.obieglo@votum-ds.pl","+48796441345"],
+  ["swiadczenie","paulina.chandrala@votum-ds.pl","+48500171531"]
+ ]){
+  await shortcutRecoveryPage.locator('[data-contact-shortcut="'+shortcut+'"]').click();
+  const href=await recoveryLink.getAttribute("href");
+  if(!href?.startsWith("mailto:"+email+"?")||href.includes("&body="))throw Error("Homepage recovery email lost routing/privacy after "+shortcut+": "+href);
+  if(await recoveryPhone.getAttribute("href")!=="tel:"+phone)throw Error("Homepage recovery phone stale after "+shortcut);
+ }
+ if(await shortcutRecoveryPage.locator('.contact-form input[autocomplete="given-name"]').inputValue()!=="Klient testowy")throw Error("Homepage shortcuts erased unsent lead");
+ if(shortcutSubmitCount!==1)throw Error("Switching recovery shortcuts unexpectedly re-submitted a lead");
+ console.log("HOME_RECOVERY_SHORTCUTS_OK",JSON.stringify({topics:4,privacy:"no personal info in dormant mailto",submitsBlocked:shortcutSubmitCount}));
+ await shortcutRecoveryPage.close();
+
  // Phone-only lead: Web3Forms treats email as optional. Do not send an
  // empty email key that its provider might attempt to validate as an address.
  const phoneOnlyPage=await browser.newPage({viewport:{width:390,height:844}});

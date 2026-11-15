@@ -51,7 +51,9 @@ add("27. Awaryjny kontakt przez e-mail",()=>assert.ok(
  form.includes('const currentRecipient=()=>["Świadczenie wspierające","Renty powypadkowe"].includes(select.value)') &&
  form.includes('?"paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";') &&
  form.includes('fallback.href="mailto:"+currentRecipient()') &&
- form.includes('fallback.addEventListener("click",updateFallback)'),
+ form.includes('fallback.addEventListener("click",()=>{') &&
+ form.includes('fallback.href=safeHref+"&body="+encodeURIComponent(makeDraft());') &&
+ form.includes('window.setTimeout(updateFallback,0);'),
  "Awaryjny adres e-mail musi odpowiadać bieżącej usłudze także po zmianie wyboru"
 ));
 add("28. Zgoda na kontakt w formularzu",()=>assert.ok(form.includes("ack.required=true")));

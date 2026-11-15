@@ -206,9 +206,34 @@ try{
   assert.equal(await searchPage.locator("#site-search-input").inputValue(),"");
   assert.equal(await searchPage.locator('button[data-search-category="all"]').getAttribute("aria-pressed"),"true");
   assert.ok(resultBefore>0);
+  assert.equal(await searchPage.locator(".site-search-card").count(),6,
+   "Reset with no query should show six featured service cards");
+  assert.equal(await searchPage.locator("[data-search-empty]").isVisible(),false,
+   "Empty query must not be described as an unsuccessful search");
+  assert.match(await searchPage.locator("[data-search-count]").textContent(),/Wybierz temat: 6/);
+  const featuredOrder=await searchPage.locator(".site-search-card").evaluateAll(cards=>
+   cards.map(card=>new URL(card.href).pathname));
+  assert.deepEqual(featuredOrder,[
+   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
+   "/uslugi/kredyty-pln","/uslugi/renty-powypadkowe",
+   "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu"
+  ],"Default topic browse should retain the exact six priorities");
+  await searchPage.locator('button[data-search-category="franki"]').click();
+  assert.ok(await searchPage.locator(".site-search-card").count()>0,
+   "Category selected with no query should display related pages");
+  assert.match(await searchPage.locator("[data-search-count]").textContent(),/Materiały w kategorii:/);
+  await searchPage.locator('button[data-search-category="all"]').click();
+  assert.equal(await searchPage.locator(".site-search-card").count(),6);
+  // A real unmatched query still shows the appropriate no-results path.
+  await searchPage.locator("#site-search-input").fill("zzzxxyyqqq995");
+  assert.equal(await searchPage.locator(".site-search-card").count(),0);
+  assert.equal(await searchPage.locator("[data-search-empty]").isVisible(),true);
+  await searchPage.locator("[data-search-reset]").click();
+  assert.equal(await searchPage.locator(".site-search-card").count(),6);
+
   assert.ok(await searchPage.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth)<=2,
    "Live local search overflows 320px");
-  console.log("PASS: local search initializes, filters SKD, resets and preserves 320px layout.");
+  console.log("PASS: local search filters SKD, shows six featured services on empty input, and handles genuine no-results at 320px.");
  }finally{await searchPage.close();}
 
  const blockedSearch=await browser.newPage({viewport:{width:320,height:740}});

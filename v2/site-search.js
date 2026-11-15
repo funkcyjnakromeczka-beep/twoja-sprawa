@@ -62,4 +62,9 @@
   category="all";input.value="";render();input.focus();
  });
  render();
+ // Reveal interactive controls only after the local search engine
+ // successfully populated results; otherwise show the static service links.
+ host.dataset.searchReady="true";
+ const staticFallback=host.querySelector("[data-search-fallback]");
+ if(staticFallback)staticFallback.hidden=true;
 })();

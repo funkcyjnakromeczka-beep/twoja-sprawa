@@ -46,6 +46,11 @@
 .plan-page .plan-actions a[hidden]{display:none!important}
 .plan-page .plan-actions a[data-plan-call]{background:transparent;color:#f3ddb7;border-color:#c4a875}
 .plan-page .plan-actions button:focus-visible,.plan-page .plan-actions a:focus-visible,.plan-page .plan-kind-grid button:focus-visible,.plan-page .plan-stage select:focus-visible{outline:3px solid #efc985;outline-offset:3px}
+.plan-page .plan-more-info{margin:0 0 14px;font-size:.9rem;line-height:1.6}
+.plan-page .plan-more-info a{display:inline-flex;align-items:center;min-height:44px;padding:8px 2px;color:#f2d2a0;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere;font-weight:750}
+.plan-page .plan-more-info a:hover{color:#fff1d8}
+.plan-page .plan-more-info a:focus-visible{outline:3px solid #efc985;outline-offset:3px}
+.plan-page .plan-more-info a[hidden]{display:none!important}
 .plan-page .plan-help{font-size:.79rem;color:#c3d8dc;line-height:1.62;margin-bottom:0}
 .plan-page .plan-after{padding:32px 0 80px}
 .plan-page .plan-after h2{color:#163b4a;font:700 clamp(1.5rem,3.5vw,2.15rem)/1.23 Georgia,serif;margin-bottom:21px}

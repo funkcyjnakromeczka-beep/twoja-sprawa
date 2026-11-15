@@ -93,4 +93,33 @@ assert.ok(html.includes("sześciu kategorii"));
 const order=[...html.matchAll(/data-plan-service="([^"]+)"/g)].map(m=>m[1]);
 assert.deepEqual(order,["szkody","swiadczenie","skd","renty","franki","przesyl"]);
 assert.ok(html.includes("Kredyty frankowe CHF"),"Missing CHF preparation path");
+
+/* Every flagship service must expose a usable context-specific preparation path.
+   These links stay local, preserve the corresponding service, and do not collect data. */
+const prepRoutes=[
+ ["szkody-gornicze","szkody","+48796441345"],
+ ["swiadczenie-wspierajace","swiadczenie","+48500171531"],
+ ["kredyty-pln","skd","wojciech.obieglo@votum-ds.pl"],
+ ["renty-powypadkowe","renty","+48500171531"],
+ ["kredyty-frankowe","franki","+48796441345"],
+ ["sluzebnosc-przesylu","przesyl","+48796441345"]
+];
+for(const [slug,kind,destination] of prepRoutes){
+ const page=await readFile("v2/uslugi/"+slug+".html","utf8");
+ const root=slug==="kredyty-frankowe"?"<section class=\"wrap frank-contact\" id=\"kontakt\"":"<section class=\"service-cta\" aria-labelledby=\"service-contact\"";
+ const beg=page.indexOf(root);
+ const end=page.indexOf("</section>",beg);
+ assert.ok(beg>=0&&end>beg,"Missing service conversion section: "+slug);
+ const context=page.slice(beg,end);
+ assert.equal((context.match(/class="service-plan-bridge"/g)||[]).length,1,"One preparation bridge expected: "+slug);
+ assert.ok(context.includes('href="/v2/plan-dzialania.html?usluga='+kind+'"'),"Wrong plan destination for "+slug);
+ assert.ok(context.includes("bez logowania i nie wymaga wpisywania danych osobowych"),"Preparation privacy microcopy missing: "+slug);
+ assert.ok(context.includes(destination), "Wrong contact person for "+slug);
+ assert.ok(context.includes('href="#formularz"'),"Submission CTA lost: "+slug);
+}
+const bridgeCSS=await readFile("v2/styles.css","utf8");
+for(const token of ["SERVICE_PREPARATION_BRIDGE_20261115",".service-plan-action:focus-visible","min-height:48px","@media(max-width:600px)"]){
+ assert.ok(bridgeCSS.includes(token),"Mobile/accessibility treatment missing: "+token);
+}
+
 console.log("OK: 6 usług, 13 wariantów etapów, SKD do Wojciecha, CHF, drukowanie, reset, progres, prywatność i UTM.");

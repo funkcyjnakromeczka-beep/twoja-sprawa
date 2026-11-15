@@ -45,6 +45,10 @@
 .plan-page .plan-actions button:disabled{opacity:.45;cursor:not-allowed}
 .plan-page .plan-actions a[hidden]{display:none!important}
 .plan-page .plan-actions a[data-plan-call]{background:transparent;color:#f3ddb7;border-color:#c4a875}
+.plan-page .plan-actions a[data-plan-email]{background:#f5ddb1;color:#153948;border-color:#e9c485}
+.plan-page .plan-actions a[data-plan-email]:hover{background:#fff0d4}
+.plan-page .plan-skd-mail-hint{font-size:.83rem;line-height:1.6;color:#e4d4b8;margin:-8px 0 13px}
+.plan-page .plan-skd-mail-hint[hidden]{display:none!important}
 .plan-page .plan-actions button:focus-visible,.plan-page .plan-actions a:focus-visible,.plan-page .plan-kind-grid button:focus-visible,.plan-page .plan-stage select:focus-visible{outline:3px solid #efc985;outline-offset:3px}
 .plan-page .plan-more-info{margin:0 0 14px;font-size:.9rem;line-height:1.6}
 .plan-page .plan-more-info a{display:inline-flex;align-items:center;min-height:44px;padding:8px 2px;color:#f2d2a0;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere;font-weight:750}

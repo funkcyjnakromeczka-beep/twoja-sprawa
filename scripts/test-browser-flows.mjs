@@ -114,7 +114,7 @@ try{
   const noJsOverflow=[];
   for(const [route,advisor] of routes){
    const response=await noJsPage.goto(origin+route,{
-    waitUntil:"domcontentloaded",timeout:40000
+    waitUntil:"load",timeout:40000
    });
    assert.equal(response?.status(),200,"No-JavaScript fallback route unavailable: "+route);
    const host=noJsPage.locator("[data-contact-form]");
@@ -134,6 +134,8 @@ try{
     requirePerson("wojciech.obieglo@votum-ds.pl","+48796441345");
    if(advisor==="both"||advisor==="paulina")
     requirePerson("paulina.chandrala@votum-ds.pl","+48500171531");
+   // Without JS, DOMContentLoaded can precede the responsive stylesheet.
+   // The load event above is required before measuring widths.
    const geometry=await noJsPage.evaluate(()=>{
     const overflow=document.documentElement.scrollWidth-window.innerWidth;
     const offenders=[...document.querySelectorAll("body *")].filter(el=>{

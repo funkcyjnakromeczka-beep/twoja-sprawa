@@ -41,7 +41,7 @@ const home=data["/"], css=data["/home-flow.css"], contact=data["/contact.js"];
 for(const [name,script] of [["Przewodnik",data["/service-navigator.js"]],
  ["Chatbot",data["/chat-assistant.js"]]]){
  assert.ok(script.includes('window.location.pathname.startsWith("/"+"v2/")')&&
-           script.includes('replace(/\.html$/,"")'),
+           script.includes(String.raw`replace(/\.html$/,"")`),
   name+": brakuje bezposrednich adresow bez .html w najnowszym wydaniu");
 }
 

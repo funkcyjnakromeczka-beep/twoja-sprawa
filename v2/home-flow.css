@@ -96,6 +96,15 @@
   .premium-v2 .mobile-contact-bar a{font-size:.7rem}
   .premium-v2 .mobile-contact-bar a strong{font-size:.74rem}
 }
+/* Avoid overlap with the three-action mobile bar on Android browsers
+   without :has() support. The JS event hides the bar while chat is open. */
+@media(max-width:650px){
+ body.premium-v2 .chat-assistant{
+  bottom:calc(89px + env(safe-area-inset-bottom));
+  right:10px;
+  z-index:110;
+ }
+}
 /* Native hidden state overrides all display/grid rules when the contact
    section is visible; the three native links still work without scripts. */
 .premium-v2 .mobile-contact-bar[hidden]{display:none!important}

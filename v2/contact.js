@@ -81,6 +81,34 @@
     });
    }
    advisor.append(title,info,call,directMail);
+   // Direct-copy option for visitors whose device has no default mail application.
+   // Only public adviser addresses are copied; no visitor input is stored or tracked.
+   const emailCopy=document.createElement("div");
+   emailCopy.className="contact-advisor-copy";
+   const emailAddress=document.createElement("span");
+   emailAddress.className="contact-advisor-copy-address";
+   emailAddress.textContent=advisorEmail;
+   emailCopy.append(emailAddress);
+   if(navigator.clipboard?.writeText){
+    const copyButton=document.createElement("button");
+    copyButton.type="button";
+    copyButton.className="contact-advisor-copy-button";
+    copyButton.textContent="Skopiuj e-mail";
+    const copyFeedback=document.createElement("small");
+    copyFeedback.className="contact-advisor-copy-status";
+    copyFeedback.setAttribute("role","status");
+    copyFeedback.setAttribute("aria-live","polite");
+    copyButton.addEventListener("click",async()=>{
+     try{
+      await navigator.clipboard.writeText(advisorEmail);
+      copyFeedback.textContent="Skopiowano adres e-mail. Możesz wkleić go w swojej poczcie.";
+     }catch{
+      copyFeedback.textContent="Kopiowanie jest niedostępne. Zaznacz adres e-mail widoczny obok przycisku.";
+     }
+    });
+    emailCopy.append(copyButton,copyFeedback);
+   }
+   advisor.append(emailCopy);
    if(isSKD){
     const tip=document.createElement("span");
     tip.textContent="Do analizy dołącz pełną umowę kredytową do wiadomości e-mail i podaj numer telefonu. Formularz na stronie nie przesyła załączników.";

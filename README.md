@@ -1,5 +1,7 @@
 # Twoja Sprawa — SuccessTree
 
+**Audyt IV — 16.11.2026:** [1000 kontroli wydania i nowe ulepszenia nawigacji/SEO](docs/audyt-1000-kontroli-i-nowe-ulepszenia-2026-11-16.md). Pakiet obejmuje 229 bezpośrednich linków do nagłówków, 40 spójnych BreadcrumbList, usunięcie duplikatu AboutPage oraz naprawę kolizji odnośników w kartach. Kontrola regresji: `node scripts/test-1000-release-checks.mjs` uruchamiana po budowaniu produkcyjnym. **1000 kontroli nie oznacza 1000 zmian w interfejsie.**
+
 **Audyt III — 16.11.2026:** [1011 wykonanych ulepszeń na 47 podstronach — pełna lista z testu wydania](docs/audyt-1011-ulepszen-2026-11-16.md). Zakres: 289 opisów działania odnośników, 231 adresowalnych nagłówków, 211 skrótów spisu treści, 175 nazwanych regionów oraz 105 usprawnień nawigacji kontaktowej i powrotu. Kontrola: `node scripts/test-content-anchors.mjs`.
 
 **Audyt II — 16.11.2026:** [106 kolejnych wdrożonych poprawek grafik, prywatności i dostępności nawigacji](docs/audyt-106-kolejnych-ulepszen-2026-11-16.md), potwierdzonych przez `node scripts/test-media-navigation-quality.mjs` i produkcyjne testy GitHub Actions.

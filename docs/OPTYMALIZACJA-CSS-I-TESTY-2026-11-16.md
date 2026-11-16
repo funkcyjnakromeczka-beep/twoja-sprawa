@@ -18,3 +18,11 @@ Strona główna korzysta z jednego pliku CSS. Na podstronach usług podstawowy C
 ## Dalsze prace
 
 Zweryfikować w praktyce Core Web Vitals i rzeczywisty wzrost liczby zgłoszeń. Nie można wywnioskować ich zmian z samego spadku liczby żądań CSS.
+
+## Zmierzony zakres w buildzie GitHub Actions
+
+- **42 z 47 podstron** mają scalenie dodatkowych arkuszy.
+- **224 żądania CSS mniej** przy pojedynczym przejściu kolejno przez 42 zoptymalizowane podstrony, bez uwzględnienia cache. Dla pojedynczej podstrony redukcja jest mniejsza i zależy od jej stylów.
+- **22 unikatowe pakiety warstw** o nazwach zawierających fragment SHA-256.
+- **1000/1000** kontroli HTML/SEO/odnośników/usług w kandydacie wydania.
+- Cache-Control `immutable` jest zarezerwowany wyłącznie dla plików nazwanych skrótem treści; polityka pozostałych zasobów pozostaje bez zmian.

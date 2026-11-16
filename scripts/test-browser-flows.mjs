@@ -661,6 +661,10 @@ try{
   assert.equal(serviceStyles.length,3,"Core service CSS should load in three requests, preserving shared caches");
   assert.ok(layerStyles[0].decoded>1000&&layerStyles[0].decoded<65000,
    "Merged service CSS layers exceed 65 KB decoded");
+  const hashedCss=await servicePerfPage.request.get(origin+layerStyles[0].path);
+  assert.equal(hashedCss.status(),200,"The immutable CSS asset must be retrievable");
+  assert.match(hashedCss.headers()["cache-control"]||"",/immutable/i,
+   "Content-addressed CSS should carry immutable Cache-Control");
   console.log("SERVICE_RESOURCE_REPORT "+JSON.stringify(serviceStyles));
  }finally{await servicePerfPage.close();}
 

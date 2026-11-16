@@ -324,6 +324,6 @@ const releaseInfo={
  builtAt:new Date().toISOString()
 };
 await writeFile(join(dest,"release-info.json"),JSON.stringify(releaseInfo,null,2)+"\n");
-await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n");
+await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n\n/layers-*.css\n  Cache-Control: public, max-age=31536000, immutable\n");
 console.log("CSS_LAYER_BUILD "+JSON.stringify({pages:cssLayerReport.pages,requestsSavedPerFullSiteVisit:cssLayerReport.requestsSaved,uniqueBundles:cssLayerReport.unique.size}));
 console.log("Built "+pages.length+" pages in dist/ for "+origin+". This command does not publish.");

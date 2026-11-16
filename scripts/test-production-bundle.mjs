@@ -121,6 +121,8 @@ for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swia
 assert.ok(!headers.includes("X-Robots-Tag: noindex"),"preview response headers leaked");
 assert.ok(headers.includes("X-Frame-Options: SAMEORIGIN"),"Own diagnostics must be allowed to frame same-origin forms");
 assert.ok(headers.includes("/release-info.json")&&headers.includes("Cache-Control: no-cache, no-store, must-revalidate"),"Release fingerprint must not be served from a stale cache");
+assert.ok(headers.includes("/layers-*.css")&&headers.includes("Cache-Control: public, max-age=31536000, immutable"),
+ "Content-addressed CSS should be safely cached between visits without stale styling");
 assert.ok(headers.includes("Content-Security-Policy: frame-ancestors 'self'"),"External sites must not frame the contact forms");
 assert.ok(!headers.includes("X-Frame-Options: DENY"),"DENY would block same-origin form diagnostics");
 for(const path of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","uslugi/kredyty-frankowe.html","uslugi/kredyty-pln.html","wiedza/index.html","faq.html","plan-dzialania.html"]){

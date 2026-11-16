@@ -7,6 +7,34 @@
 import assert from "node:assert/strict";
 
 const origin="https://twoja-sprawa.pages.dev";
+ 
+// Public delivery diagnostics. A User-Agent probe is not proof of real Googlebot access.
+for(const userAgent of [
+ "TwojaSprawa-Sitemap-Diagnostic/1.0",
+ "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+ "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)",
+ "OAI-SearchBot"
+]){
+ for(const path of ["/sitemap.xml","/robots.txt"]){
+  const response=await fetch(origin+path,{headers:{"User-Agent":userAgent},signal:AbortSignal.timeout(20000)});
+  const body=await response.text();
+  const urls=[...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1]);
+  console.log("SITEMAP_DELIVERY_PROBE "+JSON.stringify({
+   userAgent,path,status:response.status,finalUrl:response.url,redirected:response.redirected,
+   contentType:response.headers.get("content-type"),bytes:Buffer.byteLength(body),
+   cloudflareMitigation:response.headers.get("cf-mitigated"),
+   urlCount:urls.length,xmlNamespace:body.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'),
+   includesHtml:/<!doctype html|<html/i.test(body),sample:body.slice(0,130)
+  }));
+  assert.equal(response.status,200,"Public discovery file unavailable: "+path);
+  if(path==="/sitemap.xml"){
+   assert.ok(body.trimStart().startsWith("<?xml")&&body.includes("</urlset>"),"Missing XML document");
+   assert.ok(urls.length>0&&urls.every(url=>url.startsWith(origin+"/")),"Invalid sitemap URLs");
+   assert.ok(!/<!doctype html|<html/i.test(body),"HTML returned instead of XML");
+  }else assert.ok(body.includes("Sitemap: "+origin+"/sitemap.xml"),"Sitemap missing from robots.txt");
+ }
+}
+
 const targets=[
   "/","/robots.txt","/sitemap.xml","/release-info.json","/home-bundle.css","/home-flow.css","/styles.css","/network-brand.css","/mobile-service-cta.css",
   "/contact.js","/campaign-mobile-actions.js","/chat-assistant.js","/service-navigator.js","/kontakt","/faq",

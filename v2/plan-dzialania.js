@@ -10,6 +10,10 @@ const intro=root.querySelector("[data-plan-intro]");
 const checklist=root.querySelector("[data-plan-checklist]");
 const progress=root.querySelector("[data-plan-progress]");
 const printButton=root.querySelector("[data-plan-print]");
+const shareButton=root.querySelector("[data-plan-share]");
+const shareStatus=root.querySelector("[data-plan-share-status]");
+const shareFallback=root.querySelector("[data-plan-share-fallback]");
+const shareText=root.querySelector("[data-plan-share-text]");
 const resetButton=root.querySelector("[data-plan-reset]");
 const contact=root.querySelector("[data-plan-contact]");
 const phoneLink=root.querySelector("[data-plan-call]");
@@ -116,6 +120,56 @@ for(const field of ["utm_medium","utm_campaign","utm_content"]){
  if(sanitize(val))attribution[field]=val;
 }
 let key="",stage="";
+const resetShare=()=>{
+ if(shareStatus)shareStatus.textContent="";
+ if(shareFallback)shareFallback.hidden=true;
+ if(shareText)shareText.value="";
+};
+const getPlanText=()=>{
+ const data=DATA[key];
+ if(!data)return "";
+ const current=data.stages?.[stage];
+ const steps=current?[current[1],...data.steps]:data.steps;
+ const checked=[...checklist.querySelectorAll('input[type="checkbox"]')];
+ const lines=steps.map((step,i)=>(checked[i]?.checked?"[x] ":"[ ] ")+(i+1)+". "+step);
+ const url=new URL(data.links.replace(/^\/v2\//,"/").replace(/\.html$/,""),window.location.origin);
+ return ["Twoja Sprawa — plan pierwszych kroków","Temat: "+data.title,
+  ...(current?["Etap: "+current[0]]:[]),"",...lines,"",
+  "Więcej: "+url.href,"Kontakt: "+data.phone,
+  "Materiał informacyjny. Każda sprawa wymaga indywidualnej analizy."].join("\n");
+};
+const sharePlan=async()=>{
+ if(!key||!shareButton||shareButton.disabled)return;
+ const data=DATA[key],content=getPlanText();
+ if(!content)return;
+ resetShare();
+ const url=new URL(data.links.replace(/^\/v2\//,"/").replace(/\.html$/,""),window.location.origin);
+ try{
+  if(typeof window.navigator?.share==="function"){
+   await window.navigator.share({title:"Plan pierwszych kroków — "+data.title,text:content,url:url.href});
+   if(shareStatus)shareStatus.textContent="Uruchomiono udostępnianie planu.";
+   return;
+  }
+  if(typeof window.navigator?.clipboard?.writeText==="function"){
+   await window.navigator.clipboard.writeText(content);
+   if(shareStatus)shareStatus.textContent="Lista skopiowana. Możesz wkleić ją do wiadomości.";
+   return;
+  }
+ }catch(error){
+  if(error?.name==="AbortError"){
+   if(shareStatus)shareStatus.textContent="Anulowano udostępnianie.";
+   return;
+  }
+ }
+ if(shareFallback&&shareText){
+  shareText.value=content;
+  shareFallback.hidden=false;
+  shareText.focus();
+  shareText.select();
+  if(shareStatus)shareStatus.textContent="Automatyczne kopiowanie niedostępne. Skopiuj zaznaczony tekst ręcznie.";
+ }else if(shareStatus)shareStatus.textContent="Nie udało się skopiować. Możesz wydrukować listę.";
+};
+
 const resetProgress=()=>{
  const checks=[...checklist.querySelectorAll('input[type="checkbox"]')];
  const completed=checks.filter(input=>input.checked).length;
@@ -140,6 +194,7 @@ const render=()=>{
   const empty=document.createElement("li");empty.className="plan-placeholder";empty.textContent="Po wybraniu tematu pojawi się tutaj lista czynności.";
   checklist.replaceChildren(empty);stageContainer.hidden=true;
   progress.textContent="0 z 0";printButton.disabled=true;resetButton.disabled=true;
+  if(shareButton)shareButton.disabled=true;resetShare();
   contact.href="/v2/kontakt.html";contact.textContent="Przejdź do formularza →";if(phoneLink)phoneLink.hidden=true;if(detailsLink)detailsLink.hidden=true;if(emailLink)emailLink.hidden=true;if(emailHint)emailHint.hidden=true;return;
  }
  title.textContent=data.title;
@@ -157,6 +212,7 @@ const render=()=>{
   label.append(checkbox,text);item.append(label);checklist.append(item);
  }
  resetProgress();printButton.disabled=false;resetButton.disabled=false;
+ if(shareButton)shareButton.disabled=false;resetShare();
  contact.href=makeLink(key,stage);
  contact.textContent=key==="skd"?"Zostaw numer telefonu →":"Przejdź do formularza →";
  if(emailLink){
@@ -190,6 +246,7 @@ stageSelect.addEventListener("change",()=>{
  render();
 });
 printButton.addEventListener("click",()=>window.print());
+shareButton?.addEventListener("click",sharePlan);
 resetButton.addEventListener("click",()=>{
  key="";stage="";stageSelect.value="";render();
  kinds[0]?.focus();

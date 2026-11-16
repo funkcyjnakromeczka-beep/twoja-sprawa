@@ -78,3 +78,14 @@
  .plan-page .plan-checklist li span{color:#000!important;text-decoration:none!important}
  .plan-page .plan-checklist li:has(input:checked){border-color:#aaa;background:#eee}
 }
+
+/* Udostępnianie checklisty: czytelne na telefonie i bez transmisji do serwera. */
+.plan-page .plan-actions button[data-plan-share]{background:#fff0d1;color:#173848;border-color:#d1ab6b}
+.plan-page .plan-share-status{color:#ffe3b5;font-size:.89rem;line-height:1.6;margin:-7px 0 14px}
+.plan-page .plan-share-status:empty{display:none}
+.plan-page .plan-share-fallback{padding:14px;margin:5px 0 20px;border-radius:11px;background:#edf3f1;color:#173848}
+.plan-page .plan-share-fallback[hidden]{display:none!important}
+.plan-page .plan-share-fallback label{display:block;font-weight:700;margin-bottom:7px}
+.plan-page .plan-share-fallback textarea{display:block;width:100%;min-height:140px;resize:vertical;padding:12px;border:1px solid #759297;border-radius:8px;background:#fff;color:#173848;font:400 .92rem/1.55 system-ui,sans-serif}
+.plan-page .plan-share-fallback textarea:focus-visible{outline:3px solid #c89649;outline-offset:3px}
+@media print{.plan-page .plan-share-fallback,.plan-page .plan-share-status{display:none!important}}

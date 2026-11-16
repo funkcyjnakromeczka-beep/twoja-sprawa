@@ -5,7 +5,7 @@
  */
 import {PAGE_PATHS} from "./page-navigation.mjs";
 const EXCLUDED=new Set(["index.html","404.html","start.html","faq.html","szukaj.html",
- "plan-dzialania.html","narzedzia/test-formularzy.html",
+ "plan-dzialania.html","narzedzia/test-formularzy.html","wiedza/index.html",
  "kampanie/skd.html","kampanie/swiadczenie-wspierajace.html","kampanie/szkody-gornicze.html"]);
 const attr=(s,k)=>s.match(new RegExp('(?:^|\\s)'+k+'="([^"]*)"','i'))?.[1]||"";
 const escapeAttr=v=>v.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -19,7 +19,12 @@ export function addSectionPermalinks(markup,path){
  const head=markup.slice(0,m.index+m[0].length),tail=markup.slice(end);
  const changes=[];
  let ordinal=0;
- const body=markup.slice(m.index+m[0].length,end).replace(/<h([2-4])\b([^>]*)>([\s\S]*?)<\/h\1>/gi,(original,level,attrs,inside)=>{
+ const body=markup.slice(m.index+m[0].length,end).replace(/<h([2-4])\b([^>]*)>([\s\S]*?)<\/h\1>/gi,(original,level,attrs,inside,offset,input)=>{
+  // Never place an <a> inside a linked service card or any ancestor anchor:
+  // nested links cause HTML parser repair, duplicated cards and broken filters.
+  let insideLink=false;
+  for(const match of input.slice(0,offset).matchAll(/<\/?a\b[^>]*>/gi))insideLink=!match[0].startsWith("</");
+  if(insideLink)return original;
   ordinal++;
   const id=attr(attrs,"id");
   const label=text(inside);

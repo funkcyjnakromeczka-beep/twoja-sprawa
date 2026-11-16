@@ -699,7 +699,7 @@ try{
  const savedName=preservedForm.locator('.contact-form input[autocomplete="given-name"]');
  await savedName.fill("Testowy klient");
  await preservedForm.locator(".contact-case-details > summary").click();
- const guideURL=preservedForm.locator('.contact-form .contact-guide-box a');
+ const guideURL=preservedForm.locator('.contact-form .contact-guide-box a:not(.contact-guide-plan-link)');
  if(await guideURL.getAttribute("target")!=="_blank")throw Error("Checklist link must open a new tab");
  const [guidePopup]=await Promise.all([preservedForm.waitForEvent("popup"),guideURL.click()]);
  await guidePopup.waitForLoadState("domcontentloaded");

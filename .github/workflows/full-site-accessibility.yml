@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'v2/**'
       - 'scripts/test-full-site-accessibility.mjs'
       - '.github/workflows/full-site-accessibility.yml'
 concurrency:

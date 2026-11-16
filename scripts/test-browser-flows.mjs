@@ -656,6 +656,11 @@ try{
    "Production base CSS should be reduced on service pages");
   assert.ok((byPath.get("/premium-v2.css")||0)>0&&(byPath.get("/premium-v2.css")||Infinity)<180000,
    "Production premium CSS should omit author comments on service pages");
+  const layerStyles=serviceStyles.filter(entry=>/^\\/layers-[a-f0-9]{16}\\.css$/.test(entry.path));
+  assert.equal(layerStyles.length,1,"Expected one content-addressed service layer bundle");
+  assert.equal(serviceStyles.length,3,"Core service CSS should load in three requests, preserving shared caches");
+  assert.ok(layerStyles[0].decoded>1000&&layerStyles[0].decoded<65000,
+   "Merged service CSS layers exceed 65 KB decoded");
   console.log("SERVICE_RESOURCE_REPORT "+JSON.stringify(serviceStyles));
  }finally{await servicePerfPage.close();}
 

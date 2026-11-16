@@ -5,6 +5,8 @@ on:
     paths:
       - 'v2/**'
       - 'scripts/test-browser-flows.mjs'
+      - 'scripts/build.mjs'
+      - 'scripts/subpage-css-bundles.mjs'
       - '.github/workflows/browser-flows.yml'
   workflow_dispatch:
 concurrency:

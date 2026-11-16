@@ -6,6 +6,8 @@ on:
     paths:
       - 'v2/**'
       - 'scripts/test-full-site-accessibility.mjs'
+      - 'scripts/build.mjs'
+      - 'scripts/subpage-css-bundles.mjs'
       - '.github/workflows/full-site-accessibility.yml'
 concurrency:
   group: twoja-sprawa-full-site-a11y-${{ github.ref }}

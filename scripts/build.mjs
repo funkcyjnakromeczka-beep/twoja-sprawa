@@ -13,6 +13,7 @@ import {improveMediaAndNavigation} from "./media-navigation-quality.mjs";
 import {improveContentLinks} from "./content-anchors.mjs";
 import {addSectionPermalinks} from "./heading-permalinks.mjs";
 import {appendRelatedContent} from "./related-content.mjs";
+import {bundleSubpageCss} from "./subpage-css-bundles.mjs";
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
 const release=process.env.RELEASE==="1";
@@ -62,6 +63,7 @@ async function fetchPortraits(){
  }
 }
 const pages=[];
+const cssLayerReport={pages:0,requestsSaved:0,unique:new Set()};
 const structured = (route,canonical,title,markup) => {
   // FAQPage reflects only answers visibly published on /faq; no invented recommendations.
   const decodeEntities=value=>value.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">");
@@ -259,6 +261,17 @@ async function walk(dir){
       const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
       if(rel==="index.html")html=await bundleHomepageStyles(html);
+      else {
+       const layerResult=await bundleSubpageCss(html,
+        async filename=>stripCssComments((await readFile(join(source,filename),"utf8")).replaceAll("/v2/assets/","/assets/")),
+        (filename,content)=>writeFile(join(dest,filename),content));
+       html=layerResult.html;
+       if(layerResult.bundled){
+        cssLayerReport.pages++;
+        cssLayerReport.requestsSaved+=layerResult.requestsSaved;
+        cssLayerReport.unique.add(layerResult.filename);
+       }
+      }
       // Avoid extra redirects: static links use the same extensionless public paths as sitemap.
       html=html.replace(/href="(\/[^"?#]+)\.html(?=[?#"])/g,(_m,path)=>'href="'+path);
       html=localizePortraits(html);
@@ -312,4 +325,5 @@ const releaseInfo={
 };
 await writeFile(join(dest,"release-info.json"),JSON.stringify(releaseInfo,null,2)+"\n");
 await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n");
+console.log("CSS_LAYER_BUILD "+JSON.stringify({pages:cssLayerReport.pages,requestsSavedPerFullSiteVisit:cssLayerReport.requestsSaved,uniqueBundles:cssLayerReport.unique.size}));
 console.log("Built "+pages.length+" pages in dist/ for "+origin+". This command does not publish.");

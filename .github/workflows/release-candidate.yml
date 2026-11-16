@@ -5,6 +5,8 @@ on:
     paths:
       - 'v2/**'
       - 'scripts/build.mjs'
+      - 'scripts/subpage-css-bundles.mjs'
+      - 'scripts/test-subpage-bundles.mjs'
       - 'scripts/page-navigation.mjs'
       - 'scripts/media-navigation-quality.mjs'
       - 'scripts/content-anchors.mjs'
@@ -44,6 +46,8 @@ jobs:
       - name: Sprawdź składnię i pliki wydania
         run: |
           node --check scripts/build.mjs
+          node --check scripts/subpage-css-bundles.mjs
+          node --check scripts/test-subpage-bundles.mjs
           node --check scripts/page-navigation.mjs
           node --check scripts/test-page-navigation.mjs
           node --check scripts/media-navigation-quality.mjs
@@ -78,6 +82,7 @@ jobs:
           node scripts/test-heading-permalinks.mjs
           node scripts/test-visible-breadcrumb-schema.mjs
           node scripts/test-1000-release-checks.mjs --manifest
+          node scripts/test-subpage-bundles.mjs
           node scripts/test-production-bundle.mjs
           node scripts/test-html-tags.mjs
           node scripts/test-internal-links.mjs

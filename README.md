@@ -1,5 +1,7 @@
 # Twoja Sprawa — SuccessTree
 
+**Audyt III — 16.11.2026:** [1011 wykonanych ulepszeń na 47 podstronach — pełna lista z testu wydania](docs/audyt-1011-ulepszen-2026-11-16.md). Zakres: 289 opisów działania odnośników, 231 adresowalnych nagłówków, 211 skrótów spisu treści, 175 nazwanych regionów oraz 105 usprawnień nawigacji kontaktowej i powrotu. Kontrola: `node scripts/test-content-anchors.mjs`.
+
 **Audyt II — 16.11.2026:** [106 kolejnych wdrożonych poprawek grafik, prywatności i dostępności nawigacji](docs/audyt-106-kolejnych-ulepszen-2026-11-16.md), potwierdzonych przez `node scripts/test-media-navigation-quality.mjs` i produkcyjne testy GitHub Actions.
 
 **Audyt 16.11.2026:** [100 wdrożonych poprawek dostępności i nawigacji — lista każdej zmiany](docs/audyt-100-ulepszen-2026-11-16.md). Kontrola: `node scripts/test-page-navigation.mjs` oraz testy produkcyjne GitHub Actions.

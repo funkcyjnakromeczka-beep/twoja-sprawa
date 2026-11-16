@@ -73,6 +73,7 @@ jobs:
           node --check scripts/heading-permalinks.mjs
           node --check scripts/test-heading-permalinks.mjs
           node --check scripts/test-visible-breadcrumb-schema.mjs
+          node --check scripts/test-1000-release-checks.mjs
           node --check scripts/seo-policy.mjs
           node --check scripts/test-seo-policy.mjs
           node --check scripts/test-campaign-links.mjs

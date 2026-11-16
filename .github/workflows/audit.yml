@@ -115,7 +115,7 @@ jobs:
       - name: Potwierdź 100 poprawek dostępności i nawigacji na 47 stronach
         run: node scripts/test-page-navigation.mjs
       - name: Sprawdź drugą setkę usprawnień mediów, nawigacji i prywatności
-        run: node scripts/test-media-navigation-quality.mjs
+        run: node scripts/test-media-navigation-quality.mjs --manifest
       - name: Kontrola bramek przed oficjalną publikacją
         run: node scripts/test-release-readiness.mjs
       - name: Test interaktywnego planu pierwszych kroków

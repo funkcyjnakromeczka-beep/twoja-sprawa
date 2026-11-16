@@ -34,6 +34,19 @@ for(const path of PAGE_PATHS){
   assert.ok(toc.length>=3&&toc.length<=24,"TOC size must remain practical: "+path);
   assert.equal((html.match(/class="content-toc"/g)||[]).length,1,"Duplicate TOC: "+path);
   assert.ok(html.includes('href="/v2/content-anchors.css"'),"Missing TOC stylesheet: "+path);
+
+  assert.equal(changes.filter(c=>c.kind==="content-toc-contact").length,1,"One contact path per TOC: "+path);
+  assert.equal(changes.filter(c=>c.kind==="content-return-top").length,1,"One return-to-top link per TOC: "+path);
+  const contact=changes.find(c=>c.kind==="content-toc-contact").detail.replace("existing form: ","");
+  assert.ok(html.includes('class="content-toc-contact"><a href="'+contact+'"'),"TOC contact must target existing form: "+path);
+  if(contact==="#formularz")
+   assert.ok(html.includes('id="formularz"'),"Same-page form link without real target: "+path);
+  const back=changes.find(c=>c.kind==="content-return-top").detail.replace("return to #","");
+  assert.ok(html.includes('href="#'+back+'">↑ Wróć na początek strony</a>'),"Return link must point at existing heading: "+path);
+  assert.ok(html.includes('id="'+back+'"'),"Return link heading must exist: "+path);
+  for(const field of ["name=","phone=","email=","pesel="])
+   assert.ok(!contact.includes(field),"Contact shortcut must not include personal data fields: "+path);
+
   for(const t of toc){
    const id=t.detail.match(/#[a-z0-9-]+/)?.[0].slice(1);
    assert.ok(id,"TOC item without target ID: "+path);
@@ -61,8 +74,8 @@ for(const path of PAGE_PATHS){
 const list=Object.entries(kindTotals).sort((a,b)=>b[1]-a[1]);
 console.log("CONTENT_ENHANCEMENTS_RESULT "+JSON.stringify({pages:PAGE_PATHS.length,total:improvements.length,kinds:Object.fromEntries(list)}));
 console.log("CONTENT_ENHANCEMENTS_PER_PAGE "+JSON.stringify(pageTotals));
-assert.ok(improvements.length>350,"Audit should generate meaningful coverage on all editorial pages");
-for(const type of ["heading-deep-link","named-content-region","link-action-description","content-toc-shortcut","content-toc-panel"])
+assert.ok(improvements.length>=1000,"At least 1000 audited, individually identified new improvements required: "+improvements.length);
+for(const type of ["heading-deep-link","named-content-region","link-action-description","content-toc-shortcut","content-toc-panel","content-toc-contact","content-return-top"])
  assert.ok((kindTotals[type]||0)>0,"Expected actual "+type+" improvements");
 const ids=new Set();
 for(const i of improvements){

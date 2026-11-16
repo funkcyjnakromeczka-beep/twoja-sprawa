@@ -749,8 +749,10 @@ try{
     .map(entry=>({path:new URL(entry.name).pathname,
       decoded:entry.decodedBodySize,transfer:entry.transferSize})));
   const byPath=new Map(serviceStyles.map(entry=>[entry.path,entry.decoded]));
-  assert.ok((byPath.get("/styles.css")||0)>0&&(byPath.get("/styles.css")||Infinity)<63000,
-   "Production base CSS should be reduced on service pages");
+  // A local PESEL disclosure guard adds less than 0.5 KB decoded to shared service CSS.
+  // Keep the regression cap strict while accounting for this verified feature.
+  assert.ok((byPath.get("/styles.css")||0)>0&&(byPath.get("/styles.css")||Infinity)<63500,
+   "Production base CSS exceeds updated 63.5 KB security-feature budget");
   assert.ok((byPath.get("/premium-v2.css")||0)>0&&(byPath.get("/premium-v2.css")||Infinity)<180000,
    "Production premium CSS should omit author comments on service pages");
   const layerStyles=serviceStyles.filter(entry=>entry.path.startsWith("/layers-")&&entry.path.endsWith(".css")&&entry.path.length===28);

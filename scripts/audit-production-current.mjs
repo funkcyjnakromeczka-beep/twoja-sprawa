@@ -38,6 +38,11 @@ const responses=await Promise.all(targets.map(textResponse));
 const data=Object.fromEntries(targets.map((path,index)=>[path,responses[index]]));
 const home=data["/"], css=data["/home-flow.css"], contact=data["/contact.js"];
 
+const verificationHead=home.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1]||"";
+assert.match(verificationHead,/<meta\s+name="google-site-verification"\s+content="i__DrFgMAIvKV97RDCtGPpJyrsyvynktSj7ABGYJrrM"\s*\/?>/,
+ "Publiczna strona glowna nie zawiera znacznika wlasnosci Google w head");
+console.log("GSC_PUBLIC_VERIFICATION_TAG_OK: production homepage HTTP 200 and owner token present in head");
+
 for(const [name,script] of [["Przewodnik",data["/service-navigator.js"]],
  ["Chatbot",data["/chat-assistant.js"]]]){
  assert.ok(script.includes('window.location.pathname.startsWith("/"+"v2/")')&&

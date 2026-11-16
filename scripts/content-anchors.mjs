@@ -6,8 +6,8 @@
 import {PAGE_PATHS} from "./page-navigation.mjs";
 
 const attr=(tag,name)=>{
- const m=tag.match(new RegExp('(?:^|\\s)'+name+'\\s*=\\s*(?:"([^"]*)"|\\'([^\\']*)\\')','i'));
- return m?.[1]??m?.[2]??"";
+ const m=tag.match(new RegExp('(?:^|\\s)'+name+'\\s*=\\s*"([^"]*)"','i'));
+ return m?.[1]??"";
 };
 const has=(tag,name)=>new RegExp('(?:^|\\s)'+name+'\\s*=','i').test(tag);
 const extend=(tag,attributes)=>tag.replace(/>$/,attributes+">");

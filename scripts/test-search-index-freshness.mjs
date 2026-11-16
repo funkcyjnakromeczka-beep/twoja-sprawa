@@ -86,7 +86,8 @@ const liveExamples=[
  ["kredyt CHF","franki"],
  ["słup na działce","przesyl"]
 ];
-const suggestionsHtml=indexHtml.match(/<div class="search-hints"[^>]*>([\s\S]*?)<\/div>/)?.[1]||"";
+const searchPageHtml=await readFile("v2/szukaj.html","utf8");
+const suggestionsHtml=searchPageHtml.match(/<div class="search-hints"[^>]*>([\s\S]*?)<\/div>/)?.[1]||"";
 const suggestionLinks=[...suggestionsHtml.matchAll(/<a href="\?q=([^"]+)">([^<]+)<\/a>/g)];
 assert.equal(suggestionLinks.length,6,"The search page must offer six genuine example queries");
 for(const [query,category] of liveExamples){

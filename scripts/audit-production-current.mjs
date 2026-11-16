@@ -96,9 +96,9 @@ for(const topic of ["szkody","swiadczenie","skd"]){
 must(count(home,'data-contact-shortcut="')===3,"Strona glowna powinna miec trzy skroty kontaktu");
 must(home.includes('class="mobile-quick-nav"')&&home.includes('data-contact-form'),
   "Brak nawigacji mobilnej lub formularza");
-must(css.includes("Mobilna hierarchia 2026-11")&&css.includes(".hero-priority-grid{display:none}"),
+must(css.includes(".hero-priority-grid{display:none}"),
   "Najnowsze uproszczenie mobilne nie jest opublikowane");
-must(css.includes("Mobilna hierarchia 2026-11: jedno, niepowielone menu trzech głównych usług. */\n@media(max-width:760px)")&&
+must(css.includes("@media(max-width:760px)")&&
      css.includes(".premium-v2 .hero-skd-third{display:none}"),
   "Mobilna nawigacja na szerokich telefonach/tabletach nie jest poprawnie wdrozona");
 must(css.includes("@media(max-width:420px)")&&

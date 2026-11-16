@@ -9,7 +9,7 @@ const services=[
  ["kredyty-pln","https://eli.gov.pl/eli/DU/2011/715/ogl"],
  ["renty-powypadkowe","https://rf.gov.pl/edukacja/baza-wiedzy/najczestsze-pytania-i-odpowiedzi-faq/poszkodowani-w-wypadkach-drogowych-i-ich-bliscy/"],
  ["kredyty-frankowe","https://rf.gov.pl/edukacja/baza-wiedzy/najczestsze-pytania-i-odpowiedzi-faq/spor-frankowy-droga-sadowa-i-mediacyjna/"],
- ["sluzebnosc-przesylu","https://eli.gov.pl/eli/DU/2025/1071/ogl"]
+ ["sluzebnosc-przesylu","https://eli.gov.pl/eli/DU/2026/795/ogl"]
 ];
 let checked=0;
 for(const [slug,source] of services){

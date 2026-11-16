@@ -36,8 +36,8 @@ jobs:
       contents: read
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Sprawdź składnię i pliki wydania
@@ -82,7 +82,7 @@ jobs:
       - name: Identyfikator zbudowanej wersji
         run: cat dist/release-info.json
       - name: Zapisz tymczasowy pakiet wydania do pobrania
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: twoja-sprawa-kandydat-produkcji
           path: dist/

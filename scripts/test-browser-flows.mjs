@@ -609,7 +609,8 @@ try{
  // Repeatable public-site resource inspection; read-only, no visitor tracking.
  const perfPage=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
  try{
-  await perfPage.goto(origin+"/",{waitUntil:"load",timeout:40000});
+  // CSS and DOM must be ready; third-party images must not block the navigation event.
+  await perfPage.goto(origin+"/",{waitUntil:"domcontentloaded",timeout:40000});
   await perfPage.waitForTimeout(1200);
   const perf=await perfPage.evaluate(()=>{
    const resources=performance.getEntriesByType("resource")
@@ -642,7 +643,7 @@ try{
  const servicePerfPage=await browser.newPage({viewport:{width:390,height:844}});
  try{
   const response=await servicePerfPage.goto(origin+"/uslugi/szkody-gornicze",{
-   waitUntil:"load",timeout:40000
+   waitUntil:"domcontentloaded",timeout:40000
   });
   assert.equal(response?.status(),200);
   const serviceStyles=await servicePerfPage.evaluate(()=>

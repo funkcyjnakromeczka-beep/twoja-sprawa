@@ -84,3 +84,14 @@
 .local-mining-page .local-contact .lead-panel form.contact-form a:focus-visible{
  outline:3px solid #a77638;outline-offset:3px
 }
+
+/* WCAG 2.2 AA: odnośniki doradcy mają ciemne tło (#17364a).
+   Wcześniejsza ogólna reguła wymuszała ciemny tekst na ciemnym tle. */
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor > a,
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor > a:hover,
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor > a:focus-visible{
+  color:#fff!important;
+  background-color:#17364a;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}

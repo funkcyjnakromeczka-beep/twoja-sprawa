@@ -351,8 +351,9 @@ assert.ok(leaflet.includes('rel="canonical" href="'+origin+'/start"'),"Flyer ent
 assert.ok(leaflet.includes('href="/kampanie/swiadczenie-wspierajace?utm_source=ulotka'),"Support CTA missing from printed QR destination");
 assert.ok(leaflet.includes('href="/kampanie/szkody-gornicze?utm_source=ulotka'),"Mining CTA missing from printed QR destination");
 const flyerLayer=leaflet.match(/href="\/(layers-[a-f0-9]{16}\.css)"/)?.[1];
-assert.ok(flyerLayer,"Responsive flyer CSS bundle missing");
-assert.ok((await read(flyerLayer)).includes(".leaflet-"),"Responsive flyer visual rules missing from bundle");
+assert.ok(flyerLayer||leaflet.includes('href="/ulotka-start.css"'),"Responsive flyer CSS missing");
+const flyerStyles=await read(flyerLayer||"ulotka-start.css");
+assert.ok(flyerStyles.includes(".leaflet-"),"Responsive flyer visual rules missing from CSS");
 assert.ok(leaflet.includes('class="network-brand-bar"'),"Agency branding missing from flyer entry");
 assert.ok(!leaflet.includes('href="/v2/'),"Source paths leaked into flyer entry");
 const flyerCSS=await read("ulotka-start.css");

@@ -142,6 +142,6 @@ window.TwojaSprawaSearchPages1=[
     "title": "Renta powypadkowa — sprawdź, czy odpowiada Twojej sytuacji",
     "description": "Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia.",
     "category": "renty",
-    "keywords": "Renta powypadkowa — sprawdź, czy odpowiada Twojej sytuacji v2 uslugi renty powypadkowe html Renty Powypadkowe"
+    "keywords": "Renta powypadkowa — sprawdź, czy odpowiada Twojej sytuacji v2 uslugi renty powypadkowe html Renty Powypadkowe waloryzacja renty waloryzacji podwyższenie renty ubezpieczyciela"
   }
 ];

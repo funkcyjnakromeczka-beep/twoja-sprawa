@@ -272,6 +272,54 @@ try{
  assert.ok(contactOverflow<=2,"Contact address box causes horizontal scrolling: "+contactOverflow);
  console.log("PASS: copy e-mail switches correctly between Wojciech and Paulina for four services.");
 
+
+ // Guard against accidentally sharing a real-looking PESEL in an open
+ // enquiry. No lead is sent; even the blocked POST is intercepted.
+ const safeFormPage=await browser.newPage({viewport:{width:390,height:844}});
+ let blockedPostCount=0;
+ try{
+  await safeFormPage.route("https://api.web3forms.com/submit",route=>{
+   blockedPostCount++;
+   return route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({success:true})});
+  });
+  await safeFormPage.goto(origin+"/kontakt",{waitUntil:"domcontentloaded",timeout:40000});
+  const form=safeFormPage.locator(".contact-form");
+  const service=form.locator('select[id^="cf-service-"]');
+  await service.selectOption("Szkody górnicze");
+  await form.locator('[autocomplete="given-name"]').fill("OsobaTestowa");
+  await form.locator('[autocomplete="tel"]').fill("796441345");
+  await form.locator('input[type="checkbox"][required]').check();
+  const firstTen="0221010000",weights=[1,3,7,9,1,3,7,9,1,3];
+  const checksum=(10-weights.reduce((sum,w,i)=>sum+w*Number(firstTen[i]),0)%10)%10;
+  const syntheticPesel=firstTen+checksum; // checksum-valid date, synthetic only
+  const message=form.locator('textarea[id^="cf-message-"]');
+  await message.fill("Opis uszkodzeń. Numer PESEL: "+syntheticPesel);
+  await form.locator(".contact-sensitive-warning").waitFor({state:"visible"});
+  assert.match(await form.locator(".contact-sensitive-warning").textContent(),/PESEL/);
+  await form.locator('button[type="submit"]').click();
+  assert.equal(blockedPostCount,0,"PESEL-containing message must never reach Web3Forms");
+  assert.ok((await message.inputValue()).includes(syntheticPesel),"Do not silently mutate submitted text");
+  await form.locator(".contact-sensitive-remove").click();
+  assert.ok(!(await message.inputValue()).includes(syntheticPesel),
+   "Explicit remove action must redact only matching PESEL");
+  assert.ok((await message.inputValue()).includes("[numer usunięty]"));
+  assert.equal(await form.locator(".contact-sensitive-warning").isVisible(),false,
+   "Privacy warning must clear after removal");
+  const city=form.locator('[autocomplete="address-level2"]');
+  await city.fill("Lubin "+syntheticPesel);
+  await form.locator('button[type="submit"]').click();
+  assert.equal(blockedPostCount,0,"Location field should also block an exposed PESEL");
+  assert.equal(await form.locator(".contact-sensitive-warning").isVisible(),true);
+  await city.fill("Lubin");
+  assert.equal(await form.locator(".contact-sensitive-warning").isVisible(),false);
+  // An arbitrary 11-digit string with the wrong checksum must not
+  // incorrectly block a normal visitor message.
+  const invalidChecksum=firstTen+((checksum+1)%10);
+  await message.fill("Numer sprawy "+invalidChecksum);
+  assert.equal(await form.locator(".contact-sensitive-warning").isVisible(),false);
+  console.log("PASS: sensitive input guard detects checksum-valid PESEL, blocks POST and supports explicit removal.");
+ }finally{await safeFormPage.close();}
+
  // Mock Web3Forms failures and success; NEVER transmit test contact data.
  // A failed request must preserve fields and offer a locally generated copy.
  const failedSubmitPage=await browser.newPage({viewport:{width:390,height:844}});

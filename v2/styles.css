@@ -630,3 +630,24 @@ h3{line-height:1.25}
 }
 /* Kontekstowe przejście z formularza do planu przygotowań — bez danych klienta. */
 .contact-guide-box .contact-guide-plan-link{min-height:44px;padding:10px 0;align-content:center}
+
+
+/* SENSITIVE_INPUT_GUARD_20261116: local-only PESEL detection, no third party call. */
+.contact-form .contact-sensitive-warning{
+ margin:10px 0 8px;padding:13px 15px;border:2px solid #b86940;
+ border-radius:11px;background:#fff3e7;color:#512517!important;
+ font:700 .9rem/1.55 system-ui,sans-serif;overflow-wrap:anywhere;
+}
+.contact-form .contact-sensitive-warning[hidden],
+.contact-form .contact-sensitive-remove[hidden]{display:none!important}
+.contact-form .contact-sensitive-remove{
+ display:inline-flex;min-height:46px;align-items:center;justify-content:center;
+ padding:10px 14px;margin:0 0 12px;border:2px solid #b86940;border-radius:9px;
+ background:#fff6eb;color:#5c2a1c!important;
+ font:750 .88rem/1.4 system-ui,sans-serif;cursor:pointer;text-align:center;
+}
+.contact-form .contact-sensitive-remove:hover{background:#ffe3c6}
+.contact-form .contact-sensitive-remove:focus-visible{
+ outline:3px solid #e4a247;outline-offset:3px
+}
+@media(max-width:590px){.contact-form .contact-sensitive-remove{width:100%}}

@@ -1,6 +1,26 @@
 /* Formularz kontaktowy: Web3Forms; mailto jako wariant awaryjny. */
 (() => {
  "use strict";
+
+ // Narrow data-minimization guard: only 11-digit values with a valid PESEL
+ // checksum and an actual date. This is not a full sensitive-data detector.
+ const peselWeights=[1,3,7,9,1,3,7,9,1,3];
+ const isLikelyPesel=digits=>{
+  if(!/^\d{11}$/.test(digits))return false;
+  const sum=peselWeights.reduce((total,weight,index)=>total+weight*Number(digits[index]),0);
+  if((10-sum%10)%10!==Number(digits[10]))return false;
+  const monthEncoded=Number(digits.slice(2,4)), day=Number(digits.slice(4,6));
+  let century=0, month=0;
+  for(const [offset,base] of [[0,1900],[20,2000],[40,2100],[60,2200],[80,1800]]){
+   if(monthEncoded>offset&&monthEncoded<=offset+12){century=base;month=monthEncoded-offset;break;}
+  }
+  if(!century||day<1||day>31)return false;
+  const year=century+Number(digits.slice(0,2));
+  const date=new Date(Date.UTC(year,month-1,day));
+  return date.getUTCFullYear()===year&&date.getUTCMonth()===month-1&&date.getUTCDate()===day;
+ };
+ const peselPattern=/(?<!\d)\d{11}(?!\d)/g;
+ const hasPesel=text=>[...String(text||"").matchAll(peselPattern)].some(match=>isLikelyPesel(match[0]));
  const services = ["Szkody górnicze","Świadczenie wspierające","Kredyt w PLN / SKD","Renty powypadkowe","Kredyty frankowe CHF","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
  const current = document.currentScript?.getAttribute("data-service") || "";
  const localCity = document.currentScript?.getAttribute("data-locality") || "";
@@ -356,6 +376,53 @@
   }
   const ackLabel=document.createElement("label");ackLabel.className="check";const ack=document.createElement("input");ack.type="checkbox";ack.required=true;ackLabel.append(ack,document.createTextNode(automatic ? " Zapoznałem/am się z informacjami o prywatności i proszę o kontakt w sprawie mojego zgłoszenia." : " Rozumiem, że wiadomość nie zostanie wysłana automatycznie. Zapoznałem/am się z informacjami o prywatności."));form.append(ackLabel);
   const privacy=document.createElement("a");privacy.href="/v2/polityka-prywatnosci.html";privacy.target="_blank";privacy.rel="noopener noreferrer";privacy.textContent="Informacje o prywatności (nowa karta)";form.append(privacy);
+  // Optional messages are not necessary to make initial contact. A visitor
+  // may accidentally paste a PESEL despite the explanatory warning.
+  // No input is logged, stored, submitted or sent for this local check.
+  const sensitiveWarning=document.createElement("p");
+  sensitiveWarning.className="contact-sensitive-warning";
+  sensitiveWarning.id="cf-sensitive-warning-"+Math.random().toString(36).slice(2,8);
+  sensitiveWarning.setAttribute("role","alert");
+  sensitiveWarning.hidden=true;
+  const sensitiveRemove=document.createElement("button");
+  sensitiveRemove.type="button";
+  sensitiveRemove.className="contact-sensitive-remove";
+  sensitiveRemove.textContent="Usuń numer PESEL z opisu";
+  sensitiveRemove.hidden=true;
+  form.append(sensitiveWarning,sensitiveRemove);
+  const updateSensitiveWarning=()=>{
+   const inCity=hasPesel(city.value),inMessage=hasPesel(msg.value);
+   const detected=inCity||inMessage;
+   sensitiveWarning.hidden=!detected;
+   sensitiveRemove.hidden=!inMessage;
+   sensitiveWarning.textContent=detected
+    ?(inCity
+      ?"W polu miejscowości wykryto numer wyglądający jak poprawny PESEL. Usuń go przed wysłaniem zgłoszenia."
+      :"W opisie wykryto numer wyglądający jak poprawny PESEL. Usuń go przed wysłaniem. Wystarczy ogólny opis sprawy.")
+    :"";
+   return detected;
+  };
+  city.addEventListener("input",updateSensitiveWarning);
+  msg.addEventListener("input",updateSensitiveWarning);
+  sensitiveRemove.addEventListener("click",()=>{
+   msg.value=msg.value.replace(peselPattern,candidate=>isLikelyPesel(candidate)?"[numer usunięty]":candidate);
+   updateSensitiveWarning();
+   const details=msg.closest?.("details");
+   if(details)details.open=true;
+   msg.focus();
+  });
+  const checkSensitiveWarning=()=>{
+   if(!updateSensitiveWarning())return true;
+   const target=hasPesel(city.value)?city:msg;
+   if(target===msg){
+    const disclosure=msg.closest?.("details");
+    if(disclosure)disclosure.open=true;
+   }
+   target.focus();
+   return false;
+  };
+  msg.setAttribute("aria-describedby",sensitiveWarning.id);
+  city.setAttribute("aria-describedby",sensitiveWarning.id);
   const button=document.createElement("button");button.className="btn";button.type="submit";button.textContent=automatic?"Wyślij zgłoszenie":"Przygotuj wiadomość e-mail";form.append(button);
   const status=document.createElement("p");status.setAttribute("role","status");status.setAttribute("aria-live","polite");form.append(status);
   // Alternatywny kontakt dostępny bez wysyłania formularza i niezależny od Web3Forms.
@@ -390,6 +457,7 @@
    event.preventDefault();if(sending)return;
    if(!checkName()){name.reportValidity();name.focus();return;}
    if(!checkContact())return;
+   if(!checkSensitiveWarning())return;
    if(!form.reportValidity())return;
    const advisorIsPaulina=["Świadczenie wspierające","Renty powypadkowe"].includes(select.value);
    const advisorName=advisorIsPaulina?"Paulina Chandrała":"Wojciech Obiegło";
@@ -400,7 +468,7 @@
     // Web3Forms kieruje wiadomosc do odbiorcy przypisanego do access_key.
     // advisor_email jest metadana w tresci zgłoszenia, nie zmienia odbiorcy.
     const payload={access_key:accessKey,subject:"Nowe zgłoszenie Twoja Sprawa — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,campaign_medium:safeMedium||"brak",campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
-    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");synchronizeFailureLinks=()=>{};status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();name.setCustomValidity("");refreshShortcutState();}catch{
+    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");synchronizeFailureLinks=()=>{};status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();updateSensitiveWarning();name.setCustomValidity("");refreshShortcutState();}catch{
      status.className="contact-status-error";
      status.replaceChildren();
      const errorText=document.createElement("span");

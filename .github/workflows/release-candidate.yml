@@ -11,6 +11,7 @@ on:
       - 'scripts/heading-permalinks.mjs'
       - 'scripts/test-heading-permalinks.mjs'
       - 'scripts/test-visible-breadcrumb-schema.mjs'
+      - 'scripts/test-1000-release-checks.mjs'
       - 'scripts/test-content-anchors.mjs'
       - 'scripts/test-media-navigation-quality.mjs'
       - 'scripts/test-page-navigation.mjs'
@@ -49,6 +50,7 @@ jobs:
           node --check scripts/heading-permalinks.mjs
           node --check scripts/test-heading-permalinks.mjs
           node --check scripts/test-visible-breadcrumb-schema.mjs
+          node --check scripts/test-1000-release-checks.mjs
           node --check scripts/test-production-bundle.mjs
           node --check scripts/test-html-tags.mjs
           node --check scripts/test-internal-links.mjs
@@ -67,6 +69,7 @@ jobs:
           node scripts/test-content-anchors.mjs
           node scripts/test-heading-permalinks.mjs
           node scripts/test-visible-breadcrumb-schema.mjs
+          node scripts/test-1000-release-checks.mjs --manifest
           node scripts/test-production-bundle.mjs
           node scripts/test-html-tags.mjs
           node scripts/test-internal-links.mjs

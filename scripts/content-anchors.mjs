@@ -95,7 +95,7 @@ export function improveContentLinks(markup,path){
  // A concise, collapsed TOC on content-heavy pages; section links use the
  // real heading IDs and do not alter the page's form/lead-routing logic.
  const h2=headings.filter(h=>h.level===2&&h.text);
- if(!TOC_EXCLUDE.has(path)&&h2.length>=3){
+ if(!TOC_EXCLUDE.has(path)&&h2.length>=3&&!body.includes('class="content-toc"')){
   const entries=h2.slice(0,24);
   const toc='<details class="content-toc"><summary>Spis treści — przejdź do sekcji</summary>'+
     '<nav aria-label="Spis treści strony"><ol>'+entries.map(h=>'<li><a href="#'+safe(h.id)+'">'+safe(h.text)+'</a></li>').join("")+
@@ -106,7 +106,7 @@ export function improveContentLinks(markup,path){
  }
  html=before+body+after;
  // Load a small CSS file only on pages that gained an actual TOC or heading.
- if(changes.some(c=>c.kind==="heading-deep-link"||c.kind==="content-toc-panel")){
+ if(changes.some(c=>c.kind==="content-toc-panel")){
   if(!html.includes('href="/v2/content-anchors.css"'))
    html=html.replace("</head>",'<link rel="stylesheet" href="/v2/content-anchors.css"></head>');
  }

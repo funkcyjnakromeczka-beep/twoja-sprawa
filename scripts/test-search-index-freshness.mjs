@@ -75,3 +75,31 @@ for(const [phrase,expected] of [
 assert.equal(engine.search("zupełnie nieistniejące xxyzzq xxxpq", "all",10).length,0,"Unknown query should not fabricate relevant results");
 assert.ok(engine.search("Świadczenie wspierające","swiadczenie",10).some(x=>!x.similar),"Literal search should retain its original strict behavior");
 console.log("SEARCH_NATURAL_POLISH_OK: six natural client questions find domain content, no-result state and strict lookup preserved.");
+
+// User-facing search examples must lead to actual results, not empty states.
+// These six pathways are deliberately independent of the category filters.
+const liveExamples=[
+ ["pęknięcia ścian","szkody"],
+ ["decyzja WZON","swiadczenie"],
+ ["umowa kredytowa SKD","skd"],
+ ["waloryzacja renty","renty"],
+ ["kredyt CHF","franki"],
+ ["słup na działce","przesyl"]
+];
+const suggestionsHtml=indexHtml.match(/<div class="search-hints"[^>]*>([\s\S]*?)<\/div>/)?.[1]||"";
+const suggestionLinks=[...suggestionsHtml.matchAll(/<a href="\?q=([^"]+)">([^<]+)<\/a>/g)];
+assert.equal(suggestionLinks.length,6,"The search page must offer six genuine example queries");
+for(const [query,category] of liveExamples){
+ const url=suggestionLinks.find(m=>m[2]===query);
+ assert.ok(url,"Missing search example: "+query);
+ const params=new URLSearchParams("?q="+url[1]);
+ assert.equal(params.get("q"),query,"Example query must survive URL encoding: "+query);
+ const result=engine.search(query,"all",100);
+ assert.ok(result.some(item=>item.category===category),
+  "Example leads to no relevant answer: "+query+" / "+category);
+}
+const searchCSS=await readFile("v2/site-search.css","utf8");
+assert.ok(searchCSS.includes(".search-hints a:focus-visible")&&searchCSS.includes("min-height:44px"),
+ "Search example links need accessible keyboard and finger targets");
+console.log("SEARCH_SIX_REAL_EXAMPLES_OK: mining, WZON, SKD, rents, CHF and transmission easement; all locally searchable.");
+

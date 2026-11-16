@@ -25,24 +25,27 @@ const decorativeSocialIcon=tag=>{
 export function improveMediaAndNavigation(markup,path){
  if(!PAGE_PATHS.includes(path))return {html:markup,changes:[]};
  const changes=[];
+ let imageIndex=0;
  let html=markup.replace(/<img\b[^>]*>/gi,original=>{
+  imageIndex++;
   let tag=original;
   const src=getAttr(tag,"src");
+  const imageReference="#"+imageIndex+" "+src;
   if(externalImage(tag)&&!attr(tag,"referrerpolicy")){
    tag=withAttr(tag,"referrerpolicy","no-referrer");
-   changes.push({kind:"external-image-privacy",detail:src});
+   changes.push({kind:"external-image-privacy",detail:imageReference});
   }
   if(!attr(tag,"decoding")){
    tag=withAttr(tag,"decoding","async");
-   changes.push({kind:"nonblocking-image-decoding",detail:src});
+   changes.push({kind:"nonblocking-image-decoding",detail:imageReference});
   }
   if(decorativeSocialIcon(tag)&&!attr(tag,"loading")){
    tag=withAttr(tag,"loading","lazy");
-   changes.push({kind:"lazy-social-icon",detail:src});
+   changes.push({kind:"lazy-social-icon",detail:imageReference});
   }
   if(decorativeSocialIcon(tag)&&!attr(tag,"fetchpriority")){
    tag=withAttr(tag,"fetchpriority","low");
-   changes.push({kind:"low-priority-social-icon",detail:src});
+   changes.push({kind:"low-priority-social-icon",detail:imageReference});
   }
   return tag;
  });

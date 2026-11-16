@@ -45,9 +45,12 @@ for(const path of PAGE_PATHS){
   assert.ok(!html.includes('href="/v2/content-anchors.css"'),"Homepage CSS bundle must remain single-request");
   const start=html.indexOf('class="grid primary-services"'),end=html.indexOf('<details class="service-extra"',start);
   const block=html.slice(start,end);
-  const cards=[...block.matchAll(/href="\/v2\/uslugi\/([^"]+)\.html"/g)].map(m=>m[1]);
-  assert.ok(cards.indexOf("kredyty-pln")>cards.indexOf("swiadczenie-wspierajace"),"SKD priority moved ahead of support");
-  assert.ok(cards.indexOf("kredyty-pln")<cards.indexOf("renty-powypadkowe"),"SKD priority lost third position");
+  const cards=[...block.matchAll(/class="card primary-card[^"]*" href="([^"]+)"/g)].map(m=>m[1]);
+  assert.equal(cards.length,6,"Expected six featured service cards");
+  assert.equal(cards[0],"/v2/uslugi/szkody-gornicze.html");
+  assert.equal(cards[1],"/v2/uslugi/swiadczenie-wspierajace.html");
+  assert.equal(cards[2],"/v2/kampanie/skd.html","SKD must be third and lead to the specialist campaign");
+  assert.equal(cards[3],"/v2/uslugi/renty-powypadkowe.html");
  }
  for(const [n,c] of changes.entries()){
   improvements.push({page:path,ordinal:n+1,...c});

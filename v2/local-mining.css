@@ -54,3 +54,8 @@
 @media(max-width:780px){.local-mining-page .local-grid{grid-template-columns:1fr}.local-mining-page .local-top{align-items:flex-start}.local-mining-page .local-nav{gap:10px}.local-mining-page .local-partners a{width:128px;height:57px}.local-mining-page .local-actions a{flex:1 1 220px}}
 @media(max-width:430px){.local-mining-page .local-partners>span{width:100%}.local-mining-page .local-partners a{flex:1 1 120px;min-width:0}.local-mining-page .local-nav{justify-content:flex-start}}
 @media(prefers-reduced-motion:reduce){.local-mining-page *, .local-mining-page *::before,.local-mining-page *::after{scroll-behavior:auto}}
+
+/* WCAG: jasny formularz nie dziedziczy białych liter z ciemnego bloku. */
+.local-mining-page .local-contact .contact-form{color:#173746!important}
+.local-mining-page .local-contact .contact-form :is(label,legend,p,small,strong,.contact-people,.contact-guide-box span){color:#173746!important}
+.local-mining-page .local-contact .contact-guide-box a{color:#234b58!important;background:#f8f4eb!important}

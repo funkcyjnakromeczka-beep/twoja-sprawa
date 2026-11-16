@@ -79,6 +79,32 @@ const sourceLastmod=relativePath=>{
  }catch{return null;}
 };
 const cssLayerReport={pages:0,requestsSaved:0,unique:new Set()};
+// Only two published, content-reviewed guides are indexable. Their authored
+// Article JSON-LD must point to the actual extensionless Cloudflare canonical,
+// not legacy /v2/*.html links. Do not duplicate or invent a second Article node.
+const publishedArticleRoutes=new Set([
+ "/wiedza/drobne-pekniecia-szkody-gornicze.html",
+ "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"
+]);
+function reconcilePublishedArticle(markup,route,canonical){
+ if(!publishedArticleRoutes.has(route))return markup;
+ let found=0;
+ const normalized=markup.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,(tag,raw)=>{
+  let data;
+  try{data=JSON.parse(raw);}catch{return tag;}
+  if(data?.["@type"]!=="Article")return tag;
+  found++;
+  const article={...data,
+   "@id":canonical+"#article",url:canonical,
+   mainEntityOfPage:{"@id":canonical+"#webpage"},
+   author:{"@id":origin+"/#successtree"},
+   publisher:{"@id":origin+"/#successtree"}
+  };
+  return '<script type="application/ld+json">'+JSON.stringify(article).replaceAll("<","\\u003c")+"</script>";
+ });
+ if(found!==1)throw new Error("Expected exactly one visible editorial Article JSON-LD in "+route+", found "+found);
+ return normalized;
+}
 const structured = (route,canonical,title,markup) => {
   // FAQPage reflects only answers visibly published on /faq; no invented recommendations.
   const decodeEntities=value=>value.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">");
@@ -114,6 +140,7 @@ const structured = (route,canonical,title,markup) => {
     page.about=[{"@id":owner["@id"]},{"@id":colleague["@id"]}];
   }
   if(route==="/wiedza/")page["@type"]="CollectionPage";
+  if(publishedArticleRoutes.has(route))page.mainEntity={"@id":canonical+"#article"};
 
   if(route==="/faq.html"){
     const visible=[...markup.matchAll(/<article class="faq-card"[^>]*>[\s\S]*?<summary>([^<]+)<\/summary><div class="faq-answer"><p>([^<]+)<\/p>/g)];
@@ -278,6 +305,7 @@ async function walk(dir){
       const indexable=shouldIndexRoute(route);
       const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
+      html=reconcilePublishedArticle(html,route,canonical);
       if(rel==="index.html")html=await bundleHomepageStyles(html);
       else {
        const layerResult=await bundleSubpageCss(html,

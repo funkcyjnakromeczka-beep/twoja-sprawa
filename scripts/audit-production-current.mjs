@@ -179,8 +179,15 @@ must(data["/kampanie/skd"].includes('name="robots" content="noindex,follow"'),
 must(data["/kampanie/skd"].includes('mailto:wojciech.obieglo@votum-ds.pl?subject=')&&
      data["/kampanie/skd"].includes('data-contact-form'),
   "Brak kontaktu mailowego i formularza SKD");
-must(data["/uslugi/swiadczenie-wspierajace"].includes("Votum-Wsparcie-poziom_zielone.png"),
-  "Brak logotypu Votum Wsparcie");
+// Variant files such as Votum-Wsparcie-poziom_zielone-480x206.png are
+// legitimate CMS responsive images. Verify visible image semantics instead
+// of one exact image filename suffix.
+const supportMarkup=data["/uslugi/swiadczenie-wspierajace"];
+const supportLogo=[...supportMarkup.matchAll(/<img\b[^>]*>/gi)].map(m=>m[0])
+ .find(tag=>/src="[^"]*Votum-Wsparcie-poziom_zielone(?:-\d+x\d+)?\.png"/i.test(tag)
+  &&/alt="Votum Wsparcie[^"]*"/i.test(tag));
+must(supportMarkup.includes('class="vws-service-brand"')&&supportLogo,
+  "Brak rozpoznawalnego logotypu Votum Wsparcie na stronie świadczenia");
 must(data["/kontakt"].includes("paulina.chandrala@votum-ds.pl")&&
      data["/kontakt"].includes("wojciech.obieglo@votum-ds.pl"),
   "Strona kontaktowa nie pokazuje obu doradcow");

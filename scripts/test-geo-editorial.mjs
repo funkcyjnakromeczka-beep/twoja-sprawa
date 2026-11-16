@@ -60,4 +60,33 @@ for(const date of mods){
 }
 console.log("SITEMAP_LASTMOD_RESULT "+JSON.stringify({datedUrls:mods.length,policy:"Git source dates only; no synthetic build timestamps"}));
 
+// Previously published article JSON-LD pointed at /v2/*.html. Confirm the
+// authored Article and generated WebPage now form one canonical linked graph.
+for(const slug of ["drobne-pekniecia-szkody-gornicze","swiadczenie-wspierajace-2026-wzon-zus"]){
+ const pageURL=origin+"/wiedza/"+slug;
+ const articleHTML=await readFile("dist/wiedza/"+slug+".html","utf8");
+ const nodes=[...articleHTML.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .flatMap(m=>{const data=JSON.parse(m[1]);return data["@graph"]||[data];});
+ const articles=nodes.filter(node=>node["@type"]==="Article");
+ assert.equal(articles.length,1,slug+" must not contain duplicate Article metadata");
+ const article=articles[0];
+ const page=nodes.find(node=>node["@id"]===pageURL+"#webpage");
+ assert.ok(page,"Missing linked WebPage "+slug);
+ assert.equal(article["@id"],pageURL+"#article");
+ assert.equal(article.url,pageURL);
+ assert.equal(article.mainEntityOfPage?.["@id"],page["@id"]);
+ assert.equal(page.mainEntity?.["@id"],article["@id"]);
+ assert.equal(article.publisher?.["@id"],origin+"/#successtree");
+ assert.equal(article.author?.["@id"],origin+"/#successtree");
+ assert.ok(!JSON.stringify(article).includes("/v2/")&&!JSON.stringify(article).includes(".html"));
+ assert.match(article.dateModified,/^\d{4}-\d\d-\d\d$/);
+ assert.ok(article.headline&&article.description&&article.inLanguage==="pl-PL");
+}
+const recruitment=await readFile("dist/rekrutacja.html","utf8");
+assert.ok(!recruitment.includes("twojasprawa_votum@outlook.com"),"Retired recruitment e-mail must not be advertised");
+assert.ok(recruitment.includes("mailto:wojciech.obieglo@votum-ds.pl"),"Recruitment needs active adviser contact");
+assert.ok(recruitment.includes("tel:+48796441345"),"Recruitment needs a phone alternative");
+assert.ok(recruitment.includes('name="robots" content="noindex,follow"'),"Keep recruitment landing excluded from SEO until reviewed");
+console.log("ARTICLE_CANONICAL_GRAPH_OK: two indexed guides link their Article and WebPage entities on clean URLs.");
+
 console.log("GEO_EDITORIAL_RESULT "+JSON.stringify({servicePages:checked,visibleAnswers:checked*3,verifiedOfficialSourceLinks:checked,aboutContactAligned:true,linkedServiceSchemas:checked,searchBotAllowed:true,zeroRealMail:true}));

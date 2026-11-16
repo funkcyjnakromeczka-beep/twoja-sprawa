@@ -120,11 +120,11 @@ const structured = (route,canonical,title,markup) => {
   }
   // Structured breadcrumbs are derived from the visible, editorially
   // curated navigation instead of a separate SEO-only naming scheme.
-  const breadcrumbMarkup=markup.match(/<nav class="site-breadcrumbs" aria-label="Ścieżka nawigacji">([\\s\\S]*?)<\\/nav>/)?.[1];
+  const breadcrumbMarkup=markup.match(/<nav class="site-breadcrumbs" aria-label="Ścieżka nawigacji">([\s\S]*?)<\/nav>/)?.[1];
   if(breadcrumbMarkup){
-    const chain=[...breadcrumbMarkup.matchAll(/<a href="([^"]+)">([^<]+)<\\/a>/g)]
+    const chain=[...breadcrumbMarkup.matchAll(/<a href="([^"]+)">([^<]+)<\/a>/g)]
       .map(([,href,name])=>({name:decodeEntities(name.trim()),item:new URL(href,origin).href}));
-    const current=breadcrumbMarkup.match(/<span aria-current="page">([^<]+)<\\/span>/);
+    const current=breadcrumbMarkup.match(/<span aria-current="page">([^<]+)<\/span>/);
     if(!current||chain.length<1)throw new Error("Incomplete visible breadcrumbs on "+route);
     chain.push({name:decodeEntities(current[1].trim()),item:canonical});
     const breadcrumb={"@type":"BreadcrumbList","@id":canonical+"#breadcrumb",

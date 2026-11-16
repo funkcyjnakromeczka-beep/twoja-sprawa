@@ -28,6 +28,7 @@ on:
       - 'scripts/test-internal-links.mjs'
       - 'scripts/test-ai-referrals.mjs'
       - 'scripts/test-service-share.mjs'
+      - 'scripts/test-geo-editorial.mjs'
       - '.github/workflows/release-candidate.yml'
   workflow_dispatch:
 concurrency:
@@ -67,6 +68,7 @@ jobs:
           node --check scripts/test-internal-links.mjs
           node --check scripts/test-ai-referrals.mjs
           node --check scripts/test-service-share.mjs
+          node --check scripts/test-geo-editorial.mjs
       - name: Zbuduj i przetestuj kandydata wydania (bez publikacji)
         env:
           SITE_URL: https://twoja-sprawa.pages.dev
@@ -90,6 +92,7 @@ jobs:
           node scripts/test-internal-links.mjs
           node scripts/test-ai-referrals.mjs
           node scripts/test-service-share.mjs
+          node scripts/test-geo-editorial.mjs
       - name: Identyfikator zbudowanej wersji
         run: cat dist/release-info.json
       - name: Zapisz tymczasowy pakiet wydania do pobrania

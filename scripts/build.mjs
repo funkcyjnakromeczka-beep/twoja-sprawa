@@ -5,6 +5,7 @@
  */
 import { readdir, readFile, writeFile, mkdir, cp, rm } from "node:fs/promises";
 import { join, relative, dirname } from "node:path";
+import { execFileSync } from "node:child_process";
 import {withNetworkBrand} from "./network-brand.mjs";
 import {toPublicRoute} from "./public-routes.mjs";
 import { shouldIndexRoute } from "./seo-policy.mjs";
@@ -63,6 +64,17 @@ async function fetchPortraits(){
  }
 }
 const pages=[];
+const pageLastmod=new Map();
+// Real source commit date only. Never stamp every sitemap URL with build time:
+// false freshness signals can weaken indexing trust. Omit if Git metadata is absent.
+const sourceLastmod=relativePath=>{
+ try{
+  const date=execFileSync("git",["log","-1","--format=%cs","--",join(source,relativePath)],{
+   encoding:"utf8",timeout:1500,stdio:["ignore","pipe","ignore"]
+  }).trim();
+  return /^\d{4}-\d{2}-\d{2}$/.test(date)?date:null;
+ }catch{return null;}
+};
 const cssLayerReport={pages:0,requestsSaved:0,unique:new Set()};
 const structured = (route,canonical,title,markup) => {
   // FAQPage reflects only answers visibly published on /faq; no invented recommendations.
@@ -113,8 +125,11 @@ const structured = (route,canonical,title,markup) => {
 
   const graph=[owner,colleague,organization,site,page];
   if(route.startsWith("/uslugi/")||route.startsWith("/lokalnie/")){
+    const visibleDescription=markup.match(/<meta\s+name="description"\s+content="([^"]+)"/i)?.[1]||"";
+    page.mainEntity={"@id":canonical+"#service"};
     graph.push({
       "@type":"Service","@id":canonical+"#service",
+      ...(visibleDescription?{description:decodeEntities(visibleDescription)}:{}),
       name:title.split("|")[0].trim().replace(/\\s*[—–-]\\s*Twoja Sprawa.*$/,""),
       provider:{"@id":organization["@id"]},
       areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):route.includes("szkody-gornicze")?"Lubin, Polkowice i okolice":"Polska",
@@ -292,7 +307,11 @@ async function walk(dir){
       if(!html.includes('<meta name="robots" content="'+robots+'">')) throw new Error("Incorrect release robots tag: "+rel);
       html=html.replace("</head>",'<script type="application/ld+json">'+structured(route,canonical,html.match(/<title>([^<]+)<\/title>/i)?.[1]||"Informacje o usłudze",html)+'</script></head>');
       await writeFile(target,html);
-      if(indexable) pages.push(publicRoute);
+      if(indexable){
+       pages.push(publicRoute);
+       const updatedAt=sourceLastmod(rel);
+       if(updatedAt)pageLastmod.set(publicRoute,updatedAt);
+      }
     } else if (rel.endsWith(".css")) {
       let css=await readFile(absolute,"utf8");
       css=stripCssComments(css.replaceAll("/v2/assets/","/assets/"));
@@ -310,7 +329,7 @@ await walk(source);
 await fetchPortraits();
 await writeFile(join(dest,"robots.txt"),"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: "+origin+"/sitemap.xml\n");
 const xml=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll('"',"&quot;");
-await writeFile(join(dest,"sitemap.xml"),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+pages.sort().map(p=>'  <url><loc>'+xml(origin+p)+'</loc></url>').join("\n")+'\n</urlset>\n');
+await writeFile(join(dest,"sitemap.xml"),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+pages.sort().map(p=>'  <url><loc>'+xml(origin+p)+'</loc>'+(pageLastmod.has(p)?'<lastmod>'+pageLastmod.get(p)+'</lastmod>':'')+'</url>').join("\n")+'\n</urlset>\n');
 // Production fingerprint: no secrets, personal data, or credentials.
 // A deployed /release-info.json helps distinguish GitHub changes from
 // actual Cloudflare publication. If SHA is unavailable, report null.

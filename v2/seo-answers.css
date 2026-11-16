@@ -1,0 +1,15 @@
+/* Intent-first source-backed answers, visible to readers and crawlers without JS. */
+.service-answers{margin-block:clamp(24px,4vw,46px);padding:clamp(18px,3vw,32px);border-radius:18px;border:1px solid #a7c4c1;background:#f6faf8;color:#173744}
+.service-answers h2{margin:5px 0 10px;color:#153848;font-size:clamp(1.3rem,2.8vw,1.85rem);line-height:1.28}
+.service-answers-kicker{font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;color:#7d5726;font-weight:800}
+.service-answers-intro{margin:0 0 20px;max-width:78ch;line-height:1.65;color:#234a58}
+.service-answers-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px)}
+.service-answer{min-width:0;padding:clamp(14px,2vw,21px);border:1px solid #cadbd8;border-radius:13px;background:#fff;box-shadow:0 6px 15px rgba(11,50,63,.045)}
+.service-answer h3{margin:0 0 11px;font-size:clamp(1rem,1.5vw,1.12rem);line-height:1.48;font-weight:800;color:#153948}
+.service-answer p{margin:0;line-height:1.65;font-size:.92rem;color:#263d46;overflow-wrap:anywhere}
+.service-answers-sources,.service-answers-note{margin:18px 0 0;font-size:.9rem;line-height:1.65;color:#274852}
+.service-answers a{color:#184d67;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px;overflow-wrap:anywhere}
+.service-answers a:focus-visible{outline:3px solid #bf8a40;outline-offset:3px;border-radius:3px}
+@media(max-width:900px){.service-answers-grid{grid-template-columns:1fr}}
+@media(max-width:550px){.service-answers{padding:16px;margin-block:24px}.service-answer{padding:15px}}
+@media print{.service-answers{border-color:#ccc;background:#fff;box-shadow:none}.service-answer{break-inside:avoid;box-shadow:none}}

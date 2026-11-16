@@ -12,21 +12,22 @@ class Node{
  setAttribute(k,v){this.attrs[k]=v;}
  addEventListener(k,callback){this.events[k]=callback;}
  focus(){this.focused=true;}
+ select(){this.selected=true;}
  querySelectorAll(selector){
   if(selector==='input[type="checkbox"]')return this.children.flatMap(node=>node.children.flatMap(label=>label.children.filter(x=>x.tag==="input")));
   return [];
  }
 }
-function setup(query){
+function setup(query,{clipboard=true}={}){
  const keys=["szkody","swiadczenie","skd","renty","franki","przesyl"];
  const buttons=keys.map(key=>{const b=new Node("button");b.dataset.planService=key;return b;});
  const dom={};
- for(const key of ["[data-plan-stage-container]","[data-plan-stage-select]","[data-plan-title]","[data-plan-intro]","[data-plan-checklist]","[data-plan-progress]","[data-plan-print]","[data-plan-reset]","[data-plan-contact]","[data-plan-call]","[data-plan-email]","[data-plan-email-hint]","[data-plan-service-link]"])dom[key]=new Node(key==="[data-plan-stage-select]"?"select":"div");
+ for(const key of ["[data-plan-stage-container]","[data-plan-stage-select]","[data-plan-title]","[data-plan-intro]","[data-plan-checklist]","[data-plan-progress]","[data-plan-print]","[data-plan-share]","[data-plan-share-status]","[data-plan-share-fallback]","[data-plan-share-text]","[data-plan-reset]","[data-plan-contact]","[data-plan-call]","[data-plan-email]","[data-plan-email-hint]","[data-plan-service-link]"])dom[key]=new Node(key==="[data-plan-stage-select]"?"select":"div");
  const root={querySelector:key=>dom[key],querySelectorAll:sel=>sel==="[data-plan-service]"?buttons:[]};
- let printCount=0;
- const window={location:{search:query,origin:"https://twoja-sprawa.pages.dev"},print:()=>printCount++};
+ let printCount=0;const copies=[];
+ const window={location:{search:query,origin:"https://twoja-sprawa.pages.dev"},print:()=>printCount++,navigator:clipboard?{clipboard:{writeText:async value=>{copies.push(value)}}}:{}};
  runInNewContext(source,{document:{querySelector:sel=>sel==="[data-plan-root]"?root:null,createElement:tag=>new Node(tag)},window,URL,URLSearchParams,Set,Object});
- return {dom,buttons,printCount:()=>printCount,click:key=>buttons.find(b=>b.dataset.planService===key).events.click()};
+ return {dom,buttons,copies,printCount:()=>printCount,click:key=>buttons.find(b=>b.dataset.planService===key).events.click()};
 }
 const state=setup("?utm_source=facebook&utm_medium=social&utm_campaign=szkody_lubin&utm_content=post_a&usluga=szkody&etap=ugoda");
 const get=key=>state.dom[key];
@@ -53,6 +54,21 @@ first.checked=true;first.events.change();
 assert.equal(get("[data-plan-progress]").textContent,"1 z 5");
 get("[data-plan-print]").events.click();
 assert.equal(state.printCount(),1);
+await get("[data-plan-share]").events.click();
+assert.equal(state.copies.length,1,"Click must copy one checklist");
+assert.ok(state.copies[0].includes("Szkody górnicze"));
+assert.ok(state.copies[0].includes("Etap: Otrzymałem/am propozycję ugody"));
+assert.ok(state.copies[0].includes("[x] 1.")&&state.copies[0].includes("[ ] 2."));
+assert.ok(state.copies[0].includes("https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze"));
+assert.ok(!state.copies[0].includes("utm_")&&!state.copies[0].includes("PESEL"));
+assert.match(get("[data-plan-share-status]").textContent,/skopiowana/);
+assert.equal(get("[data-plan-share-fallback]").hidden,true);
+const manual=setup("?usluga=swiadczenie",{clipboard:false});
+await manual.dom["[data-plan-share]"].events.click();
+assert.equal(manual.dom["[data-plan-share-fallback]"].hidden,false);
+assert.equal(manual.dom["[data-plan-share-text]"].selected,true);
+assert.match(manual.dom["[data-plan-share-text]"].value,/Świadczenie wspierające/);
+assert.match(manual.dom["[data-plan-share-status]"].textContent,/ręcznie/);
 for(const [name,expectedTel] of [["swiadczenie","500 171 531"],["skd","796 441 345"],["renty","500 171 531"],["franki","796 441 345"],["przesyl","796 441 345"]]){
  state.click(name);assert.ok(get("[data-plan-title]").textContent.length>5);
  assert.equal(get("[data-plan-checklist]").children.length,4);
@@ -95,6 +111,7 @@ assert.equal(u.searchParams.get("etap"),"odwolanie");
 get("[data-plan-reset]").events.click();
 assert.equal(get("[data-plan-title]").textContent,"Wybierz temat po lewej stronie");
 assert.equal(get("[data-plan-print]").disabled,true);
+assert.equal(get("[data-plan-share]").disabled,true);
 assert.equal(get("[data-plan-call]").hidden,true);
 assert.equal(get("[data-plan-email]").hidden,true);
 assert.equal(get("[data-plan-email-hint]").hidden,true);
@@ -115,9 +132,10 @@ assert.ok(html.includes("Kredyty frankowe CHF"),"Missing CHF preparation path");
 assert.ok(html.includes('data-plan-email href="mailto:wojciech.obieglo@votum-ds.pl" hidden'),"SKD email must be hidden until selected");
 assert.ok(html.includes("Otwarcie poczty przygotuje jedynie szkic wiadomości"),"SKD mail action needs user guidance");
 
+assert.ok(html.includes('data-plan-share-fallback hidden')&&html.includes('data-plan-share-status role="status" aria-live="polite"'),"Accessible manual fallback is required");
 const actionRegion=html.split('<div class="plan-actions">')[1]?.split("</div>")[0]||"";
-assert.deepEqual([...actionRegion.matchAll(/\bdata-plan-(contact|call|email|print|reset)\b/g)].map(m=>m[1]),
- ["contact","call","email","print","reset"],
+assert.deepEqual([...actionRegion.matchAll(/\bdata-plan-(contact|call|email|print|share|reset)\b/g)].map(m=>m[1]),
+ ["contact","call","email","print","share","reset"],
  "Mobile plan must prioritize contact paths over printing or reset");
 assert.ok(html.includes('data-plan-service-link href="/v2/#uslugi" hidden'),"Missing hidden service detail link in initial view");
 
@@ -154,4 +172,4 @@ assert.ok(detailCSS.includes(".plan-more-info a:focus-visible")&&detailCSS.inclu
 assert.ok(detailCSS.includes(".plan-skd-mail-hint[hidden]{display:none!important}"),"SKD email hint must be hidden outside SKD");
 assert.ok(detailCSS.includes("button[data-plan-reset]"),"Reset styling must not rely on positional selectors");
 assert.ok(!detailCSS.includes("button:nth-child(2)"),"Action ordering must not break reset styles");
-console.log("OK: 6 usług, 13 wariantów etapów, SKD do Wojciecha, CHF, drukowanie, reset, progres, prywatność i UTM.");
+console.log("OK: sześć usług, eksport listy, udostępnienie, ręczny fallback, drukowanie, reset, prywatność, UTM.");

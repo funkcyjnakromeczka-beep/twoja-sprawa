@@ -1,0 +1,38 @@
+name: Audyt WCAG i widoku mobilnego — wszystkie 47 stron
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/test-full-site-accessibility.mjs'
+      - '.github/workflows/full-site-accessibility.yml'
+concurrency:
+  group: twoja-sprawa-full-site-a11y-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  full-site-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Sprawdź składnię audytu
+        run: node --check scripts/test-full-site-accessibility.mjs
+      - name: Zainstaluj Chromium i silnik analizy WCAG
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.64.1 axe-core@4.14.0
+          npx playwright install --with-deps chromium
+      - name: Przetestuj 47 stron w 390 px i 1280 px bez wysyłania formularzy
+        run: node scripts/test-full-site-accessibility.mjs
+      - name: Zachowaj wynik audytu 94 widoków
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: twoja-sprawa-wcag-47-stron
+          path: audit-artifacts/full-site-a11y.json
+          if-no-files-found: warn
+          retention-days: 14

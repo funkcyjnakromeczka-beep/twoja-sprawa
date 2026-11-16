@@ -23,7 +23,7 @@
 .faq-page .faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
 .faq-page .faq-card{min-width:0;background:#fff;border:1px solid #d2dddd;border-radius:15px;overflow:hidden;box-shadow:0 7px 18px rgba(9,45,61,.05)}
 .faq-page .faq-card[hidden]{display:none!important}
-.faq-page .faq-tag{display:block;font:800 .67rem/1.4 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6b7e75;padding:15px 18px 0}
+.faq-page .faq-tag{display:block;font:800 .67rem/1.4 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#304c42;padding:15px 18px 0}
 .faq-page .faq-card summary{cursor:pointer;padding:10px 43px 18px 18px;font:700 clamp(.97rem,1.35vw,1.08rem)/1.5 system-ui,sans-serif;color:#193d4c;list-style:none;position:relative}
 .faq-page .faq-card summary::-webkit-details-marker{display:none}
 .faq-page .faq-card summary:after{content:"+";position:absolute;right:17px;top:9px;font-size:1.5rem;font-weight:600;color:#987238}

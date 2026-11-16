@@ -17,6 +17,19 @@ const slug=value=>plain(value).toLocaleLowerCase("pl-PL").replaceAll("ł","l").n
 const TOC_EXCLUDE=new Set(["index.html","faq.html","404.html","start.html","plan-dzialania.html","szukaj.html","narzedzia/test-formularzy.html",
  "kampanie/skd.html","kampanie/swiadczenie-wspierajace.html","kampanie/szkody-gornicze.html"]);
 
+
+const contactRoute=path=>{
+ if(path.startsWith("uslugi/")||path.startsWith("lokalnie/"))return "#formularz";
+ const v=path.toLowerCase();
+ let code="";
+ if(/frank|chf/.test(v))code="franki";
+ else if(/skd|kredyt-pln/.test(v))code="skd";
+ else if(/swiadczenie|wzon|zus/.test(v))code="swiadczenie";
+ else if(/renta/.test(v))code="renty";
+ else if(/sluzebnosc|przesyl/.test(v))code="przesyl";
+ else if(/gornicz|pekniecia|kopalni/.test(v))code="szkody";
+ return "/v2/kontakt.html"+(code?"?usluga="+code:"")+"#formularz";
+};
 export function improveContentLinks(markup,path){
  if(!PAGE_PATHS.includes(path))return {html:markup,changes:[]};
  const changes=[];
@@ -97,12 +110,18 @@ export function improveContentLinks(markup,path){
  const h2=headings.filter(h=>h.level===2&&h.text);
  if(!TOC_EXCLUDE.has(path)&&h2.length>=3&&!body.includes('class="content-toc"')){
   const entries=h2.slice(0,24);
+  const contactHref=contactRoute(path);
   const toc='<details class="content-toc"><summary>Spis treści — przejdź do sekcji</summary>'+
     '<nav aria-label="Spis treści strony"><ol>'+entries.map(h=>'<li><a href="#'+safe(h.id)+'">'+safe(h.text)+'</a></li>').join("")+
-    '</ol></nav></details>';
+    '</ol><p class="content-toc-contact"><a href="'+safe(contactHref)+'">Zostaw kontakt w swojej sprawie →</a></p></nav></details>';
   body=toc+body;
   for(const [i,h] of entries.entries())changes.push({kind:"content-toc-shortcut",detail:"item "+(i+1)+" #"+h.id});
   changes.push({kind:"content-toc-panel",detail:"section navigation ("+entries.length+" entries)"});
+  changes.push({kind:"content-toc-contact",detail:"existing form: "+contactHref});
+  const mainName=attr(firstMain[0],"aria-labelledby");
+  if(!mainName)throw new Error("Page heading landmark required to build return link: "+path);
+  body+='<p class="content-return-top"><a href="#'+safe(mainName)+'">↑ Wróć na początek strony</a></p>';
+  changes.push({kind:"content-return-top",detail:"return to #"+mainName});
  }
  html=before+body+after;
  // Load a small CSS file only on pages that gained an actual TOC or heading.

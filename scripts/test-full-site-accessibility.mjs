@@ -52,7 +52,7 @@ try{
    const url=origin+item.route;
    try{
     const response=await page.goto(url,{waitUntil:"domcontentloaded",timeout:20000});
-    if(!response||response.status()>=400)throw Error("HTTP "+(response?.status()??"unavailable"));
+    if(!response||(response.status()>=400&&!(item.path==="404.html"&&response.status()===404)))throw Error("HTTP "+(response?.status()??"unavailable"));
     await page.addScriptTag({content:axe.source});
     const result=await page.evaluate(async()=>{
      const data=await window.axe.run(document,{

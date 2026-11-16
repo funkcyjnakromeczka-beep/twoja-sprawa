@@ -606,6 +606,55 @@ try{
 
 
 
+
+ // Test one genuinely public, browser-executed share path for all six services.
+ // We intercept only the system share / clipboard interfaces; never transmit a lead.
+ const checklistPage=await browser.newPage({viewport:{width:390,height:844}});
+ try{
+  await checklistPage.goto(origin+"/plan-dzialania",{waitUntil:"domcontentloaded",timeout:40000});
+  await checklistPage.evaluate(()=>{
+   Object.defineProperty(navigator,"share",{configurable:true,value:undefined});
+   Object.defineProperty(navigator,"clipboard",{configurable:true,
+    value:{writeText:async content=>{window.__planCopied=content;}}});
+  });
+  for(const [name,expected] of [
+   ["szkody","Szkody górnicze"],["swiadczenie","Świadczenie wspierające"],
+   ["skd","Kredyt konsumencki PLN / SKD"],["renty","Renta powypadkowa"],
+   ["franki","Kredyty frankowe CHF"],["przesyl","Służebność przesyłu"]
+  ]){
+   await checklistPage.locator('[data-plan-service="'+name+'"]').click();
+   await checklistPage.locator("[data-plan-share]").click();
+   await checklistPage.waitForFunction(()=>!!window.__planCopied);
+   const result=await checklistPage.evaluate(()=>{
+    const s=window.__planCopied;window.__planCopied="";
+    return {text:s,status:document.querySelector("[data-plan-share-status]")?.textContent};
+   });
+   assert.ok(result.text.includes(expected),"Copied plan mismatched service "+name);
+   assert.ok(result.text.includes("https://twoja-sprawa.pages.dev/uslugi/"),
+    "Copied plan should contain canonical service link, not source route");
+   assert.ok(!result.text.includes("utm_")&&!result.text.includes("PESEL"),
+    "Copied plan should not expose tracking or identification");
+   assert.match(result.status,/skopiowana/,"Missing copy confirmation for "+name);
+  }
+  await checklistPage.evaluate(()=>{
+   Object.defineProperty(navigator,"clipboard",{configurable:true,value:undefined});
+  });
+  await checklistPage.locator('[data-plan-service="szkody"]').click();
+  await checklistPage.locator("[data-plan-share]").click();
+  const fallback=await checklistPage.evaluate(()=>{
+   const block=document.querySelector("[data-plan-share-fallback]");
+   const input=document.querySelector("[data-plan-share-text]");
+   return {visible:!!block&&!block.hidden,
+    focus:document.activeElement===input,
+    selected:input?.selectionStart===0&&input?.selectionEnd===input.value.length,
+    text:input?.value||""};
+  });
+  assert.ok(fallback.visible&&fallback.focus&&fallback.selected,
+   "Manual sharing fallback must be visible, focused and selected");
+  assert.ok(fallback.text.includes("Szkody górnicze"));
+  console.log("PASS: 6 live private checklist shares and fully selected fallback.");
+ }finally{await checklistPage.close();}
+
  // Repeatable public-site resource inspection; read-only, no visitor tracking.
  const perfPage=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
  try{

@@ -1,0 +1,13 @@
+/* Relevant next steps at the bottom of editorial and service pages.
+   A self-contained light surface stays legible on dark, navy and white themes. */
+.related-content-links{box-sizing:border-box;max-width:1100px;margin:24px auto 18px;padding:22px clamp(16px,3vw,28px);border:1px solid #d8c6a4;border-radius:16px;background:#f9f4e9;color:#203c4b;font:500 .94rem/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;box-shadow:0 5px 20px rgba(17,43,55,.09)}
+.related-content-links h2{margin:0 0 8px;color:#173e50!important;font-size:clamp(1.15rem,2.4vw,1.4rem)!important;line-height:1.32;font-weight:800}
+.related-content-links p{margin:0 0 12px;color:#324b56!important;font-size:.91rem;line-height:1.55}
+.related-content-links ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.related-content-links li{min-width:0;margin:0;padding:0}
+.related-content-links a{box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:48px;width:100%;padding:11px 13px;border:1px solid #bfd0d6;border-radius:9px;background:#fff;color:#153e52!important;text-decoration:none!important;font-size:.9rem;font-weight:750;line-height:1.4;overflow-wrap:anywhere}
+.related-content-links a span{flex-shrink:0;color:#926727}
+.related-content-links a:hover{background:#ecf5f8;border-color:#587988}
+.related-content-links a:focus-visible{outline:3px solid #9a6925;outline-offset:3px}
+@media(max-width:680px){.related-content-links{margin:16px 12px;padding:16px 13px;border-radius:12px}.related-content-links ul{grid-template-columns:minmax(0,1fr);gap:8px}.related-content-links a{min-height:48px}}
+@media print{.related-content-links{display:none!important}}

@@ -10,6 +10,7 @@ import {toPublicRoute} from "./public-routes.mjs";
 import { shouldIndexRoute } from "./seo-policy.mjs";
 import { enhancePageNavigation } from "./page-navigation.mjs";
 import {improveMediaAndNavigation} from "./media-navigation-quality.mjs";
+import {improveContentLinks} from "./content-anchors.mjs";
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
 const release=process.env.RELEASE==="1";
@@ -242,6 +243,7 @@ async function walk(dir){
       // missing keyboard skip links and shared focus treatment.
       html=enhancePageNavigation(html,rel).html;
       html=improveMediaAndNavigation(html,rel.replaceAll("\\","/")).html;
+      html=improveContentLinks(html,rel.replaceAll("\\","/")).html;
       const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
       const publicRoute=toPublicRoute(route); // Cloudflare Pages maps *.html to extensionless URLs.
       const canonical=origin+publicRoute;

@@ -17,6 +17,14 @@ assert.ok(releaseInfo.commit===null||/^[0-9a-f]{40}$/.test(releaseInfo.commit),
 const expectedCommit=process.env.CF_PAGES_COMMIT_SHA||process.env.GITHUB_SHA;
 if(expectedCommit)assert.equal(releaseInfo.commit,expectedCommit.toLowerCase(),
  "Release fingerprint does not match CI commit");
+// OpenSEO and the existing GitHub IndexNow workflow use separate public ownership keys.
+// Both must be served from the Cloudflare Pages root; this is not a secret.
+for(const ownershipKey of ["f66d80be29094b29ae5d941ae2cc2296","cdc63afe4c9cf8e5dade3a9fe8168c328ac5cf74"]){
+ const liveFile=await read(ownershipKey+".txt");
+ assert.equal(liveFile.trim(),ownershipKey,"IndexNow ownership file missing or incorrect: "+ownershipKey);
+}
+console.log("INDEXNOW_DUAL_KEYS_OK: OpenSEO and existing CI workflow have correctly formed public root files.");
+
 const home=await read("index.html");
 
 // No-JavaScript contact is part of the release contract, not an optional

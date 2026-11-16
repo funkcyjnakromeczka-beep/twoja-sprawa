@@ -46,6 +46,8 @@ on:
       - 'v2/search-core.js'
       - 'v2/wiedza/**'
       - 'scripts/content-anchors.mjs'
+      - 'scripts/heading-permalinks.mjs'
+      - 'v2/heading-permalinks.css'
       - 'v2/content-anchors.css'
       - 'scripts/test-content-anchors.mjs'
       - 'scripts/build.mjs'

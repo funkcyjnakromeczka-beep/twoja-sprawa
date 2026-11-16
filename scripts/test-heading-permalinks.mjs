@@ -20,6 +20,15 @@ for(const path of PAGE_PATHS){
  assert.equal((source.match(/<h[1-6]\b/gi)||[]).length,(result.html.match(/<h[1-6]\b/gi)||[]).length,"Heading inventory drift: "+path);
  const links=[...result.html.matchAll(/<a class="heading-permalink" href="#([^"]+)" aria-label="([^"]+)"><\/a>/g)];
  assert.equal(links.length,result.changes.length,"Every change should create exactly one permalink: "+path);
+ for(const match of result.html.matchAll(/<a class="heading-permalink"[^>]*><\/a>/g)){
+   // A heading share link must never be nested inside another link. The
+   // browser would repair invalid HTML and duplicate clickable cards.
+   const prefix=result.html.slice(0,match.index);
+   let inside=false;
+   for(const a of prefix.matchAll(/<\/?a\b[^>]*>/gi))inside=!a[0].startsWith("</");
+   assert.equal(inside,false,"Nested heading link breaks layout on "+path);
+ }
+ if(path==="wiedza/index.html")assert.equal(links.length,0,"Knowledge hub cards must remain single anchors");
  for(const [i,match] of links.entries()){
   const id=match[1];
   assert.ok(result.html.includes('id="'+id+'"'),"Broken section target: "+path+" #"+id);

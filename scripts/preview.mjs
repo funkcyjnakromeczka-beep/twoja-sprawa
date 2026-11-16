@@ -6,6 +6,7 @@ import {withNetworkBrand} from "./network-brand.mjs";
 import {enhancePageNavigation} from "./page-navigation.mjs";
 import {improveMediaAndNavigation} from "./media-navigation-quality.mjs";
 import {improveContentLinks} from "./content-anchors.mjs";
+import {addSectionPermalinks} from "./heading-permalinks.mjs";
 // Cloudflare Pages deploys the existing output folder "dist-preview". On the
 // approved main branch use the tested release builder in that same output folder.
 // Local tests and preview branches remain explicitly noindex. User approved
@@ -39,6 +40,7 @@ async function walk(dir){
    html=enhancePageNavigation(html,rel.replaceAll("\\","/")).html;
       html=improveMediaAndNavigation(html,rel.replaceAll("\\","/")).html;
       html=improveContentLinks(html,rel.replaceAll("\\","/")).html;
+      html=addSectionPermalinks(html,rel.replaceAll("\\","/")).html;
    if(!/<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i.test(html))throw Error("Source robots tag missing: "+rel);
    html=html.replaceAll("/v2/","/");
    // Render team portraits from repository assets, not the redirected Lovable host.

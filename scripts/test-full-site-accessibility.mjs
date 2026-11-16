@@ -69,8 +69,28 @@ try{
     const itemResult={route:item.route,viewport:width,...result};
     output.checked.push(itemResult);
     const serious=result.findings.filter(x=>x.impact==="serious"||x.impact==="critical");
-    if(result.horizontalOverflow>2||result.main!==1||serious.length)
-     output.failures.push({...itemResult,serious});
+    if(result.horizontalOverflow>2||result.main!==1||serious.length){
+     const diagnostics=await page.evaluate(findings=>{
+      const summary=[];
+      for(const failure of findings){
+       for(const target of failure.targets.slice(0,4)){
+        const selector=target[0],el=document.querySelector(selector);
+        if(!el)continue;
+        const parents=[];
+        let node=el;
+        for(let i=0;node&&i<5;i++,node=node.parentElement){
+         const st=getComputedStyle(node);
+         parents.push({tag:node.tagName,className:typeof node.className==="string"?node.className.slice(0,110):"",
+          color:st.color,background:st.backgroundColor,opacity:st.opacity});
+        }
+        summary.push({selector,parents});
+       }
+      }
+      return summary;
+     },serious);
+     output.failures.push({...itemResult,serious,diagnostics});
+     console.error("A11Y_DIAG "+JSON.stringify({route:item.route,viewport:width,diagnostics}));
+    }
     console.log("A11Y_PAGE "+JSON.stringify({route:item.route,viewport:width,violations:result.findings.length,serious:serious.length,overflow:result.horizontalOverflow}));
    }catch(error){
     const failure={route:item.route,viewport:width,error:String(error.message).slice(0,340)};

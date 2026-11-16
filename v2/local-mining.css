@@ -59,3 +59,15 @@
 .local-mining-page .local-contact .contact-form{color:#173746!important}
 .local-mining-page .local-contact .contact-form :is(label,legend,p,small,strong,.contact-people,.contact-guide-box span){color:#173746!important}
 .local-mining-page .local-contact .contact-guide-box a{color:#234b58!important;background:#f8f4eb!important}
+
+/* Independent surface guarantee: mining form text remains dark on white even
+   when global subpage rules or platform font colours change. */
+.local-mining-page .local-contact .lead-panel form.contact-form{
+ background:#fff!important;color:#173746!important
+}
+.local-mining-page .local-contact .lead-panel form.contact-form :is(p,label,legend,small,.contact-people,.contact-guide-box){
+ color:#173746!important;background-color:#fff!important;opacity:1!important
+}
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-guide-box{
+ background:#f8f5ed!important
+}

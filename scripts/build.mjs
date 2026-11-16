@@ -69,10 +69,13 @@ const pageLastmod=new Map();
 // false freshness signals can weaken indexing trust. Omit if Git metadata is absent.
 const sourceLastmod=relativePath=>{
  try{
-  const date=execFileSync("git",["log","-1","--format=%cs","--",join(source,relativePath)],{
+  const timestamp=execFileSync("git",["log","-1","--format=%cI","--",join(source,relativePath)],{
    encoding:"utf8",timeout:1500,stdio:["ignore","pipe","ignore"]
   }).trim();
-  return /^\d{4}-\d{2}-\d{2}$/.test(date)?date:null;
+  // Normalize the real commit time to UTC before dropping the time component.
+  // A local date just after midnight can otherwise appear to be tomorrow in CI.
+  const parsed=new Date(timestamp);
+  return Number.isFinite(parsed.getTime())?parsed.toISOString().slice(0,10):null;
  }catch{return null;}
 };
 const cssLayerReport={pages:0,requestsSaved:0,unique:new Set()};

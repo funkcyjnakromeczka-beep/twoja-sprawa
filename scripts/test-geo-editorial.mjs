@@ -19,7 +19,7 @@ for(const [slug,source] of services){
  assert.match(section,/id="pytania-o-usludze"/);
  assert.match(section,/id="service-answers-title"/);
  assert.equal((section.match(/class="service-answer"/g)||[]).length,3,slug+" should have exactly 3 substantive answers");
- assert.equal((section.match(/<h3>/g)||[]).length,3);
+ assert.equal((section.match(/<h3\b[^>]*>/g)||[]).length,3,"Build-added heading IDs must not hide the three service questions");
  assert.equal((section.match(/<article class="service-answer"[\s\S]*?<\/article>/g)||[]).filter(card=>card.includes("<p>")).length,3,"Each question must have a visible response");
  assert.ok(section.includes('href="'+source+'"'),slug+" source URL not grounded");
  assert.match(section,/target="_blank" rel="noopener noreferrer"/);

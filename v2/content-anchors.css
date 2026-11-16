@@ -13,7 +13,7 @@ main :is(h2,h3,h4,h5,h6)[id^="tresc-"]:target{outline:2px solid #be9856;outline-
 .content-toc-contact a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 13px;border-radius:9px;background:#133e50;color:#fff!important;text-decoration:none;font-weight:800}
 .content-toc-contact a:hover{background:#235b70;color:#fff!important}
 .content-return-top{max-width:1100px;margin:28px auto 14px;padding:0 15px;text-align:right}
-.content-return-top a{display:inline-flex;align-items:center;min-height:44px;padding:8px 10px;color:#1c5162!important;font:750 .9rem/1.45 system-ui,sans-serif;text-underline-offset:3px}
+.content-return-top a{display:inline-flex;align-items:center;min-height:44px;padding:9px 14px;border:1px solid #b99a65;border-radius:9px;background:#f8ebd4;color:#193b49!important;font:750 .9rem/1.45 system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px}.content-return-top a:hover{background:#fff6e4;color:#153542!important}
 .content-return-top a:focus-visible,.content-toc-contact a:focus-visible{outline:3px solid #a8762b;outline-offset:3px}
 @media(max-width:680px){.content-toc{margin:10px 12px 16px;padding:11px 12px}.content-toc ol{grid-template-columns:1fr;gap:7px}}
 @media print{.content-toc,.content-return-top{display:none!important}main :is(h2,h3,h4,h5,h6)[id^="tresc-"]:target{outline:none}}

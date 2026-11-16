@@ -72,6 +72,7 @@ jobs:
           node --check scripts/test-content-anchors.mjs
           node --check scripts/related-content.mjs
           node --check scripts/test-related-content.mjs
+          node --check scripts/test-support-2026-guidance.mjs
           node --check scripts/heading-permalinks.mjs
           node --check scripts/test-heading-permalinks.mjs
           node --check scripts/test-visible-breadcrumb-schema.mjs
@@ -116,6 +117,8 @@ jobs:
         run: node scripts/test-knowledge-hub.mjs
       - name: Testuj narzędzia czytania we wszystkich poradnikach
         run: node scripts/test-article-accessibility.mjs
+      - name: Sprawdź daty WZON w 2026 i informację o bezpłatnej pomocy ZUS
+        run: node scripts/test-support-2026-guidance.mjs
       - name: Sprawdź politykę indeksowania przyszłej publikacji
         run: node scripts/test-seo-policy.mjs
       - name: Sprawdź kanoniczne adresy Cloudflare Pages

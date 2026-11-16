@@ -67,8 +67,8 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/index.html",
     "href": "/v2/wiedza/",
-    "title": "Poradniki: szkody górnicze, WZON/ZUS, renty i SKD",
-    "description": "Poradniki SuccessTree o szkodach górniczych w Lubinie i Polkowicach, świadczeniu wspierającym WZON i ZUS, rentach, SKD i służebności przesyłu. Wyszukaj temat i przygotuj zgłoszenie.",
+    "title": "Poradniki: szkody górnicze, świadczenia, SKD",
+    "description": "Przeczytaj poradniki o szkodach górniczych, świadczeniu wspierającym, rentach, kredytach PLN i służebności przesyłu. Przygotuj się do rozmowy.",
     "category": "inne",
     "keywords": "Zrozum swoją sprawę, zanim podejmiesz decyzję. v2 wiedza index html Biblioteka wiedzy — wszystkie poradniki"
   },
@@ -147,8 +147,8 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/uslugi/kredyty-frankowe.html",
     "href": "/v2/uslugi/kredyty-frankowe.html",
-    "title": "Pomoc frankowiczom — analiza umowy kredytu CHF",
-    "description": "Pomoc frankowiczom: analiza aktywnych i spłaconych kredytów we frankach CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny.",
+    "title": "Kredyty CHF — analiza umowy frankowej",
+    "description": "Analiza aktywnych i spłaconych kredytów CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny.",
     "category": "franki",
     "keywords": "Frankowicze CHF umowa kredytu frankowego bank ugoda indeksowany denominowany rozliczenie sprawa sądowa"
   },

@@ -7,8 +7,9 @@ import {readFile} from "node:fs/promises";
 
 const guide=await readFile("v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","utf8");
 const service=await readFile("v2/uslugi/swiadczenie-wspierajace.html","utf8");
+const campaign=await readFile("v2/kampanie/swiadczenie-wspierajace.html","utf8");
 const strip=html=>html.replace(/<script\b[\s\S]*?<\/script>/gi," ").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
-const article=strip(guide),offer=strip(service);
+const article=strip(guide),offer=strip(service);,ad=strip(campaign);
 const assertions=[
  ["Date-specific initial WZON decision",()=>assert.ok(article.includes("1 stycznia 2026 r.")&&article.includes("pierwszego wniosku")&&article.includes("od dnia wydania decyzji"))],
  ["No automatic retroactive effective date",()=>assert.ok(article.includes("nie automatycznie od dnia złożenia wniosku"))],
@@ -24,7 +25,9 @@ const assertions=[
  ["No guaranteed award",()=>assert.ok(!/gwarantujemy (?:świadczenie|przyznanie)/i.test(article+" "+offer))],
  ["Preserve Paulina direct call",()=>assert.ok(service.includes('href="tel:+48500171531"')&&guide.includes('href="tel:+48500171531"'))],
  ["Preserve privacy caveat",()=>assert.ok(offer.includes("PESEL")&&article.includes("dokumentacji medycznej"))],
- ["Article modification date matches audit",()=>assert.ok(guide.includes('"dateModified":"2026-11-16"'))]
+ ["Article modification date matches audit",()=>assert.ok(guide.includes('"dateModified":"2026-11-16"'))],
+ ["Campaign discloses free ZUS help",()=>assert.ok(ad.includes("Wniosek do ZUS jest bezpłatny")&&ad.includes("nie wymaga płatnego pośrednika")&&ad.includes("dobrowolna"))],
+ ["Campaign offers public ZUS source",()=>assert.ok(campaign.includes("https://www.zus.pl/o-zus/o-nas/kampanie/")&&campaign.includes("Oficjalna informacja ZUS"))]
 ];
 for(const [name,fn] of assertions){fn();console.log("ZUS_2026_CHECK_OK "+name);}
 console.log("ZUS_2026_GUIDANCE_RESULT",JSON.stringify({checks:assertions.length,officialSource:true,noAutomaticAward:true}));

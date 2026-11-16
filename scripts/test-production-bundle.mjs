@@ -335,7 +335,9 @@ assert.ok(skdLanding.includes("M%C3%B3j%20numer%20telefonu"),"SKD email must req
 assert.ok(skdLanding.includes('href="tel:+48796441345"'),"SKD campaign phone missing");
 assert.ok(!skdLanding.includes('href="tel:+48500171531"'),"SKD landing must not link to benefits number");
 assert.ok(skdLanding.includes('class="network-brand-bar"'),"SKD landing partner logos missing");
-assert.ok(skdLanding.includes('href="/skd-campaign.css"'),"SKD landing CSS missing");
+const skdLayer=skdLanding.match(/href="\/(layers-[a-f0-9]{16}\.css)"/)?.[1];
+assert.ok(skdLayer,"SKD landing merged CSS missing");
+assert.ok((await read(skdLayer)).includes(".campaign-skd .campaign-hero"),"SKD-specific visual rules missing from bundle");
 
 assert.ok(skdLanding.includes('class="campaign-mobile-call" href="#formularz" aria-label="Zostaw numer telefonu do analizy SKD"'),
  "SKD mobile callback action should reach the phone form");
@@ -348,7 +350,9 @@ assert.ok(leaflet.includes('name="robots" content="noindex,follow"'),"Flyer entr
 assert.ok(leaflet.includes('rel="canonical" href="'+origin+'/start"'),"Flyer entry missing stable canonical");
 assert.ok(leaflet.includes('href="/kampanie/swiadczenie-wspierajace?utm_source=ulotka'),"Support CTA missing from printed QR destination");
 assert.ok(leaflet.includes('href="/kampanie/szkody-gornicze?utm_source=ulotka'),"Mining CTA missing from printed QR destination");
-assert.ok(leaflet.includes('href="/ulotka-start.css'),"Responsive flyer CSS missing");
+const flyerLayer=leaflet.match(/href="\/(layers-[a-f0-9]{16}\.css)"/)?.[1];
+assert.ok(flyerLayer,"Responsive flyer CSS bundle missing");
+assert.ok((await read(flyerLayer)).includes(".leaflet-"),"Responsive flyer visual rules missing from bundle");
 assert.ok(leaflet.includes('class="network-brand-bar"'),"Agency branding missing from flyer entry");
 assert.ok(!leaflet.includes('href="/v2/'),"Source paths leaked into flyer entry");
 const flyerCSS=await read("ulotka-start.css");

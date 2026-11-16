@@ -60,7 +60,7 @@
 .plan-page .plan-after h2{color:#163b4a;font:700 clamp(1.5rem,3.5vw,2.15rem)/1.23 Georgia,serif;margin-bottom:21px}
 .plan-page .plan-after-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
 .plan-page .plan-after-grid article{background:#fff;border:1px solid #d9e0db;border-radius:15px;padding:22px}
-.plan-page .plan-after-grid article strong{color:#a9813f;font-weight:800}
+.plan-page .plan-after-grid article strong{color:#6a471b;font-weight:800}
 .plan-page .plan-after-grid h3{margin:9px 0;font:700 1.25rem/1.2 Georgia,serif;color:#183b49}
 .plan-page .plan-after-grid p{margin:0;color:#4c6670;line-height:1.7;font-size:.92rem}
 .plan-page .plan-after>p{line-height:1.75;color:#496671;margin-top:22px}

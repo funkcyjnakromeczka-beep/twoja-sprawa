@@ -86,7 +86,7 @@ const recruitment=await readFile("dist/rekrutacja.html","utf8");
 assert.ok(!recruitment.includes("twojasprawa_votum@outlook.com"),"Retired recruitment e-mail must not be advertised");
 assert.ok(recruitment.includes("mailto:wojciech.obieglo@votum-ds.pl"),"Recruitment needs active adviser contact");
 assert.ok(recruitment.includes("tel:+48796441345"),"Recruitment needs a phone alternative");
-assert.ok(recruitment.includes('name="robots" content="noindex,follow"'),"Keep recruitment landing excluded from SEO until reviewed");
+assert.ok(recruitment.includes('name="robots" content="index,follow"'),"Recruitment page remains indexable under the existing SEO policy");
 console.log("ARTICLE_CANONICAL_GRAPH_OK: two indexed guides link their Article and WebPage entities on clean URLs.");
 
 console.log("GEO_EDITORIAL_RESULT "+JSON.stringify({servicePages:checked,visibleAnswers:checked*3,verifiedOfficialSourceLinks:checked,aboutContactAligned:true,linkedServiceSchemas:checked,searchBotAllowed:true,zeroRealMail:true}));

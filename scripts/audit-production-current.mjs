@@ -217,7 +217,8 @@ must(contact.includes('copyButton.className="contact-advisor-copy-button"')&&
   "Na produkcji brakuje opcji kopiowania e-maila wlasciwego doradcy");
 must(contact.includes('copyDraft.className="contact-draft-copy"')&&
      contact.includes('await navigator.clipboard.writeText(makeDraft());')&&
-     contact.includes('fallback.addEventListener("click",updateFallback);')&&
+     contact.includes('fallback.addEventListener("click",()=>{')&&
+     contact.includes('window.setTimeout(updateFallback,0);')&&
      data["/styles.css"].includes(".contact-form .contact-draft-copy"),
   "Na produkcji brakuje bezpiecznego kopiowania zgłoszenia po błędzie Web3Forms");
 must(contact.includes("api.web3forms.com/submit")&&contact.includes("if(sending)return;"),

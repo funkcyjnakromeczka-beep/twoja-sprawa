@@ -9,7 +9,7 @@ const guide=await readFile("v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html
 const service=await readFile("v2/uslugi/swiadczenie-wspierajace.html","utf8");
 const campaign=await readFile("v2/kampanie/swiadczenie-wspierajace.html","utf8");
 const strip=html=>html.replace(/<script\b[\s\S]*?<\/script>/gi," ").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
-const article=strip(guide),offer=strip(service);,ad=strip(campaign);
+const article=strip(guide),offer=strip(service),ad=strip(campaign);
 const assertions=[
  ["Date-specific initial WZON decision",()=>assert.ok(article.includes("1 stycznia 2026 r.")&&article.includes("pierwszego wniosku")&&article.includes("od dnia wydania decyzji"))],
  ["No automatic retroactive effective date",()=>assert.ok(article.includes("nie automatycznie od dnia złożenia wniosku"))],

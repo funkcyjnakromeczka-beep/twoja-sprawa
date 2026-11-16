@@ -7,6 +7,8 @@ on:
       - 'scripts/build.mjs'
       - 'scripts/page-navigation.mjs'
       - 'scripts/media-navigation-quality.mjs'
+      - 'scripts/content-anchors.mjs'
+      - 'scripts/test-content-anchors.mjs'
       - 'scripts/test-media-navigation-quality.mjs'
       - 'scripts/test-page-navigation.mjs'
       - 'scripts/network-brand.mjs'
@@ -39,6 +41,8 @@ jobs:
           node --check scripts/test-page-navigation.mjs
           node --check scripts/media-navigation-quality.mjs
           node --check scripts/test-media-navigation-quality.mjs
+          node --check scripts/content-anchors.mjs
+          node --check scripts/test-content-anchors.mjs
           node --check scripts/test-production-bundle.mjs
           node --check scripts/test-html-tags.mjs
           node --check scripts/test-internal-links.mjs
@@ -54,6 +58,7 @@ jobs:
           node scripts/build.mjs
           node scripts/test-page-navigation.mjs
           node scripts/test-media-navigation-quality.mjs
+          node scripts/test-content-anchors.mjs
           node scripts/test-production-bundle.mjs
           node scripts/test-html-tags.mjs
           node scripts/test-internal-links.mjs

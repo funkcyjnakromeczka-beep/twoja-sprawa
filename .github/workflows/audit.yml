@@ -68,6 +68,8 @@ jobs:
           node --check scripts/test-page-navigation.mjs
           node --check scripts/media-navigation-quality.mjs
           node --check scripts/test-media-navigation-quality.mjs
+          node --check scripts/content-anchors.mjs
+          node --check scripts/test-content-anchors.mjs
           node --check scripts/seo-policy.mjs
           node --check scripts/test-seo-policy.mjs
           node --check scripts/test-campaign-links.mjs
@@ -116,6 +118,8 @@ jobs:
         run: node scripts/test-page-navigation.mjs
       - name: Sprawdź drugą setkę usprawnień mediów, nawigacji i prywatności
         run: node scripts/test-media-navigation-quality.mjs --manifest
+      - name: Sprawdź nawigację treści i opisy linków na wszystkich 47 podstronach
+        run: node scripts/test-content-anchors.mjs --manifest
       - name: Kontrola bramek przed oficjalną publikacją
         run: node scripts/test-release-readiness.mjs
       - name: Test interaktywnego planu pierwszych kroków

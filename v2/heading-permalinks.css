@@ -1,0 +1,9 @@
+/* Shareable section headings: no JS, clipboard permissions, or tracking. */
+main :is(h2,h3,h4):has(>a.heading-permalink){position:relative;padding-right:50px;scroll-margin-top:112px}
+.heading-permalink{box-sizing:border-box;position:absolute;right:0;top:50%;transform:translateY(-50%);width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:#f9eddb;color:#193b49!important;border:1px solid #b3925e;text-decoration:none!important;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.heading-permalink::before{content:"↗";font:900 1.1rem/1 system-ui,-apple-system,"Segoe UI",sans-serif;color:#193b49}
+.heading-permalink:hover{background:#fff7e9;border-color:#815d2a}
+.heading-permalink:focus-visible{outline:3px solid #b68a43;outline-offset:3px}
+main :is(h2,h3,h4):target:has(>a.heading-permalink){outline:2px solid #c29a55;outline-offset:5px;border-radius:3px}
+@media(max-width:600px){main :is(h2,h3,h4):has(>a.heading-permalink){padding-right:48px}.heading-permalink{width:44px;height:44px}}
+@media print{.heading-permalink{display:none!important}main :is(h2,h3,h4):has(>a.heading-permalink){padding-right:0}}

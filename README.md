@@ -1,5 +1,7 @@
 # Twoja Sprawa — SuccessTree
 
+**Audyt II — 16.11.2026:** [106 kolejnych wdrożonych poprawek grafik, prywatności i dostępności nawigacji](docs/audyt-106-kolejnych-ulepszen-2026-11-16.md), potwierdzonych przez `node scripts/test-media-navigation-quality.mjs` i produkcyjne testy GitHub Actions.
+
 **Audyt 16.11.2026:** [100 wdrożonych poprawek dostępności i nawigacji — lista każdej zmiany](docs/audyt-100-ulepszen-2026-11-16.md). Kontrola: `node scripts/test-page-navigation.mjs` oraz testy produkcyjne GitHub Actions.
 
 ## Spójna ścieżka od usługi do planu pierwszych kroków (15.11.2026)

@@ -98,6 +98,9 @@ const run=async(error=false)=>{
  assert.equal(requestBody.contact_preference,"E-mail");
  assert.equal(requestBody.preferred_time,"Po południu");
  assert.equal(requestBody.service,"Świadczenie wspierające");
+ assert.match(requestBody.reference_code,/^TS-\d{8}-[A-F0-9]{12}$/);
+ assert.ok(requestBody.subject.includes("["+requestBody.reference_code+"]"));
+ assert.equal(requestBody.advisor_email,"paulina.chandrala@votum-ds.pl");
  assert.equal(requestBody.campaign_source,"facebook");
  assert.equal(requestBody.campaign_medium,"social");
  assert.equal(requestBody.campaign_name,"grupa_lubin");
@@ -120,6 +123,7 @@ const run=async(error=false)=>{
   assert.ok(draft.includes("Dogodna pora: Po południu"));
   assert.ok(draft.includes("grupa_lubin"));
   assert.ok(draft.includes("Imię: Test"));
+  assert.ok(draft.includes("Kod próby: "+requestBody.reference_code));
   assert.ok(draft.includes("E-mail: test@example.com"));
   assert.equal(typeof scheduled.at(-1),"function","Draft link must be scheduled for immediate privacy cleanup");
   scheduled.at(-1)();
@@ -145,6 +149,7 @@ const run=async(error=false)=>{
   assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"));
  }else{
   assert.equal(status.className,"contact-status-success");
+  assert.ok(status.textContent.includes(requestBody.reference_code),"Confirmation must display reference");
  }
 };
 await run(false);

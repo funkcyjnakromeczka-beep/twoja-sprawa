@@ -320,6 +320,44 @@ try{
   console.log("PASS: sensitive input guard detects checksum-valid PESEL, blocks POST and supports explicit removal.");
  }finally{await safeFormPage.close();}
 
+ // Six real-browser lead flows; all Web3Forms requests are MOCKED, not sent.
+ const routingPage=await browser.newPage({viewport:{width:390,height:844}});
+ try{
+  const requests=[];
+  await routingPage.route("https://api.web3forms.com/submit",async route=>{
+   requests.push(route.request().postDataJSON());
+   await route.fulfill({status:200,contentType:"application/json",body:'{"success":true}'});
+  });
+  await routingPage.goto(origin+"/kontakt",{waitUntil:"domcontentloaded",timeout:40000});
+  const form=routingPage.locator(".contact-form");
+  const cases=[
+   ["Szkody górnicze","wojciech.obieglo@votum-ds.pl"],
+   ["Świadczenie wspierające","paulina.chandrala@votum-ds.pl"],
+   ["Kredyt w PLN / SKD","wojciech.obieglo@votum-ds.pl"],
+   ["Renty powypadkowe","paulina.chandrala@votum-ds.pl"],
+   ["Kredyty frankowe CHF","wojciech.obieglo@votum-ds.pl"],
+   ["Służebność przesyłu","wojciech.obieglo@votum-ds.pl"]
+  ];
+  for(const [service,advisor] of cases){
+   await form.locator('select[id^="cf-service-"]').selectOption(service);
+   await form.locator('[autocomplete="given-name"]').fill("Test");
+   await form.locator('[autocomplete="tel"]').fill("796441345");
+   await form.locator('input[type="checkbox"][required]').check();
+   const count=requests.length;
+   await form.locator('button[type="submit"]').click();
+   await form.locator(".contact-status-success").waitFor({state:"visible",timeout:8000});
+   assert.equal(requests.length,count+1);
+   const data=requests.at(-1);
+   assert.equal(data.service,service);
+   assert.equal(data.advisor_email,advisor);
+   assert.match(data.reference_code,/^TS-\d{8}-[A-F0-9]{12}$/);
+   assert.ok(data.subject.includes("["+data.reference_code+"]"));
+   assert.ok((await form.locator(".contact-status-success").textContent()).includes(data.reference_code));
+  }
+  assert.equal(new Set(requests.map(d=>d.reference_code)).size,6);
+  console.log("PASS: six mocked service submissions have correct adviser metadata and anonymous IDs.");
+ }finally{await routingPage.close();}
+
  // Mock Web3Forms failures and success; NEVER transmit test contact data.
  // A failed request must preserve fields and offer a locally generated copy.
  const failedSubmitPage=await browser.newPage({viewport:{width:390,height:844}});

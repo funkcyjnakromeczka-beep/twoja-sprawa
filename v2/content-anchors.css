@@ -1,0 +1,13 @@
+/* Contextual article/service navigation. Never loaded on homepage without content navigation. */
+.content-toc{box-sizing:border-box;max-width:1100px;margin:12px auto 20px;padding:12px 16px;border:1px solid #cad7dc;border-radius:12px;background:#f5fafb;color:#183d4f;font:500 .91rem/1.55 system-ui,sans-serif}
+.content-toc summary{cursor:pointer;min-height:36px;font-weight:800;color:#164356;align-content:center}
+.content-toc summary:focus-visible{outline:3px solid #a8762b;outline-offset:3px;border-radius:5px}
+.content-toc nav{padding-top:10px}
+.content-toc ol{margin:0;padding-left:23px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:26px;row-gap:7px}
+.content-toc li{min-width:0;padding-left:2px}
+.content-toc a{color:#14516a!important;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.content-toc a:focus-visible{outline:3px solid #a8762b;outline-offset:3px}
+main h2[id^="tresc-"],main h3[id^="tresc-"],main h4[id^="tresc-"],main h5[id^="tresc-"],main h6[id^="tresc-"]{scroll-margin-top:124px}
+main :is(h2,h3,h4,h5,h6)[id^="tresc-"]:target{outline:2px solid #be9856;outline-offset:6px;border-radius:3px}
+@media(max-width:680px){.content-toc{margin:10px 12px 16px;padding:11px 12px}.content-toc ol{grid-template-columns:1fr;gap:7px}}
+@media print{.content-toc{display:none!important}main :is(h2,h3,h4,h5,h6)[id^="tresc-"]:target{outline:none}}

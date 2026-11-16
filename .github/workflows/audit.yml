@@ -70,6 +70,8 @@ jobs:
           node --check scripts/test-media-navigation-quality.mjs
           node --check scripts/content-anchors.mjs
           node --check scripts/test-content-anchors.mjs
+          node --check scripts/related-content.mjs
+          node --check scripts/test-related-content.mjs
           node --check scripts/heading-permalinks.mjs
           node --check scripts/test-heading-permalinks.mjs
           node --check scripts/test-visible-breadcrumb-schema.mjs
@@ -124,6 +126,8 @@ jobs:
         run: node scripts/test-media-navigation-quality.mjs --manifest
       - name: Sprawdź nawigację treści i opisy linków na wszystkich 47 podstronach
         run: node scripts/test-content-anchors.mjs --manifest
+      - name: Sprawdź powiązane materiały i odrzuć niezatwierdzone odnośniki
+        run: node scripts/test-related-content.mjs --manifest
       - name: Kontrola czytelnych odnośników do nagłówków i nawigacji bez JS
         run: node scripts/test-heading-permalinks.mjs --manifest
       - name: Kontrola bramek przed oficjalną publikacją

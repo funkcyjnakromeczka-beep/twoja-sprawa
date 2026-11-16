@@ -1,0 +1,15 @@
+/* Readable share block for six service pages; no layout shifts before JS. */
+.service-share-card{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(230px,1fr);align-items:center;gap:clamp(14px,3vw,35px);margin-block:24px;padding:clamp(17px,3vw,30px);border-radius:17px;border:1px solid #dab784;background:linear-gradient(115deg,#102c3b,#23515a);color:#fff}
+.service-share-card h2{margin:6px 0 10px;font-size:clamp(1.15rem,2.4vw,1.5rem);line-height:1.35;color:#fff}
+.service-share-copy p{margin:0 0 14px;color:#f4eee2;line-height:1.55}
+.service-share-kicker{display:block;color:#f3d19e;text-transform:uppercase;letter-spacing:.04em;font-weight:800;font-size:.79rem}
+.service-share-actions{display:flex;flex-direction:column;gap:10px;min-width:0}
+.service-share-direct,.service-share-actions button{display:flex;justify-content:center;align-items:center;min-height:46px;padding:10px 13px;border:1px solid #e7c48e;border-radius:9px;background:#fae0b6;color:#163b4a!important;font:800 .9rem/1.45 system-ui,sans-serif;text-align:center;text-decoration:none;cursor:pointer}
+.service-share-direct{display:inline-flex;min-height:44px;background:transparent;color:#fff!important}
+.service-share-actions button:hover,.service-share-direct:hover{background:#ffebc8;color:#213a46!important}
+.service-share-actions button:focus-visible,.service-share-direct:focus-visible,.service-share-actions textarea:focus-visible{outline:3px solid #fff0bc;outline-offset:3px}
+.service-share-actions button[hidden],.service-share-actions textarea[hidden]{display:none!important}
+.service-share-actions textarea{width:100%;box-sizing:border-box;min-height:58px;padding:9px;border:2px solid #ab8554;border-radius:9px;background:#fff;color:#102b37}
+.service-share-actions [data-share-feedback]{display:block;min-height:1.5em;line-height:1.4;font-size:.85rem;color:#fff7e9;overflow-wrap:anywhere}
+@media(max-width:650px){.service-share-card{grid-template-columns:1fr;padding:17px;margin-block:18px}}
+@media print{.service-share-card{display:none!important}}

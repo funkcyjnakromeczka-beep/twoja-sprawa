@@ -358,6 +358,50 @@ try{
   console.log("PASS: six mocked service submissions have correct adviser metadata and anonymous IDs.");
  }finally{await routingPage.close();}
 
+ // Referral links must share clean canonical URLs, not the visitor's UTM or form content.
+ const referralPage=await browser.newPage({viewport:{width:390,height:844}});
+ try{
+  const slugs=["szkody-gornicze","swiadczenie-wspierajace","kredyty-pln",
+   "renty-powypadkowe","kredyty-frankowe","sluzebnosc-przesylu"];
+  for(const slug of slugs){
+   const expected=origin+"/uslugi/"+slug;
+   await referralPage.goto(expected+"?utm_source=facebook&lead_path=plan#formularz",{
+    waitUntil:"domcontentloaded",timeout:40000
+   });
+   const panel=referralPage.locator(".service-share-card");
+   assert.equal(await panel.count(),1,"One share block expected per service: "+slug);
+   assert.equal(await panel.locator("a.service-share-direct").getAttribute("href"),expected,
+    "Share anchor should not include campaign params");
+   const share=panel.locator("[data-share-page]");
+   await share.waitFor({state:"visible",timeout:10000});
+   assert.equal(await share.getAttribute("data-share-url"),expected);
+   assert.ok((await referralPage.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=2,
+    "Service share should not cause horizontal overflow: "+slug);
+  }
+  // The native share API is mocked; the test never sends messages.
+  const expected=origin+"/uslugi/sluzebnosc-przesylu";
+  await referralPage.evaluate(()=>{
+   window.__shareCapture=null;
+   Object.defineProperty(navigator,"share",{configurable:true,value:async value=>{window.__shareCapture=value;}});
+  });
+  await referralPage.locator(".service-share-card [data-share-page]").click();
+  const captured=await referralPage.evaluate(()=>window.__shareCapture);
+  assert.equal(captured.url,expected);
+  assert.ok(!JSON.stringify(captured).includes("utm_"));
+  // Simulate unsupported Web Share and denied clipboard access.
+  await referralPage.evaluate(()=>{
+   Object.defineProperty(navigator,"share",{configurable:true,value:undefined});
+   Object.defineProperty(navigator,"clipboard",{configurable:true,value:{writeText:async()=>{throw Error("clipboard denied");}}});
+  });
+  await referralPage.locator(".service-share-card [data-share-page]").click();
+  const manual=referralPage.locator(".service-share-card [data-share-manual]");
+  assert.equal(await manual.isVisible(),true);
+  assert.equal(await manual.inputValue(),expected);
+  assert.match(await referralPage.locator(".service-share-card [data-share-feedback]").textContent(),
+   /ręcznego skopiowania/);
+  console.log("PASS: six share panels provide clean canonical links, native share and manual fallback.");
+ }finally{await referralPage.close();}
+
  // Mock Web3Forms failures and success; NEVER transmit test contact data.
  // A failed request must preserve fields and offer a locally generated copy.
  const failedSubmitPage=await browser.newPage({viewport:{width:390,height:844}});

@@ -71,3 +71,16 @@
 .local-mining-page .local-contact .lead-panel form.contact-form .contact-guide-box{
  background:#f8f5ed!important
 }
+
+/* Final computed-style audit: the form heading and its links inherited
+   pale typography intended for the surrounding dark local section. */
+.local-mining-page .local-contact .lead-panel form.contact-form > h3{
+ color:#173746!important
+}
+.local-mining-page .local-contact .lead-panel form.contact-form a,
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-people a{
+ color:#1c5062!important;text-decoration:underline;text-underline-offset:3px
+}
+.local-mining-page .local-contact .lead-panel form.contact-form a:focus-visible{
+ outline:3px solid #a77638;outline-offset:3px
+}

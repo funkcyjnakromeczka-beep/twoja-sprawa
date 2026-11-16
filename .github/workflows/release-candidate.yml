@@ -8,6 +8,8 @@ on:
       - 'scripts/page-navigation.mjs'
       - 'scripts/media-navigation-quality.mjs'
       - 'scripts/content-anchors.mjs'
+      - 'scripts/related-content.mjs'
+      - 'scripts/test-related-content.mjs'
       - 'scripts/heading-permalinks.mjs'
       - 'scripts/test-heading-permalinks.mjs'
       - 'scripts/test-visible-breadcrumb-schema.mjs'
@@ -47,6 +49,8 @@ jobs:
           node --check scripts/test-media-navigation-quality.mjs
           node --check scripts/content-anchors.mjs
           node --check scripts/test-content-anchors.mjs
+          node --check scripts/related-content.mjs
+          node --check scripts/test-related-content.mjs
           node --check scripts/heading-permalinks.mjs
           node --check scripts/test-heading-permalinks.mjs
           node --check scripts/test-visible-breadcrumb-schema.mjs
@@ -67,6 +71,7 @@ jobs:
           node scripts/test-page-navigation.mjs
           node scripts/test-media-navigation-quality.mjs
           node scripts/test-content-anchors.mjs
+          node scripts/test-related-content.mjs
           node scripts/test-heading-permalinks.mjs
           node scripts/test-visible-breadcrumb-schema.mjs
           node scripts/test-1000-release-checks.mjs --manifest

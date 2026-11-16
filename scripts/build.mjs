@@ -118,15 +118,19 @@ const structured = (route,canonical,title,markup) => {
       serviceType:route.includes("swiadczenie")?"Wsparcie w sprawach świadczenia wspierającego":route.includes("szkody-gornicze")?"Wstępna analiza szkód górniczych":route.includes("kredyty-frankowe")?"Analiza umów kredytów CHF i możliwych rozliczeń z bankiem":route.includes("kredyty-pln")?"Analiza kredytu konsumenckiego pod kątem Sankcji Kredytu Darmowego":"Wstępny kontakt i analiza sprawy"
     });
   }
-  const category=route.startsWith("/uslugi/")?"Usługi":route.startsWith("/poradniki/")?"Poradniki":route.startsWith("/lokalnie/")?"Szkody górnicze — lokalnie":null;
-  if(category){
-    const categoryUrl=route.startsWith("/poradniki/")?origin+"/wiedza/":origin+"/#uslugi";
-    graph.push({"@type":"BreadcrumbList","@id":canonical+"#breadcrumb",itemListElement:[
-      {"@type":"ListItem",position:1,name:"Twoja Sprawa",item:origin+"/"},
-      {"@type":"ListItem",position:2,name:category,item:categoryUrl},
-      {"@type":"ListItem",position:3,name:title.split("|")[0].trim(),item:canonical}
-    ]});
-    page.breadcrumb={"@id":canonical+"#breadcrumb"};
+  // Structured breadcrumbs are derived from the visible, editorially
+  // curated navigation instead of a separate SEO-only naming scheme.
+  const breadcrumbMarkup=markup.match(/<nav class="site-breadcrumbs" aria-label="Ścieżka nawigacji">([\\s\\S]*?)<\\/nav>/)?.[1];
+  if(breadcrumbMarkup){
+    const chain=[...breadcrumbMarkup.matchAll(/<a href="([^"]+)">([^<]+)<\\/a>/g)]
+      .map(([,href,name])=>({name:decodeEntities(name.trim()),item:new URL(href,origin).href}));
+    const current=breadcrumbMarkup.match(/<span aria-current="page">([^<]+)<\\/span>/);
+    if(!current||chain.length<1)throw new Error("Incomplete visible breadcrumbs on "+route);
+    chain.push({name:decodeEntities(current[1].trim()),item:canonical});
+    const breadcrumb={"@type":"BreadcrumbList","@id":canonical+"#breadcrumb",
+      itemListElement:chain.map((value,index)=>({"@type":"ListItem",position:index+1,name:value.name,item:value.item}))};
+    graph.push(breadcrumb);
+    page.breadcrumb={"@id":breadcrumb["@id"]};
   }
   return JSON.stringify({"@context":"https://schema.org","@graph":graph}).replaceAll("<","\\u003c");
 };

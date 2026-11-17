@@ -17,6 +17,8 @@ for(const [slug,city] of [["lubin","Lubin"],["polkowice","Polkowice"]]){
  assert.ok(section.includes('href="#formularz"'),"Form anchor missing: "+city);
  assert.equal((section.match(/<a\b/g)||[]).length,2,"Exactly two contact actions: "+city);
  assert.ok(html.includes('id="formularz"'),"Local target missing: "+city);
+ assert.ok(html.indexOf('class="local-mobile-contact"')<html.indexOf('<main id="main"'),
+  "Mobile actions must appear before main for predictable keyboard order: "+city);
  assert.ok(!/data:\s*|onclick=|onload=|target="_blank"/.test(section),
   "Contact bar must stay static, local and private: "+city);
  assert.ok(html.includes('src="/contact.js" data-service="Szkody górnicze" data-locality="'+city+'"'),

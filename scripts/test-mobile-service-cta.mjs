@@ -46,6 +46,14 @@ for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swi
  assert.equal(observed,target);
  observerCallback([{isIntersecting:true}]);assert.equal(nav.hidden,true);
  observerCallback([{isIntersecting:false}]);assert.equal(nav.hidden,false);
+ // Chat guide and contact bar must never cover each other.
+ assert.equal(typeof documentEvents["twoja-sprawa:chat-visibility"],"function");
+ documentEvents["twoja-sprawa:chat-visibility"]({detail:{open:true}});
+ assert.equal(nav.hidden,true,"Open guide must hide bar: "+variant);
+ observerCallback([{isIntersecting:false}]);
+ assert.equal(nav.hidden,true,"Offscreen form must not restore bar over guide: "+variant);
+ documentEvents["twoja-sprawa:chat-visibility"]({detail:{open:false}});
+ assert.equal(nav.hidden,false,"Closing guide must restore bar: "+variant);
  focused=form;documentEvents.focusin({target:form});assert.equal(nav.hidden,true);
  documentEvents.focusout({target:form});focused=null;scheduled.shift()();assert.equal(nav.hidden,false,"Bar must reappear after leaving the form");
  observerCallback([{isIntersecting:true}]);assert.equal(nav.hidden,true,"Visible form keeps bar hidden");
@@ -80,6 +88,13 @@ for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swi
  assert.equal(bar.hidden,true,"The form must not be covered");
  rect={top:-900,bottom:-150};listeners.resize();
  assert.equal(bar.hidden,false,"The bar should return past the form");
+ assert.equal(typeof listeners["document:twoja-sprawa:chat-visibility"],"function");
+ listeners["document:twoja-sprawa:chat-visibility"]({detail:{open:true}});
+ assert.equal(bar.hidden,true,"Older Android must hide CTA under open guide");
+ listeners.resize();
+ assert.equal(bar.hidden,true,"Resize must not restore CTA over open guide");
+ listeners["document:twoja-sprawa:chat-visibility"]({detail:{open:false}});
+ assert.equal(bar.hidden,false,"Older Android should restore CTA after guide closes");
  focused=form;listeners["document:focusin"]({target:form});
  assert.equal(bar.hidden,true);
  focused=null;listeners["document:focusout"]({target:form});

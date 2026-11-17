@@ -5,10 +5,10 @@ import {readFile} from "node:fs/promises";
 const root="https://twoja-sprawa.pages.dev";
 const faq=await readFile("dist/faq.html","utf8");
 const sitemap=await readFile("dist/sitemap.xml","utf8");
-const html=faq.match(/<nav class="faq-service-directory faq-container"[\\s\\S]*?<\\/nav>/)?.[0]||"";
+const html=faq.match(/<nav class="faq-service-directory faq-container"[\s\S]*?<\/nav>/)?.[0]||"";
 assert.ok(html,"FAQ must contain a server-rendered service directory");
 assert.ok(html.includes('aria-labelledby="faq-service-directory-title"'),"Semantic name missing");
-const urls=[...html.matchAll(/href="(\\/[^"]+)"/g)].map(x=>x[1]);
+const urls=[...html.matchAll(/href="(\/[^"]+)"/g)].map(x=>x[1]);
 const expected=[
  "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
  "/uslugi/kredyty-pln","/uslugi/renty-powypadkowe",

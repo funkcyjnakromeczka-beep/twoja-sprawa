@@ -638,9 +638,3 @@ h3{line-height:1.25}
 .contact-form :is(.contact-sensitive-warning,.contact-sensitive-remove)[hidden]{display:none!important}
 .contact-form .contact-sensitive-remove:focus-visible{outline:3px solid #e4a247}
 
-/* Przykładowy opis wiadomości: przycisk wyłącznie lokalnie modyfikuje pole tekstowe. */
-.contact-form .contact-example-tools{display:grid;gap:7px;justify-items:start;margin:8px 0 15px;min-width:0}
-.contact-form .contact-message-example{display:inline-flex;align-items:center;justify-content:center;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid #799ca8;border-radius:10px;background:#eef5f5;color:#15394c!important;font:700 .93rem/1.45 system-ui,sans-serif;cursor:pointer;text-align:center}
-.contact-form .contact-message-example:hover{background:#dfeceb;border-color:#517789}
-.contact-form .contact-message-example:focus-visible{outline:3px solid #c5914c;outline-offset:3px}
-.contact-form .contact-example-feedback{margin:0;color:#294957!important;font-size:.89rem;line-height:1.5}

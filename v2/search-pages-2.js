@@ -60,7 +60,7 @@ window.TwojaSprawaSearchPages2=[
     "id": "page:v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
     "href": "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
     "title": "Drobne pęknięcia a szkody górnicze | Lubin i Polkowice",
-    "description": "Niewielkie rysy na ścianie, pęknięcia elewacji, nierówna kostka brukowa? Jak udokumentować uszkodzenia w rejonie Lubina i Polkowic i kiedy zgłosić je do analizy.",
+    "description": "Niewielkie rysy, pęknięcia elewacji, nierówna kostka brukowa? Dowiedz się, jak dokumentować uszkodzenia w Lubinie i Polkowicach i kiedy zgłosić szkodę.",
     "category": "szkody",
     "keywords": "Drobne pęknięcia ścian lub elewacji? Nie ignoruj pierwszych oznak uszkodzeń. v2 wiedza drobne pekniecia szkody gornicze html Drobne Pekniecia Szkody Gornicze"
   },

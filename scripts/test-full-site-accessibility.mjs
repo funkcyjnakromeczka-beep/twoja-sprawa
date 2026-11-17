@@ -37,6 +37,17 @@ if(sha){
  }
  if(!ready)throw new Error("Public deployment did not reach commit "+sha.slice(0,8)+", latest "+latest);
 }
+if(localPreview){
+ // Preview branches must be nonindexable even when source pages are approved
+ // for Google on main. Verify both bot-facing files before browser QA.
+ const [robotsResponse,headersResponse]=await Promise.all([
+  fetch(origin+"/robots.txt"),fetch(origin+"/_headers")
+ ]);
+ if(!robotsResponse.ok||!headersResponse.ok)throw Error("Preview bot-control files missing");
+ const [robots,headers]=await Promise.all([robotsResponse.text(),headersResponse.text()]);
+ if(!/^Disallow:\s*\/\s*$/m.test(robots)||!headers.includes("X-Robots-Tag: noindex, nofollow"))
+  throw Error("Preview must explicitly block indexing via robots.txt and response headers");
+}
 const browser=await chromium.launch({headless:true});
 try{
  for(const [width,height] of [[390,844],[1280,900]]){
@@ -58,6 +69,10 @@ try{
    try{
     const response=await page.goto(url,{waitUntil:"domcontentloaded",timeout:20000});
     if(!response||(response.status()>=400&&!(item.path==="404.html"&&response.status()===404)))throw Error("HTTP "+(response?.status()??"unavailable"));
+    if(localPreview){
+     const directive=await page.locator('meta[name="robots"]').getAttribute("content");
+     if(directive!=="noindex,nofollow")throw Error("Preview robot directive incorrect: "+item.route+"; "+directive);
+    }
     await page.addScriptTag({content:axe.source});
     const result=await page.evaluate(async()=>{
      const data=await window.axe.run(document,{

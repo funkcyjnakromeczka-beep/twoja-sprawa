@@ -50,6 +50,10 @@ const backendSource=await readFile("functions/api/contact.js","utf8");
 assert.ok(formSource.includes('"Kredyty frankowe CHF"'),"CHF missing from client form");
 assert.ok(backendSource.includes('"Kredyty frankowe CHF"'),"CHF missing from backend allowlist");
 const recruit=await readFile("v2/rekrutacja.html","utf8");
+assert.ok(recruit.includes('class="recruitment-page"'),"Recruitment responsive styling hook missing");
+const contrastCss=await readFile("v2/visual-contrast.css","utf8");
+assert.ok(contrastCss.includes("body.recruitment-page .subhero h1"),
+ "Recruitment heading must use an explicit responsive typography rule");
 const recruitFaq=recruit.split('<section aria-labelledby="rekrutacja-faq">')[1]?.split("</section>")[0]||"";
 assert.equal((recruitFaq.match(/<details>/g)||[]).length,4,
  "Recruitment page must answer four real collaboration questions");

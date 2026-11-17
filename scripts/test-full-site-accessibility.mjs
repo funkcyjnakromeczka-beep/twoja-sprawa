@@ -142,7 +142,7 @@ try{
      boxes:anchors.map(a=>{const r=a.getBoundingClientRect();return {
       left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width)
      };}),
-     cssGuard:Boolean(document.querySelector("#network-brand-critical"))
+     cssGuard:Boolean(document.querySelector('[data-mobile-brand-fallback="true"]'))
     };
    });
    const good=result.cssGuard&&result.count===2&&result.display==="flex"&&

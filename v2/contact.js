@@ -387,8 +387,11 @@
     const tools=document.createElement("div");tools.className="contact-example-tools";
     const example=document.createElement("button");example.type="button";example.className="contact-message-example";
     example.textContent="Wstaw przykładowy opis sprawy";
+    // Własne wykończenie przycisku bez powiększania współdzielonego styles.css.
+    example.style.cssText="background:#eef5f5;color:#15394c;border:1px solid #799ca8;border-radius:10px;cursor:pointer";
     const feedback=document.createElement("p");feedback.className="contact-example-feedback";
     feedback.setAttribute("aria-live","polite");
+    feedback.style.cssText="margin:0 0 8px;color:#294957;font-size:.89rem";
     const samples={
       "Szkody górnicze":"Proszę o kontakt w sprawie możliwych uszkodzeń nieruchomości. Chcę omówić, jakie zdjęcia i informacje przygotować do wstępnej analizy.",
       "Świadczenie wspierające":"Proszę o kontakt w sprawie świadczenia wspierającego. Chcę ustalić kolejne kroki dotyczące WZON lub wniosku do ZUS.",

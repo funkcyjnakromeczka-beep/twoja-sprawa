@@ -3,10 +3,10 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/uslugi/sluzebnosc-przesylu.html",
     "href": "/v2/uslugi/sluzebnosc-przesylu.html",
-    "title": "Służebność przesyłu — sprawdź sytuację swojej działki",
+    "title": "Służebność przesyłu — analiza działki",
     "description": "Słup, linia energetyczna lub gazociąg na działce? Poznaj dokumenty potrzebne do analizy praw operatora i możliwych roszczeń właściciela.",
     "category": "przesyl",
-    "keywords": "Służebność przesyłu — sprawdź sytuację swojej działki v2 uslugi sluzebnosc przesylu html Sluzebnosc Przesylu"
+    "keywords": "Służebność przesyłu — analiza działki v2 uslugi sluzebnosc przesylu html Sluzebnosc Przesylu"
   },
   {
     "id": "page:v2/uslugi/swiadczenie-wspierajace.html",

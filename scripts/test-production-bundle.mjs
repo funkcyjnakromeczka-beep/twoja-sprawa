@@ -26,6 +26,14 @@ for(const ownershipKey of ["f66d80be29094b29ae5d941ae2cc2296","cdc63afe4c9cf8e5d
 console.log("INDEXNOW_DUAL_KEYS_OK: OpenSEO and existing CI workflow have correctly formed public root files.");
 
 const home=await read("index.html");
+const recruitmentRelease=await read("rekrutacja.html");
+assert.equal((recruitmentRelease.match(/class="network-brand-bar"/g)||[]).length,1,
+ "Recruitment release must have one persistent VOTUM partner bar");
+assert.ok(!recruitmentRelease.includes('class="partner-identity-bar"'),
+ "Duplicate VOTUM partner bar must be removed from recruitment page");
+assert.ok(recruitmentRelease.includes("Serwis przedstawiciela, nie oficjalna witryna spółek VOTUM"),
+ "Keep agency relationship notice in the shared brand bar");
+
 
 // No-JavaScript contact is part of the release contract, not an optional
 // JavaScript widget. Keep both adviser phones and e-mails visible in markup.

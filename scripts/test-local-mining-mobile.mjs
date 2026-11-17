@@ -5,6 +5,12 @@ import {readFile} from "node:fs/promises";
 const css=await readFile("v2/local-mining.css","utf8");
 assert.ok(css.includes(".local-mobile-contact"),"Local mobile styles missing");
 assert.ok(css.includes("@media(max-width:680px)"),"Mobile visibility breakpoint missing");
+assert.ok(css.includes(".local-mining-page .chat-assistant"),
+ "Chatbot launcher must be moved above the local mobile contact bar");
+assert.ok(css.includes("bottom:calc(94px + env(safe-area-inset-bottom"),
+ "Chatbot cannot overlap the form link at 320px");
+assert.ok(css.includes(".local-mining-page .chat-panel"),
+ "Expanded chatbot needs a usable height above the fixed contact bar");
 assert.ok(css.includes("env(safe-area-inset-bottom"),"Notch/safe-area space missing");
 assert.ok(css.includes("@media print")&&css.includes("display:none!important"),"Print must exclude sticky bar");
 for(const [slug,city] of [["lubin","Lubin"],["polkowice","Polkowice"]]){

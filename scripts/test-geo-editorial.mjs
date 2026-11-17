@@ -89,4 +89,20 @@ assert.ok(recruitment.includes("tel:+48796441345"),"Recruitment needs a phone al
 assert.ok(recruitment.includes('name="robots" content="index,follow"'),"Recruitment page remains indexable under the existing SEO policy");
 console.log("ARTICLE_CANONICAL_GRAPH_OK: two indexed guides link their Article and WebPage entities on clean URLs.");
 
+
+// Built directory must use extensionless canonical routes with no noindex destinations.
+const hubPage=await readFile("dist/wiedza/index.html","utf8");
+const hubDirectory=hubPage.match(/<section class="hub-services-index"[\s\S]*?<\/section>/)?.[0]||"";
+assert.ok(hubDirectory,"Built knowledge hub must retain static service navigation");
+const hubLinks=[...hubDirectory.matchAll(/href="(\/(?:uslugi|lokalnie)\/[^"]+)"/g)].map(m=>m[1]);
+assert.equal(hubLinks.length,8,"Hub service directory must link to 6 service and 2 local pages");
+for(const pathname of [
+ "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-pln",
+ "/uslugi/renty-powypadkowe","/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu",
+ "/lokalnie/szkody-gornicze-lubin","/lokalnie/szkody-gornicze-polkowice"
+])assert.equal(hubLinks.filter(url=>url===pathname).length,1,pathname+" missing or duplicated in published hub");
+const archiveLinks=await readFile("dist/sitemap.xml","utf8");
+for(const dest of hubLinks)assert.ok(archiveLinks.includes("<loc>"+origin+dest+"</loc>"),"Hub target not present in XML sitemap: "+dest);
+console.log("HUB_INDEXABLE_LINKS_OK: 8 public, sitemap-listed service/local destinations visible without JavaScript.");
+
 console.log("GEO_EDITORIAL_RESULT "+JSON.stringify({servicePages:checked,visibleAnswers:checked*3,verifiedOfficialSourceLinks:checked,aboutContactAligned:true,linkedServiceSchemas:checked,searchBotAllowed:true,zeroRealMail:true}));

@@ -4,7 +4,7 @@ function removeLegacyLogoStrip(sourceHtml){
  let html=sourceHtml;
  // Source homepage keeps a partner strip for direct previews.
  // Release builds insert the shared sticky bar; remove old duplicates.
- const staleStrips=["agency-logos-bar","homepage-partner-strip"];
+ const staleStrips=["agency-logos-bar","homepage-partner-strip","partner-identity-bar"];
  for(const className of staleStrips){
    const headerEnd=html.indexOf("</header>");
    if(headerEnd<0)continue;

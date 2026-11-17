@@ -5,7 +5,7 @@ import { readFile } from "node:fs/promises";
 const source=await readFile("functions/api/contact.js","utf8");
 const {onRequestPost,onRequest}=await import("data:text/javascript;base64,"+Buffer.from(source).toString("base64"));
 const env={RESEND_API_KEY:"test-not-real",CONTACT_FROM:"test@example.com",CONTACT_TO:"test@example.com",TURNSTILE_SECRET_KEY:"test-not-real",PUBLIC_ORIGIN:"https://example.com"};
-const services=["Szkody górnicze","Świadczenie wspierające","Renty powypadkowe","Kredyt w PLN / SKD","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
+const services=["Szkody górnicze","Świadczenie wspierające","Renty powypadkowe","Kredyt w PLN / SKD","Kredyty frankowe CHF","Służebność przesyłu","Wypadek komunikacyjny","Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości","Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"];
 const payload=(service)=>({service,name:"Jan",location:"Lubin",phone:"+48 796 441 345",email:"jan@example.com",message:"",turnstileToken:"mock-token",privacyAcknowledged:true});
 const request=(body,origin=env.PUBLIC_ORIGIN,contentType="application/json")=>new Request("https://example.com/api/contact",{method:"POST",headers:{"Origin":origin,"Content-Type":contentType},body:typeof body==="string"?body:JSON.stringify(body)});
 const run=async(body,origin,settings=env)=>onRequestPost({request:request(body,origin),env:settings});

@@ -54,6 +54,12 @@ assert.ok(recruit.includes('class="recruitment-page"'),"Recruitment responsive s
 const contrastCss=await readFile("v2/visual-contrast.css","utf8");
 assert.ok(contrastCss.includes("body.recruitment-page .subhero h1"),
  "Recruitment heading must use an explicit responsive typography rule");
+const recruitHero=recruit.split('<section class="subhero">')[1]?.split("</section>")[0]||"";
+assert.ok(recruitHero.includes('aria-label="Kontakt w sprawie współpracy"'),
+ "Recruitment must offer directly accessible contact actions in the hero");
+assert.ok(recruitHero.includes('mailto:wojciech.obieglo@votum-ds.pl?subject=') &&
+ recruitHero.includes('href="tel:+48796441345"'),
+ "Recruitment first-screen CTAs must lead to the verified contact details");
 const recruitFaq=recruit.split('<section aria-labelledby="rekrutacja-faq">')[1]?.split("</section>")[0]||"";
 assert.equal((recruitFaq.match(/<details>/g)||[]).length,4,
  "Recruitment page must answer four real collaboration questions");

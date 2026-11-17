@@ -1,6 +1,14 @@
 name: Zrzuty ekranu — podgląd PC i telefon
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'v2/**'
+      - 'scripts/preview.mjs'
+      - 'scripts/screenshot-preview.mjs'
+      - 'scripts/build.mjs'
+      - 'scripts/network-brand.mjs'
+      - '.github/workflows/screenshots.yml'
   push:
     branches: [main]
     paths:

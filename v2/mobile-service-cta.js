@@ -33,7 +33,12 @@
  const target=document.getElementById("formularz");
  let formVisible=false;
  let chatOpen=false;
- const syncVisibility=()=>{nav.hidden=formVisible||chatOpen||Boolean(target?.contains(document.activeElement));};
+ const syncVisibility=()=>{
+  const visible=!formVisible&&!chatOpen&&!Boolean(target?.contains(document.activeElement));
+  nav.hidden=!visible;
+  // CSS :has() cannot reserve safe bottom space on older Android browsers.
+  document.body.classList?.toggle("has-visible-mobile-service-cta",visible);
+ };
  // Keep the mobile contact bar out of the way of the open service guide,
  // including older Android browsers without CSS :has() support.
  document.addEventListener("twoja-sprawa:chat-visibility",event=>{

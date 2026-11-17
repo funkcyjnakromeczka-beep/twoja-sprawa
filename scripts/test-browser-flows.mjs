@@ -251,6 +251,31 @@ try{
 
 
 
+ // On real JS-enabled phones the chatbot launcher must not cover either
+ // sticky local contact action; axe's 2.5.8 target-size audit depends on it.
+ const localOverlayPage=await browser.newPage({viewport:{width:390,height:844}});
+ try{
+  for(const route of ["/lokalnie/szkody-gornicze-lubin","/lokalnie/szkody-gornicze-polkowice"]){
+   await localOverlayPage.goto(origin+route,{waitUntil:"load",timeout:40000});
+   await localOverlayPage.locator(".chat-assistant .chat-toggle").waitFor({state:"visible"});
+   const geometry=await localOverlayPage.evaluate(()=>{
+    const bar=document.querySelector(".local-mobile-contact");
+    const launcher=document.querySelector(".chat-assistant .chat-toggle");
+    const rBar=bar.getBoundingClientRect(),rChat=launcher.getBoundingClientRect();
+    return {barTop:rBar.top,barBottom:rBar.bottom,
+     chatTop:rChat.top,chatBottom:rChat.bottom,
+     barWidth:rBar.width,chatWidth:rChat.width};
+   });
+   assert.ok(geometry.chatBottom<=geometry.barTop-8,
+    "Chatbot overlaps the sticky local form button: "+route+" "+JSON.stringify(geometry));
+   assert.ok(geometry.chatTop>=0&&geometry.barWidth<=392,
+    "Chatbot/CTA outside phone viewport: "+route+" "+JSON.stringify(geometry));
+  }
+  console.log("PASS: Lubin/Polkowice chatbot launcher stays above mobile call/form actions.");
+ }finally{
+  await localOverlayPage.close();
+ }
+
  // Browser-level search: an actual local query should populate results and
  // hide the bootstrap fallback. A blocked main script must do the opposite.
  const searchPage=await browser.newPage({viewport:{width:320,height:740}});

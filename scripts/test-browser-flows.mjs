@@ -187,6 +187,41 @@ try{
   assert.deepEqual(noJsOverflow,[],"No-JavaScript mobile horizontal overflow: "+JSON.stringify(noJsOverflow));
   console.log("PASS: 11 core routes retain direct adviser phone/e-mail at 320px with JavaScript disabled.");
 
+  // Source-specific mobile conversion: Lubin/Polkowice have a real tel link
+  // and a usable form anchor even if all JavaScript is disabled.
+  for(const [route,city] of [
+   ["/lokalnie/szkody-gornicze-lubin","Lubin"],
+   ["/lokalnie/szkody-gornicze-polkowice","Polkowice"]
+  ]){
+   const response=await noJsPage.goto(origin+route,{waitUntil:"load",timeout:40000});
+   assert.equal(response?.status(),200,"Local no-JS page unavailable: "+city);
+   const bar=noJsPage.locator(".local-mobile-contact");
+   assert.equal(await bar.count(),1,"Exactly one local contact bar required: "+city);
+   assert.equal(await bar.isVisible(),true,"Mobile contact bar not visible without JS: "+city);
+   const hrefs=await bar.locator("a").evaluateAll(nodes=>nodes.map(a=>a.getAttribute("href")));
+   assert.deepEqual(hrefs,["tel:+48796441345","#formularz"],
+    "Mobile contact bar must link only to verified call and local form: "+city);
+   const metrics=await bar.evaluate(el=>{
+    const r=el.getBoundingClientRect(),links=[...el.querySelectorAll("a")].map(a=>a.getBoundingClientRect());
+    return {position:getComputedStyle(el).position,
+     left:r.left,right:r.right,bottom:r.bottom,
+     heights:links.map(x=>x.height),rightEdges:links.map(x=>x.right),
+     bodyPadding:parseFloat(getComputedStyle(document.body).paddingBottom)||0};
+   });
+   assert.equal(metrics.position,"fixed","Mobile contact bar should remain visible: "+city);
+   assert.ok(metrics.left>=-2&&metrics.right<=322&&Math.abs(metrics.bottom-740)<2,
+    "Mobile contact bar exceeds 320px viewport: "+city+" "+JSON.stringify(metrics));
+   assert.ok(metrics.heights.every(h=>h>=44)&&metrics.rightEdges.every(x=>x<=322),
+    "Mobile tap targets too small or overflowing: "+city+" "+JSON.stringify(metrics));
+   assert.ok(metrics.bodyPadding>=80,
+    "Last content must not be covered by the fixed mobile bar: "+city);
+   assert.equal(await noJsPage.locator("#formularz").count(),1,
+    "Mobile form button must target the actual local form: "+city);
+  }
+  console.log("PASS: Lubin and Polkowice mobile contact bars work at 320px without JavaScript.");
+
+
+
   // Search page has no dynamic result list when scripts are disabled. Preserve
   // direct self-service links rather than displaying an unusable search box.
   const searchNoJs=await noJsPage.goto(origin+"/szukaj",{waitUntil:"load",timeout:40000});
@@ -215,6 +250,31 @@ try{
 
 
 
+
+ // On real JS-enabled phones the chatbot launcher must not cover either
+ // sticky local contact action; axe's 2.5.8 target-size audit depends on it.
+ const localOverlayPage=await browser.newPage({viewport:{width:390,height:844}});
+ try{
+  for(const route of ["/lokalnie/szkody-gornicze-lubin","/lokalnie/szkody-gornicze-polkowice"]){
+   await localOverlayPage.goto(origin+route,{waitUntil:"load",timeout:40000});
+   await localOverlayPage.locator(".chat-assistant .chat-toggle").waitFor({state:"visible"});
+   const geometry=await localOverlayPage.evaluate(()=>{
+    const bar=document.querySelector(".local-mobile-contact");
+    const launcher=document.querySelector(".chat-assistant .chat-toggle");
+    const rBar=bar.getBoundingClientRect(),rChat=launcher.getBoundingClientRect();
+    return {barTop:rBar.top,barBottom:rBar.bottom,
+     chatTop:rChat.top,chatBottom:rChat.bottom,
+     barWidth:rBar.width,chatWidth:rChat.width};
+   });
+   assert.ok(geometry.chatBottom<=geometry.barTop-8,
+    "Chatbot overlaps the sticky local form button: "+route+" "+JSON.stringify(geometry));
+   assert.ok(geometry.chatTop>=0&&geometry.barWidth<=392,
+    "Chatbot/CTA outside phone viewport: "+route+" "+JSON.stringify(geometry));
+  }
+  console.log("PASS: Lubin/Polkowice chatbot launcher stays above mobile call/form actions.");
+ }finally{
+  await localOverlayPage.close();
+ }
 
  // Browser-level search: an actual local query should populate results and
  // hide the bootstrap fallback. A blocked main script must do the opposite.

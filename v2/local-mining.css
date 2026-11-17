@@ -95,3 +95,42 @@
   text-decoration:underline;
   text-underline-offset:3px;
 }
+
+/* Lokalne zgłoszenia górnicze: dwa stałe działania na telefonie, również bez JavaScript.
+   Wersja desktop i wydruk nie otrzymują dodatkowego paska. */
+.local-mining-page .local-mobile-contact{display:none}
+@media(max-width:680px){
+ .local-mining-page{padding-bottom:calc(88px + env(safe-area-inset-bottom, 0px))}
+ .local-mining-page .local-mobile-contact{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+  position:fixed;inset-inline:0;bottom:0;z-index:85;
+  padding:8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  background:#092735;border-top:1px solid #dcb77f;
+  box-shadow:0 -5px 18px rgba(7,28,38,.18)
+ }
+ .local-mining-page .local-mobile-contact a{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;min-width:0;min-height:56px;padding:6px;border-radius:10px;
+  text-align:center;text-decoration:none;font-weight:750;line-height:1.2;
+  overflow-wrap:anywhere
+ }
+ .local-mining-page .local-mobile-contact a span{font-size:.77rem}
+ .local-mining-page .local-mobile-contact a strong{font-size:clamp(.79rem,3.8vw,.98rem);font-weight:850}
+ .local-mining-page .local-mobile-contact .local-mobile-call{background:#ead0a4;color:#122d3d}
+ .local-mining-page .local-mobile-contact .local-mobile-form{background:#fff;color:#143b4e}
+ .local-mining-page .local-mobile-contact a:focus-visible{
+  outline:3px solid #d3a555;outline-offset:-3px
+ }
+}
+@media print{.local-mining-page .local-mobile-contact{display:none!important}}
+
+/* Existing chatbot must remain independently tappable above the fixed CTA.
+   Otherwise it masks the right-hand form button (WCAG 2.2 target-size). */
+@media(max-width:680px){
+ .local-mining-page .chat-assistant{
+  bottom:calc(94px + env(safe-area-inset-bottom, 0px))
+ }
+ .local-mining-page .chat-panel{
+  max-height:min(520px,calc(100dvh - 230px - env(safe-area-inset-bottom, 0px)))
+ }
+}

@@ -105,4 +105,25 @@ const archiveLinks=await readFile("dist/sitemap.xml","utf8");
 for(const dest of hubLinks)assert.ok(archiveLinks.includes("<loc>"+origin+dest+"</loc>"),"Hub target not present in XML sitemap: "+dest);
 console.log("HUB_INDEXABLE_LINKS_OK: 8 public, sitemap-listed service/local destinations visible without JavaScript.");
 
+// Local landing pages must link visibly to the approved, indexed guide and
+// to their sibling city, without creating new doorway pages or source duplicates.
+for(const city of ["lubin","polkowice"]){
+ const path="dist/lokalnie/szkody-gornicze-"+city+".html";
+ const content=await readFile(path,"utf8");
+ const guide="/wiedza/drobne-pekniecia-szkody-gornicze";
+ const destinations=[...content.matchAll(/href="([^"]+)"/g)].map(x=>x[1]);
+ assert.equal(destinations.filter(href=>href===guide).length,1,
+  "Exactly one visible approved guide link required: "+city);
+ assert.ok(destinations.includes("/uslugi/szkody-gornicze"),
+  "Main mining service must stay linked: "+city);
+ assert.ok(destinations.includes("/lokalnie/szkody-gornicze-"+(city==="lubin"?"polkowice":"lubin")),
+  "Nearby local page must stay discoverable: "+city);
+ const related=content.match(/<div class="local-related">([\s\S]*?)<\/div>/)?.[1]||"";
+ assert.ok(related.includes('href="'+guide+'"'),"Guide must be accessible in local context: "+city);
+ assert.ok(content.includes('data-service="Szkody górnicze"')&&
+  content.includes('data-locality="'+(city==="lubin"?"Lubin":"Polkowice")+'"'),
+  "Preserve local adviser selection: "+city);
+}
+console.log("LOCAL_GUIDE_DISCOVERY_OK: two indexed city pages link to one approved guide, the main service and each other.");
+
 console.log("GEO_EDITORIAL_RESULT "+JSON.stringify({servicePages:checked,visibleAnswers:checked*3,verifiedOfficialSourceLinks:checked,aboutContactAligned:true,linkedServiceSchemas:checked,searchBotAllowed:true,zeroRealMail:true}));

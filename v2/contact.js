@@ -388,7 +388,7 @@
     const example=document.createElement("button");example.type="button";example.className="contact-message-example";
     example.textContent="Wstaw przykładowy opis sprawy";
     const feedback=document.createElement("p");feedback.className="contact-example-feedback";
-    feedback.setAttribute("role","status");feedback.setAttribute("aria-live","polite");
+    feedback.setAttribute("aria-live","polite");
     const samples={
       "Szkody górnicze":"Proszę o kontakt w sprawie możliwych uszkodzeń nieruchomości. Chcę omówić, jakie zdjęcia i informacje przygotować do wstępnej analizy.",
       "Świadczenie wspierające":"Proszę o kontakt w sprawie świadczenia wspierającego. Chcę ustalić kolejne kroki dotyczące WZON lub wniosku do ZUS.",

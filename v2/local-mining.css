@@ -134,3 +134,22 @@
   max-height:min(520px,calc(100dvh - 230px - env(safe-area-inset-bottom, 0px)))
  }
 }
+
+
+/* Cross-links from two local mining pages to existing approved Facebook/TikTok channels.
+   No tracking, external embeds, fonts, or added base CSS. */
+.local-mining-page .local-social{padding-top:clamp(30px,4vw,48px);padding-bottom:clamp(30px,4vw,48px)}
+.local-mining-page .local-social-kicker{font-weight:800;color:#875f31;font-size:.82rem;letter-spacing:.07em;text-transform:uppercase}
+.local-mining-page .local-social h2{font-size:clamp(1.45rem,2.5vw,2rem);line-height:1.22;color:#143848;margin:6px 0 12px}
+.local-mining-page .local-social-heading p{max-width:76ch;color:#3d5661}
+.local-mining-page .local-social-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}
+.local-mining-page .local-social-grid a{display:grid;align-content:start;gap:8px;padding:19px;background:#fff;color:#143848;text-decoration:none;border:1px solid #cbd9d8;border-radius:13px;min-width:0;overflow-wrap:anywhere}
+.local-mining-page .local-social-grid a:hover{border-color:#a87a3e;background:#fffaf2}
+.local-mining-page .local-social-grid a:focus-visible{outline:3px solid #ad8747;outline-offset:3px}
+.local-mining-page .local-social-grid strong{display:flex;align-items:center;gap:9px;flex-wrap:wrap;line-height:1.4}
+.local-mining-page .local-social-grid strong img{width:27px;height:27px;flex:none}
+.local-mining-page .local-social-grid span{font-size:.92rem;color:#3c5562;line-height:1.5}
+.local-mining-page .local-social-grid small{color:#526874;font-size:.78rem}
+.local-mining-page .local-social-privacy{max-width:88ch;color:#415b66;font-size:.9rem;line-height:1.6}
+.local-mining-page .local-social-privacy a{color:#195477;text-decoration:underline;text-underline-offset:3px;font-weight:750}
+@media(max-width:650px){.local-mining-page .local-social-grid{grid-template-columns:1fr}.local-mining-page .local-social-grid a{padding:15px}}

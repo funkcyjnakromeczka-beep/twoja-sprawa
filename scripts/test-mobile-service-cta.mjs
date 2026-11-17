@@ -6,7 +6,11 @@ import {runInNewContext} from "node:vm";
 const js=await readFile("v2/mobile-service-cta.js","utf8");
 const css=await readFile("v2/mobile-service-cta.css","utf8");
 class Element{
- constructor(tag){this.tag=tag;this.children=[];this.attrs={};this.textContent="";this.hidden=false;this.events={};}
+ constructor(tag){this.tag=tag;this.children=[];this.attrs={};this.textContent="";this.hidden=false;this.events={};
+  this.classNames=new Set();
+  this.classList={toggle:(name,on)=>{if(on)this.classNames.add(name);else this.classNames.delete(name);},
+   contains:name=>this.classNames.has(name)};
+ }
  append(...items){this.children.push(...items);}
  setAttribute(k,v){this.attrs[k]=v;}
  contains(node){return node===this||this.children.some(child=>child.contains?.(node));}
@@ -45,15 +49,19 @@ for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swi
  assert.equal(lead.textContent,variant==="skd"?"Zostaw numer telefonu":"Zostaw zgłoszenie");
  assert.equal(observed,target);
  observerCallback([{isIntersecting:true}]);assert.equal(nav.hidden,true);
+ assert.equal(body.classList.contains("has-visible-mobile-service-cta"),false);
  observerCallback([{isIntersecting:false}]);assert.equal(nav.hidden,false);
+ assert.equal(body.classList.contains("has-visible-mobile-service-cta"),true);
  // Chat guide and contact bar must never cover each other.
  assert.equal(typeof documentEvents["twoja-sprawa:chat-visibility"],"function");
  documentEvents["twoja-sprawa:chat-visibility"]({detail:{open:true}});
  assert.equal(nav.hidden,true,"Open guide must hide bar: "+variant);
+ assert.equal(body.classList.contains("has-visible-mobile-service-cta"),false,"Hidden CTA must free space");
  observerCallback([{isIntersecting:false}]);
  assert.equal(nav.hidden,true,"Offscreen form must not restore bar over guide: "+variant);
  documentEvents["twoja-sprawa:chat-visibility"]({detail:{open:false}});
  assert.equal(nav.hidden,false,"Closing guide must restore bar: "+variant);
+ assert.equal(body.classList.contains("has-visible-mobile-service-cta"),true);
  focused=form;documentEvents.focusin({target:form});assert.equal(nav.hidden,true);
  documentEvents.focusout({target:form});focused=null;scheduled.shift()();assert.equal(nav.hidden,false,"Bar must reappear after leaving the form");
  observerCallback([{isIntersecting:true}]);assert.equal(nav.hidden,true,"Visible form keeps bar hidden");
@@ -88,6 +96,8 @@ for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swi
  assert.equal(bar.hidden,true,"The form must not be covered");
  rect={top:-900,bottom:-150};listeners.resize();
  assert.equal(bar.hidden,false,"The bar should return past the form");
+ assert.equal(body.classList.contains("has-visible-mobile-service-cta"),true,
+  "Older Android needs explicit footer spacing");
  assert.equal(typeof listeners["document:twoja-sprawa:chat-visibility"],"function");
  listeners["document:twoja-sprawa:chat-visibility"]({detail:{open:true}});
  assert.equal(bar.hidden,true,"Older Android must hide CTA under open guide");
@@ -113,6 +123,7 @@ assert.equal(body.children.length,0,"Nonflagship pages must not receive the bar"
 assert.ok(css.includes("@media(max-width:650px)")&&css.includes("env(safe-area-inset-bottom)"));
 assert.ok(css.includes(".mobile-service-cta[hidden]{display:none!important}"));
 assert.ok(css.includes("body:has(.chat-assistant.is-open) .mobile-service-cta"));
+assert.ok(css.includes("body.has-visible-mobile-service-cta"),"Old Android CSS fallback missing");
 assert.ok(!/fetch\s*\(|localStorage|sessionStorage|sendBeacon/.test(js));
 for(const [path,kind] of [["v2/uslugi/szkody-gornicze.html","szkody"],["v2/uslugi/swiadczenie-wspierajace.html","swiadczenie"],["v2/uslugi/renty-powypadkowe.html","renty"]]){
  const h=await readFile(path,"utf8");

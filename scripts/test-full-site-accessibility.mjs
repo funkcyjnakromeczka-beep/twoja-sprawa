@@ -20,7 +20,7 @@ const route=path=>{
 };
 const work=PAGE_PATHS.map(path=>({path,route:route(path)}));
 if(work.length!==47||new Set(work.map(x=>x.route)).size!==47)throw Error("Expected 47 unique canonical public pages");
-const output={site:origin,mode:localPreview?"unpublished-PR-preview":"deployed-main",expectedCommit:sha||null,checked:[],failures:[],skipped:[]};
+const output={site:origin,mode:localPreview?"unpublished-PR-preview":"deployed-main",expectedCommit:sha||null,checked:[],failures:[],noJsBrandChecked:[],skipped:[]};
 const started=Date.now();
 if(sha){
  let ready=false,latest="";
@@ -120,6 +120,41 @@ try{
   }
   await context.close();
  }
+
+ // Regression: every page retains a usable VOTUM identification bar on
+ // 320px phones even without scripts and without *any* fetched stylesheet.
+ // This inspects only the partner bar, not unrelated unstyled page content.
+ const noJsCtx=await browser.newContext({viewport:{width:320,height:740},javaScriptEnabled:false});
+ await noJsCtx.route("**/*.css",route=>route.abort("blockedbyclient"));
+ const noJs=await noJsCtx.newPage();
+ for(const canonical of ["/","/kontakt","/kampanie/swiadczenie-wspierajace",
+  "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-pln"]){
+  const visit=localPreview&&canonical!=="/"?canonical+".html":canonical;
+  try{
+   const response=await noJs.goto(origin+visit,{waitUntil:"load",timeout:20000});
+   if(!response?.ok())throw Error("HTTP "+response?.status());
+   const result=await noJs.evaluate(()=>{
+    const brand=document.querySelector(".network-brand-logos");
+    const anchors=brand?[...brand.querySelectorAll(":scope > a")]:[];
+    return {
+     count:anchors.length,
+     display:brand?getComputedStyle(brand).display:null,
+     boxes:anchors.map(a=>{const r=a.getBoundingClientRect();return {
+      left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width)
+     };}),
+     cssGuard:Boolean(document.querySelector("#network-brand-critical"))
+    };
+   });
+   const good=result.cssGuard&&result.count===2&&result.display==="flex"&&
+    result.boxes.every(b=>b.left>=-2&&b.right<=322&&b.width>20&&b.width<=153);
+   output.noJsBrandChecked.push({route:canonical,good,...result});
+   if(!good)output.failures.push({route:canonical,viewport:320,error:"Unstyled no-JavaScript partner bar overflows",result});
+   console.log("NOJS_BRAND_GUARD "+JSON.stringify({route:canonical,good,...result}));
+  }catch(error){
+   output.failures.push({route:canonical,viewport:320,error:String(error.message)});
+  }
+ }
+ await noJsCtx.close();
 }finally{await browser.close();}
 await mkdir("audit-artifacts",{recursive:true});
 await writeFile("audit-artifacts/full-site-a11y.json",JSON.stringify(output,null,2));
@@ -127,4 +162,4 @@ console.log("FULL_SITE_A11Y_RESULT "+JSON.stringify({
  pages:work.length,viewports:2,expected:94,checked:output.checked.length,failures:output.failures.length,
  ruleCounts:Object.fromEntries([...new Set(output.checked.flatMap(p=>p.findings.map(x=>x.rule)))].map(k=>[k,output.checked.reduce((n,p)=>n+p.findings.filter(x=>x.rule===k).length,0)]))
 }));
-if(output.checked.length!==94||output.failures.length)process.exitCode=1;
+if(output.checked.length!==94||output.noJsBrandChecked.length!==6||output.failures.length)process.exitCode=1;

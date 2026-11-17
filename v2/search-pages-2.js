@@ -27,39 +27,39 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/uslugi/szkody-na-nieruchomosci.html",
     "href": "/v2/uslugi/szkody-na-nieruchomosci.html",
-    "title": "Szkoda na nieruchomości — sprawdź decyzję i rozliczenie",
+    "title": "Szkody na nieruchomości — analiza",
     "description": "Zaniżona wypłata lub odmowa po zalaniu, pożarze i innych szkodach? Zgłoś polisę, kosztorys i dokumentację do analizy.",
     "category": "szkody",
-    "keywords": "Szkoda na nieruchomości — sprawdź decyzję i rozliczenie v2 uslugi szkody na nieruchomosci html Szkody Na Nieruchomosci"
+    "keywords": "Szkody na nieruchomości — analiza v2 uslugi szkody na nieruchomosci html Szkody Na Nieruchomosci"
   },
   {
     "id": "page:v2/uslugi/wypadki-komunikacyjne.html",
     "href": "/v2/uslugi/wypadki-komunikacyjne.html",
-    "title": "Wypadek komunikacyjny — sprawdź możliwe świadczenia",
+    "title": "Wypadki komunikacyjne — roszczenia",
     "description": "Zgłoś sprawę po wypadku komunikacyjnym do analizy. Dokumenty, decyzje ubezpieczyciela i możliwe świadczenia dla poszkodowanych.",
     "category": "swiadczenie",
-    "keywords": "Wypadek komunikacyjny — sprawdź możliwe świadczenia v2 uslugi wypadki komunikacyjne html Wypadki Komunikacyjne"
+    "keywords": "Wypadki komunikacyjne — roszczenia v2 uslugi wypadki komunikacyjne html Wypadki Komunikacyjne"
   },
   {
     "id": "page:v2/uslugi/wypadki-przy-pracy.html",
     "href": "/v2/uslugi/wypadki-przy-pracy.html",
-    "title": "Wypadek przy pracy — uporządkuj dokumenty i możliwości działania",
+    "title": "Wypadek przy pracy — dokumenty",
     "description": "Dokumentacja powypadkowa, świadczenia i możliwe roszczenia po wypadku przy pracy. Zgłoś swoją sytuację do analizy we współpracy z Votum.",
     "category": "renty",
-    "keywords": "Wypadek przy pracy — uporządkuj dokumenty i możliwości działania v2 uslugi wypadki przy pracy html Wypadki Przy Pracy"
+    "keywords": "Wypadek przy pracy — dokumenty v2 uslugi wypadki przy pracy html Wypadki Przy Pracy"
   },
   {
     "id": "page:v2/uslugi/wypadki-w-rolnictwie.html",
     "href": "/v2/uslugi/wypadki-w-rolnictwie.html",
-    "title": "Wypadek w gospodarstwie rolnym — sprawdź podstawy roszczeń",
+    "title": "Wypadek w rolnictwie — dokumenty",
     "description": "Wypadek w gospodarstwie rolnym: dokumenty, ubezpieczenie i możliwe świadczenia. Poznaj informacje potrzebne do analizy sprawy.",
     "category": "renty",
-    "keywords": "Wypadek w gospodarstwie rolnym — sprawdź podstawy roszczeń v2 uslugi wypadki w rolnictwie html Wypadki W Rolnictwie"
+    "keywords": "Wypadek w rolnictwie — dokumenty v2 uslugi wypadki w rolnictwie html Wypadki W Rolnictwie"
   },
   {
     "id": "page:v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
     "href": "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
-    "title": "Drobne pęknięcia ścian, elewacji i kostki a szkody górnicze | Lubin i Polkowice",
+    "title": "Drobne pęknięcia a szkody górnicze | Lubin i Polkowice",
     "description": "Niewielkie rysy na ścianie, pęknięcia elewacji, nierówna kostka brukowa? Jak udokumentować uszkodzenia w rejonie Lubina i Polkowic i kiedy zgłosić je do analizy.",
     "category": "szkody",
     "keywords": "Drobne pęknięcia ścian lub elewacji? Nie ignoruj pierwszych oznak uszkodzeń. v2 wiedza drobne pekniecia szkody gornicze html Drobne Pekniecia Szkody Gornicze"
@@ -99,7 +99,7 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
     "href": "/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
-    "title": "Świadczenie wspierające w 2026 r. — WZON, 70 punktów i wniosek do ZUS",
+    "title": "Świadczenie wspierające 2026: WZON i ZUS",
     "description": "Świadczenie wspierające w 2026 r.: WZON, decyzja o poziomie potrzeby wsparcia od 70 punktów, wniosek do ZUS i ważne terminy. Poradnik SuccessTree.",
     "category": "swiadczenie",
     "keywords": "Świadczenie wspierające w 2026 r. — od decyzji WZON do ZUS. v2 wiedza swiadczenie wspierajace 2026 wzon zus html Swiadczenie Wspierajace 2026 WZON ZUS"

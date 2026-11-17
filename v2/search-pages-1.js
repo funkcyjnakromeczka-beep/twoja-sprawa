@@ -100,7 +100,7 @@ window.TwojaSprawaSearchPages1=[
     "id": "page:v2/rekrutacja.html",
     "href": "/v2/rekrutacja.html",
     "title": "Współpraca i rekrutacja przedstawicieli",
-    "description": "Sprawdź możliwość współpracy przy pozyskiwaniu klientów usług prawnych.",
+    "description": "Współpraca terenowa przy pozyskiwaniu klientów w Lubinie, Polkowicach i okolicy. Poznaj zadania, wymóg dojazdu własnym samochodem i sposób kontaktu.",
     "category": "inne",
     "keywords": "Rozwijaj się jako przedstawiciel terenowy v2 rekrutacja html Współpraca i rekrutacja"
   },

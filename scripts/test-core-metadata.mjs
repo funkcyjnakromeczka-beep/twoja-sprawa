@@ -15,11 +15,11 @@ const cases = [
 ];
 const meta = (html, field, key) => {
   const tag = html.match(new RegExp('<meta\\b(?=[^>]*\\b'+field+'="'+key+'")[^>]*>',"i"))?.[0] || "";
-  return tag.match(/\\bcontent="([^"]*)"/i)?.[1] || "";
+  return tag.match(/\bcontent="([^"]*)"/i)?.[1] || "";
 };
 for (const [file, expectedTitle, shouldIndex] of cases) {
   const html = await readFile("dist/"+file,"utf8");
-  const title = html.match(/<title>([^<]+)<\\/title>/i)?.[1] || "";
+  const title = html.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
   const description = meta(html,"name","description");
   assert.equal(title,expectedTitle,"Unexpected SEO title: "+file);
   assert.ok(description.length>=70 && description.length<=160,
@@ -30,7 +30,7 @@ for (const [file, expectedTitle, shouldIndex] of cases) {
   assert.equal(meta(html,"name","twitter:title"),title,"Twitter title differs: "+file);
   const robots=meta(html,"name","robots");
   assert.equal(robots,shouldIndex?"index,follow":"noindex,follow","Wrong robots policy: "+file);
-  const route="/"+file.replace(/\\.html$/,"");
+  const route="/"+file.replace(/\.html$/,"");
   assert.ok(html.includes('<link rel="canonical" href="https://twoja-sprawa.pages.dev'+route+'">'),
     "Unexpected canonical: "+file);
 }

@@ -24,3 +24,12 @@ Zmiana poprawia semantykę i spójność danych dla robotów wyszukiwania.
 Nie dowodzi wzrostu ruchu w Google, rankingów ani cytowania w AI.
 Formularze kontaktowe, dane klientów, adresy e-mail i dostarczanie
 zgłoszeń nie były zmieniane. Koszt dodatkowy: 0 zł.
+
+## Rozszerzenie kontroli na wszystkie podstrony
+Rozszerzony test wykrył także samodzielny `BreadcrumbList` na stronach usług,
+który wcześniejsze testy ignorowały. Dlatego etap budowania usuwa przestarzały,
+ręcznie wpisany samodzielny `BreadcrumbList` **na każdej stronie z widoczną
+ścieżką nawigacji**, zachowując pozostałe dane strukturalne. Obowiązujący
+`BreadcrumbList` jest następnie generowany wyłącznie z widocznej nawigacji.
+Jeżeli źródłowy znacznik istnieje bez widocznej ścieżki, wydanie jest przerywane.
+Nowy test liczy wszystkie rekordy w `@graph` i poza nim.

@@ -219,3 +219,15 @@
     max-width:800px;
   }
 }
+
+/* Recruitment page: avoid an oversized title and excessive above-the-fold
+   whitespace while keeping the shared premium visual language. */
+body.recruitment-page .subhero{
+ padding-top:clamp(36px,5vw,64px);
+ padding-bottom:clamp(36px,5vw,64px);
+}
+body.recruitment-page .subhero h1{
+ max-width:24ch;
+ font-size:clamp(2.3rem,4.1vw,4.25rem);
+ line-height:1.12;
+}

@@ -42,6 +42,9 @@ try{
   ["poradnik-telefon","/poradniki/checklista-szkody-gorniczej.html",390,844],
   ["zespol-o-nas-telefon","/o-nas.html",390,844],
   ["kontakt-telefon","/kontakt.html",390,844],
+  ["rekrutacja-360","/rekrutacja.html",360,800],
+  ["rekrutacja-390","/rekrutacja.html",390,844],
+  ["rekrutacja-desktop","/rekrutacja.html",1440,900],
   ["biblioteka-telefon","/wiedza/",390,844],
   ["biblioteka-desktop","/wiedza/",1440,900],
   ["plan-telefon","/plan-dzialania.html",390,844],
@@ -103,6 +106,30 @@ try{
     };
   });
   if(measured.scrollWidth>measured.viewport+2)throw Error("Horizontal overflow "+name+": "+JSON.stringify(measured));
+  if(path==="/rekrutacja.html"){
+    const recruitment=await page.evaluate(()=>{
+      const hero=document.querySelector(".recruitment-page .subhero");
+      const actions=[...document.querySelectorAll('.recruitment-page .subhero .actions a')];
+      return {
+        heroPresent:!!hero,duplicatePartners:document.querySelectorAll(".partner-identity-bar,.agency-logos-bar").length,
+        faqCount:document.querySelectorAll(".recruitment-page #rekrutacja-faq ~ details").length,
+        links:actions.map(link=>{
+          const r=link.getBoundingClientRect();
+          return {text:link.textContent.trim(),href:link.getAttribute("href"),width:r.width,height:r.height,
+           left:r.left,right:r.right,display:getComputedStyle(link).display};
+        })
+      };
+    });
+    if(!recruitment.heroPresent||recruitment.duplicatePartners||recruitment.faqCount!==4)throw Error("Recruitment structure failed: "+JSON.stringify(recruitment));
+    if(recruitment.links.length!==2||
+       !recruitment.links.some(x=>x.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"))||
+       !recruitment.links.some(x=>x.href==="tel:+48796441345"))throw Error("Recruitment direct contact missing: "+JSON.stringify(recruitment));
+    for(const action of recruitment.links){
+      if(action.width<44||action.height<44||action.left< -2||action.right>width+2)throw Error("Recruitment CTA too small or overflowing: "+JSON.stringify(recruitment));
+    }
+    console.log("RECRUITMENT_VIEWPORT_OK",JSON.stringify({viewport:width,faq:recruitment.faqCount,buttons:recruitment.links.length,duplicates:recruitment.duplicatePartners}));
+  }
+
   if(["/","/o-nas.html"].includes(path)&&(measured.teamImages.length!==2||measured.teamImages.some(img=>!img.loaded)))throw Error("Two authentic profile images not loaded on "+path+": "+JSON.stringify(measured));
   if(["/uslugi/szkody-gornicze.html","/uslugi/swiadczenie-wspierajace.html","/kampanie/szkody-gornicze.html","/kampanie/swiadczenie-wspierajace.html","/kampanie/skd.html"].includes(path)&&(measured.personaImages.length!==1||!measured.personaImages[0].loaded))throw Error("Contact portrait not loaded on "+path+": "+JSON.stringify(measured));
   if(path==="/kontakt.html"&&(measured.personaImages.length!==2||measured.personaImages.some(x=>!x.loaded)))throw Error("Both contact portraits missing "+name+": "+JSON.stringify(measured));

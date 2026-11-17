@@ -19,10 +19,10 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/kontakt.html",
     "href": "/v2/kontakt.html",
-    "title": "Kontakt — Wojciech Obiegło i Paulina Chandrała",
-    "description": "Skontaktuj się z Wojciechem Obiegło lub Pauliną Chandrałą, SuccessTree. Szkody górnicze Lubin i Polkowice, świadczenie wspierające, renty powypadkowe, Sankcja Kredytu Darmowego (SKD), kredyty frankowe CHF, służebność przesyłu. Telefon 796 441 345.",
+    "title": "Kontakt: Wojciech Obiegło i Paulina Chandrała",
+    "description": "Wojciech Obiegło: szkody górnicze, SKD i kredyty CHF. Paulina Chandrała: świadczenie wspierające i renty. Telefony, e-maile i formularz kontaktowy.",
     "category": "inne",
-    "keywords": "Porozmawiajmy o Twojej sprawie. v2 kontakt html Kontakt — Wojciech Obiegło i Paulina Chandrała"
+    "keywords": "Porozmawiajmy o Twojej sprawie. v2 kontakt html Kontakt: Wojciech Obiegło i Paulina Chandrała"
   },
   {
     "id": "page:v2/lokalnie/szkody-gornicze-lubin.html",
@@ -52,7 +52,7 @@ window.TwojaSprawaSearchPages1=[
     "id": "page:v2/plan-dzialania.html",
     "href": "/v2/plan-dzialania.html",
     "title": "Plan pierwszych kroków — 6 rodzajów spraw",
-    "description": "Przygotuj bezpłatną listę kroków: szkody górnicze, świadczenie wspierające, SKD, renty, kredyty CHF i służebność przesyłu. Wydrukuj checklistę bez podawania danych osobowych.",
+    "description": "Przygotuj listę pierwszych kroków: szkody górnicze, świadczenie wspierające, SKD, renty, kredyty CHF i służebność przesyłu. Bez rejestracji.",
     "category": "szkody",
     "keywords": "Twój plan pierwszych kroków v2 plan dzialania html Plan pierwszych kroków"
   },
@@ -139,9 +139,9 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/uslugi/renty-powypadkowe.html",
     "href": "/v2/uslugi/renty-powypadkowe.html",
-    "title": "Renta powypadkowa — sprawdź, czy odpowiada Twojej sytuacji",
+    "title": "Renty powypadkowe i waloryzacja",
     "description": "Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia.",
     "category": "renty",
-    "keywords": "Renta powypadkowa — sprawdź, czy odpowiada Twojej sytuacji v2 uslugi renty powypadkowe html Renty Powypadkowe waloryzacja renty waloryzacji podwyższenie renty ubezpieczyciela"
+    "keywords": "Renty powypadkowe i waloryzacja v2 uslugi renty powypadkowe html Renty Powypadkowe waloryzacja renty waloryzacji podwyższenie renty ubezpieczyciela"
   }
 ];

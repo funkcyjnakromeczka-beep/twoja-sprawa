@@ -77,3 +77,17 @@
 .faq-page .faq-share-copy{display:block;margin-top:5px;width:min(430px,100%);min-height:42px;padding:8px;border:1px solid #aabfba;border-radius:8px;background:#fff;color:#183847}
 @media(max-width:510px){.faq-page .faq-share-tools{flex-direction:column;align-items:stretch}.faq-page .faq-share-button{width:100%}}
 @media print{.faq-page .faq-share-tools{display:none!important}}
+
+/* Katalog usług powiązany z istniejącymi odpowiedziami FAQ; widoczny bez JS. */
+.faq-page .faq-service-directory{padding:clamp(26px,4vw,46px) 0}
+.faq-page .faq-directory-kicker{color:#765629;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.075em}
+.faq-page .faq-service-directory h2{font-size:clamp(1.4rem,2.6vw,2rem);line-height:1.25;color:#173848;margin:5px 0 13px}
+.faq-page .faq-directory-lead{max-width:76ch;line-height:1.65;color:#3a5562}
+.faq-page .faq-directory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:19px 0}
+.faq-page .faq-directory-grid a{display:grid;align-content:start;gap:8px;min-height:95px;padding:17px 19px;background:#fff;border:1px solid #c8d9d7;border-radius:13px;color:#173b4d;text-decoration:none;overflow-wrap:anywhere}
+.faq-page .faq-directory-grid a:hover{border-color:#9b7340;background:#fbf8f0}
+.faq-page .faq-directory-grid a:focus-visible{outline:3px solid #bc914a;outline-offset:3px}
+.faq-page .faq-directory-grid strong{font-size:1rem;line-height:1.3}
+.faq-page .faq-directory-grid span{color:#425d69;font-size:.9rem;line-height:1.45}
+.faq-page .faq-directory-notice{font-size:.88rem;line-height:1.55;color:#455e68;max-width:80ch}
+@media(max-width:650px){.faq-page .faq-directory-grid{grid-template-columns:1fr}.faq-page .faq-directory-grid a{min-height:77px;padding:14px 16px}}

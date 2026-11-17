@@ -58,6 +58,25 @@ for(const [path,expected,id] of cases){
   assert.ok(html.indexOf(region)<html.indexOf("</main>"),"Social navigation should be in main content");
  }
 }
+// The same approved mining profiles must also be discoverable on city pages,
+// without sending private case details into public social comments.
+for(const slug of ["lubin","polkowice"]){
+ const html=await readFile("v2/lokalnie/szkody-gornicze-"+slug+".html","utf8");
+ const section=html.match(/<section class="local-social local-section local-container"[\s\S]*?<\/section>/)?.[0]||"";
+ assert.ok(section&&section.includes('aria-labelledby="local-social-title"'),"Local social landmark missing: "+slug);
+ assert.ok(section.includes('<h2 id="local-social-title">'),"Local social heading missing: "+slug);
+ const links=[...section.matchAll(/<a href="([^"]+)" target="_blank" rel="noopener noreferrer">/g)].map(m=>m[1]);
+ assert.deepEqual(links,[facebookMining,tiktokMining],"Wrong regional Facebook/TikTok links: "+slug);
+ assert.ok(section.includes('href="#formularz"'),"Local social privacy notice must lead to form: "+slug);
+ assert.ok(section.includes("Nie publikuj")&&section.includes("PESEL"),"Missing protection guidance: "+slug);
+ assert.ok(html.indexOf(section)<html.indexOf('id="formularz"'),"Social links should precede the local form: "+slug);
+ assert.ok(!section.includes("<iframe")&&!section.includes("<script")&&!section.includes("utm_"),
+  "Do not embed social scripts or trackers: "+slug);
+}
+const localSocialCss=await readFile("v2/local-mining.css","utf8");
+assert.ok(localSocialCss.includes(".local-social-grid")&&localSocialCss.includes("@media(max-width:650px)"),
+ "Regional social links must be responsive with readable focus targets");
+console.log("LOCAL_SOCIAL_CHANNELS_OK: 2 regional pages, 4 approved external links, 2 private contact links.");
 const css=await readFile("v2/premium-v2.css","utf8");
 const baseCss=await readFile("v2/styles.css","utf8");
 assert.ok(!baseCss.includes("SOCIAL_COMMUNITY_CHANNELS_20261115"),"Keep social styling out of performance-critical base CSS");

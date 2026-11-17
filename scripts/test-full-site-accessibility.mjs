@@ -125,13 +125,18 @@ try{
  // 320px phones even without scripts and without *any* fetched stylesheet.
  // This inspects only the partner bar, not unrelated unstyled page content.
  const noJsCtx=await browser.newContext({viewport:{width:320,height:740},javaScriptEnabled:false});
- await noJsCtx.route("**/*.css",route=>route.abort("blockedbyclient"));
+ // This check uses only HTML and inline bar guards. Third-party images may never
+ // complete the load event; block all subresources and wait only for the DOM.
+ await noJsCtx.route("**/*",route=>{
+  if(route.request().resourceType()==="document")return route.continue();
+  return route.abort("blockedbyclient");
+ });
  const noJs=await noJsCtx.newPage();
  for(const canonical of ["/","/kontakt","/kampanie/swiadczenie-wspierajace",
   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-pln"]){
   const visit=localPreview&&canonical!=="/"?canonical+".html":canonical;
   try{
-   const response=await noJs.goto(origin+visit,{waitUntil:"load",timeout:20000});
+   const response=await noJs.goto(origin+visit,{waitUntil:"domcontentloaded",timeout:20000});
    if(!response?.ok())throw Error("HTTP "+response?.status());
    const result=await noJs.evaluate(()=>{
     const brand=document.querySelector(".network-brand-logos");

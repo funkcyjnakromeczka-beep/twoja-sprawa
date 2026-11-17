@@ -47,6 +47,11 @@ for(const page of ["index.html","kontakt.html"]){
 
 
 const homeBundle=await read("home-bundle.css");
+// The old partner strip is removed from production markup in favor of the
+// shared VOTUM bar; its authoring-only CSS must not inflate the release.
+assert.ok(!homeBundle.includes(".premium-v2 .homepage-partner-strip"),
+ "Removed partner strip must not ship unused styles in the production homepage");
+
 // Build-only comment stripping reduces transfer bytes while preserving every
 // original stylesheet for editing and retaining the exact CSS cascade order.
 const homeSourceSheets=[

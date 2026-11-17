@@ -53,7 +53,7 @@ const recruit=await readFile("v2/rekrutacja.html","utf8");
 const recruitFaq=recruit.split('<section aria-labelledby="rekrutacja-faq">')[1]?.split("</section>")[0]||"";
 assert.equal((recruitFaq.match(/<details>/g)||[]).length,4,
  "Recruitment page must answer four real collaboration questions");
-for(const term of ["własnym samochodem","Wojciech","przedstawiciela","gwarancji wynagrodzenia"]){
+for(const term of ["własnym samochodem","wojciech.obieglo@votum-ds.pl","przedstawiciela","gwarancji wynagrodzenia"]){
  assert.ok(recruit.includes(term),"Recruitment trust/access information missing: "+term);
 }
 console.log("CORE_METADATA_AND_CHF_FORM_OK: "+cases.length+" pages, CHF service lists and recruitment FAQ verified");

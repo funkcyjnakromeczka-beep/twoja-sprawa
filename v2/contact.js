@@ -382,6 +382,40 @@
     if(stage.value && requestedStage)extra.open=true;
     form.append(extra);
   }
+  // Edytowalny szkic, bez wysyłania i bez nadpisywania treści użytkownika.
+  if(!compactHome){
+    const tools=document.createElement("div");tools.className="contact-example-tools";
+    const example=document.createElement("button");example.type="button";example.className="contact-message-example";
+    example.textContent="Wstaw przykładowy opis sprawy";
+    const feedback=document.createElement("p");feedback.className="contact-example-feedback";
+    feedback.setAttribute("role","status");feedback.setAttribute("aria-live","polite");
+    const samples={
+      "Szkody górnicze":"Proszę o kontakt w sprawie możliwych uszkodzeń nieruchomości. Chcę omówić, jakie zdjęcia i informacje przygotować do wstępnej analizy.",
+      "Świadczenie wspierające":"Proszę o kontakt w sprawie świadczenia wspierającego. Chcę ustalić kolejne kroki dotyczące WZON lub wniosku do ZUS.",
+      "Kredyt w PLN / SKD":"Proszę o kontakt w sprawie analizy umowy kredytu konsumenckiego w PLN pod kątem sankcji kredytu darmowego. Mogę przesłać umowę na wskazany adres e-mail.",
+      "Renty powypadkowe":"Proszę o kontakt w sprawie renty powypadkowej. Chcę dowiedzieć się, jakie dokumenty przygotować do oceny jej wysokości lub możliwości podwyższenia.",
+      "Kredyty frankowe CHF":"Proszę o kontakt w sprawie analizy umowy kredytu frankowego CHF i możliwych dalszych kroków. Chcę ustalić, jakie dokumenty będą potrzebne.",
+      "Służebność przesyłu":"Proszę o kontakt w sprawie urządzeń przesyłowych na działce. Chcę ustalić, jakie dokumenty są potrzebne do indywidualnej analizy sytuacji nieruchomości."
+    };
+    example.addEventListener("click",()=>{
+      if(msg.value.trim()){
+        feedback.textContent="Zachowano Twój opis — nie nadpisuję wpisanej wiadomości.";
+        msg.focus();return;
+      }
+      if(!select.value){
+        feedback.textContent="Najpierw wybierz rodzaj sprawy.";
+        select.focus();return;
+      }
+      let proposed=samples[select.value]||"Proszę o kontakt w celu omówienia mojej sprawy i dalszych kroków.";
+      if(select.value==="Szkody górnicze"&&["Lubin","Polkowice"].includes(localCity))
+        proposed="Dotyczy nieruchomości w miejscowości "+localCity+". "+proposed;
+      msg.value=proposed;
+      msg.dispatchEvent?.(new Event("input",{bubbles:true}));
+      feedback.textContent="Wstawiono szkic. Dostosuj opis do swojej sytuacji przed wysłaniem.";
+      msg.focus();
+    });
+    tools.append(example,feedback);form.append(tools);
+  }
   const ackLabel=document.createElement("label");ackLabel.className="check";const ack=document.createElement("input");ack.type="checkbox";ack.required=true;ackLabel.append(ack,document.createTextNode(automatic ? " Zapoznałem/am się z informacjami o prywatności i proszę o kontakt w sprawie mojego zgłoszenia." : " Rozumiem, że wiadomość nie zostanie wysłana automatycznie. Zapoznałem/am się z informacjami o prywatności."));form.append(ackLabel);
   const privacy=document.createElement("a");privacy.href="/v2/polityka-prywatnosci.html";privacy.target="_blank";privacy.rel="noopener noreferrer";privacy.textContent="Informacje o prywatności (nowa karta)";form.append(privacy);
   // Optional messages are not necessary to make initial contact. A visitor

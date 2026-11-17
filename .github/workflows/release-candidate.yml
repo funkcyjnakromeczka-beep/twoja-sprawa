@@ -72,6 +72,7 @@ jobs:
           node --check scripts/test-production-bundle.mjs
           node --check scripts/test-core-metadata.mjs
           node --check scripts/test-contact.mjs
+          node --check scripts/test-contact-client.mjs
           node --check scripts/test-html-tags.mjs
           node --check scripts/test-internal-links.mjs
           node --check scripts/test-ai-referrals.mjs
@@ -99,6 +100,7 @@ jobs:
           node scripts/test-production-bundle.mjs
           node scripts/test-core-metadata.mjs
           node scripts/test-contact.mjs
+          node scripts/test-contact-client.mjs
           node scripts/test-html-tags.mjs
           node scripts/test-internal-links.mjs
           node scripts/test-ai-referrals.mjs

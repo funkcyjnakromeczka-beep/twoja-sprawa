@@ -27,7 +27,7 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/lokalnie/szkody-gornicze-lubin.html",
     "href": "/v2/lokalnie/szkody-gornicze-lubin.html",
-    "title": "Szkody górnicze Lubin — pęknięcia ścian i elewacji",
+    "title": "Szkody górnicze Lubin — pęknięcia ścian",
     "description": "Lubin i gmina Lubin: zauważyłeś pęknięcia ścian, rysy elewacji lub uszkodzone płytki? Sprawdź, jak udokumentować szkodę i zgłosić ją do analizy.",
     "category": "szkody",
     "keywords": "Szkody górnicze — Lubin i okolice v2 lokalnie szkody gornicze lubin html Szkody Gornicze Lubin"
@@ -35,7 +35,7 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/lokalnie/szkody-gornicze-polkowice.html",
     "href": "/v2/lokalnie/szkody-gornicze-polkowice.html",
-    "title": "Szkody górnicze Polkowice — kostka, ogrodzenia i budynki",
+    "title": "Szkody górnicze Polkowice — szkody posesji",
     "description": "Polkowice i gmina Polkowice: nierówna kostka brukowa, spękania elewacji i uszkodzenia posesji? Dowiedz się, jak przygotować dokumentację szkody do analizy.",
     "category": "szkody",
     "keywords": "Szkody górnicze — Polkowice i okolice v2 lokalnie szkody gornicze polkowice html Szkody Gornicze Polkowice"
@@ -123,18 +123,18 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/uslugi/odszkodowanie-za-halas.html",
     "href": "/v2/uslugi/odszkodowanie-za-halas.html",
-    "title": "Hałas i ograniczenia korzystania z nieruchomości",
+    "title": "Hałas i roszczenia właściciela",
     "description": "Nieruchomość w obszarze ograniczonego użytkowania lub problem nadmiernego hałasu? Poznaj dokumenty potrzebne do oceny możliwych roszczeń.",
     "category": "szkody",
-    "keywords": "Hałas i ograniczenia korzystania z nieruchomości v2 uslugi odszkodowanie za halas html Odszkodowanie Za Halas"
+    "keywords": "Hałas i roszczenia właściciela v2 uslugi odszkodowanie za halas html Odszkodowanie Za Halas"
   },
   {
     "id": "page:v2/uslugi/pomoc-w-sprawach-karnych.html",
     "href": "/v2/uslugi/pomoc-w-sprawach-karnych.html",
-    "title": "Sprawa karna — ustal zakres potrzebnej pomocy prawnej",
+    "title": "Sprawa karna — zakres pomocy",
     "description": "Potrzebujesz kontaktu z adwokatem lub radcą prawnym w sprawie karnej? Zgłoś etap postępowania i pilne terminy do ustalenia zakresu pomocy.",
     "category": "inne",
-    "keywords": "Sprawa karna — ustal zakres potrzebnej pomocy prawnej v2 uslugi pomoc w sprawach karnych html Pomoc W Sprawach Karnych"
+    "keywords": "Sprawa karna — zakres pomocy v2 uslugi pomoc w sprawach karnych html Pomoc W Sprawach Karnych"
   },
   {
     "id": "page:v2/uslugi/renty-powypadkowe.html",

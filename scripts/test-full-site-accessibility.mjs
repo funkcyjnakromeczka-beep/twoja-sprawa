@@ -10,15 +10,17 @@ import axe from "axe-core";
 import {PAGE_PATHS} from "./page-navigation.mjs";
 import {toPublicRoute} from "./public-routes.mjs";
 
-const origin="https://twoja-sprawa.pages.dev";
-const sha=(process.env.GITHUB_SHA||"").toLowerCase();
+const localPreview=process.env.A11Y_LOCAL_PREVIEW==="1";
+const origin=localPreview?"http://127.0.0.1:4187":"https://twoja-sprawa.pages.dev";
+// PR previews have no production release fingerprint; main still verifies SHA.
+const sha=localPreview?"":(process.env.GITHUB_SHA||"").toLowerCase();
 const route=path=>{
  const source=path==="index.html"?"/":path.endsWith("/index.html")?"/"+path.slice(0,-"index.html".length):"/"+path;
  return toPublicRoute(source);
 };
 const work=PAGE_PATHS.map(path=>({path,route:route(path)}));
 if(work.length!==47||new Set(work.map(x=>x.route)).size!==47)throw Error("Expected 47 unique canonical public pages");
-const output={site:origin,expectedCommit:sha||null,checked:[],failures:[],skipped:[]};
+const output={site:origin,mode:localPreview?"unpublished-PR-preview":"deployed-main",expectedCommit:sha||null,checked:[],failures:[],skipped:[]};
 const started=Date.now();
 if(sha){
  let ready=false,latest="";
@@ -49,7 +51,10 @@ try{
   const page=await context.newPage();
   page.setDefaultTimeout(14000);
   for(const item of work){
-   const url=origin+item.route;
+   // The local Python preview has no Cloudflare extensionless URL rewrites.
+   const browserRoute=localPreview&&item.route!=="/"&&!item.route.endsWith("/")
+    ?item.route+".html":item.route;
+   const url=origin+browserRoute;
    try{
     const response=await page.goto(url,{waitUntil:"domcontentloaded",timeout:20000});
     if(!response||(response.status()>=400&&!(item.path==="404.html"&&response.status()===404)))throw Error("HTTP "+(response?.status()??"unavailable"));

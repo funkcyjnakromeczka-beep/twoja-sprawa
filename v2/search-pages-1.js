@@ -27,7 +27,7 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/lokalnie/szkody-gornicze-lubin.html",
     "href": "/v2/lokalnie/szkody-gornicze-lubin.html",
-    "title": "Szkody górnicze Lubin — pęknięcia ścian i elewacji",
+    "title": "Szkody górnicze Lubin — pęknięcia ścian",
     "description": "Lubin i gmina Lubin: zauważyłeś pęknięcia ścian, rysy elewacji lub uszkodzone płytki? Sprawdź, jak udokumentować szkodę i zgłosić ją do analizy.",
     "category": "szkody",
     "keywords": "Szkody górnicze — Lubin i okolice v2 lokalnie szkody gornicze lubin html Szkody Gornicze Lubin"
@@ -35,7 +35,7 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/lokalnie/szkody-gornicze-polkowice.html",
     "href": "/v2/lokalnie/szkody-gornicze-polkowice.html",
-    "title": "Szkody górnicze Polkowice — kostka, ogrodzenia i budynki",
+    "title": "Szkody górnicze Polkowice — szkody posesji",
     "description": "Polkowice i gmina Polkowice: nierówna kostka brukowa, spękania elewacji i uszkodzenia posesji? Dowiedz się, jak przygotować dokumentację szkody do analizy.",
     "category": "szkody",
     "keywords": "Szkody górnicze — Polkowice i okolice v2 lokalnie szkody gornicze polkowice html Szkody Gornicze Polkowice"
@@ -139,7 +139,7 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/uslugi/renty-powypadkowe.html",
     "href": "/v2/uslugi/renty-powypadkowe.html",
-    "title": "Renta powypadkowa — sprawdź, czy odpowiada Twojej sytuacji",
+    "title": "Renty powypadkowe — analiza i podwyższenie",
     "description": "Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia.",
     "category": "renty",
     "keywords": "Renta powypadkowa — sprawdź, czy odpowiada Twojej sytuacji v2 uslugi renty powypadkowe html Renty Powypadkowe waloryzacja renty waloryzacji podwyższenie renty ubezpieczyciela"

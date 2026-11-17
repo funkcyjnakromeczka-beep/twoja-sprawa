@@ -69,6 +69,7 @@ jobs:
           node --check scripts/test-ai-referrals.mjs
           node --check scripts/test-service-share.mjs
           node --check scripts/test-geo-editorial.mjs
+          node --check scripts/test-search-index-freshness.mjs
       - name: Zbuduj i przetestuj kandydata wydania (bez publikacji)
         env:
           SITE_URL: https://twoja-sprawa.pages.dev
@@ -93,6 +94,7 @@ jobs:
           node scripts/test-ai-referrals.mjs
           node scripts/test-service-share.mjs
           node scripts/test-geo-editorial.mjs
+          node scripts/test-search-index-freshness.mjs
       - name: Identyfikator zbudowanej wersji
         run: cat dist/release-info.json
       - name: Zapisz tymczasowy pakiet wydania do pobrania

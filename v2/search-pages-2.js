@@ -3,7 +3,7 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/uslugi/sluzebnosc-przesylu.html",
     "href": "/v2/uslugi/sluzebnosc-przesylu.html",
-    "title": "Służebność przesyłu — sprawdź sytuację swojej działki",
+    "title": "Służebność przesyłu — słup na działce",
     "description": "Słup, linia energetyczna lub gazociąg na działce? Poznaj dokumenty potrzebne do analizy praw operatora i możliwych roszczeń właściciela.",
     "category": "przesyl",
     "keywords": "Służebność przesyłu — sprawdź sytuację swojej działki v2 uslugi sluzebnosc przesylu html Sluzebnosc Przesylu"
@@ -59,8 +59,8 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
     "href": "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
-    "title": "Drobne pęknięcia ścian, elewacji i kostki a szkody górnicze | Lubin i Polkowice",
-    "description": "Niewielkie rysy na ścianie, pęknięcia elewacji, nierówna kostka brukowa? Jak udokumentować uszkodzenia w rejonie Lubina i Polkowic i kiedy zgłosić je do analizy.",
+    "title": "Drobne pęknięcia a szkody górnicze — Lubin i Polkowice",
+    "description": "Niewielkie rysy na ścianie, pęknięcia elewacji lub nierówna kostka? Sprawdź, jak dokumentować uszkodzenia w rejonie Lubina i Polkowic.",
     "category": "szkody",
     "keywords": "Drobne pęknięcia ścian lub elewacji? Nie ignoruj pierwszych oznak uszkodzeń. v2 wiedza drobne pekniecia szkody gornicze html Drobne Pekniecia Szkody Gornicze"
   },
@@ -99,7 +99,7 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
     "href": "/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
-    "title": "Świadczenie wspierające w 2026 r. — WZON, 70 punktów i wniosek do ZUS",
+    "title": "Świadczenie wspierające 2026 — WZON i ZUS",
     "description": "Świadczenie wspierające w 2026 r.: WZON, decyzja o poziomie potrzeby wsparcia od 70 punktów, wniosek do ZUS i ważne terminy. Poradnik SuccessTree.",
     "category": "swiadczenie",
     "keywords": "Świadczenie wspierające w 2026 r. — od decyzji WZON do ZUS. v2 wiedza swiadczenie wspierajace 2026 wzon zus html Swiadczenie Wspierajace 2026 WZON ZUS"

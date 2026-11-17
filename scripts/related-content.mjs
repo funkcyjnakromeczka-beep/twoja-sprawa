@@ -72,7 +72,15 @@ export function appendRelatedContent(markup,path){
  const group=groups[path];
  if(!group)return {html:markup,changes:[]};
  if(markup.includes('class="related-content-links"'))return {html:markup,changes:[]};
- const target=refs[group].filter(p=>p!==path).slice(0,4);
+ // Prefer a genuinely contextual editorial link already visible in the local
+ // mining guide. Repeating the same destination in the automated panel would
+ // create a redundant link rather than a useful additional recommendation.
+ const target=refs[group].filter(p=>{
+  if(p===path)return false;
+  if(path.startsWith("lokalnie/")&&p==="wiedza/drobne-pekniecia-szkody-gornicze.html"
+    &&markup.includes('href="/v2/'+p+'"'))return false;
+  return true;
+ }).slice(0,4);
  if(target.length<2)throw new Error("Insufficient curated links: "+path);
  const changes=[];
  for(const p of target){

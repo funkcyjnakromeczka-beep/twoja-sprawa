@@ -6,6 +6,7 @@ on:
       - 'v2/**'
       - 'scripts/test-browser-flows.mjs'
       - 'scripts/build.mjs'
+      - 'scripts/network-brand.mjs'
       - 'scripts/subpage-css-bundles.mjs'
       - 'scripts/test-subpage-bundles.mjs'
       - 'scripts/test-production-bundle.mjs'

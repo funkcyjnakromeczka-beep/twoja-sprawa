@@ -1,6 +1,11 @@
 name: Audyt WCAG i widoku mobilnego — wszystkie 47 stron
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'v2/**'
+      - 'scripts/**'
+      - '.github/workflows/full-site-accessibility.yml'
   push:
     branches: [main]
     paths:
@@ -29,8 +34,23 @@ jobs:
         run: |
           npm install --no-save --no-package-lock --ignore-scripts playwright@1.64.1 axe-core@4.14.0
           npx playwright install --with-deps chromium
+      - name: Zbuduj odizolowany podgląd PR — bez indeksacji
+        if: github.event_name == 'pull_request'
+        run: node scripts/preview.mjs
       - name: Przetestuj 47 stron w 390 px i 1280 px bez wysyłania formularzy
-        run: node scripts/test-full-site-accessibility.mjs
+        env:
+          A11Y_LOCAL_PREVIEW: ${{ github.event_name == 'pull_request' && '1' || '0' }}
+        run: |
+          if [ "$A11Y_LOCAL_PREVIEW" = "1" ]; then
+            python3 -m http.server 4187 --bind 127.0.0.1 --directory dist-preview >/tmp/twoja-sprawa-a11y.log 2>&1 &
+            server_pid=$!
+            trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+            for attempt in $(seq 1 30); do
+              curl -sf http://127.0.0.1:4187/ >/dev/null && break
+              sleep 0.2
+            done
+          fi
+          node scripts/test-full-site-accessibility.mjs
       - name: Zachowaj wynik audytu 94 widoków
         if: always()
         uses: actions/upload-artifact@v7

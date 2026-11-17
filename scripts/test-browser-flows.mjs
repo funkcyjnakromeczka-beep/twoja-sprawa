@@ -42,6 +42,36 @@ async function waitForCurrentDeployment(){
 }
 
 await waitForCurrentDeployment();
+// External Googlebot-style HTTP probe, after confirming Cloudflare deployed this commit.
+// A user-agent string alone does not prove access from Google's own IP ranges.
+const sitemapProbePaths=["/robots.txt","/sitemap.xml","/sitemap.txt"];
+const sitemapProbe=await Promise.all(sitemapProbePaths.map(async path=>{
+ const response=await fetch(origin+path,{
+  headers:{"User-Agent":"Googlebot/2.1 (+http://www.google.com/bot.html)","Cache-Control":"no-cache"},
+  signal:AbortSignal.timeout(15000)
+ });
+ assert.equal(response.status,200,"Googlebot-style GET failed for "+path);
+ const type=(response.headers.get("content-type")||"").toLowerCase();
+ assert.ok(!/\bnoindex\b/i.test(response.headers.get("x-robots-tag")||""),
+  "Noindex response header blocked sitemap/robots: "+path);
+ if(path.endsWith(".xml"))assert.ok(type.includes("xml"),"XML sitemap MIME type incorrect: "+type);
+ if(path.endsWith(".txt"))assert.ok(type.includes("text/plain"),"Text sitemap MIME type incorrect: "+type);
+ return {path,type,body:await response.text()};
+}));
+const maps=new Map(sitemapProbe.map(entry=>[entry.path,entry]));
+const xmlSitemapUrls=[...maps.get("/sitemap.xml").body.matchAll(/<loc>([^<]+)<\/loc>/g)]
+ .map(match=>match[1].replaceAll("&amp;","&"));
+const textSitemapUrls=maps.get("/sitemap.txt").body.trim().split(/\r?\n/);
+assert.deepEqual(xmlSitemapUrls,textSitemapUrls,"Live XML/TXT sitemaps differ");
+assert.ok(textSitemapUrls.length>=20,"Live sitemap lists too few pages");
+assert.ok(maps.get("/robots.txt").body.includes("Sitemap: "+origin+"/sitemap.xml"),
+ "Production robots must continue to advertise canonical XML sitemap");
+console.log("GOOGLEBOT_STYLE_MAP_CHECK_OK "+JSON.stringify({
+ urls:textSitemapUrls.length,
+ types:Object.fromEntries(sitemapProbe.map(x=>[x.path,x.type])),
+ note:"Synthetic user-agent probe, not evidence of Googlebot IP access or indexing"
+}));
+
 const browser=await chromium.launch({headless:true});
 try{
  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});

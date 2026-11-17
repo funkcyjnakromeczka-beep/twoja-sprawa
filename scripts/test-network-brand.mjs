@@ -24,8 +24,8 @@ async function walk(dir){
     assert.ok(rendered.includes('/v2/network-brand.css'),label+": shared style missing");
     assert.equal((rendered.match(/class="network-brand-fallback"/g)||[]).length,2,label+": readable loading fallbacks required");
     assert.ok(rendered.includes('/v2/network-brand.js'),label+": fallback enhancement missing");
-    assert.equal((rendered.match(/id="network-brand-critical"/g)||[]).length,1,
-      label+": critical no-JavaScript mobile brand guard must be in the head exactly once");
+    assert.equal((rendered.match(/data-mobile-brand-fallback="true"/g)||[]).length,1,
+      label+": inline no-JavaScript mobile brand guard must appear once");
     assert.ok(rendered.includes('max-width:calc(50vw - 15px)'),
       label+": external CSS outages must not cause 400px logo overflow on 320px screens");
     const firstHeader=rendered.indexOf("<header");

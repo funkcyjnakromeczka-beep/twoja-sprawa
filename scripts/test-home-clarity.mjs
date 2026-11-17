@@ -16,6 +16,25 @@ const beg=html.indexOf('class="grid primary-services"');
 const end=html.indexOf('<details class="service-extra"',beg);
 assert.ok(beg>=0&&end>beg,"Homepage services area missing");
 const segment=html.slice(beg,end);
+// GSC baseline 2026-11-17: Google has indexed the home URL but reports the
+// two local mining URLs as unknown. Keep their navigation visible to both
+// visitors and crawlers, not hidden inside a collapsed details element.
+const localBlock=html.match(/<div class="local-areas" id="szkody-lokalnie"[\s\S]*?<\/div><\/div>/)?.[0]||"";
+assert.ok(localBlock,"Prominent local entry must be directly visible on the homepage");
+assert.ok(beg<html.indexOf('id="szkody-lokalnie"')&&html.indexOf('id="szkody-lokalnie"')<end,
+ "Local entry should follow service cards but precede collapsed secondary services");
+const collapsedSection=html.slice(end,html.indexOf("</details>",end));
+assert.ok(!collapsedSection.includes('href="/v2/lokalnie/'),
+ "Do not hide primary local discovery URLs in collapsed sections");
+for(const slug of ["szkody-gornicze-lubin","szkody-gornicze-polkowice"]){
+ const href='/v2/lokalnie/'+slug+'.html';
+ assert.equal(html.split('href="'+href+'"').length-1,1,"Homepage should contain one clear local URL for "+slug);
+ assert.ok(localBlock.includes('href="'+href+'"'),"Local URL must be visible for "+slug);
+ await access('v2/lokalnie/'+slug+'.html');
+}
+assert.ok(localBlock.includes("Nie każda rysa oznacza szkodę górniczą"),
+ "Local SEO module must retain non-promissory qualification");
+
 const links=[...segment.matchAll(/class="card primary-card[^"]*" href="([^"]+)"/g)].map(m=>m[1]);
 assert.equal(links.length,6,"Should show six distinct service cards");
 assert.equal(new Set(links).size,6,"Duplicated service links");

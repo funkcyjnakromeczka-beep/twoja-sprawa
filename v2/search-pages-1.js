@@ -139,9 +139,9 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/uslugi/renty-powypadkowe.html",
     "href": "/v2/uslugi/renty-powypadkowe.html",
-    "title": "Renty powypadkowe i waloryzacja",
+    "title": "Renty powypadkowe — analiza i podwyższenie",
     "description": "Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia.",
     "category": "renty",
-    "keywords": "Renty powypadkowe i waloryzacja v2 uslugi renty powypadkowe html Renty Powypadkowe waloryzacja renty waloryzacji podwyższenie renty ubezpieczyciela"
+    "keywords": "Renty powypadkowe — analiza i podwyższenie v2 uslugi renty powypadkowe html Renty Powypadkowe waloryzacja renty waloryzacji podwyższenie renty ubezpieczyciela"
   }
 ];

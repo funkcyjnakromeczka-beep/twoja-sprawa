@@ -104,3 +104,41 @@ assert.ok(searchCSS.includes(".search-hints a:focus-visible")&&searchCSS.include
  "Search example links need accessible keyboard and finger targets");
 console.log("SEARCH_SIX_REAL_EXAMPLES_OK: mining, WZON, SKD, rents, CHF and transmission easement; all locally searchable.");
 
+// Targeted editorial SEO guardrails for high-intent pages. This is a copy-quality
+// test, not a guarantee of Google's displayed snippet or search position.
+const prioritySourcePaths=[
+ "v2/uslugi/renty-powypadkowe.html",
+ "v2/uslugi/sluzebnosc-przesylu.html",
+ "v2/lokalnie/szkody-gornicze-lubin.html",
+ "v2/lokalnie/szkody-gornicze-polkowice.html",
+ "v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
+ "v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"
+];
+const uniqueSeoTitles=new Set();
+for(const filepath of prioritySourcePaths){
+ const document=await readFile(filepath,"utf8");
+ const pageTitle=document.match(/<title>([^<]+)<\/title>/i)?.[1]||"";
+ const ogTitle=document.match(/<meta property="og:title" content="([^"]+)"/i)?.[1]||"";
+ const description=document.match(/<meta name="description" content="([^"]+)"/i)?.[1]||"";
+ const ogDesc=document.match(/<meta property="og:description" content="([^"]+)"/i)?.[1]||"";
+ assert.ok(pageTitle.length>=35&&pageTitle.length<=62,"Title not concise or meaningful: "+filepath);
+ assert.ok(description.length>=100&&description.length<=160,"Description out of editorial range: "+filepath);
+ assert.equal(ogTitle,pageTitle.replace(/\s*[|—]\s*Twoja Sprawa$/i,""),"OG title not aligned: "+filepath);
+ assert.equal(ogDesc,description,"OG description differs from page metadata: "+filepath);
+ assert.ok(!uniqueSeoTitles.has(pageTitle),"SEO title duplicated: "+filepath);
+ uniqueSeoTitles.add(pageTitle);
+ const match=document.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)||[];
+ const articles=match.map(script=>{
+  try{return JSON.parse(script.match(/^<script[^>]*>([\s\S]*)<\/script>$/)?.[1]||"null");}
+  catch{return null;}
+ }).filter(obj=>obj&&obj["@type"]==="Article");
+ if(filepath.includes("v2/wiedza/")){
+  assert.equal(articles.length,1,"Indexed editorial guide must expose exactly one Article source");
+  assert.equal(articles[0].headline,pageTitle,"Article headline does not match published title");
+  assert.equal(articles[0].description,description,"Article summary does not match snippet");
+ }
+}
+console.log("PRIORITY_SEO_METADATA_OK: 6 focused titles, aligned OpenGraph & 2 article JSON-LD records; search index in sync.");
+
+
+

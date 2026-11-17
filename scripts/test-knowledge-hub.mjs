@@ -54,4 +54,30 @@ assert.ok(html.includes('role="status" aria-live="polite"'));
 assert.ok(html.includes('aria-controls="hub-results"'));
 assert.equal((html.match(/class="hub-card/g)||[]).length,10);
 assert.equal((html.match(/data-hub-full-search/g)||[]).length,2);
+
+// The directory must stay distinct from the client-filterable 10-article hub
+// and use real, indexable service and local mining URLs.
+const directory=html.match(/<section class="hub-services-index"[\s\S]*?<\/section>/)?.[0]||"";
+assert.ok(directory.includes('id="hub-services-index-title"'),"Visible service directory title missing");
+assert.equal((directory.match(/class="hub-service-directory"/g)||[]).length,1);
+assert.equal((directory.match(/class="hub-local-directory"/g)||[]).length,1);
+const canonicalTargets=[
+ "uslugi/szkody-gornicze",
+ "uslugi/swiadczenie-wspierajace",
+ "uslugi/kredyty-pln",
+ "uslugi/renty-powypadkowe",
+ "uslugi/kredyty-frankowe",
+ "uslugi/sluzebnosc-przesylu",
+ "lokalnie/szkody-gornicze-lubin",
+ "lokalnie/szkody-gornicze-polkowice"
+];
+const links=[...directory.matchAll(/href="(\/v2\/[^"]+)"/g)].map(m=>m[1]);
+assert.equal(links.length,8,"Exactly six services and two local mining routes must appear");
+for(const slug of canonicalTargets){
+ assert.equal(links.filter(x=>x==="/v2/"+slug+".html").length,1,slug+" absent or duplicated");
+}
+assert.ok(!directory.includes("schema.org")&&!directory.includes("utm_")&&!directory.includes("access_key"));
+assert.ok(html.indexOf('class="hub-services-index"')<html.indexOf('data-knowledge-hub'),
+ "Service directory should precede article search and stay visible independent of filters");
+
 console.log("OK: hub filters, accent-insensitive search, no results, reset, keyboard controls and 10 article cards.");

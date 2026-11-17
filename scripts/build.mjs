@@ -105,6 +105,24 @@ function reconcilePublishedArticle(markup,route,canonical){
  if(found!==1)throw new Error("Expected exactly one visible editorial Article JSON-LD in "+route+", found "+found);
  return normalized;
 }
+// Older source pages sometimes contain manually authored BreadcrumbList JSON-LD
+// as well as the generated graph derived from the visible navigation. Publishing
+// both creates duplicate, partly noncanonical markup. Keep the visible route
+// as the only source of structured breadcrumbs on every site page.
+function stripAuthoredBreadcrumbs(markup,rel){
+ const hasVisibleBreadcrumb=markup.includes('<nav class="site-breadcrumbs" aria-label="Ścieżka nawigacji">');
+ let removed=0;
+ const html=markup.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,(tag,raw)=>{
+  let schema;
+  try{schema=JSON.parse(raw);}catch{return tag;}
+  if(schema?.["@type"]!=="BreadcrumbList")return tag;
+  if(!hasVisibleBreadcrumb)throw new Error("Authored BreadcrumbList lacks a matching visible breadcrumb: "+rel);
+  removed++;
+  return "";
+ });
+ if(removed>1)throw new Error("Unexpected multiple authored BreadcrumbLists: "+rel);
+ return html;
+}
 const structured = (route,canonical,title,markup) => {
   // FAQPage reflects only answers visibly published on /faq; no invented recommendations.
   const decodeEntities=value=>value.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">");
@@ -304,6 +322,7 @@ async function walk(dir){
       // 100 verifiable improvements across 47 pages: main labels, breadcrumbs,
       // missing keyboard skip links and shared focus treatment.
       html=enhancePageNavigation(html,rel).html;
+      html=stripAuthoredBreadcrumbs(html,rel);
       html=improveMediaAndNavigation(html,rel.replaceAll("\\","/")).html;
       html=improveContentLinks(html,rel.replaceAll("\\","/")).html;
       html=addSectionPermalinks(html,rel.replaceAll("\\","/")).html;

@@ -11,8 +11,8 @@ const cases = [
   ["rekrutacja.html", "Współpraca i rekrutacja przedstawicieli | Twoja Sprawa", true],
   ["plan-dzialania.html", "Plan pierwszych kroków — 6 rodzajów spraw | Twoja Sprawa", true],
   ["szukaj.html", "Wyszukiwarka informacji | Twoja Sprawa", false],
-  ["uslugi/renty-powypadkowe.html", "Renty powypadkowe i waloryzacja | Twoja Sprawa", true],
-  ["uslugi/sluzebnosc-przesylu.html", "Służebność przesyłu — analiza działki | Twoja Sprawa", true],
+  ["uslugi/renty-powypadkowe.html", "Renty powypadkowe — analiza i podwyższenie | Twoja Sprawa", true],
+  ["uslugi/sluzebnosc-przesylu.html", "Służebność przesyłu — słup na działce | Twoja Sprawa", true],
   ["lokalnie/szkody-gornicze-lubin.html", "Szkody górnicze Lubin — pęknięcia ścian | Twoja Sprawa", true],
   ["lokalnie/szkody-gornicze-polkowice.html", "Szkody górnicze Polkowice — szkody posesji | Twoja Sprawa", true],
   ["uslugi/odszkodowanie-za-halas.html", "Hałas i roszczenia właściciela | Twoja Sprawa", true],
@@ -21,8 +21,8 @@ const cases = [
   ["uslugi/wypadki-komunikacyjne.html", "Wypadki komunikacyjne — roszczenia | Twoja Sprawa", true],
   ["uslugi/wypadki-przy-pracy.html", "Wypadek przy pracy — dokumenty | Twoja Sprawa", true],
   ["uslugi/wypadki-w-rolnictwie.html", "Wypadek w rolnictwie — dokumenty | Twoja Sprawa", true],
-  ["wiedza/drobne-pekniecia-szkody-gornicze.html", "Drobne pęknięcia a szkody górnicze | Lubin i Polkowice", true],
-  ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html", "Świadczenie wspierające 2026: WZON i ZUS | Twoja Sprawa", true]
+  ["wiedza/drobne-pekniecia-szkody-gornicze.html", "Drobne pęknięcia a szkody górnicze — Lubin i Polkowice", true],
+  ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html", "Świadczenie wspierające 2026 — WZON i ZUS", true]
 ];
 const meta = (html, field, key) => {
   const tag = html.match(new RegExp('<meta\\b(?=[^>]*\\b'+field+'="'+key+'")[^>]*>',"i"))?.[0] || "";

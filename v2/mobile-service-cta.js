@@ -32,7 +32,14 @@
  // Stop covering the form once it becomes visible in the viewport.
  const target=document.getElementById("formularz");
  let formVisible=false;
- const syncVisibility=()=>{nav.hidden=formVisible||Boolean(target?.contains(document.activeElement));};
+ let chatOpen=false;
+ const syncVisibility=()=>{nav.hidden=formVisible||chatOpen||Boolean(target?.contains(document.activeElement));};
+ // Keep the mobile contact bar out of the way of the open service guide,
+ // including older Android browsers without CSS :has() support.
+ document.addEventListener("twoja-sprawa:chat-visibility",event=>{
+  chatOpen=event.detail?.open===true;
+  syncVisibility();
+ });
  if(target&&"IntersectionObserver" in window){
   const observer=new IntersectionObserver(entries=>{
    const near=Boolean(entries[0]?.isIntersecting);

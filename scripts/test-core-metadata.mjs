@@ -8,6 +8,7 @@ import {readFile} from "node:fs/promises";
 
 const cases = [
   ["kontakt.html", "Kontakt: Wojciech Obiegło i Paulina Chandrała", true],
+  ["rekrutacja.html", "Współpraca i rekrutacja przedstawicieli | Twoja Sprawa", true],
   ["plan-dzialania.html", "Plan pierwszych kroków — 6 rodzajów spraw | Twoja Sprawa", true],
   ["szukaj.html", "Wyszukiwarka informacji | Twoja Sprawa", false],
   ["uslugi/renty-powypadkowe.html", "Renty powypadkowe i waloryzacja | Twoja Sprawa", true],
@@ -48,4 +49,11 @@ const formSource=await readFile("v2/contact.js","utf8");
 const backendSource=await readFile("functions/api/contact.js","utf8");
 assert.ok(formSource.includes('"Kredyty frankowe CHF"'),"CHF missing from client form");
 assert.ok(backendSource.includes('"Kredyty frankowe CHF"'),"CHF missing from backend allowlist");
-console.log("CORE_METADATA_AND_CHF_FORM_OK: "+cases.length+" pages and two service lists verified");
+const recruit=await readFile("v2/rekrutacja.html","utf8");
+const recruitFaq=recruit.split('<section aria-labelledby="rekrutacja-faq">')[1]?.split("</section>")[0]||"";
+assert.equal((recruitFaq.match(/<details>/g)||[]).length,4,
+ "Recruitment page must answer four real collaboration questions");
+for(const term of ["własnym samochodem","Wojciech","przedstawiciela","gwarancji wynagrodzenia"]){
+ assert.ok(recruit.includes(term),"Recruitment trust/access information missing: "+term);
+}
+console.log("CORE_METADATA_AND_CHF_FORM_OK: "+cases.length+" pages, CHF service lists and recruitment FAQ verified");

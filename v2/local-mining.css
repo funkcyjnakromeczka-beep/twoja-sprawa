@@ -123,3 +123,14 @@
  }
 }
 @media print{.local-mining-page .local-mobile-contact{display:none!important}}
+
+/* Existing chatbot must remain independently tappable above the fixed CTA.
+   Otherwise it masks the right-hand form button (WCAG 2.2 target-size). */
+@media(max-width:680px){
+ .local-mining-page .chat-assistant{
+  bottom:calc(94px + env(safe-area-inset-bottom, 0px))
+ }
+ .local-mining-page .chat-panel{
+  max-height:min(520px,calc(100dvh - 230px - env(safe-area-inset-bottom, 0px)))
+ }
+}

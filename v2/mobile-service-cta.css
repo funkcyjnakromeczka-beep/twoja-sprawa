@@ -3,6 +3,8 @@
 @media(max-width:650px){
  /* Reserve space only while the sticky CTA is actually visible. */
  body:has(.mobile-service-cta:not([hidden])){padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+ /* JS synchronizes this class when the browser lacks :has(). */
+ body.has-visible-mobile-service-cta{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
  .mobile-service-cta:not([hidden]){
   position:fixed;inset:auto 0 0;z-index:150;
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);

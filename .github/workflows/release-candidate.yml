@@ -30,6 +30,12 @@ on:
       - 'scripts/test-service-share.mjs'
       - 'scripts/test-geo-editorial.mjs'
       - '.github/workflows/release-candidate.yml'
+  pull_request:
+    paths:
+      - 'v2/**'
+      - 'scripts/**'
+      - 'functions/api/contact.js'
+      - '.github/workflows/release-candidate.yml'
   workflow_dispatch:
 concurrency:
   group: twoja-sprawa-release-candidate-${{ github.ref }}
@@ -64,6 +70,8 @@ jobs:
           node --check scripts/test-visible-breadcrumb-schema.mjs
           node --check scripts/test-1000-release-checks.mjs
           node --check scripts/test-production-bundle.mjs
+          node --check scripts/test-core-metadata.mjs
+          node --check scripts/test-contact.mjs
           node --check scripts/test-html-tags.mjs
           node --check scripts/test-internal-links.mjs
           node --check scripts/test-ai-referrals.mjs
@@ -89,6 +97,8 @@ jobs:
           node scripts/test-1000-release-checks.mjs --manifest
           node scripts/test-subpage-bundles.mjs
           node scripts/test-production-bundle.mjs
+          node scripts/test-core-metadata.mjs
+          node scripts/test-contact.mjs
           node scripts/test-html-tags.mjs
           node scripts/test-internal-links.mjs
           node scripts/test-ai-referrals.mjs

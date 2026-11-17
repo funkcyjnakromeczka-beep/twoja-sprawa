@@ -187,3 +187,47 @@
 .premium-subpage.theme-contact .contact-specialists > .eyebrow{
  color:#654419;
 }
+
+/* Desktop first-screen conversion: retain the premium artwork but reveal more
+   primary content without scrolling. Narrow/mobile layouts remain unchanged. */
+@media (min-width:1280px) {
+  .premium-v2 .site-header .brand-line {
+    min-height:86px;
+    padding-block:8px;
+  }
+  .premium-v2 .site-header .main-nav {
+    padding-block:6px;
+    row-gap:6px;
+  }
+  .premium-v2 .site-header .main-nav > a {
+    min-height:44px;
+    padding-block:8px;
+  }
+  .premium-v2 .hero-glamour {
+    min-height:550px;
+    padding-top:40px;
+    padding-bottom:48px;
+    align-items:start;
+  }
+  .premium-v2 .hero-glamour h1 {
+    max-width:none;
+    font-size:clamp(3.4rem,4vw,5.1rem);
+    line-height:1.08;
+    margin:12px 0 18px;
+  }
+  .premium-v2 .hero-glamour .hero-content {
+    max-width:800px;
+  }
+}
+
+/* Recruitment page: avoid an oversized title and excessive above-the-fold
+   whitespace while keeping the shared premium visual language. */
+body.recruitment-page .subhero{
+ padding-top:clamp(36px,5vw,64px);
+ padding-bottom:clamp(36px,5vw,64px);
+}
+body.recruitment-page .subhero h1{
+ max-width:24ch;
+ font-size:clamp(2.3rem,4.1vw,4.25rem);
+ line-height:1.12;
+}

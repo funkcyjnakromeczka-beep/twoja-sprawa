@@ -19,10 +19,10 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/kontakt.html",
     "href": "/v2/kontakt.html",
-    "title": "Kontakt — Wojciech Obiegło i Paulina Chandrała",
-    "description": "Skontaktuj się z Wojciechem Obiegło lub Pauliną Chandrałą, SuccessTree. Szkody górnicze Lubin i Polkowice, świadczenie wspierające, renty powypadkowe, Sankcja Kredytu Darmowego (SKD), kredyty frankowe CHF, służebność przesyłu. Telefon 796 441 345.",
+    "title": "Kontakt: Wojciech Obiegło i Paulina Chandrała",
+    "description": "Wojciech Obiegło: szkody górnicze, SKD i kredyty CHF. Paulina Chandrała: świadczenie wspierające i renty. Telefony, e-maile i formularz kontaktowy.",
     "category": "inne",
-    "keywords": "Porozmawiajmy o Twojej sprawie. v2 kontakt html Kontakt — Wojciech Obiegło i Paulina Chandrała"
+    "keywords": "Porozmawiajmy o Twojej sprawie. v2 kontakt html Kontakt: Wojciech Obiegło i Paulina Chandrała"
   },
   {
     "id": "page:v2/lokalnie/szkody-gornicze-lubin.html",
@@ -52,7 +52,7 @@ window.TwojaSprawaSearchPages1=[
     "id": "page:v2/plan-dzialania.html",
     "href": "/v2/plan-dzialania.html",
     "title": "Plan pierwszych kroków — 6 rodzajów spraw",
-    "description": "Przygotuj bezpłatną listę kroków: szkody górnicze, świadczenie wspierające, SKD, renty, kredyty CHF i służebność przesyłu. Wydrukuj checklistę bez podawania danych osobowych.",
+    "description": "Przygotuj listę pierwszych kroków: szkody górnicze, świadczenie wspierające, SKD, renty, kredyty CHF i służebność przesyłu. Bez rejestracji.",
     "category": "szkody",
     "keywords": "Twój plan pierwszych kroków v2 plan dzialania html Plan pierwszych kroków"
   },
@@ -100,7 +100,7 @@ window.TwojaSprawaSearchPages1=[
     "id": "page:v2/rekrutacja.html",
     "href": "/v2/rekrutacja.html",
     "title": "Współpraca i rekrutacja przedstawicieli",
-    "description": "Sprawdź możliwość współpracy przy pozyskiwaniu klientów usług prawnych.",
+    "description": "Współpraca terenowa przy pozyskiwaniu klientów w Lubinie, Polkowicach i okolicy. Poznaj zadania, wymóg dojazdu własnym samochodem i sposób kontaktu.",
     "category": "inne",
     "keywords": "Rozwijaj się jako przedstawiciel terenowy v2 rekrutacja html Współpraca i rekrutacja"
   },
@@ -123,18 +123,18 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/uslugi/odszkodowanie-za-halas.html",
     "href": "/v2/uslugi/odszkodowanie-za-halas.html",
-    "title": "Hałas i ograniczenia korzystania z nieruchomości",
+    "title": "Hałas i roszczenia właściciela",
     "description": "Nieruchomość w obszarze ograniczonego użytkowania lub problem nadmiernego hałasu? Poznaj dokumenty potrzebne do oceny możliwych roszczeń.",
     "category": "szkody",
-    "keywords": "Hałas i ograniczenia korzystania z nieruchomości v2 uslugi odszkodowanie za halas html Odszkodowanie Za Halas"
+    "keywords": "Hałas i roszczenia właściciela v2 uslugi odszkodowanie za halas html Odszkodowanie Za Halas"
   },
   {
     "id": "page:v2/uslugi/pomoc-w-sprawach-karnych.html",
     "href": "/v2/uslugi/pomoc-w-sprawach-karnych.html",
-    "title": "Sprawa karna — ustal zakres potrzebnej pomocy prawnej",
+    "title": "Sprawa karna — zakres pomocy",
     "description": "Potrzebujesz kontaktu z adwokatem lub radcą prawnym w sprawie karnej? Zgłoś etap postępowania i pilne terminy do ustalenia zakresu pomocy.",
     "category": "inne",
-    "keywords": "Sprawa karna — ustal zakres potrzebnej pomocy prawnej v2 uslugi pomoc w sprawach karnych html Pomoc W Sprawach Karnych"
+    "keywords": "Sprawa karna — zakres pomocy v2 uslugi pomoc w sprawach karnych html Pomoc W Sprawach Karnych"
   },
   {
     "id": "page:v2/uslugi/renty-powypadkowe.html",
@@ -142,6 +142,6 @@ window.TwojaSprawaSearchPages1=[
     "title": "Renty powypadkowe — analiza i podwyższenie",
     "description": "Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia.",
     "category": "renty",
-    "keywords": "Renta powypadkowa — sprawdź, czy odpowiada Twojej sytuacji v2 uslugi renty powypadkowe html Renty Powypadkowe waloryzacja renty waloryzacji podwyższenie renty ubezpieczyciela"
+    "keywords": "Renty powypadkowe — analiza i podwyższenie v2 uslugi renty powypadkowe html Renty Powypadkowe waloryzacja renty waloryzacji podwyższenie renty ubezpieczyciela"
   }
 ];

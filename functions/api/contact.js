@@ -7,7 +7,7 @@
 const MAX_BYTES = 6000;
 const SERVICES = new Set([
   "Szkody górnicze","Świadczenie wspierające","Służebność przesyłu",
-  "Renty powypadkowe","Kredyt w PLN / SKD","Wypadek komunikacyjny",
+  "Renty powypadkowe","Kredyt w PLN / SKD","Kredyty frankowe CHF","Wypadek komunikacyjny",
   "Wypadek przy pracy","Wypadek w rolnictwie","Szkoda na nieruchomości",
   "Odszkodowanie za hałas","Pomoc w sprawie karnej","Nieudany urlop","Inna sprawa"
 ]);

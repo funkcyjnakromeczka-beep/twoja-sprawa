@@ -6,7 +6,7 @@ window.TwojaSprawaSearchPages2=[
     "title": "Służebność przesyłu — słup na działce",
     "description": "Słup, linia energetyczna lub gazociąg na działce? Poznaj dokumenty potrzebne do analizy praw operatora i możliwych roszczeń właściciela.",
     "category": "przesyl",
-    "keywords": "Służebność przesyłu — sprawdź sytuację swojej działki v2 uslugi sluzebnosc przesylu html Sluzebnosc Przesylu"
+    "keywords": "Służebność przesyłu — słup na działce v2 uslugi sluzebnosc przesylu html Sluzebnosc Przesylu"
   },
   {
     "id": "page:v2/uslugi/swiadczenie-wspierajace.html",
@@ -27,34 +27,34 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/uslugi/szkody-na-nieruchomosci.html",
     "href": "/v2/uslugi/szkody-na-nieruchomosci.html",
-    "title": "Szkoda na nieruchomości — sprawdź decyzję i rozliczenie",
+    "title": "Szkody na nieruchomości — analiza",
     "description": "Zaniżona wypłata lub odmowa po zalaniu, pożarze i innych szkodach? Zgłoś polisę, kosztorys i dokumentację do analizy.",
     "category": "szkody",
-    "keywords": "Szkoda na nieruchomości — sprawdź decyzję i rozliczenie v2 uslugi szkody na nieruchomosci html Szkody Na Nieruchomosci"
+    "keywords": "Szkody na nieruchomości — analiza v2 uslugi szkody na nieruchomosci html Szkody Na Nieruchomosci"
   },
   {
     "id": "page:v2/uslugi/wypadki-komunikacyjne.html",
     "href": "/v2/uslugi/wypadki-komunikacyjne.html",
-    "title": "Wypadek komunikacyjny — sprawdź możliwe świadczenia",
+    "title": "Wypadki komunikacyjne — roszczenia",
     "description": "Zgłoś sprawę po wypadku komunikacyjnym do analizy. Dokumenty, decyzje ubezpieczyciela i możliwe świadczenia dla poszkodowanych.",
     "category": "swiadczenie",
-    "keywords": "Wypadek komunikacyjny — sprawdź możliwe świadczenia v2 uslugi wypadki komunikacyjne html Wypadki Komunikacyjne"
+    "keywords": "Wypadki komunikacyjne — roszczenia v2 uslugi wypadki komunikacyjne html Wypadki Komunikacyjne"
   },
   {
     "id": "page:v2/uslugi/wypadki-przy-pracy.html",
     "href": "/v2/uslugi/wypadki-przy-pracy.html",
-    "title": "Wypadek przy pracy — uporządkuj dokumenty i możliwości działania",
+    "title": "Wypadek przy pracy — dokumenty",
     "description": "Dokumentacja powypadkowa, świadczenia i możliwe roszczenia po wypadku przy pracy. Zgłoś swoją sytuację do analizy we współpracy z Votum.",
     "category": "renty",
-    "keywords": "Wypadek przy pracy — uporządkuj dokumenty i możliwości działania v2 uslugi wypadki przy pracy html Wypadki Przy Pracy"
+    "keywords": "Wypadek przy pracy — dokumenty v2 uslugi wypadki przy pracy html Wypadki Przy Pracy"
   },
   {
     "id": "page:v2/uslugi/wypadki-w-rolnictwie.html",
     "href": "/v2/uslugi/wypadki-w-rolnictwie.html",
-    "title": "Wypadek w gospodarstwie rolnym — sprawdź podstawy roszczeń",
+    "title": "Wypadek w rolnictwie — dokumenty",
     "description": "Wypadek w gospodarstwie rolnym: dokumenty, ubezpieczenie i możliwe świadczenia. Poznaj informacje potrzebne do analizy sprawy.",
     "category": "renty",
-    "keywords": "Wypadek w gospodarstwie rolnym — sprawdź podstawy roszczeń v2 uslugi wypadki w rolnictwie html Wypadki W Rolnictwie"
+    "keywords": "Wypadek w rolnictwie — dokumenty v2 uslugi wypadki w rolnictwie html Wypadki W Rolnictwie"
   },
   {
     "id": "page:v2/wiedza/drobne-pekniecia-szkody-gornicze.html",

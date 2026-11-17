@@ -278,6 +278,15 @@ function stripCssComments(css){
 // Combine home CSS in source cascade order. Keep separate CSS for service pages.
 const homeStyleOrder=["styles.css","premium-v2.css","portrait-upgrade.css","journey.css",
  "home-flow.css","network-brand.css","visual-contrast.css"];
+// The release removes the legacy homepage partner strip from HTML; its CSS is
+// therefore unreachable in production. Keep it in the authoring preview only.
+function pruneReplacedPartnerStripCss(css,filename){
+ if(filename!=="home-flow.css")return css;
+ const start=css.indexOf("/* Partnerzy przy samym nagłówku:");
+ const end=css.indexOf("/* Pierwsze dwie usługi:",start+1);
+ if(start<0||end<=start)throw new Error("Legacy homepage partner CSS block changed unexpectedly");
+ return css.slice(0,start)+css.slice(end);
+}
 async function bundleHomepageStyles(html){
  const linkPattern=/<link rel="stylesheet" href="\/([a-z0-9-]+\.css)">/g;
  const links=[...html.matchAll(linkPattern)];
@@ -291,7 +300,7 @@ async function bundleHomepageStyles(html){
   if(/^\s*@(import|charset)\b/im.test(css)){
    throw new Error("Cannot safely bundle CSS with import/charset: "+filename);
   }
-  chunks.push(stripCssComments(css.replaceAll("/v2/assets/","/assets/")));
+  chunks.push(stripCssComments(pruneReplacedPartnerStripCss(css,filename).replaceAll("/v2/assets/","/assets/")));
  }
  await writeFile(join(dest,"home-bundle.css"),chunks.join("\n"));
  let inserted=false;

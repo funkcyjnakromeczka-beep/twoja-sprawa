@@ -5,7 +5,7 @@ import {readdir,readFile} from "node:fs/promises";
 import {join} from "node:path";
 import {withNetworkBrand} from "./network-brand.mjs";
 const sourceRoot="v2";
-let tested=0,legacy=0;
+let tested=0,legacy=0,partnerBarsRemoved=0;
 async function walk(dir){
   for(const entry of await readdir(dir,{withFileTypes:true})){
     const file=join(dir,entry.name);
@@ -31,11 +31,19 @@ async function walk(dir){
       assert.ok(!rendered.includes('class="agency-logos-bar"'),label+": old duplicate agency strip remains");
       legacy++;
     }
+    if(original.includes('class="partner-identity-bar"')){
+      assert.ok(!rendered.includes('class="partner-identity-bar"'),
+       label+": duplicate information-page partner bar remains");
+      assert.ok(rendered.includes("Serwis przedstawiciela, nie oficjalna witryna spółek VOTUM"),
+       label+": shared bar must preserve agency relationship disclosure");
+      partnerBarsRemoved++;
+    }
     tested++;
   }
 }
 await walk(sourceRoot);
 assert.ok(tested>=35,"Expected full-site coverage");
+assert.ok(partnerBarsRemoved>=1,"Expected information-page duplicate logo strip to be removed");
 // Brand recognition must remain readable if the official external PNG is unavailable.
 const supportCss=await readFile("v2/support-brand-fallback.css","utf8");
 assert.ok(supportCss.includes(".vws-service-brand img[hidden]"));
@@ -49,4 +57,4 @@ for(const file of ["v2/uslugi/swiadczenie-wspierajace.html","v2/kampanie/swiadcz
  assert.ok(html.includes("<strong>Votum Wsparcie</strong>"),file+": plain text fallback missing");
 }
 console.log("SUPPORT_BRAND_FALLBACK_OK: official artwork kept; compact text available on image error.");
-console.log("OK:",tested,"pages with one accessible persistent logo pair; removed",legacy,"legacy bars; repeatable builds.");
+console.log("OK:",tested,"pages with one accessible persistent logo pair; removed",legacy,"legacy bars and",partnerBarsRemoved,"information-page duplicates; repeatable builds.");

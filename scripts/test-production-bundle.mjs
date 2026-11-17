@@ -126,6 +126,7 @@ assert.ok(agencySchema.contactPoint.some(point=>point.email==="paulina.chandrala
 assert.ok(home.includes("data-share-page")&&home.includes("data-share-feedback")&&home.includes('src="/share-page.js"'),"privacy-safe share control missing on published homepage");
 const robots=await read("robots.txt");
 const sitemap=await read("sitemap.xml");
+const textSitemap=await read("sitemap.txt");
 const headers=await read("_headers");
 const privacyDisclosure=await read("polityka-prywatnosci.html");
 assert.ok(privacyDisclosure.includes('href="https://web3forms.com/dpa"')&&privacyDisclosure.includes("poza Europejskim Obszarem Gospodarczym")&&privacyDisclosure.includes("maksymalnie przez trzy lata"),"Privacy page must link the current Web3Forms DPA and explain international processing and operator retention");
@@ -133,6 +134,17 @@ assert.ok(privacyDisclosure.includes('href="https://web3forms.com/dpa"')&&privac
 assert.ok(robots.includes("Allow: /")&&!robots.includes("Disallow: /"),"production robots not enabled");
 assert.ok(robots.includes("Sitemap: "+origin+"/sitemap.xml"),"production sitemap not announced");
 assert.ok(sitemap.includes("<urlset")&&sitemap.includes("<loc>"+origin+"/</loc>"),"sitemap invalid");
+const xmlUrls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1].replaceAll("&amp;","&"));
+const textUrls=textSitemap.trimEnd().split(/\r?\n/);
+assert.deepEqual(textUrls,xmlUrls,"Google's text sitemap and the XML sitemap must contain the same canonical URLs");
+assert.deepEqual(textUrls,(await collectIndexableRoutes("v2")).map(route=>origin+route),
+ "The text sitemap must include only the current, indexable, extensionless pages");
+assert.ok(textUrls.length>=20&&textUrls.length<=200,"Unexpected text sitemap count");
+assert.equal(new Set(textUrls).size,textUrls.length,"Text sitemap has duplicate URLs");
+assert.ok(textSitemap.endsWith("\n")&&!textSitemap.includes("<url"),
+ "Text sitemap must contain only one absolute URL per line");
+console.log("TEXT_SITEMAP_MATCH_OK: "+textUrls.length+" canonical URLs in identical XML and TXT maps.");
+
 for(const route of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-frankowe","/wiedza/","/faq","/plan-dzialania"]){
  assert.ok(sitemap.includes("<loc>"+origin+route+"</loc>"),"required SEO route missing: "+route);
 }

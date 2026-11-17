@@ -70,6 +70,7 @@ jobs:
           node --check scripts/test-visible-breadcrumb-schema.mjs
           node --check scripts/test-1000-release-checks.mjs
           node --check scripts/test-production-bundle.mjs
+          node --check scripts/test-network-brand.mjs
           node --check scripts/test-core-metadata.mjs
           node --check scripts/test-contact.mjs
           node --check scripts/test-contact-client.mjs
@@ -98,6 +99,7 @@ jobs:
           node scripts/test-1000-release-checks.mjs --manifest
           node scripts/test-subpage-bundles.mjs
           node scripts/test-production-bundle.mjs
+          node scripts/test-network-brand.mjs
           node scripts/test-core-metadata.mjs
           node scripts/test-contact.mjs
           node scripts/test-contact-client.mjs

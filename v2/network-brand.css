@@ -100,3 +100,13 @@ body:has(.network-brand-bar) .skip-link:focus{
 @media(max-width:960px){
  body.premium-v2:has(.network-brand-bar) .site-header{top:0!important}
 }
+
+/* Bez udawania oficjalnej grafiki: czytelna nazwa partnera przy braku obrazu. */
+.external-partner-logo-remote[hidden],
+.external-partner-logo-fallback[hidden]{display:none!important}
+.external-partner-logo-fallback{
+ display:inline-flex;align-items:center;justify-content:center;min-height:44px;
+ max-width:100%;padding:8px 12px;border-radius:7px;border:1px solid #d4dfe0;
+ background:#fff;color:#17394b;font:800 clamp(.82rem,1.5vw,1rem)/1.3 system-ui,sans-serif;
+ text-align:center;overflow-wrap:anywhere
+}

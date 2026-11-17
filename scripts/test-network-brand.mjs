@@ -3,6 +3,7 @@
 import assert from "node:assert/strict";
 import {readdir,readFile} from "node:fs/promises";
 import {join} from "node:path";
+import {runInNewContext} from "node:vm";
 import {withNetworkBrand} from "./network-brand.mjs";
 const sourceRoot="v2";
 let tested=0,legacy=0,partnerBarsRemoved=0;
@@ -58,3 +59,47 @@ for(const file of ["v2/uslugi/swiadczenie-wspierajace.html","v2/kampanie/swiadcz
 }
 console.log("SUPPORT_BRAND_FALLBACK_OK: official artwork kept; compact text available on image error.");
 console.log("OK:",tested,"pages with one accessible persistent logo pair; removed",legacy,"legacy bars and",partnerBarsRemoved,"information-page duplicates; repeatable builds.");
+
+
+// Symulacja zerwania połączenia z serwerem oficjalnych logotypów.
+const makeBrandImage=(src,naturalWidth,withExistingText=false)=>{
+ const listeners={};
+ const host={children:[],appendChild(node){this.children.push(node);},tagName:"A"};
+ if(withExistingText)host.children.push({textContent:"Grupa VOTUM"});
+ const img={
+  complete:true,naturalWidth,hidden:false,parentElement:host,
+  classList:{classes:new Set(),add(name){this.classes.add(name);}},
+  getAttribute(name){return name==="src"?src:null;},
+  closest(selector){return selector==="a"?host:null;},
+  addEventListener(name,fn){listeners[name]=fn;}
+ };
+ host.children.push(img);
+ return {img,host,listeners};
+};
+const broken=makeBrandImage("https://votum-sa.pl/wp-content/uploads/2026/05/votum-scale-agency-.png",0);
+const loaded=makeBrandImage("https://votum-sa.pl/wp-content/uploads/2024/09/logo-votum-network-przedstawiciel-400x284-1.jpg",400);
+const labeled=makeBrandImage("https://votum-sa.pl/wp-content/uploads/2024/06/logo_VOTUM_SA_rgb-480x71.png",0,true);
+const fakeDocument={
+ querySelectorAll(selector){
+  if(selector===".network-brand-logos img")return [];
+  if(selector==='img[src^="https://votum-sa.pl/wp-content/uploads/"]')
+   return [broken.img,loaded.img,labeled.img];
+  throw Error("Unexpected image selection: "+selector);
+ },
+ createElement(tag){assert.equal(tag,"span");return {className:"",hidden:false,textContent:""};}
+};
+runInNewContext(await readFile("v2/network-brand.js","utf8"),{document:fakeDocument});
+assert.equal(broken.img.hidden,true,"Blocked partner image must not leave an empty graphic");
+assert.equal(broken.host.children[1].textContent,"VOTUM Scale Agency","Readable fallback required");
+assert.equal(broken.host.children[1].hidden,false,"Partner name must be visible on failure");
+assert.equal(loaded.img.hidden,false,"Healthy original logo must remain visible");
+assert.equal(loaded.host.children[1].hidden,true,"Text fallback should not duplicate a loaded logo");
+assert.equal(labeled.img.hidden,true,"Already-labeled broken image should be hidden");
+assert.equal(labeled.host.children.length,2,"Existing visible company name must not be repeated");
+broken.img.naturalWidth=400;broken.listeners.load();
+assert.equal(broken.img.hidden,false,"Recovered image should appear after a load event");
+assert.equal(broken.host.children[1].hidden,true,"Recovered image must hide the fallback");
+const brandCss=await readFile("v2/network-brand.css","utf8");
+assert.ok(brandCss.includes(".external-partner-logo-remote[hidden]"),"Hidden images must not override site CSS");
+assert.ok(brandCss.includes(".external-partner-logo-fallback[hidden]"),"Hide inactive textual fallbacks");
+console.log("EXTERNAL_PARTNER_LOGO_FALLBACK_OK: broken images, available originals and existing labels tested.");

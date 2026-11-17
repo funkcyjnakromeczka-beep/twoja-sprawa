@@ -1,14 +1,6 @@
 /** Shared partner branding for preview and future production builds. */
-const strip="<div class=\"network-brand-bar\" role=\"region\" aria-label=\"Współpraca agencyjna SuccessTree z podmiotami VOTUM\"><div class=\"network-brand-inner\"><span class=\"network-brand-label\">SuccessTree <span aria-hidden=\"true\">•</span> Współpraca agencyjna</span><div class=\"network-brand-logos\"><a href=\"https://votum-sa.pl/votum-network-s-a/\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Votum Network — informacje o spółce\"><span class=\"network-brand-fallback\" aria-hidden=\"true\">Votum <b>Network</b></span><img src=\"https://votum-sa.pl/wp-content/uploads/2024/09/logo-votum-network-przedstawiciel-400x284-1.jpg\" alt=\"Votum Network\" width=\"400\" height=\"284\" decoding=\"async\" fetchpriority=\"high\"></a><a href=\"https://dsa.pl/\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Votum Scale Agency — oficjalna strona spółki\"><span class=\"network-brand-fallback\" aria-hidden=\"true\">Votum <b>Scale Agency</b></span><img src=\"https://votum-sa.pl/wp-content/uploads/2026/05/votum-scale-agency-.png\" alt=\"Votum Scale Agency\" width=\"400\" height=\"284\" decoding=\"async\" fetchpriority=\"high\"></a></div><span class=\"network-brand-note\">Serwis przedstawiciela, nie oficjalna witryna spółek VOTUM</span></div></div>";
-// Podstawowy układ awaryjny: nagłówek nie może rozpychać ekranów 320 px,
-// nawet gdy arkusz CSS zostanie opóźniony/zablokowany, a JS jest wyłączony.
-const emergencyMobileStyles='<style id="network-brand-critical">@media(max-width:630px){'+
- '.network-brand-bar{max-width:100%;overflow:hidden}'+
- '.network-brand-inner{max-width:100%;min-width:0}'+
- '.network-brand-logos{display:flex;gap:7px;justify-content:center;max-width:100%;min-width:0}'+
- '.network-brand-logos>a{display:flex;flex:0 1 auto;max-width:calc(50vw - 15px);min-width:0;overflow:hidden}'+
- '.network-brand-logos>a>img{max-width:100%}'+
- '}</style>';
+const strip="<div class=\"network-brand-bar\" style=\"max-width:100%;overflow:hidden\" role=\"region\" aria-label=\"Współpraca agencyjna SuccessTree z podmiotami VOTUM\"><div class=\"network-brand-inner\" style=\"max-width:100%;min-width:0\"><span class=\"network-brand-label\">SuccessTree <span aria-hidden=\"true\">•</span> Współpraca agencyjna</span><div class=\"network-brand-logos\" data-mobile-brand-fallback=\"true\" style=\"display:flex;justify-content:center;max-width:100%;min-width:0\"><a style=\"display:flex;max-width:calc(50vw - 15px);min-width:0;overflow:hidden\" href=\"https://votum-sa.pl/votum-network-s-a/\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Votum Network — informacje o spółce\"><span class=\"network-brand-fallback\" aria-hidden=\"true\">Votum <b>Network</b></span><img src=\"https://votum-sa.pl/wp-content/uploads/2024/09/logo-votum-network-przedstawiciel-400x284-1.jpg\" alt=\"Votum Network\" style=\"max-width:100%\" width=\"400\" height=\"284\" decoding=\"async\" fetchpriority=\"high\"></a><a style=\"display:flex;max-width:calc(50vw - 15px);min-width:0;overflow:hidden\" href=\"https://dsa.pl/\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Votum Scale Agency — oficjalna strona spółki\"><span class=\"network-brand-fallback\" aria-hidden=\"true\">Votum <b>Scale Agency</b></span><img src=\"https://votum-sa.pl/wp-content/uploads/2026/05/votum-scale-agency-.png\" alt=\"Votum Scale Agency\" style=\"max-width:100%\" width=\"400\" height=\"284\" decoding=\"async\" fetchpriority=\"high\"></a></div><span class=\"network-brand-note\">Serwis przedstawiciela, nie oficjalna witryna spółek VOTUM</span></div></div>";
+// Atrybuty awaryjne nagłówka działają bez JS i bez zewnętrznych arkuszy CSS.
 function removeLegacyLogoStrip(sourceHtml){
  let html=sourceHtml;
  // Source homepage keeps a partner strip for direct previews.
@@ -38,7 +30,7 @@ export function withNetworkBrand(sourceHtml){
  if(html.includes('class="network-brand-bar"'))return html;
  if(!html.includes("</head>"))throw Error("HTML head missing");
  html=html.replace("</head>",'<link rel="stylesheet" href="/v2/network-brand.css"><link rel="stylesheet" href="/v2/visual-contrast.css"><script src="/v2/network-brand.js" defer></script>'
-  +emergencyMobileStyles+'</head>');
+  +'</head>');
  if(/<header\b/i.test(html))html=html.replace(/<header\b/i,strip+"<header");
  else{
    const skip=html.match(/<a\b[^>]*class="skip-link"[^>]*>[\s\S]*?<\/a>/i);

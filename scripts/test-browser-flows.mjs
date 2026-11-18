@@ -66,6 +66,13 @@ assert.deepEqual(xmlSitemapUrls,textSitemapUrls,"Live XML/TXT sitemaps differ");
 assert.ok(textSitemapUrls.length>=20,"Live sitemap lists too few pages");
 assert.ok(maps.get("/robots.txt").body.includes("Sitemap: "+origin+"/sitemap.xml"),
  "Production robots must continue to advertise canonical XML sitemap");
+const declaredSitemaps=maps.get("/robots.txt").body.split(/\r?\n/)
+ .filter(line=>line.startsWith("Sitemap: "));
+assert.deepEqual(declaredSitemaps,[
+ "Sitemap: "+origin+"/sitemap.xml",
+ "Sitemap: "+origin+"/sitemap.txt"
+],"Production robots.txt must expose 2 working canonical sitemaps in deterministic order");
+
 console.log("GOOGLEBOT_STYLE_MAP_CHECK_OK "+JSON.stringify({
  urls:textSitemapUrls.length,
  types:Object.fromEntries(sitemapProbe.map(x=>[x.path,x.type])),

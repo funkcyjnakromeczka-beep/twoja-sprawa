@@ -133,6 +133,13 @@ assert.ok(privacyDisclosure.includes('href="https://web3forms.com/dpa"')&&privac
 
 assert.ok(robots.includes("Allow: /")&&!robots.includes("Disallow: /"),"production robots not enabled");
 assert.ok(robots.includes("Sitemap: "+origin+"/sitemap.xml"),"production sitemap not announced");
+const announcedSitemaps=robots.split(/\r?\n/).filter(line=>line.startsWith("Sitemap: "));
+assert.deepEqual(announcedSitemaps,[
+ "Sitemap: "+origin+"/sitemap.xml",
+ "Sitemap: "+origin+"/sitemap.txt"
+],"robots.txt must announce exactly the 2 published canonical sitemap formats");
+assert.ok(!robots.includes("Disallow: /"),"Do not block publicly indexable routes");
+
 assert.ok(sitemap.includes("<urlset")&&sitemap.includes("<loc>"+origin+"/</loc>"),"sitemap invalid");
 const xmlUrls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1].replaceAll("&amp;","&"));
 const textUrls=textSitemap.trimEnd().split(/\r?\n/);

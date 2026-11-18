@@ -549,8 +549,22 @@ try{
  const knowledgeHref=await knowledgeAll.getAttribute("href");
  const knowledgeParams=new URL(knowledgeHref,origin).searchParams;
  if(knowledgeParams.get("q")!=="Jak uzyskać świadczenie wspierające?"||knowledgeParams.get("temat")!=="swiadczenie")throw Error("Knowledge hub lost search query or selected service");
- await knowledgeAll.click();
- await knowledgeSearchPage.waitForURL(/szukaj\.html\?/);
+ // Production uses the extensionless canonical /szukaj URL. Python's
+ // preview serves that exact page from /szukaj.html instead.
+ const canonicalSearchURL=new URL(knowledgeHref,origin);
+ if(!["/szukaj","/szukaj.html"].includes(canonicalSearchURL.pathname))throw Error("Unsupported knowledge-search target: "+canonicalSearchURL);
+ await knowledgeAll.evaluate(anchor=>{
+  const u=new URL(anchor.href);
+  anchor.href=(u.pathname==="/szukaj"?"/szukaj.html":u.pathname)+u.search+u.hash;
+ });
+ // Register the navigation wait before the user action, as in production.
+ await Promise.all([
+  knowledgeSearchPage.waitForURL(url=>url.pathname==="/szukaj.html"&&
+   url.searchParams.get("q")==="Jak uzyskać świadczenie wspierające?"&&
+   url.searchParams.get("temat")==="swiadczenie",
+   {waitUntil:"domcontentloaded",timeout:15000}),
+  knowledgeAll.click()
+ ]);
  if(await knowledgeSearchPage.locator(".site-search-card").count()<1)throw Error("Full search should show related support content from knowledge hub query");
  console.log("KNOWLEDGE_TO_GLOBAL_SEARCH_OK",JSON.stringify({questionPreserved:true,topicPreserved:true,relatedResults:true,leadsSent:0}));
  await knowledgeSearchPage.close();

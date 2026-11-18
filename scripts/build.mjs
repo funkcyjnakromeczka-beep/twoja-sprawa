@@ -386,12 +386,14 @@ async function walk(dir){
 }
 await walk(source);
 await fetchPortraits();
-await writeFile(join(dest,"robots.txt"),"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: "+origin+"/sitemap.xml\n");
+// Google Search Central explicitly allows multiple sitemap directives.
+// Advertise both identical canonical URL lists: XML is primary, TXT is fallback.
+await writeFile(join(dest,"robots.txt"),"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: "+origin+"/sitemap.xml\nSitemap: "+origin+"/sitemap.txt\n");
 const xml=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll('"',"&quot;");
 await writeFile(join(dest,"sitemap.xml"),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+pages.sort().map(p=>'  <url><loc>'+xml(origin+p)+'</loc>'+(pageLastmod.has(p)?'<lastmod>'+pageLastmod.get(p)+'</lastmod>':'')+'</url>').join("\n")+'\n</urlset>\n');
 // Google Search Central also supports a plain-text sitemap (one canonical URL per line).
 // Keep the XML file as the primary sitemap announced in robots.txt, and generate
-// this diagnostic alternative from exactly the same sorted, indexable routes.
+// this second advertised format from exactly the same sorted, indexable routes.
 await writeFile(join(dest,"sitemap.txt"),pages.map(path=>origin+path).join("\n")+"\n");
 // Production fingerprint: no secrets, personal data, or credentials.
 // A deployed /release-info.json helps distinguish GitHub changes from

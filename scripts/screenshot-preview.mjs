@@ -494,8 +494,20 @@ try{
  });
  // The href changed above; the original locator selector no longer matches.
  // Click the preview URL using a new locator, not the stale canonical selector.
- await searchPage.locator('a.site-search-card[href*="/faq.html#pytanie-1-"]').first().click();
- await searchPage.waitForURL(/faq\.html#pytanie-1-/);
+ const previewFaqLink=searchPage.locator('a.site-search-card[href*="/faq.html#pytanie-1-"]').first();
+ // Register navigation before clicking and compare parsed URL components.
+ // A valid local campaign query may appear between .html and #.
+ try{
+  await Promise.all([
+   searchPage.waitForURL(url=>url.pathname==="/faq.html"&&/^#pytanie-1-/.test(url.hash),
+    {waitUntil:"domcontentloaded",timeout:15000}),
+   previewFaqLink.click()
+  ]);
+ }catch(error){
+  throw new Error("FAQ result navigation failed: current="+searchPage.url()+
+   " href="+await previewFaqLink.getAttribute("href").catch(()=>"(page changed)")+
+   " cause="+String(error.message).slice(0,210));
+ }
  if(!await searchPage.locator('[id^="pytanie-1-"] details[open]').count())throw Error("Linked FAQ answer did not expand automatically");
  await searchPage.goto(origin+"/szukaj.html",{waitUntil:"domcontentloaded"});
  await searchPage.locator("#site-search-input").fill("WZON");

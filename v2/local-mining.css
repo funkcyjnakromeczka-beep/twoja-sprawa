@@ -171,3 +171,35 @@
 .local-mining-page .local-share-manual{width:100%;max-width:560px;min-height:44px;padding:10px 12px;border:1px solid #446e7b;border-radius:8px;background:#fff;color:#193747;font:inherit}
 .local-mining-page .local-share-actions :is(a,button,input):focus-visible{outline:3px solid #b28336;outline-offset:3px}
 @media(max-width:430px){.local-mining-page .local-share-actions button{width:100%}.local-mining-page .local-share-static{width:100%}}
+
+/* Bezpieczne przejście z lokalnych poradników do istniejącej listy
+   kontrolnej szkód górniczych. Link statyczny, bez JS i telemetrii. */
+.local-mining-page .local-prep-tool{
+ display:flex;align-items:center;justify-content:space-between;gap:22px;
+ margin:24px 0 16px;padding:clamp(18px,3vw,24px);
+ background:#fff;border:1px solid #c8d8d6;border-left:4px solid #b68a49;
+ border-radius:0 14px 14px 0;box-shadow:0 6px 20px rgba(10,37,47,.045)
+}
+.local-mining-page .local-prep-tool-copy{min-width:0;max-width:68ch}
+.local-mining-page .local-prep-tool-kicker{
+ display:block;color:#7a5427;font-size:.78rem;font-weight:800;letter-spacing:.04em
+}
+.local-mining-page .local-prep-tool h3{
+ margin:5px 0 8px;color:#14384a;font-size:clamp(1.08rem,2.2vw,1.32rem);line-height:1.32
+}
+.local-mining-page .local-prep-tool p{margin:0;color:#385460;font-size:.92rem;line-height:1.6}
+.local-mining-page .local-prep-tool-action{
+ flex:0 1 255px;min-height:50px;display:inline-flex;align-items:center;justify-content:center;
+ gap:9px;padding:12px 15px;background:#103548;color:#fff;
+ border-radius:11px;font-weight:750;text-decoration:none;line-height:1.36;text-align:center
+}
+.local-mining-page .local-prep-tool-action:hover{background:#17485e}
+.local-mining-page .local-prep-tool-action:focus-visible{outline:3px solid #b68a49;outline-offset:4px}
+@media(max-width:760px){
+ .local-mining-page .local-prep-tool{flex-direction:column;align-items:stretch;gap:13px}
+ .local-mining-page .local-prep-tool-action{flex:none;width:100%;min-height:52px;box-sizing:border-box}
+}
+@media print{
+ .local-mining-page .local-prep-tool{box-shadow:none;border:1px solid #999}
+ .local-mining-page .local-prep-tool-action{background:#fff;color:#14384a;border:1px solid #9e9e9e}
+}

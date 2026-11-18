@@ -72,6 +72,7 @@ jobs:
           node --check scripts/test-production-bundle.mjs
           node --check scripts/test-network-brand.mjs
           node --check scripts/test-core-metadata.mjs
+          node --check scripts/test-recruitment-guide.mjs
           node --check scripts/test-local-mining-mobile.mjs
           node --check scripts/test-faq-service-directory.mjs
           node --check scripts/test-contact.mjs
@@ -103,6 +104,7 @@ jobs:
           node scripts/test-production-bundle.mjs
           node scripts/test-network-brand.mjs
           node scripts/test-core-metadata.mjs
+          node scripts/test-recruitment-guide.mjs
           node scripts/test-local-mining-mobile.mjs
           node scripts/test-faq-service-directory.mjs
           node scripts/test-contact.mjs

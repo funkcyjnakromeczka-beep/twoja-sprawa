@@ -11,7 +11,7 @@
    if(specified){
     const url=new URL(specified);
     if(url.origin!=="https://twoja-sprawa.pages.dev"||
-       !/^\/uslugi\/[a-z0-9-]+$/.test(url.pathname)||url.search||url.hash)return null;
+       !/^\/(?:uslugi\/[a-z0-9-]+|lokalnie\/szkody-gornicze-(?:lubin|polkowice))$/.test(url.pathname)||url.search||url.hash)return null;
     return url.href;
    }
    const current=new URL(window.location.href);

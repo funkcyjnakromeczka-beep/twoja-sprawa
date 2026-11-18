@@ -18,7 +18,7 @@
  font-size:.86rem;font-weight:850;letter-spacing:.08em;margin-bottom:6px
 }
 .recruitment-page .recruitment-steps strong{display:block;color:#113647;font-size:1.06rem}
-.recruitment-page .recruitment-steps p{margin:.5rem 0 0;line-height:1.6;color:#284654!important}
+body.recruitment-page .article .recruitment-steps>li p{margin:.5rem 0 0;line-height:1.6;color:#284654!important}
 .recruitment-page .recruitment-projects a,
 .recruitment-page .recruitment-standards a,
 .recruitment-page .recruitment-write .recruitment-alt-contact a{

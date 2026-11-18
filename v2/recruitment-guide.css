@@ -1,0 +1,51 @@
+/* Recruitment guide: page-scoped content, no external fonts or scripts. */
+.recruitment-page .recruitment-roadmap>p,
+.recruitment-page .recruitment-projects>p,
+.recruitment-page .recruitment-standards>p,
+.recruitment-page .recruitment-write>p{max-width:78ch}
+.recruitment-page .recruitment-steps{
+ list-style:none;counter-reset:recruitment-step;
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:16px;margin:24px 0;padding:0
+}
+.recruitment-page .recruitment-steps>li{
+ counter-increment:recruitment-step;
+ min-width:0;background:#f6f9fa;border:1px solid #d3e0e5;
+ border-left:4px solid #b68b4f;border-radius:13px;padding:18px
+}
+.recruitment-page .recruitment-steps>li:before{
+ content:"0" counter(recruitment-step);display:block;color:#88602d;
+ font-size:.86rem;font-weight:850;letter-spacing:.08em;margin-bottom:6px
+}
+.recruitment-page .recruitment-steps strong{display:block;color:#113647;font-size:1.06rem}
+body.recruitment-page .article .recruitment-steps>li p{margin:.5rem 0 0;line-height:1.6;color:#284654!important}
+.recruitment-page .recruitment-projects a,
+.recruitment-page .recruitment-standards a,
+.recruitment-page .recruitment-write .recruitment-alt-contact a{
+ color:#145373;text-decoration:underline;text-underline-offset:3px
+}
+.recruitment-page .recruitment-standards ul{padding-left:1.5rem}
+.recruitment-page .recruitment-standards li{margin:0 0 12px;line-height:1.7}
+.recruitment-page .recruitment-write{
+ background:#eef4f3;border:1px solid #d0dfdf;border-radius:16px;
+ padding:clamp(18px,3vw,28px)
+}
+.recruitment-page .recruitment-write h2{margin-top:0}
+.recruitment-page .recruitment-draft-link{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ min-height:48px;padding:12px 17px;background:#113749;color:#fff;
+ font-weight:800;text-decoration:none;border-radius:9px
+}
+.recruitment-page .recruitment-draft-link:hover{background:#1b5266;color:#fff}
+.recruitment-page .recruitment-draft-link:focus-visible,
+.recruitment-page .recruitment-projects a:focus-visible,
+.recruitment-page .recruitment-standards a:focus-visible,
+.recruitment-page .recruitment-alt-contact a:focus-visible{
+ outline:3px solid #b58a49;outline-offset:4px
+}
+.recruitment-page .recruitment-alt-contact{margin-bottom:0}
+@media(max-width:650px){
+ .recruitment-page .recruitment-steps{grid-template-columns:1fr}
+ .recruitment-page .recruitment-write .recruitment-draft-link{width:100%;box-sizing:border-box;text-align:center}
+}
+@media print{.recruitment-page .recruitment-draft-link{display:none}}

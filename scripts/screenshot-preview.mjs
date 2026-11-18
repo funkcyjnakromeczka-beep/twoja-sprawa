@@ -552,10 +552,10 @@ try{
  // Production uses the extensionless canonical /szukaj URL. Python's
  // preview serves that exact page from /szukaj.html instead.
  const canonicalSearchURL=new URL(knowledgeHref,origin);
- if(canonicalSearchURL.pathname!=="/szukaj")throw Error("Noncanonical knowledge-search target: "+canonicalSearchURL);
+ if(!["/szukaj","/szukaj.html"].includes(canonicalSearchURL.pathname))throw Error("Unsupported knowledge-search target: "+canonicalSearchURL);
  await knowledgeAll.evaluate(anchor=>{
   const u=new URL(anchor.href);
-  anchor.href=u.pathname+".html"+u.search+u.hash;
+  anchor.href=(u.pathname==="/szukaj"?"/szukaj.html":u.pathname)+u.search+u.hash;
  });
  // Register the navigation wait before the user action, as in production.
  await Promise.all([

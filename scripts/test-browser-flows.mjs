@@ -254,6 +254,10 @@ try{
  // On real JS-enabled phones the chatbot launcher must not cover either
  // sticky local contact action; axe's 2.5.8 target-size audit depends on it.
  const localOverlayPage=await browser.newPage({viewport:{width:390,height:844}});
+ // Safe in-page stub: no native OS share sheet or external message is opened.
+ await localOverlayPage.addInitScript(()=>{
+  Object.defineProperty(navigator,"share",{configurable:true,value:async payload=>{window.__localSharePayload=payload;}});
+ });
  try{
   for(const route of ["/lokalnie/szkody-gornicze-lubin","/lokalnie/szkody-gornicze-polkowice"]){
    await localOverlayPage.goto(origin+route,{waitUntil:"load",timeout:40000});
@@ -270,6 +274,14 @@ try{
     "Chatbot overlaps the sticky local form button: "+route+" "+JSON.stringify(geometry));
    assert.ok(geometry.chatTop>=0&&geometry.barWidth<=392,
     "Chatbot/CTA outside phone viewport: "+route+" "+JSON.stringify(geometry));
+   const shareButton=localOverlayPage.locator(".local-share-actions [data-share-page]");
+   assert.equal(await shareButton.isVisible(),true,"Regional sharing button must be visible with JavaScript: "+route);
+   await shareButton.click();
+   const shared=await localOverlayPage.evaluate(()=>window.__localSharePayload);
+   assert.deepEqual(shared?.url,origin+route,"Only canonical regional URL may be shared: "+route);
+   assert.equal(await localOverlayPage.locator("[data-share-feedback]").textContent(),"Otwarto systemowe udostępnianie linku.",
+    "Regional sharing should confirm the native share interaction: "+route);
+
   }
   console.log("PASS: Lubin/Polkowice chatbot launcher stays above mobile call/form actions.");
  }finally{

@@ -20,4 +20,24 @@ for(const slug of slugs){
  assert.ok(!block.includes("utm_")&&!block.includes("access_key"),slug);
  assert.ok(html.includes("data-contact-form"),slug+" form missing");
 }
+for(const [slug,city] of [["lubin","Lubinie"],["polkowice","Polkowicach"]]){
+ const html=await readFile("dist/lokalnie/szkody-gornicze-"+slug+".html","utf8");
+ const url="https://twoja-sprawa.pages.dev/lokalnie/szkody-gornicze-"+slug;
+ const section=html.match(/<section class="local-share local-container"[\s\S]*?<\/section>/)?.[0]||"";
+ assert.equal((html.match(/class="local-share local-container"/g)||[]).length,1,"Missing or duplicate local referral: "+slug);
+ assert.ok(section.includes('href="'+url+'"'),"No-JS static permalink missing: "+slug);
+ assert.ok(section.includes('data-share-url="'+url+'"'),"Canonical share target missing: "+slug);
+ assert.ok(section.includes('data-share-page')&&section.includes('data-share-feedback')&&section.includes('data-share-manual'),"Native share/fallback unavailable: "+slug);
+ assert.ok(section.includes('hidden>Udostępnij'),"Share button must remain hidden when JavaScript is disabled: "+slug);
+ assert.ok(section.includes("Nie wysyłaj")&&section.includes("danych innych osób"),"Privacy note missing: "+slug);
+ assert.ok(html.includes('src="/share-page.js"'),"Share script not deployed: "+slug);
+ assert.ok(html.indexOf(section)<html.indexOf('id="formularz"'),"Local sharing must appear before contact: "+slug);
+ assert.ok(section.includes(city),"Correct locality label missing: "+slug);
+ assert.ok(!section.includes("utm_")&&!section.includes("access_key")&&!section.includes("facebook.com"),"Private or tracked referral: "+slug);
+}
+const shareJs=await readFile("v2/share-page.js","utf8");
+assert.ok(shareJs.includes("szkody-gornicze-(?:lubin|polkowice)"),"Explicit allowlist missing for regional share URLs");
+const localCss=await readFile("v2/local-mining.css","utf8");
+assert.ok(localCss.includes(".local-share-actions")&&localCss.includes(".local-share-feedback"),"Local share responsiveness missing");
+console.log("LOCAL_SHARE_OK: two canonical, privacy-safe, no-JS fallback referral panels.");
 console.log("SERVICE_SHARE_TEST_OK: six distinct canonical, privacy-safe share panels and forms intact.");

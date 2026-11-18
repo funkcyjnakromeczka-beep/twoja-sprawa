@@ -153,3 +153,21 @@
 .local-mining-page .local-social-privacy{max-width:88ch;color:#415b66;font-size:.9rem;line-height:1.6}
 .local-mining-page .local-social-privacy a{color:#195477;text-decoration:underline;text-underline-offset:3px;font-weight:750}
 @media(max-width:650px){.local-mining-page .local-social-grid{grid-template-columns:1fr}.local-mining-page .local-social-grid a{padding:15px}}
+
+/* Local referral: share the canonical public URL, never the visitor's case, query or UTM. */
+.local-mining-page .local-share{padding-top:clamp(30px,4vw,48px);padding-bottom:clamp(30px,4vw,48px)}
+.local-mining-page .local-share-kicker{display:block;font-size:.81rem;text-transform:uppercase;letter-spacing:.07em;font-weight:800;color:#895f2a}
+.local-mining-page .local-share h2{margin:6px 0 10px;font-size:clamp(1.35rem,2.5vw,1.8rem);line-height:1.24;color:#143848}
+.local-mining-page .local-share>p{margin:0;max-width:75ch;color:#425c68;line-height:1.6}
+.local-mining-page .local-share-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:18px;max-width:900px}
+.local-mining-page .local-share-actions button{appearance:none;border:1px solid #a87a3e;border-radius:10px;background:#10384b;color:#fff;padding:12px 18px;min-height:48px;font:inherit;font-weight:750;cursor:pointer}
+.local-mining-page .local-share-actions button:hover{background:#1b5065}
+.local-mining-page .local-share-actions button:disabled{opacity:.72;cursor:wait}
+.local-mining-page .local-share-actions button[hidden],
+.local-mining-page .local-share-actions input[hidden]{display:none!important}
+.local-mining-page .local-share-static{color:#1c536c;font-weight:700;text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+.local-mining-page .local-share-feedback{flex-basis:100%;font-size:.87rem;color:#285268}
+.local-mining-page .local-share-feedback:empty{display:none}
+.local-mining-page .local-share-manual{width:100%;max-width:560px;min-height:44px;padding:10px 12px;border:1px solid #446e7b;border-radius:8px;background:#fff;color:#193747;font:inherit}
+.local-mining-page .local-share-actions :is(a,button,input):focus-visible{outline:3px solid #b28336;outline-offset:3px}
+@media(max-width:430px){.local-mining-page .local-share-actions button{width:100%}.local-mining-page .local-share-static{width:100%}}

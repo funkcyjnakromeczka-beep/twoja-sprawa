@@ -13,7 +13,9 @@ for(const mark of marks){
  last=i;
 }
 // Każdy zweryfikowany artykuł ma statyczny link z głównej sekcji poradników.
-const reading=html.match(/<div class="editorial-reading"[\\s\\S]*?<\\/div>/)?.[0]||"";
+const readingBegin=html.indexOf('<div class="editorial-reading"');
+const readingEnd=html.indexOf("</div>",readingBegin);
+const reading=readingBegin>=0&&readingEnd>readingBegin?html.slice(readingBegin,readingEnd+6):"";
 const readingUrls=[...reading.matchAll(/href="([^"]+)"/g)].map(x=>x[1]);
 const approvedReading=[
  "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",

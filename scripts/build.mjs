@@ -79,11 +79,12 @@ const sourceLastmod=relativePath=>{
  }catch{return null;}
 };
 const cssLayerReport={pages:0,requestsSaved:0,unique:new Set()};
-// Only two published, content-reviewed guides are indexable. Their authored
+// Only content-reviewed guides are indexable; keep this list in sync with seo-policy.mjs. Their authored
 // Article JSON-LD must point to the actual extensionless Cloudflare canonical,
 // not legacy /v2/*.html links. Do not duplicate or invent a second Article node.
 const publishedArticleRoutes=new Set([
  "/wiedza/drobne-pekniecia-szkody-gornicze.html",
+ "/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
  "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"
 ]);
 function reconcilePublishedArticle(markup,route,canonical){

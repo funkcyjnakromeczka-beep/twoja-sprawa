@@ -52,7 +52,8 @@ async function allHtmlFiles(dir){
 let formPages=0;
 for(const file of await allHtmlFiles("v2")){
  const html=await readFile(file,"utf8");
- if(!html.includes("data-contact-form"))continue;
+ if(!html.includes('src="/v2/contact.js"'))continue;
+ assert.ok(html.includes("data-contact-form"),"Active contact script without a form mount: "+file);
  formPages++;
  const occurrences=html.split('src="/v2/attribution.js"').length-1;
  assert.equal(occurrences,1,"Missing or repeated attribution script on form page: "+file);

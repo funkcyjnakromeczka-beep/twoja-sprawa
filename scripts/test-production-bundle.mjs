@@ -27,6 +27,40 @@ console.log("INDEXNOW_DUAL_KEYS_OK: OpenSEO and existing CI workflow have correc
 
 const home=await read("index.html");
 const recruitmentRelease=await read("rekrutacja.html");
+// RSS: only the three legally/editorially approved, canonical guides.
+const rss=await read("feed.xml");
+const rssHeaders=await read("_headers");
+const rssSitemap=await read("sitemap.xml");
+assert.ok(rss.startsWith('<?xml version="1.0" encoding="UTF-8"?>'),"RSS XML declaration missing");
+assert.ok(rss.includes('<rss version="2.0"')&&rss.includes('xmlns:atom=')&&rss.includes('xmlns:dc='),"RSS namespaces missing");
+assert.ok(rss.includes('<language>pl-PL</language>'),"RSS language missing");
+assert.ok(rss.includes('<atom:link href="'+origin+'/feed.xml" rel="self" type="application/rss+xml"/>'),"RSS self reference wrong");
+const rssItems=rss.split("<item>").slice(1).map(item=>item.split("</item>")[0]);
+assert.equal(rssItems.length,3,"RSS should contain exactly three reviewed guides");
+const expectedRSS=[
+ origin+"/wiedza/ugoda-z-kopalnia-co-sprawdzic",
+ origin+"/wiedza/swiadczenie-wspierajace-2026-wzon-zus",
+ origin+"/wiedza/drobne-pekniecia-szkody-gornicze"
+];
+const rssUris=rssItems.map(item=>item.split('<guid isPermaLink="true">')[1]?.split("</guid>")[0]);
+assert.deepEqual(rssUris,expectedRSS,"RSS dates/order/canonicals changed unexpectedly");
+for(const [i,item] of rssItems.entries()){
+ assert.ok(item.includes("<link>"+rssUris[i]+"</link>"),"RSS link disagrees with canonical");
+ assert.ok(item.includes("<title>")&&item.includes("<description>")&&item.includes("<dc:date>"),"RSS item metadata missing");
+ assert.ok(rssSitemap.includes("<loc>"+rssUris[i]+"</loc>"),"RSS item not present in SEO sitemap");
+ assert.ok(!item.includes("/v2/")&&!item.includes(".html"),"RSS must not emit legacy URLs");
+}
+for(const fragment of ["wiedza/kredyt-pln-dokumenty-skd","wiedza/szkody-gornicze-drobne-pekniecia","/poradniki/","PESEL","<script"]){
+ assert.ok(!rss.includes(fragment),"RSS must not publish draft or sensitive source: "+fragment);
+}
+for(const page of [home,await read("wiedza/index.html")]){
+ assert.ok(page.includes('rel="alternate" type="application/rss+xml"')&&page.includes('href="/feed.xml"'),
+  "RSS autodiscovery missing on home or guide index");
+}
+assert.ok(rssHeaders.includes("/feed.xml")&&rssHeaders.includes("Content-Type: application/rss+xml; charset=utf-8"),
+ "Production RSS Content-Type header missing");
+console.log("VERIFIED_RSS_OK: exactly 3 reviewed guides, date-only updates, clean URLs, autodiscovery, no unpublished drafts.");
+
 assert.equal((recruitmentRelease.match(/class="network-brand-bar"/g)||[]).length,1,
  "Recruitment release must have one persistent VOTUM partner bar");
 assert.ok(!recruitmentRelease.includes('class="partner-identity-bar"'),

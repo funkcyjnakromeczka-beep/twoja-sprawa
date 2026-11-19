@@ -1,5 +1,6 @@
 /* Raport zagregowanych zgłoszeń — jasne i czytelne na ciemnej stronie kampanii. */
 .lead-summary{margin:26px auto 46px;padding:clamp(17px,3vw,30px);border-radius:18px;background:#f9fbfc;color:#193c4b;border:1px solid #c8d7dc}
+.campaign-page .lead-summary>.eyebrow{color:#285967}
 .lead-summary h2,.lead-summary h3{color:#193c4b;line-height:1.28}
 .lead-summary p,.lead-summary small{color:#294d5c;line-height:1.55}
 .lead-summary-privacy{padding:12px 15px;background:#e8f2f0;border-left:4px solid #226358;border-radius:6px}
@@ -17,8 +18,9 @@
 .lead-summary-stat{padding:12px;min-width:0;background:#eaf3f6;border-radius:10px}
 .lead-summary-stat span{display:block;font-size:.82rem;color:#28505e;line-height:1.3}
 .lead-summary-stat strong{display:block;font-size:clamp(1.24rem,2.5vw,1.75rem);color:#163d4f;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-.lead-summary-tables{display:grid;grid-template-columns:1fr;gap:12px}
-.lead-summary-scroll{overflow-x:auto;max-width:100%;border:1px solid #ccd9df;border-radius:10px}
+.lead-summary-tables{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;min-width:0}
+.lead-summary-tables>div{min-width:0}
+.lead-summary-scroll{overflow-x:auto;width:100%;max-width:100%;min-width:0;border:1px solid #ccd9df;border-radius:10px}
 .lead-summary table{width:100%;min-width:560px;border-collapse:collapse;color:#173a49;background:#fff;font-size:.92rem}
 .lead-summary th,.lead-summary td{padding:9px 11px;text-align:left;border-bottom:1px solid #e3e9ee;vertical-align:top}
 .lead-summary th{background:#e6f1f5;color:#173b4b;font-weight:800}

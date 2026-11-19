@@ -37,8 +37,22 @@
  const accessKey="80a28b90-b5ac-406e-8512-3d3c1615b73c"; // Publiczny identyfikator formularza Web3Forms, nie hasło.
  const automatic=/^[a-f0-9-]{30,40}$/i.test(accessKey);
  const campaignParams=new URLSearchParams(window.location.search);
- const inferredAIReferrer=(()=>{try{const host=new URL(document.referrer).hostname.toLowerCase();return ["chatgpt.com","www.chatgpt.com","chat.openai.com"].includes(host)?"chatgpt.com":"";}catch{return "";}})();
- const sourceAllowed=new Set(["facebook","instagram","tiktok","google","chatgpt.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+ const inferredAIReferrer=(()=>{
+  try {
+    const host=new URL(document.referrer).hostname.toLowerCase();
+    // Exact hostname matching: never infer visits from lookalikes or arbitrary URLs.
+    const trusted={
+      "chatgpt.com":"chatgpt.com","www.chatgpt.com":"chatgpt.com","chat.openai.com":"chatgpt.com",
+      "perplexity.ai":"perplexity.ai","www.perplexity.ai":"perplexity.ai",
+      "claude.ai":"claude.ai","www.claude.ai":"claude.ai",
+      "gemini.google.com":"gemini.google.com",
+      "copilot.microsoft.com":"copilot.microsoft.com",
+      "grok.com":"grok.com","www.grok.com":"grok.com"
+    };
+    return Object.prototype.hasOwnProperty.call(trusted,host)?trusted[host]:"";
+  } catch { return ""; }
+ })();
+ const sourceAllowed=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
  const campaignSource=(campaignParams.get("utm_source")||"").toLowerCase().trim();
  const source=sourceAllowed.has(campaignSource)?campaignSource:(!campaignSource&&inferredAIReferrer?inferredAIReferrer:"nieoznaczone");
  const campaign=(campaignParams.get("utm_campaign")||"").toLowerCase().trim();
@@ -514,7 +528,7 @@
     sending=true;button.disabled=true;button.textContent="Wysyłanie…";status.className="";status.textContent="Przesyłam zgłoszenie…";synchronizeFailureLinks=()=>{};
     // Web3Forms kieruje wiadomosc do odbiorcy przypisanego do access_key.
     // advisor_email jest metadana w tresci zgłoszenia, nie zmienia odbiorcy.
-    const payload={access_key:accessKey,reference_code:ref,subject:"Nowe zgłoszenie Twoja Sprawa ["+ref+"] — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,campaign_medium:safeMedium||"brak",campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
+    const payload={access_key:accessKey,reference_code:ref,subject:"Nowe zgłoszenie Twoja Sprawa ["+ref+"] — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,campaign_medium:safeMedium||(!campaignSource&&inferredAIReferrer?"referral":"brak"),campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
     try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");synchronizeFailureLinks=()=>{};status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. Kod zgłoszenia: "+ref+". Zachowaj kod, aby móc odszukać wiadomość. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";pendingRef="";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();updateSensitiveWarning();name.setCustomValidity("");refreshShortcutState();}catch{
      status.className="contact-status-error";
      status.replaceChildren();

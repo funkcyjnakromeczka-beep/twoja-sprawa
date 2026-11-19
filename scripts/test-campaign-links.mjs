@@ -55,6 +55,50 @@ assert.ok(post.value.includes("wojciech.obieglo@votum-ds.pl"),"SKD message must 
 assert.ok(post.value.includes("pełną umowę")&&post.value.includes("numer telefonu"),"Default SKD social post must explain full contract and callback");
 assert.ok(!post.value.includes("500 171 531"),"SKD message must not send visitors to benefit hotline");
 check("przesyl","/uslugi/sluzebnosc-przesylu","796 441 345");
+// Google Business Profile requires a genuine canonical business website URL,
+// not a noindex advertising landing page or an extra analytics account.
+values.channel.value="google_wizytowka";
+values.service.value="szkody";
+values.content.value="";
+values.style.value="educational";
+values.campaign.value="Wizytówka Google Lubin";
+listeners.change();
+const gbp=new URL(link.value);
+assert.equal(gbp.origin,"https://twoja-sprawa.pages.dev");
+assert.equal(gbp.pathname,"/","Business Profile website field should link to the indexed home");
+assert.equal(gbp.searchParams.get("utm_source"),"google");
+assert.equal(gbp.searchParams.get("utm_medium"),"local");
+assert.equal(gbp.searchParams.get("utm_campaign"),"wizytowka_google_lubin");
+assert.equal(gbp.searchParams.get("usluga"),"szkody");
+assert.equal(gbp.searchParams.get("utm_content"),null,"Do not label a listing as a social writing-style variant");
+assert.ok(status.textContent.includes("Profilu Firmy")&&status.textContent.includes("wyłącznie link"));
+assert.ok(status.textContent.includes("Google może usuwać parametry"),"Warn about Google stripping profile URL parameters");
+const generatorGuide=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
+assert.ok(generatorGuide.includes("Google czasem usuwa parametry UTM")&&generatorGuide.includes("https://twoja-sprawa.pages.dev/"),"Keep a fallback to the canonical plain website URL");
+assert.ok(!link.value.includes("PESEL")&&!link.value.includes("telefon")&&!link.value.includes(".html"));
+assert.ok(post.value.includes(link.value),"Business Profile link should be copyable from output");
+values.service.value="swiadczenie";
+values.content.value="Profil podstawowy";
+listeners.change();
+const gbpSupport=new URL(link.value);
+assert.equal(gbpSupport.pathname,"/");
+assert.equal(gbpSupport.searchParams.get("usluga"),"swiadczenie");
+assert.equal(gbpSupport.searchParams.get("utm_source"),"google");
+assert.equal(gbpSupport.searchParams.get("utm_medium"),"local");
+assert.equal(gbpSupport.searchParams.get("utm_content"),"profil_podstawowy");
+assert.ok(post.value.includes("500 171 531"),"Support contact should stay with Paulina");
+// Search results remain distinct from Business Profile, and regular social
+// promotions must retain their existing destinations.
+values.channel.value="google";values.content.value="";values.service.value="szkody";
+listeners.change();
+assert.equal(new URL(link.value).pathname,"/kampanie/szkody-gornicze");
+assert.equal(new URL(link.value).searchParams.get("utm_medium"),"search");
+values.channel.value="facebook";values.service.value="przesyl";values.campaign.value="Lubiń Polkowice 2026";
+listeners.change();
+const client=await readFile("v2/contact.js","utf8");
+assert.ok(client.includes('"google"')&&client.includes('serviceAlias'),
+ "Existing contact intake must preserve google source and topic preselection");
+
 values.channel.value="ulotka";
 values.content.value="Grupa 1";
 values.style.value="short";

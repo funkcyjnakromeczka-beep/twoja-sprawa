@@ -64,7 +64,7 @@
   };
   const channels = {
     facebook: "social", facebook_grupa: "grupa", facebook_strona: "post", instagram: "social", tiktok: "social",
-    google: "search", ulotka: "print", plakat: "print",
+    google: "search", google_wizytowka: "local", ulotka: "print", plakat: "print",
     qr: "print", polecenie: "referral", organiczne: "organic", inne: "other"
   };
   const slug = value => String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/ł/g, "l").replace(/[^a-z0-9_-]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 40);
@@ -74,21 +74,30 @@
     const origin = window.location.origin;
     // Cloudflare Pages publicly serves HTML pages at extensionless canonical URLs.
     // Prefer direct short addresses for QR codes, posts and printed flyers.
-    const target = new URL(chosen.path.replace(/\.html$/, ""), origin);
     const campaign = slug(name.value) || "kampania_bezplatna";
     const selectedChannel = Object.prototype.hasOwnProperty.call(channels, channel.value) ? channel.value : "inne";
-    const source = selectedChannel.startsWith("facebook_") ? "facebook" : selectedChannel;
+    // The website field in Google Business Profile should point to the business home
+    // (which is indexable), not to a noindex advertising-funnel landing.
+    const isBusinessProfile = selectedChannel === "google_wizytowka";
+    const destination = isBusinessProfile ? "/" : chosen.path.replace(/\.html$/, "");
+    const target = new URL(destination, origin);
+    const source = selectedChannel.startsWith("facebook_") ? "facebook" : isBusinessProfile ? "google" : selectedChannel;
     target.searchParams.set("utm_source", source);
     target.searchParams.set("utm_medium", channels[selectedChannel]);
     target.searchParams.set("utm_campaign", campaign);
-    const variant = slug(content.value) || slug(style.value);
+    // A local listing is not an article variant. Preserve optional explicit
+    // utm_content, but do not insert the unrelated social-post writing style.
+    const variant = slug(content.value) || (isBusinessProfile ? "" : slug(style.value));
     if (variant) target.searchParams.set("utm_content", variant);
+    if (isBusinessProfile) target.searchParams.set("usluga", service.value);
     urlOutput.value = target.href;
     const selectedText = style.value === "short" ? shorts[service.value] : style.value === "hook" ? hooks[service.value] + "\n\n" + chosen.text : chosen.text;
     const contactFooter = service.value === "skd" ? "Umowa kredytowa: wojciech.obieglo@votum-ds.pl\nTelefon: 796 441 345" : "Kontakt: " + (["swiadczenie", "renty"].includes(service.value) ? "500 171 531" : "796 441 345");
     postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + contactFooter;
     openAction.href = target.href;
-    message.textContent = /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "Darmowa domena Cloudflare Pages (pages.dev) nadaje się do publikacji. Przed udostępnieniem sprawdź działanie strony i odbiór formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
+    message.textContent = isBusinessProfile
+      ? "W Profilu Firmy w Google wklej do pola „Witryna” wyłącznie link z pierwszego pola (nie tekst posta). Link prowadzi na stronę główną, a wybór tematu trafia do formularza. Oznaczenia UTM mogą pomóc rozpoznać źródło przesłanego zgłoszenia, ale Google może usuwać parametry z linku wizytówki. Po zapisaniu sprawdź opublikowany odnośnik; jeśli są problemy, użyj zwykłego adresu strony głównej. Sam link nie liczy wejść ani nie gwarantuje indeksacji."
+      : /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "Darmowa domena Cloudflare Pages (pages.dev) nadaje się do publikacji. Przed udostępnieniem sprawdź działanie strony i odbiór formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
   };
   const copy = async (value, label) => {
     try {

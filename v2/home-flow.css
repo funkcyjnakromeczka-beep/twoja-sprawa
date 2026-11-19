@@ -431,12 +431,8 @@
  .premium-v2 .mobile-quick-nav>a.mobile-skd-priority{min-height:50px}
 }
 
-/* Trzy zatwierdzone poradniki są dostępne bez JS z pierwszej sekcji serwisu.
-   Zachowujemy główne przyciski zgłoszeniowe bez zmian. */
-.premium-v2 .hero-reading-shortcuts{display:flex;flex-wrap:wrap;align-items:center;gap:7px 9px;max-width:755px;margin:12px 0 10px}
-.premium-v2 .hero-reading-shortcuts-label{flex:0 0 100%;font-size:.79rem;line-height:1.5;color:#e6d7b7;font-weight:750}
-.premium-v2 .hero-reading-shortcuts a{display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box;padding:8px 11px;border:1px solid rgba(241,214,167,.62);border-radius:9px;color:#f9e9cf;background:rgba(8,36,47,.62);font-size:clamp(.77rem,.95vw,.88rem);font-weight:700;line-height:1.35;text-decoration:none}
-.premium-v2 .hero-reading-shortcuts a:hover{background:rgba(35,72,85,.96);border-color:#fff0cc;color:#fff}
-.premium-v2 .hero-reading-shortcuts a:focus-visible{outline:3px solid #ffe2a2;outline-offset:3px}
-@media(max-width:500px){.premium-v2 .hero-reading-shortcuts{gap:7px}.premium-v2 .hero-reading-shortcuts a{width:100%;min-height:44px}}
-@media print{.premium-v2 .hero-reading-shortcuts a{background:transparent;color:#173847;border-color:#8c9ca5}}
+
+.hero-reading-shortcuts{display:flex;flex-wrap:wrap;gap:6px}
+.hero-reading-shortcuts>span{width:100%}
+.hero-reading-shortcuts a{padding:10px 4px;color:#ffe5ac!important}
+.hero-reading-shortcuts a:focus-visible{outline:3px solid}

@@ -62,6 +62,7 @@ for(const required of ['data-stat="leads"','data-stat="qualified"','data-stat="c
 assert.ok(css.includes(":focus-visible")&&css.includes("@media(max-width:650px)"),"Responsive readable keyboard controls");
 assert.ok(css.includes(".campaign-page .lead-summary>.eyebrow{color:#285967}"),"Eyebrow on light card must have readable contrast");
 assert.ok(css.includes("grid-template-columns:minmax(0,1fr)")&&css.includes(".lead-summary-tables>div{min-width:0}"),"Wide tables must scroll inside small mobile screens");
+assert.equal((markup.match(/class="lead-summary-scroll" tabindex="0" role="region" aria-label="/g)||[]).length,2,"Both horizontal scroll regions must be keyboard-focusable and labeled");
 assert.ok(!markup.includes('data-analytics-lead')&&!/google-analytics|googletagmanager/.test(widgetSrc));
 
 // Browser-free DOM integration: no actual form sends, files, storage or analytics.

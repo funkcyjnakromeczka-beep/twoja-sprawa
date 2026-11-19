@@ -21,7 +21,7 @@ permissions:
   contents: read
 jobs:
   full-site-audit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 18
     steps:
       - uses: actions/checkout@v7
@@ -33,7 +33,18 @@ jobs:
       - name: Zainstaluj Chromium i silnik analizy WCAG
         run: |
           npm install --no-save --no-package-lock --ignore-scripts playwright@1.64.1 axe-core@4.14.0
-          npx playwright install --with-deps chromium
+          # Only the headless shell is required by chromium.launch({headless:true}).
+          # Avoid apt-get dependency installation: ubuntu-latest mirror failures
+          # previously blocked tests before any site assertions could execute.
+          for attempt in 1 2 3; do
+            if npx playwright install chromium --only-shell; then
+              exit 0
+            fi
+            echo "Chromium download failed (attempt ${attempt}/3)"
+            sleep $((attempt * 8))
+          done
+          echo "Chromium installation failed after 3 attempts" >&2
+          exit 1
       - name: Zbuduj odizolowany podgląd PR — bez indeksacji
         if: github.event_name == 'pull_request'
         run: node scripts/preview.mjs

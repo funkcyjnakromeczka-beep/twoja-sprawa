@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 /** Validate actual Facebook/OG previews after the release build; no network requests. */
 import assert from "node:assert/strict";
+import {createHash} from "node:crypto";
 import {readFile} from "node:fs/promises";
 const root="https://twoja-sprawa.pages.dev";
-const imagePath="/assets/og-twoja-sprawa-votum-odszkodowania-2026.jpg";
+const imagePath="/assets/og-twoja-sprawa-votum-odszkodowania-v2.jpg";
 const preview=process.argv.includes("--preview");
 const output=preview?"dist-preview":"dist";
 const image=await readFile(output+imagePath);
 assert.ok(image.length>15000&&image.length<600000,"Social JPEG should be optimized but readable");
+assert.equal(createHash("sha256").update(image).digest("hex"),"4b3b2a11c7512d96fe218b022385abea28811fec067a5e7b5cb2874cdbc5433c","Published preview must match the exact approved original graphic (not reconstructed Canva thumbnail)");
 assert.equal(image[0],0xff);assert.equal(image[1],0xd8);
 const jpegSize=data=>{
  let i=2;

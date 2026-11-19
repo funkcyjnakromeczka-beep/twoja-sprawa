@@ -39,9 +39,9 @@ for(const [slug,fullName,nField,phone,email] of contactCards){
  const original=await readFile("v2/"+vcardFile,"utf8");
  const published=await read(vcardFile);
  assert.equal(published,original,"Published vCard must retain source bytes, no hidden mutation: "+slug);
- assert.ok(original.startsWith("BEGIN:VCARD\\r\\nVERSION:4.0\\r\\n".replaceAll("\\\\r","\\r").replaceAll("\\\\n","\\n")),
+ assert.ok(original.startsWith("BEGIN:VCARD\r\nVERSION:4.0\r\n"),
   "vCard 4.0 and UTF-8 CRLF delimiters required: "+slug);
- const lines=original.split("\\r\\n".replace("\\\\r","\\r").replace("\\\\n","\\n"));
+ const lines=original.split("\r\n");
  assert.equal(lines.at(-2),"END:VCARD","vCard must have one END marker: "+slug);
  for(const line of lines)assert.ok(Buffer.byteLength(line,"utf8")<=75,"Unfolded vCard line too long: "+slug);
  for(const value of ["FN:"+fullName,"N:"+nField,"ORG:SuccessTree",
@@ -51,7 +51,7 @@ for(const [slug,fullName,nField,phone,email] of contactCards){
  }
  const href='href="/'+vcardFile+'" download="'+slug+'.vcf"';
  assert.equal(contactPageWithVcards.split(href).length-1,1,"Contact directory must link to exactly one file: "+slug);
- assert.ok(vCardHeaders.includes("/"+vcardFile+"\\n  Content-Type: text/vcard; charset=utf-8".replace("\\\\n","\\n")),
+ assert.ok(vCardHeaders.includes("/"+vcardFile+"\n  Content-Type: text/vcard; charset=utf-8"),
   "Content type for public contact card missing: "+slug);
  assert.ok(!original.includes("ADR:")&&!original.includes("PHOTO:")&&!original.includes("REV:"),
   "No private address, external asset or invented edit date in vCard");

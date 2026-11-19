@@ -48,9 +48,11 @@ for(const [slug,city] of [["lubin","Lubin"],["polkowice","Polkowice"]]){
 const verifiedGuide="/wiedza/ugoda-z-kopalnia-co-sprawdzic";
 for(const citySlug of ["lubin","polkowice"]){
  const localPage=await readFile("dist/lokalnie/szkody-gornicze-"+citySlug+".html","utf8");
- const box=localPage.match(/<aside class="local-settlement-guide[^"]*"[^>]*>[\\s\\S]*?<\\/aside>/)?.[0]||"";
+ const boxBegin=localPage.indexOf('<aside class="local-settlement-guide');
+ const boxEnd=localPage.indexOf("</aside>",boxBegin);
+ const box=boxBegin>=0&&boxEnd>boxBegin?localPage.slice(boxBegin,boxEnd+8):"";
  assert.ok(box.includes('id="local-settlement-title"'),"Local agreement guide missing heading: "+citySlug);
- assert.equal((box.match(/<a\\b/g)||[]).length,2,"Exactly two contextual actions expected: "+citySlug);
+ assert.equal(box.split("<a ").length-1,2,"Exactly two contextual actions expected: "+citySlug);
  assert.ok(box.includes('href="'+verifiedGuide+'"'),"Local agreement guide canonical URL missing: "+citySlug);
  assert.ok(box.includes('href="#formularz"'),"Local form destination missing: "+citySlug);
  assert.ok(box.includes("PESEL")&&!box.includes("<form"),"Local agreement guide cannot collect case documents");

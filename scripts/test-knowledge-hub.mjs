@@ -80,4 +80,29 @@ assert.ok(!directory.includes("schema.org")&&!directory.includes("utm_")&&!direc
 assert.ok(html.indexOf('class="hub-services-index"')<html.indexOf('data-knowledge-hub'),
  "Service directory should precede article search and stay visible independent of filters");
 
+
+const readingPaths=html.match(/<section class="hub-reading-paths"[\s\S]*?<\/section>/)?.[0]||"";
+assert.ok(readingPaths.includes('aria-labelledby="hub-reading-paths-title"'),"Reading paths need an accessible heading");
+assert.equal((readingPaths.match(/class="hub-reading-card"/g)||[]).length,3,"Three thematic reading paths required");
+assert.equal((readingPaths.match(/<ol>/g)||[]).length,3,"Each path needs an ordered, practical checklist");
+const readingHrefs=[...readingPaths.matchAll(/href="([^"]+)"/g)].map(([,url])=>url.replaceAll("&amp;","&"));
+assert.equal(readingHrefs.length,6,"Each path should offer two working destinations");
+for(const dest of [
+"/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
+"/v2/uslugi/szkody-gornicze.html",
+"/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
+"/v2/uslugi/swiadczenie-wspierajace.html",
+"/v2/uslugi/kredyty-pln.html",
+"/v2/plan-dzialania.html?usluga=skd"
+])assert.equal(readingHrefs.filter(x=>x===dest).length,1,"Missing or duplicate first-step link: "+dest);
+assert.ok(html.indexOf('class="hub-services-index"')<html.indexOf('class="hub-reading-paths"')&&
+ html.indexOf('class="hub-reading-paths"')<html.indexOf('data-knowledge-hub'),
+ "First-step cards must remain visible before search filters, without JavaScript");
+assert.ok(!readingPaths.includes("<form")&&!readingPaths.includes("type=\"submit\"")&&!readingPaths.includes("data-contact-form"),
+ "Reading paths must not collect sensitive information");
+const pathCss=await readFile("v2/knowledge-hub.css","utf8");
+assert.ok(pathCss.includes(".hub-reading-grid")&&pathCss.includes("@media(max-width:950px)")&&
+ pathCss.includes(".hub-reading-actions a:focus-visible"),
+ "First-step cards need responsive layout and visible keyboard focus");
+
 console.log("OK: hub filters, accent-insensitive search, no results, reset, keyboard controls and 10 article cards.");

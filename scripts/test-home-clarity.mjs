@@ -39,8 +39,8 @@ assert.deepEqual([...heroGuides.matchAll(/href="([^"]+)"/g)].map(x=>x[1]),approv
  "Above-the-fold guide shortcuts must only link three approved indexable articles");
 assert.ok(heroGuides.includes("Przed zgłoszeniem przeczytaj:"),
  "Guide shortcuts must have informative visible introduction");
-assert.ok(css.includes(".hero-reading-shortcuts a:focus-visible")&&css.includes("@media(max-width:500px)"),
- "Guide shortcuts require keyboard and narrow-screen accessibility");
+assert.ok(css.includes(".hero-reading-shortcuts a:focus-visible")&&css.includes("flex-wrap:wrap"),
+ "Guide shortcuts require keyboard focus and wrapped layout on narrow screens");
 for(const link of approvedReading)await access(link.slice(1));
 
 // Godziny kontaktu muszą być spójne z profilem firmy i widoczne bez JavaScript.

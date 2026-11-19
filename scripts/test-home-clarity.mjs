@@ -12,6 +12,25 @@ for(const mark of marks){
  assert.ok(i>=0&&i>last,"Homepage order/missing section: "+mark);
  last=i;
 }
+// Godziny kontaktu muszą być spójne z profilem firmy i widoczne bez JavaScript.
+const contactPageHours=await readFile("v2/kontakt.html","utf8");
+for(const [name,markup] of [["home",html],["contact",contactPageHours]]){
+ assert.ok(markup.includes("Godziny kontaktu z Wojciechem:"),"Missing working hours on "+name);
+ assert.ok(markup.includes("poniedziałek–sobota 11:00–19:00"),"Inconsistent contact hours on "+name);
+ assert.ok(markup.includes("niedziela nieczynne"),"Missing Sunday status on "+name);
+ assert.ok(markup.includes("dojazdem do klienta"),"Missing mobile-service description on "+name);
+}
+const homeStructured=[...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+ .map(([,raw])=>JSON.parse(raw)).flatMap(item=>item["@graph"]||[]);
+const ownerContact=homeStructured.find(item=>item["@type"]==="Organization")?.contactPoint?.[0];
+assert.ok(ownerContact,"Missing organization contact point");
+assert.equal(ownerContact.hoursAvailable?.opens,"11:00");
+assert.equal(ownerContact.hoursAvailable?.closes,"19:00");
+assert.deepEqual(ownerContact.hoursAvailable?.dayOfWeek,[
+ "https://schema.org/Monday","https://schema.org/Tuesday","https://schema.org/Wednesday",
+ "https://schema.org/Thursday","https://schema.org/Friday","https://schema.org/Saturday"
+],"Structured business hours must match visible Monday-Saturday schedule");
+
 const beg=html.indexOf('class="grid primary-services"');
 const end=html.indexOf('<details class="service-extra"',beg);
 assert.ok(beg>=0&&end>beg,"Homepage services area missing");

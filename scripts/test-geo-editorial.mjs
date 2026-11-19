@@ -88,9 +88,10 @@ assert.ok(recruitment.includes("mailto:wojciech.obieglo@votum-ds.pl"),"Recruitme
 assert.ok(recruitment.includes("tel:+48796441345"),"Recruitment needs a phone alternative");
 assert.ok(recruitment.includes('name="robots" content="index,follow"'),"Recruitment page remains indexable under the existing SEO policy");
 const ugodaApproved=await readFile("dist/wiedza/ugoda-z-kopalnia-co-sprawdzic.html","utf8");
-for(const required of ["href=\"https://eli.gov.pl/eli/DU/2026/69/ogl\"","Art. 151","Art. 149","Art. 148","30 dni","pięciu lat","data-contact-form"]){
+for(const required of ["href=\"https://eli.gov.pl/eli/DU/2026/69/ogl\"","30 dni","pięciu lat","data-contact-form"]){
  assert.ok(ugodaApproved.includes(required),"Legal article missing source/essential context: "+required);
 }
+for(const articleNumber of [148,149,151])assert.match(ugodaApproved,new RegExp("art\\.\\s*"+articleNumber,"i"),"Missing legal article "+articleNumber);
 assert.ok(ugodaApproved.includes('name="robots" content="index,follow"'),"Legal article not indexable");
 console.log("ARTICLE_CANONICAL_GRAPH_OK: three indexed guides link Article and WebPage on clean URLs.");
 

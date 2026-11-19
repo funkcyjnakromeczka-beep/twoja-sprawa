@@ -85,6 +85,9 @@ jobs:
           node --check scripts/seo-policy.mjs
           node --check scripts/test-seo-policy.mjs
           node --check scripts/test-campaign-links.mjs
+          node --check v2/lead-summary-core.js
+          node --check v2/lead-summary.js
+          node --check scripts/test-lead-summary.mjs
           node --check scripts/test-contact-client.mjs
           node --check scripts/test-contact.mjs
           node --check scripts/preview.mjs
@@ -98,6 +101,8 @@ jobs:
         run: node scripts/test-contact.mjs
       - name: Przetestuj generator kampanii bez połączenia z siecią
         run: node scripts/test-campaign-links.mjs
+      - name: Sprawdź prywatny raport kampanii, CSV i brak duplikatów
+        run: node scripts/test-lead-summary.mjs
       - name: Przetestuj formularz w przeglądarce symulowanej bez wysyłki danych
         run: node scripts/test-contact-client.mjs
       - name: Statyczne telefony i e-maile na wszystkich podstronach usług i kampanii

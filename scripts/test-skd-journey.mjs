@@ -20,6 +20,7 @@ assert.ok(section.includes('href="tel:+48796441345"'),"Kontakt SKD należy do Wo
 assert.ok(guide.includes('href="tel:+48796441345"')&&!guide.includes('href="tel:+48500171531"'),"Nagłówek checklisty nie może kierować do Pauliny");
 assert.ok(guide.includes('href="/v2/uslugi/kredyty-pln.html#wybierz-etap-kredytu"'),"Checklista kieruje do etapu SKD");
 assert.ok(css.includes(":focus-visible")&&css.includes("@media(max-width:660px)"),"Karty muszą być dostępne na telefonie i z klawiatury");
+assert.ok(css.includes(".skd-journey>.eyebrow{color:#285967}"),"Nagłówek na jasnym tle musi mieć kontrast WCAG");
 assert.ok(html.includes("https://eli.gov.pl/eli/DU/2025/1362/ogl"),"Potwierdzony odnośnik do tekstu jednolitego ustawy");
 assert.ok(!/gwarantujemy zwrot|gwarancja zastosowania SKD|100% skuteczności/i.test(section),"Bez obietnic wyniku");
 assert.ok(!/fetch\s*\(|localStorage|sessionStorage|document\.cookie|sendBeacon/.test(css),"Brak śledzenia w arkuszu");

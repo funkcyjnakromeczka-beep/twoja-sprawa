@@ -28,6 +28,21 @@ assert.ok(css.includes("grid-template-columns:repeat(3,minmax(0,1fr))"),"Three r
 assert.ok(css.includes("@media(max-width:1020px)")&&css.includes("@media(max-width:700px)"),
  "Homepage reading cards need readable tablet/mobile layouts");
 
+// W górnej części zindeksowanej strony głównej muszą być trzy czytelne ścieżki do
+// zweryfikowanych, indeksowalnych poradników bez otwierania rozwijanego menu.
+const heroGuidesBegin=html.indexOf('<nav class="hero-reading-shortcuts"');
+const heroGuidesEnd=html.indexOf("</nav>",heroGuidesBegin);
+const heroGuides=heroGuidesBegin>=0&&heroGuidesEnd>heroGuidesBegin?html.slice(heroGuidesBegin,heroGuidesEnd+6):"";
+assert.ok(heroGuides,"Homepage missing static entry to reviewed guides");
+assert.ok(heroGuidesBegin<html.indexOf('<nav class="mobile-quick-nav"'),"Guide links must be inside first-screen hero");
+assert.deepEqual([...heroGuides.matchAll(/href="([^"]+)"/g)].map(x=>x[1]),approvedReading,
+ "Above-the-fold guide shortcuts must only link three approved indexable articles");
+assert.ok(heroGuides.includes("Przed zgłoszeniem przeczytaj:"),
+ "Guide shortcuts must have informative visible introduction");
+assert.ok(css.includes(".hero-reading-shortcuts a:focus-visible")&&css.includes("flex-wrap:wrap"),
+ "Guide shortcuts require keyboard focus and wrapped layout on narrow screens");
+for(const link of approvedReading)await access(link.slice(1));
+
 // Godziny kontaktu muszą być spójne z profilem firmy i widoczne bez JavaScript.
 const contactPageHours=await readFile("v2/kontakt.html","utf8");
 for(const [name,markup] of [["home",html],["contact",contactPageHours]]){

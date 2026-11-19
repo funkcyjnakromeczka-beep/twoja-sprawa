@@ -430,3 +430,9 @@
  .premium-v2 .mobile-quick-nav a{font-size:.83rem;line-height:1.35;min-height:58px}
  .premium-v2 .mobile-quick-nav>a.mobile-skd-priority{min-height:50px}
 }
+
+
+.hero-reading-shortcuts{display:flex;flex-wrap:wrap;gap:6px}
+.hero-reading-shortcuts>span{width:100%}
+.hero-reading-shortcuts a{padding:10px 4px;color:#ffe5ac!important}
+.hero-reading-shortcuts a:focus-visible{outline:3px solid}

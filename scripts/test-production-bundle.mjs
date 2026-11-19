@@ -27,6 +27,24 @@ console.log("INDEXNOW_DUAL_KEYS_OK: OpenSEO and existing CI workflow have correc
 
 const home=await read("index.html");
 const recruitmentRelease=await read("rekrutacja.html");
+// Production output strips authoring-only /v2/ paths and .html from
+// the three topical guide shortcuts on the indexed homepage.
+const heroGuideStart=home.indexOf('<nav class="hero-reading-shortcuts"');
+const heroGuideEnd=home.indexOf("</nav>",heroGuideStart);
+const heroGuidePart=heroGuideStart>=0&&heroGuideEnd>heroGuideStart?home.slice(heroGuideStart,heroGuideEnd+6):"";
+for(const url of [
+ "/wiedza/drobne-pekniecia-szkody-gornicze",
+ "/wiedza/swiadczenie-wspierajace-2026-wzon-zus",
+ "/wiedza/ugoda-z-kopalnia-co-sprawdzic"
+]){
+ assert.ok(heroGuidePart.includes('href="'+url+'"'),"Missing canonical first-screen guide link "+url);
+}
+assert.equal(heroGuidePart.split("<a ").length-1,3,"Only verified guide routes allowed in the first-screen shortcuts");
+assert.ok(!heroGuidePart.includes("/v2/")&&!heroGuidePart.includes(".html"),
+ "First-screen guide destinations should be clean canonical URLs");
+console.log("HERO_GUIDE_DISCOVERY_OK: three verified guides reachable from indexed home first screen.");
+
+
 // Two public business contacts can be saved without submitting personal data.
 const vCardHeaders=await read("_headers");
 const contactCards=[

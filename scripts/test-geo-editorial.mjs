@@ -62,7 +62,7 @@ console.log("SITEMAP_LASTMOD_RESULT "+JSON.stringify({datedUrls:mods.length,poli
 
 // Previously published article JSON-LD pointed at /v2/*.html. Confirm the
 // authored Article and generated WebPage now form one canonical linked graph.
-for(const slug of ["drobne-pekniecia-szkody-gornicze","swiadczenie-wspierajace-2026-wzon-zus"]){
+for(const slug of ["drobne-pekniecia-szkody-gornicze","ugoda-z-kopalnia-co-sprawdzic","swiadczenie-wspierajace-2026-wzon-zus"]){
  const pageURL=origin+"/wiedza/"+slug;
  const articleHTML=await readFile("dist/wiedza/"+slug+".html","utf8");
  const nodes=[...articleHTML.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
@@ -87,7 +87,12 @@ assert.ok(!recruitment.includes("twojasprawa_votum@outlook.com"),"Retired recrui
 assert.ok(recruitment.includes("mailto:wojciech.obieglo@votum-ds.pl"),"Recruitment needs active adviser contact");
 assert.ok(recruitment.includes("tel:+48796441345"),"Recruitment needs a phone alternative");
 assert.ok(recruitment.includes('name="robots" content="index,follow"'),"Recruitment page remains indexable under the existing SEO policy");
-console.log("ARTICLE_CANONICAL_GRAPH_OK: two indexed guides link their Article and WebPage entities on clean URLs.");
+const ugodaApproved=await readFile("dist/wiedza/ugoda-z-kopalnia-co-sprawdzic.html","utf8");
+for(const required of ["href=\"https://eli.gov.pl/eli/DU/2026/69/ogl\"","Art. 151","Art. 149","Art. 148","30 dni","pięciu lat","data-contact-form"]){
+ assert.ok(ugodaApproved.includes(required),"Legal article missing source/essential context: "+required);
+}
+assert.ok(ugodaApproved.includes('name="robots" content="index,follow"'),"Legal article not indexable");
+console.log("ARTICLE_CANONICAL_GRAPH_OK: three indexed guides link Article and WebPage on clean URLs.");
 
 
 // Built directory must use extensionless canonical routes with no noindex destinations.

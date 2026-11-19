@@ -7,14 +7,16 @@ import {runInNewContext} from "node:vm";
 const source=await readFile("v2/campaign-links.js","utf8");
 const values={
  service:{value:"szkody"},
+ region:{value:"ogolnie"},
  channel:{value:"facebook"},
  campaign:{value:"Lubiń Polkowice 2026"},
  content:{value:""},
  style:{value:"educational"}
 };
 const listeners={};
+const regionControl={hidden:true};
 const form={
- querySelector: selector => values[selector.match(/\[name=(\w+)\]/)?.[1]],
+ querySelector: selector => selector==="[data-campaign-region]"?regionControl:values[selector.match(/\[name=(\w+)\]/)?.[1]],
  addEventListener: (name,fn) => {listeners[name]=fn;}
 };
 const link={value:""};
@@ -48,7 +50,33 @@ const check=(service,path,phone)=>{
  assert.equal(open.href,link.value);
 };
 check("szkody","/kampanie/szkody-gornicze","796 441 345");
+assert.equal(regionControl.hidden,false,"Mining regional selector should be visible");
+values.region.value="lubin";
+values.channel.value="facebook_grupa";
+values.content.value="grupa_osiedle";
+listeners.change();
+let cityLink=new URL(link.value);
+assert.equal(cityLink.pathname,"/lokalnie/szkody-gornicze-lubin","City Facebook campaign must land on the indexed Lubin page");
+assert.equal(cityLink.searchParams.get("utm_source"),"facebook");
+assert.equal(cityLink.searchParams.get("utm_medium"),"grupa");
+assert.equal(cityLink.searchParams.get("utm_campaign"),"lubin_polkowice_2026");
+assert.equal(cityLink.searchParams.get("utm_content"),"grupa_osiedle");
+assert.ok(post.value.includes("Lubin i gmina Lubin")&&post.value.includes("796 441 345"));
+assert.ok(!post.value.includes("Polkowice i gmina Polkowice"),"City-specific message must not name the other city");
+assert.equal(open.href,link.value);
+values.style.value="hook";listeners.change();
+assert.ok(post.value.startsWith("Mieszkasz w Lubinie"),"The hook should be specific to Lubin");
+values.region.value="polkowice";values.style.value="short";listeners.change();
+cityLink=new URL(link.value);
+assert.equal(cityLink.pathname,"/lokalnie/szkody-gornicze-polkowice","Polkowice campaign must land on its city page");
+assert.ok(post.value.includes("Polkowice i gmina Polkowice")&&!post.value.includes("Lubin i gmina Lubin"));
+assert.equal(cityLink.searchParams.get("utm_medium"),"grupa");
+assert.ok(!cityLink.searchParams.has("etap")&&!cityLink.searchParams.has("telefon"),"Public campaign URL carries no case data");
+values.region.value="ogolnie";values.channel.value="facebook";values.content.value="";values.style.value="educational";
+listeners.change();
+assert.equal(new URL(link.value).pathname,"/kampanie/szkody-gornicze","All-region default remains intact");
 check("swiadczenie","/kampanie/swiadczenie-wspierajace","500 171 531");
+assert.equal(regionControl.hidden,true,"Region selector must hide for unrelated benefit services");
 check("renty","/uslugi/renty-powypadkowe","500 171 531");
 check("skd","/kampanie/skd","796 441 345");
 assert.ok(post.value.includes("wojciech.obieglo@votum-ds.pl"),"SKD message must offer VOTUM contract mailbox");
@@ -75,6 +103,8 @@ assert.ok(status.textContent.includes("Profilu Firmy")&&status.textContent.inclu
 assert.ok(status.textContent.includes("Google może usuwać parametry"),"Warn about Google stripping profile URL parameters");
 const generatorGuide=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
 assert.ok(generatorGuide.includes("Google czasem usuwa parametry UTM")&&generatorGuide.includes("https://twoja-sprawa.pages.dev/"),"Keep a fallback to the canonical plain website URL");
+assert.ok(generatorGuide.includes('name="region"')&&generatorGuide.includes('data-campaign-region'),"Generator must offer a labeled regional selector");
+assert.ok(generatorGuide.includes("Facebook i lokalne grupy:"),"Explain city-specific group links without promising leads");
 assert.ok(!link.value.includes("PESEL")&&!link.value.includes("telefon")&&!link.value.includes(".html"));
 assert.ok(post.value.includes(link.value),"Business Profile link should be copyable from output");
 values.service.value="swiadczenie";
@@ -115,4 +145,4 @@ assert.equal(new URL(link.value).searchParams.get("utm_content"),"hook");
 assert.ok(post.value.includes("Czy na Twojej działce"));
 assert.ok(status.textContent.includes("Darmowa domena Cloudflare Pages"));
 assert.ok(!status.textContent.includes("wersji testowej"),"Cloudflare production must not be called a preview");
-console.log("OK: five services, phone routing, UTM channels, variants and generated content, with no external requests.");
+console.log("LOCAL_CAMPAIGN_LINKS_OK: 6 services, 2 city campaigns, group UTMs, city messages, Google Business Profile and no telemetry.");

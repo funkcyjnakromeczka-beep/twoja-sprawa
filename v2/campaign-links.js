@@ -4,6 +4,8 @@
   const form = document.querySelector("[data-campaign-builder]");
   if (!form) return;
   const service = form.querySelector("[name=service]");
+  const region = form.querySelector("[name=region]");
+  const regionControl = form.querySelector("[data-campaign-region]");
   const channel = form.querySelector("[name=channel]");
   const name = form.querySelector("[name=campaign]");
   const content = form.querySelector("[name=content]");
@@ -46,6 +48,25 @@
       text: "Masz kredyt frankowy lub spłaciłeś już taką umowę? Możesz zapytać o analizę postanowień umowy, historii spłaty i możliwych rozliczeń z bankiem. Ocena indywidualnej sprawy zależy od treści umowy, dokumentacji i aktualnego stanu prawnego. Kontakt nie oznacza obietnicy wygranej ani określonej korzyści."
     }
   };
+  // Local mining ads may use indexable city pages, each with the correct
+  // service adviser and Facebook/Open Graph graphic. These are public
+  // destinations, never user addresses or precise location data.
+  const miningRegions = Object.freeze({
+    lubin: {
+      path: "/lokalnie/szkody-gornicze-lubin.html",
+      name: "Lubin i gmina Lubin",
+      text: "Lubin i gmina Lubin: widzisz pęknięcia ścian, rysy elewacji lub uszkodzenia posadzki? Zachowaj zdjęcia i daty zauważonych zmian. Pomagam uporządkować informacje do wstępnej analizy szkody górniczej. Zostaw kontakt, aby omówić możliwe dalsze kroki. Samo zapytanie nie oznacza podpisania umowy ani potwierdzenia odpowiedzialności kopalni.",
+      short: "Lubin i gmina Lubin: pęknięcia ścian lub elewacji? Warto je udokumentować i zapytać o wstępną analizę. Pierwszy kontakt nie zobowiązuje do umowy.",
+      hook: "Mieszkasz w Lubinie lub gminie Lubin i zauważyłeś pęknięcia ścian po ostatnim remoncie?"
+    },
+    polkowice: {
+      path: "/lokalnie/szkody-gornicze-polkowice.html",
+      name: "Polkowice i gmina Polkowice",
+      text: "Polkowice i gmina Polkowice: nierówna kostka, pęknięcia elewacji lub uszkodzenia ogrodzenia? Udokumentuj zmiany i zachowaj dotychczasowe zgłoszenia lub kosztorysy. Pomagam w pierwszym kontakcie oraz uporządkowaniu informacji do analizy szkody. Zostaw kontakt, aby omówić sytuację. Przyczyna uszkodzeń wymaga indywidualnej oceny.",
+      short: "Polkowice i gmina Polkowice: nierówna kostka lub pęknięta elewacja? Zachowaj zdjęcia i sprawdź możliwość analizy uszkodzeń. Bez gwarancji wyniku.",
+      hook: "W Polkowicach zauważyłeś nierówną kostkę brukową lub nowe pęknięcia elewacji?"
+    }
+  });
   const hooks = {
     szkody: "Zauważyłeś rysę na elewacji i zastanawiasz się, czy może mieć związek z działalnością górniczą?",
     swiadczenie: "Masz decyzję WZON albo dopiero planujesz wniosek o świadczenie wspierające?",
@@ -71,6 +92,9 @@
   const generate = () => {
     const chosen = campaigns[service.value];
     if (!chosen) return;
+    const isMining = service.value === "szkody";
+    regionControl.hidden = !isMining;
+    const chosenRegion = isMining && Object.prototype.hasOwnProperty.call(miningRegions, region.value) ? miningRegions[region.value] : null;
     const origin = window.location.origin;
     // Cloudflare Pages publicly serves HTML pages at extensionless canonical URLs.
     // Prefer direct short addresses for QR codes, posts and printed flyers.
@@ -79,7 +103,7 @@
     // The website field in Google Business Profile should point to the business home
     // (which is indexable), not to a noindex advertising-funnel landing.
     const isBusinessProfile = selectedChannel === "google_wizytowka";
-    const destination = isBusinessProfile ? "/" : chosen.path.replace(/\.html$/, "");
+    const destination = isBusinessProfile ? "/" : (chosenRegion?.path || chosen.path).replace(/\.html$/, "");
     const target = new URL(destination, origin);
     const source = selectedChannel.startsWith("facebook_") ? "facebook" : isBusinessProfile ? "google" : selectedChannel;
     target.searchParams.set("utm_source", source);
@@ -91,13 +115,23 @@
     if (variant) target.searchParams.set("utm_content", variant);
     if (isBusinessProfile) target.searchParams.set("usluga", service.value);
     urlOutput.value = target.href;
-    const selectedText = style.value === "short" ? shorts[service.value] : style.value === "hook" ? hooks[service.value] + "\n\n" + chosen.text : chosen.text;
+    const publicationText = chosenRegion?.text || chosen.text;
+    const selectedText = style.value === "short"
+      ? (chosenRegion?.short || shorts[service.value])
+      : style.value === "hook"
+        ? (chosenRegion?.hook || hooks[service.value]) + "\n\n" + publicationText
+        : publicationText;
     const contactFooter = service.value === "skd" ? "Umowa kredytowa: wojciech.obieglo@votum-ds.pl\nTelefon: 796 441 345" : "Kontakt: " + (["swiadczenie", "renty"].includes(service.value) ? "500 171 531" : "796 441 345");
     postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + contactFooter;
     openAction.href = target.href;
     message.textContent = isBusinessProfile
       ? "W Profilu Firmy w Google wklej do pola „Witryna” wyłącznie link z pierwszego pola (nie tekst posta). Link prowadzi na stronę główną, a wybór tematu trafia do formularza. Oznaczenia UTM mogą pomóc rozpoznać źródło przesłanego zgłoszenia, ale Google może usuwać parametry z linku wizytówki. Po zapisaniu sprawdź opublikowany odnośnik; jeśli są problemy, użyj zwykłego adresu strony głównej. Sam link nie liczy wejść ani nie gwarantuje indeksacji."
       : /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "Darmowa domena Cloudflare Pages (pages.dev) nadaje się do publikacji. Przed udostępnieniem sprawdź działanie strony i odbiór formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
+    if (chosenRegion && !isBusinessProfile) {
+      message.textContent += " Wybrano lokalną stronę: " + chosenRegion.name + ". Link zachowuje oznaczenia UTM i kieruje do formularza tej lokalizacji.";
+    } else if (chosenRegion && isBusinessProfile) {
+      message.textContent += " Wybrane miasto nie zmienia adresu pola „Witryna” w Profilu Firmy — pozostaje strona główna.";
+    }
   };
   const copy = async (value, label) => {
     try {

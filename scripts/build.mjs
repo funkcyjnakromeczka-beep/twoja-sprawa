@@ -230,7 +230,9 @@ function upsertSocialMetadata(markup,route,origin){
     "/uslugi/renty-powypadkowe.html",
     "/uslugi/sluzebnosc-przesylu.html",
     "/uslugi/kredyty-frankowe.html",
-    "/uslugi/szkody-gornicze.html"
+    "/uslugi/szkody-gornicze.html",
+    "/lokalnie/szkody-gornicze-lubin.html",
+    "/lokalnie/szkody-gornicze-polkowice.html"
   ]);
   const branded=brandedRoutes.has(route);
   const image=origin+"/assets/"+(branded?"og-twoja-sprawa-votum-odszkodowania-v2.jpg":(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg"));

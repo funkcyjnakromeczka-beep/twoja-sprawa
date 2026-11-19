@@ -179,7 +179,7 @@ jobs:
       - name: Zbuduj podgląd bez indeksowania
         run: |
           node scripts/preview.mjs
-          node scripts/test-og-facebook.mjs
+          node scripts/test-og-facebook.mjs --preview
           test -f dist-preview/index.html
           test -f dist-preview/robots.txt
           grep -q 'noindex,nofollow' dist-preview/index.html

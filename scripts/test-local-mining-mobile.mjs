@@ -54,7 +54,7 @@ for(const citySlug of ["lubin","polkowice"]){
  assert.ok(box.includes('href="'+verifiedGuide+'"'),"Local agreement guide canonical URL missing: "+citySlug);
  assert.ok(box.includes('href="#formularz"'),"Local form destination missing: "+citySlug);
  assert.ok(box.includes("PESEL")&&!box.includes("<form"),"Local agreement guide cannot collect case documents");
- assert.ok(localPage.indexOf('class="local-settlement-guide')<localPage.indexOf('class="local-faq"'),
+ assert.ok(localPage.indexOf('class="local-settlement-guide')<localPage.indexOf('local-faq"'),
   "Agreement guidance must precede FAQ: "+citySlug);
 }
 assert.ok(css.includes(".local-settlement-actions a:focus-visible")&&css.includes("@media(max-width:800px)"),

@@ -184,7 +184,7 @@
   select.addEventListener("change",updateGuide);updateGuide();
   const stageWrap=document.createElement("div");stageWrap.className="contact-stage";const stageLabel=document.createElement("label");const stage=document.createElement("select");stage.id="cf-stage-"+Math.random().toString(36).slice(2,8);stageLabel.htmlFor=stage.id;stageWrap.append(stageLabel,stage);form.append(stageWrap);
   const stageOptions={
-   "Szkody górnicze":["Wybierz etap sprawy","Zauważyłem/am uszkodzenia","Zgłosiłem/am szkodę do kopalni","Otrzymałem/am propozycję ugody","Kopalnia odmówiła","Inna sytuacja"],
+   "Szkody górnicze":["Wybierz etap sprawy","Zauważyłem/am uszkodzenia","Pojawiły się szkody mimo wcześniejszych zabezpieczeń lub napraw","Zgłosiłem/am szkodę do kopalni","Otrzymałem/am propozycję ugody","Kopalnia odmówiła","Inna sytuacja"],
    "Świadczenie wspierające":["Wybierz etap sprawy","Dopiero planuję wniosek do WZON","Czekam na decyzję WZON","Mam decyzję WZON","Chcę przeanalizować decyzję lub odwołanie","Mam sprawę w ZUS","Inna sytuacja"],
    "Kredyt w PLN / SKD":["Wybierz etap sprawy","Nadal spłacam kredyt konsumencki w PLN","Kredyt konsumencki został już spłacony","Spłaciłem/am kredyt przed terminem","Kredytodawca odmówił uznania SKD","Inna sytuacja"],
     "Kredyty frankowe CHF":["Wybierz etap sprawy","Nadal spłacam kredyt CHF","Kredyt CHF został spłacony","Bank proponuje ugodę dotyczącą kredytu CHF","Sprawa kredytu CHF jest już prowadzona","Inna sytuacja"],
@@ -194,6 +194,7 @@
   const stageCodes={
     "Szkody górnicze":{
       uszkodzenia:"Zauważyłem/am uszkodzenia",
+      zabezpieczenia:"Pojawiły się szkody mimo wcześniejszych zabezpieczeń lub napraw",
       zgloszona:"Zgłosiłem/am szkodę do kopalni",
       ugoda:"Otrzymałem/am propozycję ugody",
       odmowa:"Kopalnia odmówiła"

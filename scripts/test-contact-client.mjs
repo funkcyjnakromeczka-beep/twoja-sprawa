@@ -837,4 +837,25 @@ for(const [code,description] of [
 }
 console.log("SKD_FORM_STAGE_OK: 4 safe stages, validated callback and adviser.");
 
+// Mining: a previously protected building requires a precise, selectable stage.
+{
+ const host=new Node("host");
+ const document={body:{classList:{contains:()=>false}},currentScript:{getAttribute:key=>key==="data-service"?"Szkody górnicze":""},
+  querySelectorAll:sel=>sel==="[data-contact-form]"?[host]:[],createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})};
+ const window={location:{search:"?etap=zabezpieczenia&utm_source=facebook&utm_campaign=lokalna_pomoc"}};
+ runInNewContext(source,{document,window,navigator:{},URLSearchParams,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const phone=visit(form,n=>n.autocomplete==="tel");
+ const direct=visit(form,n=>n.className==="contact-direct-alternatives");
+ assert.equal(service.value,"Szkody górnicze");
+ assert.equal(stage.value,"Pojawiły się szkody mimo wcześniejszych zabezpieczeń lub napraw");
+ assert.ok(phone,"Mining contact form must include a phone field");
+ assert.ok(visit(direct,n=>n.href==="tel:+48796441345"),"Correct mining adviser");
+ assert.ok(visit(direct,n=>n.href?.startsWith("mailto:wojciech.obieglo@votum-ds.pl")),"Correct mining adviser email");
+}
+console.log("MINING_PROTECTED_STAGE_OK: safe preselected stage, verified adviser and phone.");
+
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

@@ -57,7 +57,14 @@ const run=async(error=false)=>{
  const method=visit(form,n=>n.id?.startsWith("cf-method-"));
  const callback=visit(form,n=>n.id?.startsWith("cf-time-"));
  const select=visit(form,n=>n.id?.startsWith("cf-service-"));
- assert.ok(firstName&&location&&phone&&email&&method&&callback&&select);
+ const reported=visit(form,n=>n.id?.startsWith("cf-discovery-"));
+ const reportedWrap=visit(form,n=>n.className==="contact-optional-details contact-source-details");
+ assert.ok(firstName&&location&&phone&&email&&method&&callback&&select&&reported&&reportedWrap);
+ assert.equal(reported.required,undefined,"Reported source must not be required");
+ assert.equal(reported.value,"","A Facebook UTM must NOT silently become the visitor's own declaration");
+ assert.ok(visit(reportedWrap,n=>n.tag==="summary"&&n.textContent.includes("Skąd dowiedziałeś się o nas?")));
+ assert.ok(reported.children.some(n=>n.value==="Nie pamiętam")&&reported.children.some(n=>n.value==="Polecenie"));
+ reported.value="Polecenie";
  // Browser-free mock does not attach siblings via insertAdjacentElement().
  // The real-browser smoke test checks DOM rendering; here verify the input reference.
  assert.ok(phone.getAttribute("aria-describedby")?.startsWith("cf-phone-help-"),"Phone field must reference its format guidance");
@@ -116,6 +123,7 @@ const run=async(error=false)=>{
  assert.ok(requestBody.subject.includes("["+requestBody.reference_code+"]"));
  assert.equal(requestBody.advisor_email,"paulina.chandrala@votum-ds.pl");
  assert.equal(requestBody.campaign_source,"facebook");
+ assert.equal(requestBody.reported_source,"Polecenie","Source declared by the visitor must not replace UTM");
  assert.equal(requestBody.campaign_medium,"social");
  assert.equal(requestBody.campaign_name,"grupa_lubin");
  assert.equal(requestBody.campaign_variant,"post_2");
@@ -136,6 +144,7 @@ const run=async(error=false)=>{
   const draft=decodeURIComponent(fallback.href);
   assert.ok(draft.includes("Dogodna pora: Po południu"));
   assert.ok(draft.includes("grupa_lubin"));
+  assert.ok(draft.includes("Źródło wskazane przez klienta: Polecenie"),"Recovery email should preserve the voluntary answer");
   assert.ok(draft.includes("Imię: Test"));
   assert.ok(draft.includes("Kod próby: "+requestBody.reference_code));
   assert.ok(draft.includes("E-mail: test@example.com"));
@@ -168,6 +177,11 @@ const run=async(error=false)=>{
 };
 await run(false);
 await run(true);
+const privacy=await readFile("v2/polityka-prywatnosci.html","utf8");
+assert.ok(privacy.includes("dobrowolnie wskazać w formularzu"),"Privacy notice must explain the self-reported source");
+assert.ok(privacy.includes("odrębna od oznaczeń UTM"),"The two sources must not be presented as equivalent");
+assert.ok(source.includes('const discoveryAllowed=new Set(')&&source.includes('const reportedSource=()'),"Only enumerated categorical values may reach the lead");
+assert.ok(!/localStorage|sessionStorage|document\.cookie|sendBeacon/.test(source),"No local tracking or cookies should be added");
 // SKD inquiries should point to Wojciech for contract review and callback.
 {
  const host=new Node("host");

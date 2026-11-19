@@ -52,7 +52,8 @@ for(const citySlug of ["lubin","polkowice"]){
  const boxEnd=localPage.indexOf("</aside>",boxBegin);
  const box=boxBegin>=0&&boxEnd>boxBegin?localPage.slice(boxBegin,boxEnd+8):"";
  assert.ok(box.includes('id="local-settlement-title"'),"Local agreement guide missing heading: "+citySlug);
- assert.equal(box.split("<a ").length-1,2,"Exactly two contextual actions expected: "+citySlug);
+ assert.equal(box.split('href="'+verifiedGuide+'"').length-1,1,"Unique guide destination required: "+citySlug);
+ assert.equal(box.split('href="#formularz"').length-1,1,"Unique local contact destination required: "+citySlug);
  assert.ok(box.includes('href="'+verifiedGuide+'"'),"Local agreement guide canonical URL missing: "+citySlug);
  assert.ok(box.includes('href="#formularz"'),"Local form destination missing: "+citySlug);
  assert.ok(box.includes("PESEL")&&!box.includes("<form"),"Local agreement guide cannot collect case documents");

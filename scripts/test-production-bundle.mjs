@@ -30,6 +30,7 @@ const recruitmentRelease=await read("rekrutacja.html");
 // RSS: only the three legally/editorially approved, canonical guides.
 const rss=await read("feed.xml");
 const rssHeaders=await read("_headers");
+const rssSitemap=await read("sitemap.xml");
 assert.ok(rss.startsWith('<?xml version="1.0" encoding="UTF-8"?>'),"RSS XML declaration missing");
 assert.ok(rss.includes('<rss version="2.0"')&&rss.includes('xmlns:atom=')&&rss.includes('xmlns:dc='),"RSS namespaces missing");
 assert.ok(rss.includes('<language>pl-PL</language>'),"RSS language missing");
@@ -46,7 +47,7 @@ assert.deepEqual(rssUris,expectedRSS,"RSS dates/order/canonicals changed unexpec
 for(const [i,item] of rssItems.entries()){
  assert.ok(item.includes("<link>"+rssUris[i]+"</link>"),"RSS link disagrees with canonical");
  assert.ok(item.includes("<title>")&&item.includes("<description>")&&item.includes("<dc:date>"),"RSS item metadata missing");
- assert.ok(sitemap.includes("<loc>"+rssUris[i]+"</loc>"),"RSS item not present in SEO sitemap");
+ assert.ok(rssSitemap.includes("<loc>"+rssUris[i]+"</loc>"),"RSS item not present in SEO sitemap");
  assert.ok(!item.includes("/v2/")&&!item.includes(".html"),"RSS must not emit legacy URLs");
 }
 for(const fragment of ["wiedza/kredyt-pln-dokumenty-skd","wiedza/szkody-gornicze-drobne-pekniecia","/poradniki/","PESEL","<script"]){

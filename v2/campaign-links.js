@@ -96,7 +96,7 @@
     postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + contactFooter;
     openAction.href = target.href;
     message.textContent = isBusinessProfile
-      ? "W Profilu Firmy w Google wklej do pola „Witryna” wyłącznie link z pierwszego pola (nie tekst posta). Link prowadzi na stronę główną, a wybór tematu trafia do formularza. Oznaczenia UTM pomagają rozpoznać źródło przesłanego zgłoszenia, lecz bez analityki nie liczą wejść ani nie gwarantują indeksacji."
+      ? "W Profilu Firmy w Google wklej do pola „Witryna” wyłącznie link z pierwszego pola (nie tekst posta). Link prowadzi na stronę główną, a wybór tematu trafia do formularza. Oznaczenia UTM mogą pomóc rozpoznać źródło przesłanego zgłoszenia, ale Google może usuwać parametry z linku wizytówki. Po zapisaniu sprawdź opublikowany odnośnik; jeśli są problemy, użyj zwykłego adresu strony głównej. Sam link nie liczy wejść ani nie gwarantuje indeksacji."
       : /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "Darmowa domena Cloudflare Pages (pages.dev) nadaje się do publikacji. Przed udostępnieniem sprawdź działanie strony i odbiór formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
   };
   const copy = async (value, label) => {

@@ -31,6 +31,7 @@ jobs:
           node --check v2/campaign-links.js
           node --check v2/attribution.js
           node --check scripts/test-attribution.mjs
+          node --check scripts/test-ai-referrals.mjs
           node --check v2/chat-assistant.js
           node --check v2/share-page.js
           node --check v2/network-brand.js
@@ -106,6 +107,8 @@ jobs:
         run: node scripts/test-chat-lead.mjs
       - name: Przetestuj atrybucję kampanii między podstronami
         run: node scripts/test-attribution.mjs
+      - name: Testuj źródła wejść z wyszukiwarek i asystentów AI bez cookies
+        run: node scripts/test-ai-referrals.mjs
       - name: Przetestuj nowy przewodnik wyboru usługi i etapu sprawy
         run: node scripts/test-service-navigator.mjs
       - name: Sprawdź hierarchię strony głównej i siatkę 2+4 usług

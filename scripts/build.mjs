@@ -9,6 +9,7 @@ import { execFileSync } from "node:child_process";
 import {withNetworkBrand} from "./network-brand.mjs";
 import {toPublicRoute} from "./public-routes.mjs";
 import { shouldIndexRoute } from "./seo-policy.mjs";
+import {buildVerifiedArticlesFeed} from "./verified-articles-feed.mjs";
 import { enhancePageNavigation } from "./page-navigation.mjs";
 import {improveMediaAndNavigation} from "./media-navigation-quality.mjs";
 import {improveContentLinks} from "./content-anchors.mjs";
@@ -396,6 +397,8 @@ await writeFile(join(dest,"sitemap.xml"),'<?xml version="1.0" encoding="UTF-8"?>
 // Keep the XML file as the primary sitemap announced in robots.txt, and generate
 // this second advertised format from exactly the same sorted, indexable routes.
 await writeFile(join(dest,"sitemap.txt"),pages.map(path=>origin+path).join("\n")+"\n");
+// Publish a separate RSS feed for the three reviewed articles, never drafts.
+await writeFile(join(dest,"feed.xml"),await buildVerifiedArticlesFeed({source,origin}));
 // Production fingerprint: no secrets, personal data, or credentials.
 // A deployed /release-info.json helps distinguish GitHub changes from
 // actual Cloudflare publication. If SHA is unavailable, report null.
@@ -409,6 +412,6 @@ const releaseInfo={
  builtAt:new Date().toISOString()
 };
 await writeFile(join(dest,"release-info.json"),JSON.stringify(releaseInfo,null,2)+"\n");
-await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n\n/layers-*.css\n  Cache-Control: public, max-age=31536000, immutable\n");
+await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n\n/feed.xml\n  Content-Type: application/rss+xml; charset=utf-8\n  Cache-Control: public, max-age=1800\n\n/layers-*.css\n  Cache-Control: public, max-age=31536000, immutable\n");
 console.log("CSS_LAYER_BUILD "+JSON.stringify({pages:cssLayerReport.pages,requestsSavedPerFullSiteVisit:cssLayerReport.requestsSaved,uniqueBundles:cssLayerReport.unique.size}));
 console.log("Built "+pages.length+" pages in dist/ for "+origin+". This command does not publish.");

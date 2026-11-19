@@ -219,18 +219,37 @@ function upsertSocialMetadata(markup,route,origin){
   const description=getContent("name","description");
   const usePaulina=/swiadczenie-wspierajace|renty-powypadkowe/.test(route);
   const person=usePaulina?"Paulina Chandrała":"Wojciech Obiegło";
-  const image=origin+"/assets/"+(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg");
+  // Facebook link previews are extracted server-side, without running JavaScript.
+  // Use the first-party 1200x630 brand card for every destination provided by the
+  // campaign-link generator, and for the corresponding mining service landing.
+  // Otherwise keep the authentic adviser portrait (never a broken CDN reference).
+  const brandedRoutes=new Set([
+    "/kampanie/szkody-gornicze.html",
+    "/kampanie/swiadczenie-wspierajace.html",
+    "/kampanie/skd.html",
+    "/uslugi/renty-powypadkowe.html",
+    "/uslugi/sluzebnosc-przesylu.html",
+    "/uslugi/kredyty-frankowe.html",
+    "/uslugi/szkody-gornicze.html"
+  ]);
+  const branded=brandedRoutes.has(route);
+  const image=origin+"/assets/"+(branded?"og-twoja-sprawa-votum-odszkodowania-2026.jpg":(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg"));
+  const imageAlt=branded?"Twoja Sprawa — Votum Odszkodowania; grafika serwisu niezależnego przedstawiciela współpracującego z VOTUM":person+" — osoba do pierwszego kontaktu, Twoja Sprawa";
   setContent("property","og:title",title);
   if(description)setContent("property","og:description",description);
   setContent("property","og:image",image);
   setContent("property","og:image:secure_url",image);
   setContent("property","og:image:type","image/jpeg");
-  setContent("property","og:image:alt",person+" — osoba do pierwszego kontaktu, Twoja Sprawa");
+  if(branded){
+    setContent("property","og:image:width","1200");
+    setContent("property","og:image:height","630");
+  }
+  setContent("property","og:image:alt",imageAlt);
   setContent("name","twitter:card","summary_large_image");
   setContent("name","twitter:title",title);
   if(description)setContent("name","twitter:description",description);
   setContent("name","twitter:image",image);
-  setContent("name","twitter:image:alt",person+" — Twoja Sprawa");
+  setContent("name","twitter:image:alt",imageAlt);
   return markup;
 }
 

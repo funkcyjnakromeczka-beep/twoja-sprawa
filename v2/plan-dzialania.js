@@ -109,9 +109,23 @@ const DATA={
   links:"/v2/uslugi/sluzebnosc-przesylu.html"
  }
 };
-const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
 const incoming=new URLSearchParams(window.location.search);
- const inferredAIReferrer=(()=>{try{const host=new URL(document.referrer).hostname.toLowerCase();return ["chatgpt.com","www.chatgpt.com","chat.openai.com"].includes(host)?"chatgpt.com":"";}catch{return "";}})();
+ const inferredAIReferrer=(()=>{
+  try {
+    const host=new URL(document.referrer).hostname.toLowerCase();
+    // Exact hostname matching: never infer visits from lookalikes or arbitrary URLs.
+    const trusted={
+      "chatgpt.com":"chatgpt.com","www.chatgpt.com":"chatgpt.com","chat.openai.com":"chatgpt.com",
+      "perplexity.ai":"perplexity.ai","www.perplexity.ai":"perplexity.ai",
+      "claude.ai":"claude.ai","www.claude.ai":"claude.ai",
+      "gemini.google.com":"gemini.google.com",
+      "copilot.microsoft.com":"copilot.microsoft.com",
+      "grok.com":"grok.com","www.grok.com":"grok.com"
+    };
+    return Object.prototype.hasOwnProperty.call(trusted,host)?trusted[host]:"";
+  } catch { return ""; }
+ })();
 const sanitize=value=>/^[a-z0-9_-]{1,40}$/.test(value);
 const source=(incoming.get("utm_source")||"").toLowerCase().trim();
 const attribution={utm_source:allowedSources.has(source)?source:(!source&&inferredAIReferrer?inferredAIReferrer:"strona"),utm_medium:"narzedzie",utm_campaign:"plan_pierwszych_krokow"};

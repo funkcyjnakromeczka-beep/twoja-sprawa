@@ -61,7 +61,7 @@ values.channel.value="google_wizytowka";
 values.service.value="szkody";
 values.content.value="";
 values.style.value="educational";
-values.name.value="Wizytówka Google Lubin";
+values.campaign.value="Wizytówka Google Lubin";
 listeners.change();
 const gbp=new URL(link.value);
 assert.equal(gbp.origin,"https://twoja-sprawa.pages.dev");
@@ -90,7 +90,7 @@ values.channel.value="google";values.content.value="";values.service.value="szko
 listeners.change();
 assert.equal(new URL(link.value).pathname,"/kampanie/szkody-gornicze");
 assert.equal(new URL(link.value).searchParams.get("utm_medium"),"search");
-values.channel.value="facebook";values.name.value="Lubiń Polkowice 2026";
+values.channel.value="facebook";values.campaign.value="Lubiń Polkowice 2026";
 listeners.change();
 const client=await readFile("v2/contact.js","utf8");
 assert.ok(client.includes('"google"')&&client.includes('serviceAlias'),

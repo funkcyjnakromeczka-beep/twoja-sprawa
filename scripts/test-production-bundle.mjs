@@ -185,6 +185,7 @@ for(const target of ["index.html","kontakt.html","faq.html","uslugi/szkody-gorni
 }
 for(const target of [
  "wiedza/drobne-pekniecia-szkody-gornicze.html",
+ "wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
  "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"
 ]){
  const html=await read(target);
@@ -194,7 +195,6 @@ for(const target of [
 // Do not accidentally publish draft guides or lead checklists as SEO pages.
 for(const target of [
  "wiedza/kredyt-pln-dokumenty-skd.html",
- "wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
  "wiedza/szkody-gornicze-drobne-pekniecia.html",
  "poradniki/checklista-szkody-gorniczej.html",
  "poradniki/frankowicze-lista-kontrolna.html",

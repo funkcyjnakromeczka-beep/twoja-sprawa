@@ -337,7 +337,7 @@ for(const [page,photo] of [
   assert.ok(html.includes('<meta property="og:title" content="'+title+'">'),"social title not page-specific: "+page);
   assert.ok(html.includes('<meta name="twitter:title" content="'+title+'">'),"Twitter title not page-specific: "+page);
   assert.ok(html.includes('<meta property="og:description" content="'+description+'">'),"social description not page-specific: "+page);
-  const socialPreview=["uslugi/szkody-gornicze.html","uslugi/renty-powypadkowe.html","uslugi/kredyty-frankowe.html"].includes(page)
+  const socialPreview=["index.html","uslugi/szkody-gornicze.html","uslugi/renty-powypadkowe.html","uslugi/kredyty-frankowe.html"].includes(page)
     ? "og-twoja-sprawa-votum-odszkodowania-v2.jpg" : photo;
   assert.ok(html.includes('<meta property="og:image" content="'+origin+'/assets/'+socialPreview+'">'),"social preview incorrect: "+page);
   assert.ok(html.includes('<meta name="twitter:image" content="'+origin+'/assets/'+socialPreview+'">'),"Twitter preview incorrect: "+page);

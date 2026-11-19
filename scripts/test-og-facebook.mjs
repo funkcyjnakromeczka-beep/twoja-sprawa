@@ -4,7 +4,9 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 const root="https://twoja-sprawa.pages.dev";
 const imagePath="/assets/og-twoja-sprawa-votum-odszkodowania-2026.jpg";
-const image=await readFile("dist"+imagePath);
+const preview=process.argv.includes("--preview");
+const output=preview?"dist-preview":"dist";
+const image=await readFile(output+imagePath);
 assert.ok(image.length>15000&&image.length<600000,"Social JPEG should be optimized but readable");
 assert.equal(image[0],0xff);assert.equal(image[1],0xd8);
 const jpegSize=data=>{
@@ -24,6 +26,10 @@ const jpegSize=data=>{
  throw Error("JPEG size marker not found");
 };
 assert.deepEqual(jpegSize(image),{width:1200,height:630});
+if(preview){
+ console.log("OG_PREVIEW_ASSET_OK: first-party 1200x630 image copied into the noindex preview.");
+ process.exit(0);
+}
 const routes=[
  "kampanie/szkody-gornicze",
  "kampanie/swiadczenie-wspierajace",
@@ -33,7 +39,7 @@ const routes=[
  "uslugi/kredyty-frankowe",
  "uslugi/szkody-gornicze"
 ];
-const read=(path)=>readFile("dist/"+path+".html","utf8");
+const read=(path)=>readFile(output+"/"+path+".html","utf8");
 const get=(html,key)=>[...html.matchAll(/<meta\b[^>]*>/gi)]
  .filter(m=>m[0].includes('property="'+key+'"'))
  .map(m=>m[0].match(/content="([^"]*)"/)?.[1]);

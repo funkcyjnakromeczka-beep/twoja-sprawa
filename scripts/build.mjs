@@ -233,7 +233,7 @@ function upsertSocialMetadata(markup,route,origin){
     "/uslugi/szkody-gornicze.html"
   ]);
   const branded=brandedRoutes.has(route);
-  const image=origin+"/assets/"+(branded?"og-twoja-sprawa-votum-odszkodowania-2026.jpg":(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg"));
+  const image=origin+"/assets/"+(branded?"og-twoja-sprawa-votum-odszkodowania-v2.jpg":(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg"));
   const imageAlt=branded?"Twoja Sprawa — Votum Odszkodowania; grafika serwisu niezależnego przedstawiciela współpracującego z VOTUM":person+" — osoba do pierwszego kontaktu, Twoja Sprawa";
   setContent("property","og:title",title);
   if(description)setContent("property","og:description",description);

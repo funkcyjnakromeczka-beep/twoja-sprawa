@@ -47,3 +47,10 @@
 
 /* Wyraźny, spokojny drogowskaz do kontaktu tematycznego. */
 .premium-subpage.theme-contact .contact-hero-hint{margin:15px 0 0;max-width:72ch;color:#425867;font-size:.91rem;line-height:1.65}
+
+/* Zapisywanie numeru w kontaktach: statyczny plik vCard, bez skryptów i analityki. */
+.premium-subpage.theme-contact .contact-specialist-save{display:inline-flex;align-items:center;align-self:flex-start;max-width:100%;min-height:44px;box-sizing:border-box;padding:10px 13px;margin:4px 0 13px;border:1px solid #e9c68d;border-radius:9px;color:#fff1d3;background:rgba(255,255,255,.07);font-size:.88rem;font-weight:750;text-decoration:none;line-height:1.35}
+.premium-subpage.theme-contact .contact-specialist[data-persona="support"] .contact-specialist-save{border-color:#9ccfb0;color:#e2f7e8}
+.premium-subpage.theme-contact .contact-specialist-save:hover{background:rgba(255,255,255,.16)}
+.premium-subpage.theme-contact .contact-specialist-save:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media print{.premium-subpage.theme-contact .contact-specialist-save{display:none}}

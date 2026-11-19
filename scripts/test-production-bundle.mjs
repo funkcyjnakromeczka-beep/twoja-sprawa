@@ -27,6 +27,49 @@ console.log("INDEXNOW_DUAL_KEYS_OK: OpenSEO and existing CI workflow have correc
 
 const home=await read("index.html");
 const recruitmentRelease=await read("rekrutacja.html");
+// Two public business contacts can be saved without submitting personal data.
+const vCardHeaders=await read("_headers");
+const contactCards=[
+ ["wojciech-obieglo","Wojciech Obiegło","Obiegło;Wojciech;;;","+48796441345","wojciech.obieglo@votum-ds.pl"],
+ ["paulina-chandrala","Paulina Chandrała","Chandrała;Paulina;;;","+48500171531","paulina.chandrala@votum-ds.pl"]
+];
+const contactPageWithVcards=await read("kontakt.html");
+for(const [slug,fullName,nField,phone,email] of contactCards){
+ const vcardFile="kontakty/"+slug+".vcf";
+ const original=await readFile("v2/"+vcardFile,"utf8");
+ const published=await read(vcardFile);
+ assert.equal(published,original,"Published vCard must retain source bytes, no hidden mutation: "+slug);
+ assert.ok(original.startsWith("BEGIN:VCARD\r\nVERSION:4.0\r\n"),
+  "vCard 4.0 and UTF-8 CRLF delimiters required: "+slug);
+ const lines=original.split("\r\n");
+ assert.equal(lines.at(-2),"END:VCARD","vCard must have one END marker: "+slug);
+ for(const line of lines)assert.ok(Buffer.byteLength(line,"utf8")<=75,"Unfolded vCard line too long: "+slug);
+ for(const value of ["FN:"+fullName,"N:"+nField,"ORG:SuccessTree",
+  "TEL;VALUE=uri;TYPE=cell:tel:"+phone,"EMAIL;TYPE=work:"+email,
+  "URL:https://twoja-sprawa.pages.dev/"]){
+  assert.ok(lines.includes(value),"vCard missing a grounded business field: "+slug+" "+value);
+ }
+ const href='href="/'+vcardFile+'" download="'+slug+'.vcf"';
+ assert.equal(contactPageWithVcards.split(href).length-1,1,"Contact directory must link to exactly one file: "+slug);
+ assert.ok(vCardHeaders.includes("/"+vcardFile+"\n  Content-Type: text/vcard; charset=utf-8"),
+  "Content type for public contact card missing: "+slug);
+ assert.ok(!original.includes("ADR:")&&!original.includes("PHOTO:")&&!original.includes("REV:"),
+  "No private address, external asset or invented edit date in vCard");
+}
+for(const [service,slug] of [
+ ["szkody-gornicze","wojciech-obieglo"],
+ ["swiadczenie-wspierajace","paulina-chandrala"],
+ ["renty-powypadkowe","paulina-chandrala"]
+]){
+ const html=await read("uslugi/"+service+".html");
+ const link='href="/kontakty/'+slug+'.vcf" download="'+slug+'.vcf"';
+ assert.equal(html.split(link).length-1,1,"Wrong or missing specialist vCard on service: "+service);
+}
+assert.ok(!(await read("sitemap.xml")).includes("<loc>"+origin+"/kontakty/"),
+ "Contact files must not enter the SEO URL sitemap");
+console.log("VCARD_CONTACTS_OK: two public business vCards, 3 service links, correct format, no lead transmission.");
+
+
 // RSS: only the three legally/editorially approved, canonical guides.
 const rss=await read("feed.xml");
 const rssHeaders=await read("_headers");

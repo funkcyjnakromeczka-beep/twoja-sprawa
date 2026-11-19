@@ -90,7 +90,7 @@ values.channel.value="google";values.content.value="";values.service.value="szko
 listeners.change();
 assert.equal(new URL(link.value).pathname,"/kampanie/szkody-gornicze");
 assert.equal(new URL(link.value).searchParams.get("utm_medium"),"search");
-values.channel.value="facebook";values.campaign.value="Lubiń Polkowice 2026";
+values.channel.value="facebook";values.service.value="przesyl";values.campaign.value="Lubiń Polkowice 2026";
 listeners.change();
 const client=await readFile("v2/contact.js","utf8");
 assert.ok(client.includes('"google"')&&client.includes('serviceAlias'),

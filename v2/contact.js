@@ -402,6 +402,34 @@
   const callbackLabel=document.createElement("label");callbackLabel.textContent="Dogodna pora kontaktu (opcjonalnie)";const callback=document.createElement("select");callback.id="cf-time-"+Math.random().toString(36).slice(2,8);callbackLabel.htmlFor=callback.id;for(const value of ["Bez preferencji","Przed południem","Po południu","Wieczorem"]){const option=document.createElement("option");option.value=value;option.textContent=value;callback.append(option);}form.append(callbackLabel,callback);
   const callbackHint=document.createElement("small");callbackHint.className="contact-field-hint";callbackHint.textContent="To jedynie preferencja; nie jest rezerwacją terminu rozmowy.";form.append(callbackHint);
   const optionalDetails=document.createElement("details");optionalDetails.className="contact-optional-details";const optionalSummary=document.createElement("summary");optionalSummary.textContent="Dodatkowe preferencje kontaktu (opcjonalnie)";optionalDetails.append(optionalSummary,callbackLabel,callback,callbackHint);form.append(optionalDetails);
+  // Dobrowolna deklaracja źródła bez zastępowania istniejących UTM i bez cookies.
+  const discoveryDetails=document.createElement("details");
+  discoveryDetails.className="contact-optional-details contact-source-details";
+  const discoverySummary=document.createElement("summary");
+  discoverySummary.textContent="Skąd dowiedziałeś się o nas? (opcjonalnie)";
+  const discoveryLabel=document.createElement("label");
+  discoveryLabel.textContent="Źródło wskazane przez Ciebie";
+  const discoveryChoice=document.createElement("select");
+  discoveryChoice.id="cf-discovery-"+Math.random().toString(36).slice(2,8);
+  discoveryLabel.htmlFor=discoveryChoice.id;
+  for(const [value,title] of [
+    ["","Nie podaję"],["Facebook","Facebook"],["Instagram","Instagram"],
+    ["TikTok","TikTok"],["Wyszukiwarka Google","Wyszukiwarka Google"],
+    ["Mapy Google","Mapy Google"],["Polecenie","Polecenie znajomej osoby"],
+    ["Ulotka lub plakat","Ulotka lub plakat"],
+    ["Asystent AI","ChatGPT lub inny asystent AI"],
+    ["Inne","Inne źródło"],["Nie pamiętam","Nie pamiętam"]
+  ]){
+    const option=document.createElement("option");option.value=value;option.textContent=title;
+    discoveryChoice.append(option);
+  }
+  const discoveryAllowed=new Set(["Facebook","Instagram","TikTok","Wyszukiwarka Google","Mapy Google","Polecenie","Ulotka lub plakat","Asystent AI","Inne","Nie pamiętam"]);
+  const reportedSource=()=>discoveryAllowed.has(discoveryChoice.value)?discoveryChoice.value:"nie podano";
+  const discoveryHint=document.createElement("small");
+  discoveryHint.className="contact-field-hint";
+  discoveryHint.textContent="Dobrowolna informacja o źródle kontaktu. Oznaczenia kampanii z linku są zapisywane oddzielnie i nie zastępują Twojej odpowiedzi. Nie podawaj tu danych osobowych.";
+  discoveryDetails.append(discoverySummary,discoveryLabel,discoveryChoice,discoveryHint);
+  form.append(discoveryDetails);
   const msgLabel=document.createElement("label");msgLabel.textContent="Treść wiadomości (opcjonalnie)";const msg=document.createElement("textarea");msg.id="cf-message-"+Math.random().toString(36).slice(2,8);msgLabel.htmlFor=msg.id;msg.rows=4;msg.maxLength=1200;msg.placeholder="Opisz sprawę ogólnie, bez numeru PESEL, informacji medycznych i danych dokumentów.";form.append(msgLabel,msg);
   // On the homepage show the minimum fields first. Optional case information stays accessible.
   if(compactHome){
@@ -543,7 +571,7 @@
     sending=true;button.disabled=true;button.textContent="Wysyłanie…";status.className="";status.textContent="Przesyłam zgłoszenie…";synchronizeFailureLinks=()=>{};
     // Web3Forms kieruje wiadomosc do odbiorcy przypisanego do access_key.
     // advisor_email jest metadana w tresci zgłoszenia, nie zmienia odbiorcy.
-    const payload={access_key:accessKey,reference_code:ref,subject:"Nowe zgłoszenie Twoja Sprawa ["+ref+"] — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,campaign_medium:safeMedium||(!campaignSource&&inferredAIReferrer?"referral":"brak"),campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
+    const payload={access_key:accessKey,reference_code:ref,subject:"Nowe zgłoszenie Twoja Sprawa ["+ref+"] — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,reported_source:reportedSource(),campaign_medium:safeMedium||(!campaignSource&&inferredAIReferrer?"referral":"brak"),campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
     try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");synchronizeFailureLinks=()=>{};status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. Kod zgłoszenia: "+ref+". Zachowaj kod, aby móc odszukać wiadomość. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";pendingRef="";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();updateSensitiveWarning();name.setCustomValidity("");refreshShortcutState();}catch{
      status.className="contact-status-error";
      status.replaceChildren();
@@ -572,7 +600,8 @@
       "Dogodna pora: "+callback.value,
       "Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),
       ...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),
-      "Źródło: "+source,
+      "Źródło z linku: "+source,
+      "Źródło wskazane przez klienta: "+(reportedSource()),
       "Kanał: "+(safeMedium||"brak"),
       "Kampania: "+(safeCampaign||"brak"),
       "Wariant: "+(safeCreative||"brak"),
@@ -625,7 +654,7 @@
     }finally{sending=false;button.disabled=false;button.textContent="Wyślij zgłoszenie";}return;
    }
    const subject="Zapytanie Twoja Sprawa: "+select.value;
-   const body=["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Dogodna pora: "+callback.value,"Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),"Źródło zgłoszenia: "+source,"Kanał: "+(safeMedium||"brak"),"Kampania: "+(safeCampaign||"brak"),"Wariant: "+(safeCreative||"brak"),"Sposób przejścia: "+leadPath,"","Opis sprawy:",""+(msg.value.trim()||"Proszę o kontakt."),"","Proszę o odpowiedź na wskazany adres e-mail lub telefon."].join("\n");
+   const body=["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Dogodna pora: "+callback.value,"Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),"Źródło zgłoszenia z linku: "+source,"Źródło wskazane przez klienta: "+(reportedSource()),"Kanał: "+(safeMedium||"brak"),"Kampania: "+(safeCampaign||"brak"),"Wariant: "+(safeCreative||"brak"),"Sposób przejścia: "+leadPath,"","Opis sprawy:",""+(msg.value.trim()||"Proszę o kontakt."),"","Proszę o odpowiedź na wskazany adres e-mail lub telefon."].join("\n");
    status.textContent="Otwieram aplikację pocztową. Sprawdź przygotowaną wiadomość i wyślij ją samodzielnie.";
    window.location.href="mailto:"+mailRecipient+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
   });

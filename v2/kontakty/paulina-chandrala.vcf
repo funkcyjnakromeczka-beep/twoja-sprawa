@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:4.0
+FN:Paulina Chandrała
+N:Chandrała;Paulina;;;
+ORG:SuccessTree
+NOTE:Świadczenie wspierające i renty powypadkowe
+TEL;VALUE=uri;TYPE=cell:tel:+48500171531
+EMAIL;TYPE=work:paulina.chandrala@votum-ds.pl
+URL:https://twoja-sprawa.pages.dev/
+END:VCARD

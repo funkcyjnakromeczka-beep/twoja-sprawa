@@ -11,8 +11,8 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/index.html",
     "href": "/v2/",
-    "title": "Twoja Sprawa — analiza roszczeń i świadczeń w całej Polsce",
-    "description": "Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające, SKD i renty. Twoja Sprawa — kontakt z SuccessTree, współpracującym z VOTUM.",
+    "title": "Szkody górnicze Lubin i Polkowice",
+    "description": "Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające w całej Polsce, SKD i renty. Sprawdź, jak zgłosić sprawę do SuccessTree.",
     "category": "inne",
     "keywords": "Szkody górnicze? Świadczenie wspierające? v2 index html Twoja Sprawa — strona główna"
   },

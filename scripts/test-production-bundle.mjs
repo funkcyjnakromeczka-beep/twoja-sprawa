@@ -103,9 +103,9 @@ assert.equal(rssItems.length,3,"RSS should contain exactly three reviewed guides
 // sorting rule instead of freezing the dates/order of a previous release.
 const expectedRSS=(await Promise.all(feedArticlePaths.map(async relative=>{
  const authored=await readFile("v2/"+relative,"utf8");
- const modified=authored.match(/"dateModified":"(\\d{4}-\\d{2}-\\d{2})"/)?.[1];
+ const modified=authored.match(/"dateModified":"(\d{4}-\d{2}-\d{2})"/)?.[1];
  assert.ok(modified,"Reviewed Article JSON-LD must include dateModified: "+relative);
- return {modified,canonical:origin+"/"+relative.replace(/\\.html$/,"")};
+ return {modified,canonical:origin+"/"+relative.replace(/\.html$/,"")};
 }))).sort((a,b)=>b.modified.localeCompare(a.modified)||a.canonical.localeCompare(b.canonical))
  .map(item=>item.canonical);
 const rssUris=rssItems.map(item=>item.split('<guid isPermaLink="true">')[1]?.split("</guid>")[0]);

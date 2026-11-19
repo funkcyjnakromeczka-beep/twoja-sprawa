@@ -89,6 +89,7 @@ jobs:
           node --check v2/lead-summary.js
           node --check scripts/test-lead-summary.mjs
           node --check scripts/test-contact-client.mjs
+          node --check scripts/test-og-facebook.mjs
           node --check scripts/test-contact.mjs
           node --check scripts/preview.mjs
           node --check scripts/network-brand.mjs
@@ -178,6 +179,7 @@ jobs:
       - name: Zbuduj podgląd bez indeksowania
         run: |
           node scripts/preview.mjs
+          node scripts/test-og-facebook.mjs
           test -f dist-preview/index.html
           test -f dist-preview/robots.txt
           grep -q 'noindex,nofollow' dist-preview/index.html

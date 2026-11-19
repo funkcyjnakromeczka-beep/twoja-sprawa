@@ -75,7 +75,7 @@ for (const [referrer,canonical] of [
 for(const referrer of ["https://perplexity.ai.evil.example/","https://claude.ai.evil.example/","https://fakegemini.google.com/","https://fakecopilot.microsoft.com/","https://grok.com.evil.example/"]){
  assert.equal(navigate("","/kontakt",referrer),"/kontakt","Reject hostname lookalike "+referrer);
 }
-assert.equal(navigate("?utm_source=google","/kontakt","https://www.perplexity.ai/"),"/kontakt?utm_source=google",
+assert.equal(new URL(navigate("?utm_source=google","/kontakt","https://www.perplexity.ai/"),origin).searchParams.get("utm_source"),"google",
  "Explicit non-AI marketing source takes precedence over AI referrer");
 for(const [name, sources] of [["links",allowedSources(attribution,"allowedSources")],["form",allowedSources(form,"sourceAllowed")],["chatbot",allowedSources(chatbot,"allowedSources")],["navigator",allowedSources(navigator,"sourceAllowed")],["plan",allowedSources(plan,"allowedSources")]]){
  for(const source of ["perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com"]){

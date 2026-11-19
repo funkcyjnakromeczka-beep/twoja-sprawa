@@ -224,6 +224,7 @@ function upsertSocialMetadata(markup,route,origin){
   // campaign-link generator, and for the corresponding mining service landing.
   // Otherwise keep the authentic adviser portrait (never a broken CDN reference).
   const brandedRoutes=new Set([
+    "/", // Homepage is the destination of Google Business Profile links.
     "/kampanie/szkody-gornicze.html",
     "/kampanie/swiadczenie-wspierajace.html",
     "/kampanie/skd.html",

@@ -23,6 +23,9 @@ const link={value:""};
 const post={value:""};
 const status={textContent:""};
 const open={href:""};
+const previewTitle={textContent:""};
+const previewDescription={textContent:""};
+const previewHost={textContent:""};
 const noOpControl={addEventListener:()=>{}};
 const nodes={
  "[data-campaign-builder]":form,
@@ -31,7 +34,10 @@ const nodes={
  "[data-campaign-status]":status,
  "[data-copy-link]":noOpControl,
  "[data-copy-post]":noOpControl,
- "[data-open-link]":open
+ "[data-open-link]":open,
+ "[data-preview-title]":previewTitle,
+ "[data-preview-description]":previewDescription,
+ "[data-preview-host]":previewHost
 };
 const document={querySelector:sel=>nodes[sel]};
 const window={location:{origin:"https://twoja-sprawa.pages.dev",hostname:"twoja-sprawa.pages.dev"},isSecureContext:true};
@@ -51,6 +57,8 @@ const check=(service,path,phone)=>{
 };
 check("szkody","/kampanie/szkody-gornicze","796 441 345");
 assert.equal(regionControl.hidden,false,"Mining regional selector should be visible");
+assert.ok(previewTitle.textContent.includes("Szkody górnicze Lubin i Polkowice"));
+assert.equal(previewHost.textContent,"twoja-sprawa.pages.dev");
 values.region.value="lubin";
 values.channel.value="facebook_grupa";
 values.content.value="grupa_osiedle";
@@ -64,12 +72,16 @@ assert.equal(cityLink.searchParams.get("utm_content"),"grupa_osiedle");
 assert.ok(post.value.includes("Lubin i gmina Lubin")&&post.value.includes("796 441 345"));
 assert.ok(!post.value.includes("Polkowice i gmina Polkowice"),"City-specific message must not name the other city");
 assert.equal(open.href,link.value);
+assert.ok(previewTitle.textContent.includes("Lubin — pęknięcia ścian"));
+assert.ok(previewDescription.textContent.includes("Lubin i gmina Lubin"));
 values.style.value="hook";listeners.change();
 assert.ok(post.value.startsWith("Mieszkasz w Lubinie"),"The hook should be specific to Lubin");
 values.region.value="polkowice";values.style.value="short";listeners.change();
 cityLink=new URL(link.value);
 assert.equal(cityLink.pathname,"/lokalnie/szkody-gornicze-polkowice","Polkowice campaign must land on its city page");
 assert.ok(post.value.includes("Polkowice i gmina Polkowice")&&!post.value.includes("Lubin i gmina Lubin"));
+assert.ok(previewTitle.textContent.includes("Polkowice — szkody posesji"));
+assert.ok(previewDescription.textContent.includes("Polkowice i gmina Polkowice"));
 assert.equal(cityLink.searchParams.get("utm_medium"),"grupa");
 assert.ok(!cityLink.searchParams.has("etap")&&!cityLink.searchParams.has("telefon"),"Public campaign URL carries no case data");
 values.region.value="ogolnie";values.channel.value="facebook";values.content.value="";values.style.value="educational";
@@ -94,6 +106,7 @@ listeners.change();
 const gbp=new URL(link.value);
 assert.equal(gbp.origin,"https://twoja-sprawa.pages.dev");
 assert.equal(gbp.pathname,"/","Business Profile website field should link to the indexed home");
+assert.ok(previewTitle.textContent.includes("Szkody górnicze Lubin i Polkowice | Twoja Sprawa"),"GBP must preview the actual homepage");
 assert.equal(gbp.searchParams.get("utm_source"),"google");
 assert.equal(gbp.searchParams.get("utm_medium"),"local");
 assert.equal(gbp.searchParams.get("utm_campaign"),"wizytowka_google_lubin");
@@ -105,6 +118,8 @@ const generatorGuide=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
 assert.ok(generatorGuide.includes("Google czasem usuwa parametry UTM")&&generatorGuide.includes("https://twoja-sprawa.pages.dev/"),"Keep a fallback to the canonical plain website URL");
 assert.ok(generatorGuide.includes('name="region"')&&generatorGuide.includes('data-campaign-region'),"Generator must offer a labeled regional selector");
 assert.ok(generatorGuide.includes("Facebook i lokalne grupy:"),"Explain city-specific group links without promising leads");
+assert.ok(generatorGuide.includes("campaign-link-preview-card")&&generatorGuide.includes("data-preview-title"),"Actual preview UI must exist");
+assert.ok(generatorGuide.includes("Facebook Sharing Debugger")&&generatorGuide.includes("Scrape Again"),"Cache-refresh help must be offered");
 assert.ok(!link.value.includes("PESEL")&&!link.value.includes("telefon")&&!link.value.includes(".html"));
 assert.ok(post.value.includes(link.value),"Business Profile link should be copyable from output");
 values.service.value="swiadczenie";

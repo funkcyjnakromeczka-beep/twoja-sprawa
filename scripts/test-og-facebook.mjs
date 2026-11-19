@@ -33,6 +33,7 @@ if(preview){
  process.exit(0);
 }
 const routes=[
+ "", // Homepage: Google Business Profile destination.
  "kampanie/szkody-gornicze",
  "kampanie/swiadczenie-wspierajace",
  "kampanie/skd",
@@ -43,7 +44,7 @@ const routes=[
  "lokalnie/szkody-gornicze-lubin",
  "lokalnie/szkody-gornicze-polkowice"
 ];
-const read=(path)=>readFile(output+"/"+path+".html","utf8");
+const read=(path)=>readFile(output+"/"+(path||"index")+".html","utf8");
 const get=(html,key)=>[...html.matchAll(/<meta\b[^>]*>/gi)]
  .filter(m=>m[0].includes('property="'+key+'"'))
  .map(m=>m[0].match(/content="([^"]*)"/)?.[1]);
@@ -69,4 +70,4 @@ for(const piece of ["szkody-gornicze.html","swiadczenie-wspierajace.html","skd.h
 // promotional banner, and stays unchanged when the campaign builder evolves.
 const guide=await read("wiedza/ugoda-z-kopalnia-co-sprawdzic");
 assert.ok(!get(guide,"og:image")[0].includes("og-twoja-sprawa-votum"),"Do not change guide previews globally");
-console.log("OG_FACEBOOK_OK: 1200x630 self-hosted image, 9 campaign destinations (including Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");
+console.log("OG_FACEBOOK_OK: 1200x630 self-hosted image, 10 campaign destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");

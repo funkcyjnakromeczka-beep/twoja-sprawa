@@ -29,7 +29,9 @@ const home=await read("index.html");
 const recruitmentRelease=await read("rekrutacja.html");
 // Production output strips authoring-only /v2/ paths and .html from
 // the three topical guide shortcuts on the indexed homepage.
-const heroGuidePart=home.match(/<nav class="hero-reading-shortcuts"[^>]*>([\\s\\S]*?)<\\/nav>/)?.[1]||"";
+const heroGuideStart=home.indexOf('<nav class="hero-reading-shortcuts"');
+const heroGuideEnd=home.indexOf("</nav>",heroGuideStart);
+const heroGuidePart=heroGuideStart>=0&&heroGuideEnd>heroGuideStart?home.slice(heroGuideStart,heroGuideEnd+6):"";
 for(const url of [
  "/wiedza/drobne-pekniecia-szkody-gornicze",
  "/wiedza/swiadczenie-wspierajace-2026-wzon-zus",

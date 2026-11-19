@@ -8,9 +8,9 @@ const section=guide.match(/<section id="odmowa-kopalni" aria-labelledby="odmowa-
 assert.ok(section,"Refusal content must have a working target anchor");
 assert.ok(section.includes('<h2 id="odmowa-kopalni-title">'),"Visible accessible heading");
 assert.equal((section.match(/<li>/g)||[]).length,5,"Exactly five practical refusal steps");
-for(const legal of ["art. 151 ust. 1–2","Art. 149","30 dni","pięcioletni","nie jest gwarancja","Nie każda odmowa"]){
+for(const legal of ["art. 151 ust. 1–2","Art. 149","30 dni","pięcioletni","nie gwarancja wypłaty","Nie każda odmowa"]){
  const normalized=section.toLowerCase();
- assert.ok(normalized.includes(legal.toLowerCase())||legal==="nie jest gwarancja"&&normalized.includes("nie gwarancja"),"Missing key caveat: "+legal);
+ assert.ok(normalized.includes(legal.toLowerCase()),"Missing key caveat: "+legal);
 }
 assert.ok(section.includes("https://eli.gov.pl/eli/DU/2026/69/ogl"),"Only official verified current statute as legal source");
 assert.ok(section.includes('href="/v2/uslugi/szkody-gornicze.html?etap=odmowa#formularz"'),"Lead must preselect safe known refusal stage");

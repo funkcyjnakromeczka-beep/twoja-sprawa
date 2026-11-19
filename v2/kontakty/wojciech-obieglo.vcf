@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:4.0
+FN:Wojciech Obiegło
+N:Obiegło;Wojciech;;;
+ORG:SuccessTree
+TITLE:Przedstawiciel współpracujący z VOTUM
+TEL;VALUE=uri;TYPE=cell:tel:+48796441345
+EMAIL;TYPE=work:wojciech.obieglo@votum-ds.pl
+URL:https://twoja-sprawa.pages.dev/
+END:VCARD

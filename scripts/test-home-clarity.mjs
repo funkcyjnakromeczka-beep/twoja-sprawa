@@ -12,6 +12,22 @@ for(const mark of marks){
  assert.ok(i>=0&&i>last,"Homepage order/missing section: "+mark);
  last=i;
 }
+// Każdy zweryfikowany artykuł ma statyczny link z głównej sekcji poradników.
+const readingBegin=html.indexOf('<div class="editorial-reading"');
+const readingEnd=html.indexOf("</div>",readingBegin);
+const reading=readingBegin>=0&&readingEnd>readingBegin?html.slice(readingBegin,readingEnd+6):"";
+const readingUrls=[...reading.matchAll(/href="([^"]+)"/g)].map(x=>x[1]);
+const approvedReading=[
+ "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
+ "/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
+ "/v2/wiedza/ugoda-z-kopalnia-co-sprawdzic.html"
+];
+assert.deepEqual(readingUrls,approvedReading,"Homepage should prominently link all three reviewed articles");
+assert.ok(reading.includes("7 zapisów do sprawdzenia"),"Clear value proposition missing for agreement guide");
+assert.ok(css.includes("grid-template-columns:repeat(3,minmax(0,1fr))"),"Three review cards need desktop grid");
+assert.ok(css.includes("@media(max-width:1020px)")&&css.includes("@media(max-width:700px)"),
+ "Homepage reading cards need readable tablet/mobile layouts");
+
 // Godziny kontaktu muszą być spójne z profilem firmy i widoczne bez JavaScript.
 const contactPageHours=await readFile("v2/kontakt.html","utf8");
 for(const [name,markup] of [["home",html],["contact",contactPageHours]]){

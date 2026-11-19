@@ -44,6 +44,25 @@ for(const [slug,city] of [["lubin","Lubin"],["polkowice","Polkowice"]]){
  assert.ok(html.includes('src="/contact.js" data-service="Szkody górnicze" data-locality="'+city+'"'),
   "Preselected local form service lost during release: "+city);
 }
+// Nowy poradnik o ugodzie ma być odkrywalny w obu lokalizacjach oraz nie ingerować w formularze.
+const verifiedGuide="/wiedza/ugoda-z-kopalnia-co-sprawdzic";
+for(const citySlug of ["lubin","polkowice"]){
+ const localPage=await readFile("dist/lokalnie/szkody-gornicze-"+citySlug+".html","utf8");
+ const boxBegin=localPage.indexOf('<aside class="local-settlement-guide');
+ const boxEnd=localPage.indexOf("</aside>",boxBegin);
+ const box=boxBegin>=0&&boxEnd>boxBegin?localPage.slice(boxBegin,boxEnd+8):"";
+ assert.ok(box.includes('id="local-settlement-title"'),"Local agreement guide missing heading: "+citySlug);
+ assert.equal(box.split('href="'+verifiedGuide+'"').length-1,1,"Unique guide destination required: "+citySlug);
+ assert.equal(box.split('href="#formularz"').length-1,1,"Unique local contact destination required: "+citySlug);
+ assert.ok(box.includes('href="'+verifiedGuide+'"'),"Local agreement guide canonical URL missing: "+citySlug);
+ assert.ok(box.includes('href="#formularz"'),"Local form destination missing: "+citySlug);
+ assert.ok(box.includes("PESEL")&&!box.includes("<form"),"Local agreement guide cannot collect case documents");
+ assert.ok(localPage.indexOf('class="local-settlement-guide')<localPage.indexOf('local-faq"'),
+  "Agreement guidance must precede FAQ: "+citySlug);
+}
+assert.ok(css.includes(".local-settlement-actions a:focus-visible")&&css.includes("@media(max-width:800px)"),
+ "Agreement guidance must work at 320px and with keyboard focus");
+
 console.log("LOCAL_MINING_MOBILE_OK: Lubin and Polkowice have two static 44px+ contact actions.");
 
 const printTool=await readFile("v2/poradniki/checklista-szkody-gorniczej.html","utf8");

@@ -8,7 +8,7 @@ const section=article.match(/<section id="zabezpieczony-dom" aria-labelledby="za
 assert.ok(section.includes('<h2 id="zabezpieczony-dom-heading">'),"Anchor must have a real, accessible heading");
 assert.equal((section.match(/<li>/g)||[]).length,5,"Five practical steps, not a legal promise");
 for(const marker of [
- "fundamentów","dokumentacji wzmocnienia","datę","ugody","warunki gruntowe",
+ "fundamentów","dokumentacji wzmocnienia","datę","ugody","gruntowych",
  "Art. 144 ust. 1","art. 146 ust. 1","Art. 150","art. 149","pięć lat",
  "https://eli.gov.pl/eli/DU/2026/69/ogl",
  "nie wykluczają automatycznie","nie oznacza","Nie wpisuj"

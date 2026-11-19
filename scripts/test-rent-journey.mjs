@@ -19,7 +19,7 @@ assert.ok(html.includes('href="tel:+48500171531"'),"Correct advisor");
 assert.ok(guide.includes("etap=podwyzszenie#formularz"),"Document checklist leads to correct stage");
 assert.ok(css.includes(":focus-visible")&&css.includes("@media(max-width:660px)"),"Accessible mobile cards required");
 const legal=html.match(/<section class="focus-detail" aria-labelledby="rent-legal-heading"[\s\S]*?<\/section>/)?.[0]||"";
-for(const value of ["Art. 444 § 2","Art. 907 § 2","Dz.U. 2026 poz. 795","https://eli.gov.pl/eli/DU/2026/795/ogl","https://rf.gov.pl/edukacja/","nie następuje automatycznie","zmiana stosunków"]){
+for(const value of ["Art. 444 § 2","Art. 907 § 2","Dz.U. 2026 poz. 795","https://eli.gov.pl/eli/DU/2026/795/ogl","https://rf.gov.pl/edukacja/","nie następuje automatycznie","zmiany stosunków"]){
  assert.ok(legal.toLowerCase().includes(value.toLowerCase()),"Official source/caveat missing "+value);
 }
 assert.ok(!/gwarantujemy rentę|gwarantujemy podwyższenie|100% sukcesu/i.test(section+legal),"Never promise award");

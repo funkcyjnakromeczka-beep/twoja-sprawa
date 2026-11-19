@@ -6,8 +6,22 @@
   const releasePath=pathname=>window.location.pathname.startsWith("/"+"v2/")?pathname:pathname.replace(/\.html$/,"");
   // Zachowaj źródło kampanii wejściowej, gdy użytkownik przechodzi przez przewodnik.
   const incoming=new URLSearchParams(window.location.search);
- const inferredAIReferrer=(()=>{try{const host=new URL(document.referrer).hostname.toLowerCase();return ["chatgpt.com","www.chatgpt.com","chat.openai.com"].includes(host)?"chatgpt.com":"";}catch{return "";}})();
-  const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+ const inferredAIReferrer=(()=>{
+  try {
+    const host=new URL(document.referrer).hostname.toLowerCase();
+    // Exact hostname matching: never infer visits from lookalikes or arbitrary URLs.
+    const trusted={
+      "chatgpt.com":"chatgpt.com","www.chatgpt.com":"chatgpt.com","chat.openai.com":"chatgpt.com",
+      "perplexity.ai":"perplexity.ai","www.perplexity.ai":"perplexity.ai",
+      "claude.ai":"claude.ai","www.claude.ai":"claude.ai",
+      "gemini.google.com":"gemini.google.com",
+      "copilot.microsoft.com":"copilot.microsoft.com",
+      "grok.com":"grok.com","www.grok.com":"grok.com"
+    };
+    return Object.prototype.hasOwnProperty.call(trusted,host)?trusted[host]:"";
+  } catch { return ""; }
+ })();
+  const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
   const requestedSource=(incoming.get("utm_source")||"").toLowerCase().trim();
   const source=allowedSources.has(requestedSource)?requestedSource:(!requestedSource&&inferredAIReferrer?inferredAIReferrer:"strona");
   const validAttribution=value=>/^[a-z0-9_-]{1,40}$/.test(value);

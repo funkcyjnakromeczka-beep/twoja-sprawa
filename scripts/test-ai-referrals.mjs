@@ -58,4 +58,29 @@ assert.equal(ai.searchParams.get("utm_source"),"chatgpt.com","Trusted AI referre
 assert.equal(ai.searchParams.get("utm_medium"),"referral","Untagged AI visit must carry referral medium");
 assert.equal(navigate("","/kontakt","https://evilchatgpt.com/"),"/kontakt","Lookalike domains must be ignored");
 assert.equal(navigate("?utm_source=facebook","/kontakt","https://chatgpt.com/").includes("utm_source=facebook"),true,"Explicit campaign must have priority");
+
+for (const [referrer,canonical] of [
+ ["https://www.perplexity.ai/search/abc","perplexity.ai"],
+ ["https://claude.ai/new","claude.ai"],
+ ["https://gemini.google.com/app","gemini.google.com"],
+ ["https://copilot.microsoft.com/chats/1","copilot.microsoft.com"],
+ ["https://grok.com/","grok.com"]
+]) {
+ const carried=new URL(navigate("","/kontakt",referrer),origin);
+ assert.equal(carried.searchParams.get("utm_source"),canonical,"Recognize AI source: "+canonical);
+ assert.equal(carried.searchParams.get("utm_medium"),"referral","Referrer medium for "+canonical);
+ const direct=new URL(navigate("?utm_source="+encodeURIComponent(canonical),"/kontakt"),origin);
+ assert.equal(direct.searchParams.get("utm_source"),canonical,"Explicit source for "+canonical);
+}
+for(const referrer of ["https://perplexity.ai.evil.example/","https://claude.ai.evil.example/","https://fakegemini.google.com/","https://fakecopilot.microsoft.com/","https://grok.com.evil.example/"]){
+ assert.equal(navigate("","/kontakt",referrer),"/kontakt","Reject hostname lookalike "+referrer);
+}
+assert.equal(new URL(navigate("?utm_source=google","/kontakt","https://www.perplexity.ai/"),origin).searchParams.get("utm_source"),"google",
+ "Explicit non-AI marketing source takes precedence over AI referrer");
+for(const [name, sources] of [["links",allowedSources(attribution,"allowedSources")],["form",allowedSources(form,"sourceAllowed")],["chatbot",allowedSources(chatbot,"allowedSources")],["navigator",allowedSources(navigator,"sourceAllowed")],["plan",allowedSources(plan,"allowedSources")]]){
+ for(const source of ["perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com"]){
+  assert.ok(sources.has(source),name+" must accept "+source);
+ }
+}
+
 console.log("OK: tagged and untagged ChatGPT referrals preserve safe attribution; no cookies or test submissions.");

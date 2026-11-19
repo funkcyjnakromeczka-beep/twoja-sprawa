@@ -31,6 +31,19 @@ assert.deepEqual(ownerContact.hoursAvailable?.dayOfWeek,[
  "https://schema.org/Thursday","https://schema.org/Friday","https://schema.org/Saturday"
 ],"Structured business hours must match visible Monday-Saturday schedule");
 
+// Strona główna kieruje na kluczowy lokalny obszar pomocy, bez keyword stuffingu.
+const homeTitle="Szkody górnicze Lubin i Polkowice | Twoja Sprawa";
+const homeDescription="Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające w całej Polsce, SKD i renty. Sprawdź, jak zgłosić sprawę do SuccessTree.";
+assert.ok(html.includes("<title>"+homeTitle+"</title>"),"Homepage SEO title must target local mining");
+assert.ok(html.includes('<meta name="description" content="'+homeDescription+'">'),"Missing concise high-intent homepage description");
+for(const [key,attr] of [["og:title","property"],["twitter:title","name"]]){
+ assert.ok(html.includes('<meta '+attr+'="'+key+'" content="'+homeTitle+'">'),"Preview title mismatch: "+key);
+}
+for(const [key,attr] of [["og:description","property"],["twitter:description","name"]]){
+ assert.ok(html.includes('<meta '+attr+'="'+key+'" content="'+homeDescription+'">'),"Preview description mismatch: "+key);
+}
+assert.ok(homeTitle.length<=60&&homeDescription.length>=100&&homeDescription.length<=160,"Homepage SEO snippet length unexpectedly changed");
+
 const beg=html.indexOf('class="grid primary-services"');
 const end=html.indexOf('<details class="service-extra"',beg);
 assert.ok(beg>=0&&end>beg,"Homepage services area missing");

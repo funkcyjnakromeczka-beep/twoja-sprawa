@@ -70,6 +70,7 @@ jobs:
           node --check scripts/test-visible-breadcrumb-schema.mjs
           node --check scripts/test-1000-release-checks.mjs
           node --check scripts/test-production-bundle.mjs
+          node --check scripts/test-og-facebook.mjs
           node --check scripts/test-network-brand.mjs
           node --check scripts/test-core-metadata.mjs
           node --check scripts/test-recruitment-guide.mjs
@@ -92,6 +93,7 @@ jobs:
           FORM_APPROVED: '1'
         run: |
           node scripts/build.mjs
+          node scripts/test-og-facebook.mjs
           node scripts/test-page-navigation.mjs
           node scripts/test-media-navigation-quality.mjs
           node scripts/test-content-anchors.mjs

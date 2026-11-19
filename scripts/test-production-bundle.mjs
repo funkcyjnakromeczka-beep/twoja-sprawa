@@ -3,6 +3,7 @@
 import assert from "node:assert/strict";
 import {readFile,stat,readdir} from "node:fs/promises";
 import {collectIndexableRoutes} from "./indexnow-routes.mjs";
+import {feedArticlePaths} from "./verified-articles-feed.mjs";
 const origin="https://twoja-sprawa.pages.dev";
 const read=path=>readFile("dist/"+path,"utf8");
 const releaseInfo=JSON.parse(await read("release-info.json"));
@@ -98,11 +99,15 @@ assert.ok(rss.includes('<language>pl-PL</language>'),"RSS language missing");
 assert.ok(rss.includes('<atom:link href="'+origin+'/feed.xml" rel="self" type="application/rss+xml"/>'),"RSS self reference wrong");
 const rssItems=rss.split("<item>").slice(1).map(item=>item.split("</item>")[0]);
 assert.equal(rssItems.length,3,"RSS should contain exactly three reviewed guides");
-const expectedRSS=[
- origin+"/wiedza/ugoda-z-kopalnia-co-sprawdzic",
- origin+"/wiedza/swiadczenie-wspierajace-2026-wzon-zus",
- origin+"/wiedza/drobne-pekniecia-szkody-gornicze"
-];
+// Each editorial revision changes RSS order; validate the stable source-backed
+// sorting rule instead of freezing the dates/order of a previous release.
+const expectedRSS=(await Promise.all(feedArticlePaths.map(async relative=>{
+ const authored=await readFile("v2/"+relative,"utf8");
+ const modified=authored.match(/"dateModified":"(\\d{4}-\\d{2}-\\d{2})"/)?.[1];
+ assert.ok(modified,"Reviewed Article JSON-LD must include dateModified: "+relative);
+ return {modified,canonical:origin+"/"+relative.replace(/\\.html$/,"")};
+}))).sort((a,b)=>b.modified.localeCompare(a.modified)||a.canonical.localeCompare(b.canonical))
+ .map(item=>item.canonical);
 const rssUris=rssItems.map(item=>item.split('<guid isPermaLink="true">')[1]?.split("</guid>")[0]);
 assert.deepEqual(rssUris,expectedRSS,"RSS dates/order/canonicals changed unexpectedly");
 for(const [i,item] of rssItems.entries()){

@@ -132,7 +132,7 @@ window.TwojaSprawaSearchPages2=[
     "id": "page:v2/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
     "href": "/v2/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
     "title": "Ugoda z kopalnią — co sprawdzić przed podpisaniem?",
-    "description": "Proponowana ugoda może zakończyć spór dotyczący określonych szkód. Jej skutki zależą jednak od dokładnego brzmienia dokumentu.",
+    "description": "Zanim podpiszesz ugodę z kopalnią, sprawdź zakres szkód, kosztorys, terminy i skutki zapisów. Praktyczne wskazówki dla Lubina i Polkowic.",
     "category": "szkody",
     "keywords": "Ugoda z kopalnią — co sprawdzić przed podpisaniem? v2 wiedza ugoda z kopalnia co sprawdzic html Ugoda Z Kopalnia Co Sprawdzic"
   },

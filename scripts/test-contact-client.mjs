@@ -771,4 +771,36 @@ for(const sample of [
 }
 console.log("HOME_SHORTCUT_RECOVERY_OK: fallback follows adviser changes with no duplicate submissions.");
 
+// Renty: links should preselect one of four allowed stages while retaining Paulina.
+for(const [code,expected] of [
+ ["nowa","Nie otrzymuję jeszcze renty"],
+ ["podwyzszenie","Mam rentę i chcę sprawdzić jej podwyższenie"],
+ ["odmowa","Ubezpieczyciel odmówił ustalenia lub zmiany renty"],
+ ["ugoda","Otrzymałem/am propozycję ugody lub kapitalizacji"]
+]){
+ const host=new Node("host");
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:name=>name==="data-service"?"Renty powypadkowe":""},
+  querySelectorAll:sel=>sel==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:value=>({tag:"text",textContent:value})
+ };
+ const window={location:{search:"?etap="+code+"&utm_source=facebook"}};
+ runInNewContext(source,{document,window,navigator:{},URLSearchParams,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const stageWrap=visit(form,n=>n.className==="contact-stage");
+ const stageLabel=visit(form,n=>n.htmlFor===stage.id);
+ assert.equal(service.value,"Renty powypadkowe");
+ assert.equal(stageWrap.hidden,false);
+ assert.equal(stageLabel.textContent,"Na jakim etapie jest sprawa renty?");
+ assert.equal(stage.value,expected,"Rent stage preselection broken: "+code);
+ const direct=visit(form,n=>n.className==="contact-direct-alternatives");
+ assert.ok(visit(direct,n=>n.href==="tel:+48500171531"),"Rent route should call Paulina");
+ assert.ok(visit(direct,n=>n.href?.startsWith("mailto:paulina.chandrala@votum-ds.pl")),"Rent route should email Paulina");
+}
+console.log("RENT_FORM_STAGE_OK: 4 safe URL stages and Paulina contact.");
+
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

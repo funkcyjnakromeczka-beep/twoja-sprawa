@@ -186,7 +186,8 @@
   const stageOptions={
    "Szkody górnicze":["Wybierz etap sprawy","Zauważyłem/am uszkodzenia","Zgłosiłem/am szkodę do kopalni","Otrzymałem/am propozycję ugody","Kopalnia odmówiła","Inna sytuacja"],
    "Świadczenie wspierające":["Wybierz etap sprawy","Dopiero planuję wniosek do WZON","Czekam na decyzję WZON","Mam decyzję WZON","Chcę przeanalizować decyzję lub odwołanie","Mam sprawę w ZUS","Inna sytuacja"],
-   "Kredyty frankowe CHF":["Wybierz etap sprawy","Nadal spłacam kredyt CHF","Kredyt CHF został spłacony","Bank proponuje ugodę dotyczącą kredytu CHF","Sprawa kredytu CHF jest już prowadzona","Inna sytuacja"]
+   "Kredyty frankowe CHF":["Wybierz etap sprawy","Nadal spłacam kredyt CHF","Kredyt CHF został spłacony","Bank proponuje ugodę dotyczącą kredytu CHF","Sprawa kredytu CHF jest już prowadzona","Inna sytuacja"],
+   "Renty powypadkowe":["Wybierz etap sprawy","Nie otrzymuję jeszcze renty","Mam rentę i chcę sprawdzić jej podwyższenie","Ubezpieczyciel odmówił ustalenia lub zmiany renty","Otrzymałem/am propozycję ugody lub kapitalizacji","Inna sytuacja"]
   };
   // Etap pochodzi tylko ze ścisłej listy kodów, bez przyjmowania dowolnego tekstu z URL.
   const stageCodes={
@@ -203,6 +204,12 @@
       zus:"Mam sprawę w ZUS",
       odwolanie:"Chcę przeanalizować decyzję lub odwołanie"
     },
+    "Renty powypadkowe":{
+      nowa:"Nie otrzymuję jeszcze renty",
+      podwyzszenie:"Mam rentę i chcę sprawdzić jej podwyższenie",
+      odmowa:"Ubezpieczyciel odmówił ustalenia lub zmiany renty",
+      ugoda:"Otrzymałem/am propozycję ugody lub kapitalizacji"
+    },
     "Kredyty frankowe CHF":{
       aktywny:"Nadal spłacam kredyt CHF",
       splacony:"Kredyt CHF został spłacony",
@@ -216,7 +223,7 @@
     const options=stageOptions[select.value];
     stage.replaceChildren();stageWrap.hidden=!options;
     if(!options){stagePrefillPending=false;return;}
-    stageLabel.textContent=select.value==="Szkody górnicze"?"Na jakim etapie jest sprawa szkody?":select.value==="Świadczenie wspierające"?"Na jakim etapie jest sprawa świadczenia?":"Na jakim etapie jest sprawa kredytu CHF?";
+    stageLabel.textContent=select.value==="Szkody górnicze"?"Na jakim etapie jest sprawa szkody?":select.value==="Świadczenie wspierające"?"Na jakim etapie jest sprawa świadczenia?":select.value==="Renty powypadkowe"?"Na jakim etapie jest sprawa renty?":"Na jakim etapie jest sprawa kredytu CHF?";
     for(let i=0;i<options.length;i++){
       const option=document.createElement("option");option.value=i===0?"":options[i];option.textContent=options[i];stage.append(option);
     }

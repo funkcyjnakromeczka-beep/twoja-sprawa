@@ -86,6 +86,7 @@ const labeled=makeBrandImage("https://votum-sa.pl/wp-content/uploads/2024/06/log
 const fakeDocument={
  querySelectorAll(selector){
   if(selector===".network-brand-logos img")return [];
+  if(selector===".vws-service-brand")return [];
   if(selector==='img[src^="https://votum-sa.pl/wp-content/uploads/"]')
    return [broken.img,loaded.img,labeled.img];
   throw Error("Unexpected image selection: "+selector);
@@ -107,3 +108,29 @@ const brandCss=await readFile("v2/network-brand.css","utf8");
 assert.ok(brandCss.includes(".external-partner-logo-remote[hidden]"),"Hidden images must not override site CSS");
 assert.ok(brandCss.includes(".external-partner-logo-fallback[hidden]"),"Hide inactive textual fallbacks");
 console.log("EXTERNAL_PARTNER_LOGO_FALLBACK_OK: broken images, available originals and existing labels tested.");
+
+// A slow official Votum Wsparcie image must not block a legible first paint.
+{
+ const listeners={};
+ const image={complete:false,naturalWidth:0,hidden:false,addEventListener:(name,fn)=>{listeners[name]=fn;}};
+ const classes=new Set();
+ const card={querySelector:sel=>sel==="img"?image:null,classList:{toggle(name,value){value?classes.add(name):classes.delete(name);}}};
+ const doc={
+  querySelectorAll(selector){
+   if(selector===".vws-service-brand")return [card];
+   if(selector===".network-brand-logos img"||selector==='img[src^="https://votum-sa.pl/wp-content/uploads/"]')return [];
+   throw Error("Unexpected selector "+selector);
+  }
+ };
+ runInNewContext(await readFile("v2/network-brand.js","utf8"),{document:doc});
+ assert.equal(image.hidden,true,"Pending official logo must not reserve a tall blank area");
+ assert.ok(classes.has("brand-fallback-active"),"Pending logo must show compact visible brand text");
+ image.complete=true;image.naturalWidth=300;listeners.load();
+ assert.equal(image.hidden,false,"Official logo should reappear when it loads");
+ assert.ok(!classes.has("brand-fallback-active"),"No duplicate fallback once official image loads");
+ image.naturalWidth=0;listeners.error();
+ assert.equal(image.hidden,true,"Broken official logo must be hidden");
+ assert.ok(classes.has("brand-fallback-active"),"Broken image must expose the readable name");
+}
+console.log("SUPPORT_PENDING_LOGO_OK: pending, recovered and broken official logo states.");
+

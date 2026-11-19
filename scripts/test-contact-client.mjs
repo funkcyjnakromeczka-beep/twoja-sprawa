@@ -803,4 +803,38 @@ for(const [code,expected] of [
 }
 console.log("RENT_FORM_STAGE_OK: 4 safe URL stages and Paulina contact.");
 
+// SKD: four enumerated journey links must preselect the correct stage and adviser.
+for(const [code,description] of [
+ ["splata","Nadal spłacam kredyt konsumencki w PLN"],
+ ["splacony","Kredyt konsumencki został już spłacony"],
+ ["wczesniejsza","Spłaciłem/am kredyt przed terminem"],
+ ["odmowa","Kredytodawca odmówił uznania SKD"]
+]){
+ const host=new Node("host");
+ const doc={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?"Kredyt w PLN / SKD":""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:value=>({tag:"text",textContent:value})
+ };
+ const win={location:{search:"?etap="+code+"&utm_source=facebook"}};
+ runInNewContext(source,{document:doc,window:win,navigator:{},URLSearchParams,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const wrap=visit(form,n=>n.className==="contact-stage");
+ const stageLabel=visit(form,n=>n.htmlFor===stage.id);
+ const callback=visit(form,n=>n.autocomplete==="tel");
+ const direct=visit(form,n=>n.className==="contact-direct-alternatives");
+ assert.equal(service.value,"Kredyt w PLN / SKD");
+ assert.equal(stage.value,description,"SKD stage must match trusted code "+code);
+ assert.equal(stageLabel.textContent,"Na jakim etapie jest sprawa kredytu PLN?");
+ assert.equal(wrap.hidden,false);
+ assert.equal(callback.required,true,"SKD always requires a phone number");
+ assert.ok(visit(direct,n=>n.href==="tel:+48796441345"),"SKD callback must call Wojciech");
+ assert.ok(visit(direct,n=>n.href?.startsWith("mailto:wojciech.obieglo@votum-ds.pl")),"SKD email must reach Wojciech");
+}
+console.log("SKD_FORM_STAGE_OK: 4 safe stages, validated callback and adviser.");
+
 console.log("OK: contact leads, delivery fallback, UTM/lead-path, and five validated chatbot stage preselection cases.");

@@ -20,6 +20,7 @@ jobs:
         run: |
           node --check v2/skd-copy-email.js
           node --check scripts/test-skd-mailto.mjs
+          node --check scripts/test-skd-journey.mjs
           node --check v2/contact.js
           node --check v2/mobile-service-cta.js
           node --check scripts/test-mobile-service-cta.mjs
@@ -91,6 +92,8 @@ jobs:
           node --check scripts/test-network-brand.mjs
       - name: Test szkicu e-mail SKD i numeru telefonu bez wysyłania wiadomości
         run: node scripts/test-skd-mailto.mjs
+      - name: Kontrola czterech ścieżek SKD, poprawnego doradcy i podstaw prawnych
+        run: node scripts/test-skd-journey.mjs
       - name: Testy formularza API bez wysyłania e-maili
         run: node scripts/test-contact.mjs
       - name: Przetestuj generator kampanii bez połączenia z siecią

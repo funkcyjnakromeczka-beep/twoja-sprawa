@@ -1,0 +1,17 @@
+/* Cztery ścieżki kontaktu SKD — bez skryptów i zbierania danych. */
+.skd-journey{margin:34px auto;padding:26px;background:#f8fafb;color:#183846;border:1px solid #cbd9df;border-radius:18px}
+.skd-journey>.eyebrow{color:#285967}
+.skd-journey h2{color:#153746;margin:8px 0 14px}
+.skd-journey>p{max-width:74ch;line-height:1.62;color:#294d5c}
+.skd-journey-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:22px 0}
+.skd-journey-card{display:flex;flex-direction:column;gap:9px;min-width:0;min-height:184px;padding:18px;border:1px solid #b6c9d0;border-radius:13px;background:#fff;color:#173a4a!important;text-decoration:none!important;line-height:1.5}
+.skd-journey-card strong{color:#173a4a;font-size:1.07rem}
+.skd-journey-card span{color:#355767}
+.skd-journey-num{color:#235e66!important;font-weight:800;letter-spacing:.12em;font-size:.83rem}
+.skd-journey-card .skd-journey-action{margin-top:auto;color:#145b68;font-weight:700}
+.skd-journey-card:hover{border-color:#387d88;box-shadow:0 5px 16px #17374912}
+.skd-journey-card:focus-visible{outline:3px solid #075e79;outline-offset:3px}
+.skd-journey-foot{font-size:.94rem}
+.skd-journey-foot a{color:#145b68;font-weight:700}
+@media(max-width:660px){.skd-journey{margin:22px 12px;padding:18px}.skd-journey-grid{grid-template-columns:1fr;gap:11px}.skd-journey-card{min-height:unset}}
+@media(prefers-reduced-motion:no-preference){.skd-journey-card{transition:border-color .15s,box-shadow .15s}}

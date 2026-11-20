@@ -86,6 +86,16 @@
   const serviceFromLink=serviceAlias[(campaignParams.get("usluga")||"").toLowerCase()]||"";
   for(const name of services){const option=document.createElement("option");option.value=name;option.textContent=name==="Kredyt w PLN / SKD"?"Sankcja Kredytu Darmowego (SKD) — kredyt PLN":name;if(name===(current||serviceFromLink))option.selected=true;select.append(option);}
   form.append(label,select);
+  // The full service forms offer helpful preparation guidance first, but a
+  // visitor should be able to skip optional guides and leave contact promptly.
+  // No fields, disclosures, validation or consent are bypassed.
+  let jumpToContact=null;
+  if(!compactHome){
+   jumpToContact=document.createElement("a");
+   jumpToContact.className="contact-fast-track";
+   jumpToContact.textContent="Przejdź do danych kontaktowych";
+   form.append(jumpToContact);
+  }
   const people=document.createElement("p");people.className="contact-people";if(compactHome)people.hidden=true;form.append(people);
   const updatePeople=()=>{
    people.replaceChildren();
@@ -317,6 +327,14 @@
   });
   updateContextNotice();
   const name=field("Imię","text",true,80,"given-name");name.enterKeyHint="next";
+  if(jumpToContact){
+   jumpToContact.href="#"+name.id;
+   jumpToContact.addEventListener("click",event=>{
+    event.preventDefault();
+    name.focus();
+    name.scrollIntoView?.({block:"nearest",behavior:"auto"});
+   });
+  }
   const checkName=()=>{const valid=Boolean(name.value.trim());name.setCustomValidity(valid?"":"Wpisz imię, abyśmy mogli się do Ciebie zwrócić.");return valid;};
   name.addEventListener("input",()=>{if(name.value.trim())name.setCustomValidity("");});
   const city=field("Miejscowość (opcjonalnie)","text",false,100,"address-level2");city.enterKeyHint="next";

@@ -30,11 +30,13 @@ for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swi
   get activeElement(){return focused;}
  };
  let observerCallback=null;let observed=null;
+ const viewportCallbacks={};
+ const visualViewport={height:800,addEventListener:(name,fn)=>viewportCallbacks[name]=fn};
  class IntersectionObserver{
   constructor(cb,options){observerCallback=cb;assert.equal(options.threshold,0);}
   observe(el){observed=el;}
  }
- runInNewContext(js,{document,window:{IntersectionObserver},IntersectionObserver,setTimeout:cb=>scheduled.push(cb)});
+ runInNewContext(js,{document,window:{IntersectionObserver,innerHeight:800,visualViewport},IntersectionObserver,setTimeout:cb=>scheduled.push(cb)});
  assert.equal(body.children.length,1,variant+" should add one mobile navigation");
  const nav=body.children[0];
  assert.equal(nav.tag,"nav");
@@ -62,7 +64,13 @@ for(const [variant,phone,person] of [["szkody","+48796441345","Wojciecha"],["swi
  documentEvents["twoja-sprawa:chat-visibility"]({detail:{open:false}});
  assert.equal(nav.hidden,false,"Closing guide must restore bar: "+variant);
  assert.equal(body.classList.contains("has-visible-mobile-service-cta"),true);
+ visualViewport.height=360;viewportCallbacks.resize();
+ assert.equal(nav.hidden,true,"Android keyboard must hide the CTA before observer updates");
+ assert.equal(body.classList.contains("has-visible-mobile-service-cta"),false,"Keyboard must not reserve CTA space");
+ visualViewport.height=800;viewportCallbacks.resize();
+ assert.equal(nav.hidden,false,"CTA returns after virtual keyboard closes");
  focused=form;documentEvents.focusin({target:form});assert.equal(nav.hidden,true);
+ assert.equal(body.classList.contains("has-visible-mobile-service-cta"),false,"Focused form frees bottom space");
  documentEvents.focusout({target:form});focused=null;scheduled.shift()();assert.equal(nav.hidden,false,"Bar must reappear after leaving the form");
  observerCallback([{isIntersecting:true}]);assert.equal(nav.hidden,true,"Visible form keeps bar hidden");
  observerCallback([{isIntersecting:false}]);assert.equal(nav.hidden,false);

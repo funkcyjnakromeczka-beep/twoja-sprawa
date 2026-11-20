@@ -35,6 +35,30 @@ for(const [slug,city] of [["lubin","Lubinie"],["polkowice","Polkowicach"]]){
  assert.ok(section.includes(city),"Correct locality label missing: "+slug);
  assert.ok(!section.includes("utm_")&&!section.includes("access_key")&&!section.includes("facebook.com"),"Private or tracked referral: "+slug);
 }
+// The support and accident-pension community has one current URL across
+// its public service pages and the allowance campaign. Keep it separate
+// from the general-purpose "Twoja Sprawa" Facebook group on the homepage.
+const communityUrl="https://www.facebook.com/groups/twojasprawa.swiadczenia.renty";
+for(const path of [
+ "uslugi/swiadczenie-wspierajace.html",
+ "uslugi/renty-powypadkowe.html",
+ "kampanie/swiadczenie-wspierajace.html"
+]){
+ const html=await readFile("dist/"+path,"utf8");
+ const section=html.match(/<section class="wrap social-community"[\s\S]*?<\/section>/)?.[0]||"";
+ assert.ok(section,"Community section missing: "+path);
+ assert.equal(section.split('href="'+communityUrl+'"').length-1,1,"Current community link must occur once: "+path);
+ assert.ok(section.includes('target="_blank" rel="noopener noreferrer"'),"Community link must open safely: "+path);
+ assert.ok(section.includes("świadczeniu wspierającym i rentach powypadkowych"),"Group description missing either core topic: "+path);
+ assert.ok(section.includes("Ochrona danych"),"Community must caution against publishing personal records: "+path);
+ assert.ok(!html.includes("1774654267299204"),"Outdated group link still exposed on "+path);
+ assert.ok(!html.includes("Świadczenie Wspierające – Informacje i Pomoc"),"Outdated group name still exposed on "+path);
+}
+const homepage=await readFile("dist/index.html","utf8");
+assert.ok(homepage.includes('href="https://www.facebook.com/groups/4385749378342889/"'),
+ "General Twoja Sprawa community group should remain unchanged");
+console.log("SOCIAL_COMMUNITY_LINK_OK: three current Facebook links, relevant labels, general group preserved.");
+
 const shareJs=await readFile("v2/share-page.js","utf8");
 assert.ok(shareJs.includes("szkody-gornicze-(?:lubin|polkowice)"),"Explicit allowlist missing for regional share URLs");
 const localCss=await readFile("v2/local-mining.css","utf8");

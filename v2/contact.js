@@ -670,22 +670,25 @@
     updateDamageArea();damageArea.value=choice;syncCityQuick();
    });
   }
-  // Karty na stronie kampanii świadczenia wskazują wyłącznie jedną ze znanych
-  // faz WZON. Nie przyjmujemy tekstów wejściowych ani danych medycznych z linków.
+  // Landing pages use a closed stage-code map: only support or accident-rent cases.
+  // URL and link attributes never contain client documents or arbitrary input.
   for(const trigger of document.querySelectorAll("[data-stage-option]")){
    trigger.addEventListener("click",()=>{
     const code=trigger.getAttribute("data-stage-option");
-    const stages=stageCodes["Świadczenie wspierające"];
+    const requested=trigger.getAttribute("data-stage-service");
+    const service=requested==="renty"?"Renty powypadkowe":"Świadczenie wspierające";
+    const stages=stageCodes[service];
     const chosen=Object.prototype.hasOwnProperty.call(stages,code)?stages[code]:"";
     if(!chosen)return;
-    if(select.value!=="Świadczenie wspierające"){
-     select.value="Świadczenie wspierające";
+    if(select.value!==service){
+     select.value=service;
      updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();syncContactPreference();
     }
     syncCityQuick();
     if(stageWrap.hidden)return;
     stage.value=chosen;
     updateContextNotice();
+    updateGuidePlan();
    });
   }
   // Home only: three highlighted topic links select the same existing form, without

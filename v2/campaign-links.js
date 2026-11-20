@@ -16,6 +16,8 @@
   const linkAction = document.querySelector("[data-copy-link]");
   const postAction = document.querySelector("[data-copy-post]");
   const openAction = document.querySelector("[data-open-link]");
+  const communityPresetButtons = document.querySelectorAll?.("[data-community-preset]") || [];
+  const communityPresetStatus = document.querySelector("[data-community-preset-status]");
   const qrImage = document.querySelector("[data-campaign-qr-image]");
   const qrDownload = document.querySelector("[data-campaign-qr-download]");
   const qrCaption = document.querySelector("[data-campaign-qr-caption]");
@@ -31,7 +33,7 @@
   const flyerHint = document.querySelector("[data-flyer-hint]");
   // Reviewed public page metadata; the regression test validates the live preview.
   // Categorical, first-party information only: no user data, cookies or requests.
-  const previewCards={"/":{"title":"Szkody górnicze Lubin i Polkowice | Twoja Sprawa","description":"Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające w całej Polsce, SKD i renty. Sprawdź, jak zgłosić sprawę do SuccessTree."},"/kampanie/szkody-gornicze":{"title":"Szkody górnicze Lubin i Polkowice — zgłoś szkodę | Twoja Sprawa","description":"Pęknięcia ścian, elewacji, nierówna kostka? Zgłoś szkodę górniczą w Lubinie, Polkowicach i okolicy do wstępnej analizy. Formularz i telefon."},"/kampanie/swiadczenie-wspierajace":{"title":"Świadczenie wspierające — zostaw kontakt | Twoja Sprawa","description":"Świadczenie wspierające: pomoc w ustaleniu etapu postępowania WZON i ZUS. Zostaw kontakt bez przesyłania dokumentacji medycznej."},"/kampanie/skd":{"title":"SKD — wyślij umowę kredytową i zostaw telefon | Twoja Sprawa","description":"Sankcja Kredytu Darmowego (SKD): wyślij pełną umowę kredytu konsumenckiego w PLN i zostaw numer telefonu do wstępnej analizy."},"/kampanie/renty-powypadkowe":{"title":"Renty powypadkowe — analiza i podwyższenie | Twoja Sprawa","description":"Renta od ubezpieczyciela po wypadku? Sprawdź możliwość analizy wysokości świadczenia, zwiększonych potrzeb lub utraty zarobków. Kontakt z Pauliną."},"/uslugi/renty-powypadkowe":{"title":"Renty powypadkowe — analiza i podwyższenie | Twoja Sprawa","description":"Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia."},"/uslugi/sluzebnosc-przesylu":{"title":"Służebność przesyłu — słup na działce | Twoja Sprawa","description":"Słup, linia energetyczna lub gazociąg na działce? Poznaj dokumenty potrzebne do analizy praw operatora i możliwych roszczeń właściciela."},"/uslugi/kredyty-frankowe":{"title":"Kredyty CHF — analiza umowy frankowej | Twoja Sprawa","description":"Analiza aktywnych i spłaconych kredytów CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny."},"/lokalnie/szkody-gornicze-lubin":{"title":"Szkody górnicze Lubin — pęknięcia ścian | Twoja Sprawa","description":"Lubin i gmina Lubin: zauważyłeś pęknięcia ścian, rysy elewacji lub uszkodzone płytki? Sprawdź, jak udokumentować szkodę i zgłosić ją do analizy."},"/lokalnie/szkody-gornicze-polkowice":{"title":"Szkody górnicze Polkowice — szkody posesji | Twoja Sprawa","description":"Polkowice i gmina Polkowice: nierówna kostka brukowa, spękania elewacji i uszkodzenia posesji? Dowiedz się, jak przygotować dokumentację szkody do analizy."}};
+  const previewCards={"/":{"title":"Twoja Sprawa — szkody górnicze i świadczenie wspierające","description":"Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające w całej Polsce, SKD i renty. Sprawdź, jak zgłosić sprawę do SuccessTree."},"/kampanie/szkody-gornicze":{"title":"Szkody górnicze Lubin i Polkowice — zgłoś szkodę | Twoja Sprawa","description":"Pęknięcia ścian, elewacji, nierówna kostka? Zgłoś szkodę górniczą w Lubinie, Polkowicach i okolicy do wstępnej analizy. Formularz i telefon."},"/kampanie/swiadczenie-wspierajace":{"title":"Świadczenie wspierające — zostaw kontakt | Twoja Sprawa","description":"Świadczenie wspierające: pomoc w ustaleniu etapu postępowania WZON i ZUS. Zostaw kontakt bez przesyłania dokumentacji medycznej."},"/kampanie/skd":{"title":"SKD — wyślij umowę kredytową i zostaw telefon | Twoja Sprawa","description":"Sankcja Kredytu Darmowego (SKD): wyślij pełną umowę kredytu konsumenckiego w PLN i zostaw numer telefonu do wstępnej analizy."},"/kampanie/renty-powypadkowe":{"title":"Renty powypadkowe — analiza i podwyższenie | Twoja Sprawa","description":"Renta od ubezpieczyciela po wypadku? Sprawdź możliwość analizy wysokości świadczenia, zwiększonych potrzeb lub utraty zarobków. Kontakt z Pauliną."},"/uslugi/renty-powypadkowe":{"title":"Renty powypadkowe — analiza i podwyższenie | Twoja Sprawa","description":"Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia."},"/uslugi/sluzebnosc-przesylu":{"title":"Służebność przesyłu — słup na działce | Twoja Sprawa","description":"Słup, linia energetyczna lub gazociąg na działce? Poznaj dokumenty potrzebne do analizy praw operatora i możliwych roszczeń właściciela."},"/uslugi/kredyty-frankowe":{"title":"Kredyty CHF — analiza umowy frankowej | Twoja Sprawa","description":"Analiza aktywnych i spłaconych kredytów CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny."},"/lokalnie/szkody-gornicze-lubin":{"title":"Szkody górnicze Lubin — pęknięcia ścian | Twoja Sprawa","description":"Lubin i gmina Lubin: zauważyłeś pęknięcia ścian, rysy elewacji lub uszkodzone płytki? Sprawdź, jak udokumentować szkodę i zgłosić ją do analizy."},"/lokalnie/szkody-gornicze-polkowice":{"title":"Szkody górnicze Polkowice — szkody posesji | Twoja Sprawa","description":"Polkowice i gmina Polkowice: nierówna kostka brukowa, spękania elewacji i uszkodzenia posesji? Dowiedz się, jak przygotować dokumentację szkody do analizy."}};
   const previewTitle=document.querySelector("[data-preview-title]");
   const previewDescription=document.querySelector("[data-preview-description]");
   const previewHost=document.querySelector("[data-preview-host]");
@@ -223,6 +225,28 @@
   if (flyerPrint) {
     flyerPrint.addEventListener("click", () => {
       if (flyer && !flyer.hidden && !flyerPrint.disabled && typeof window.print === "function") window.print();
+    });
+  }
+  // Editorial presets for the user's own FB group. They only prepare a
+  // locally generated post and categorical attribution; nothing is published.
+  const communityPreset = Object.freeze({
+    swiadczenie: {service:"swiadczenie",content:"wspierajace_post"},
+    renty: {service:"renty",content:"renty_post"}
+  });
+  for (const presetButton of communityPresetButtons) {
+    presetButton.addEventListener("click", () => {
+      const preset = communityPreset[presetButton.getAttribute("data-community-preset")];
+      if (!preset) return;
+      service.value = preset.service;
+      region.value = "ogolnie";
+      channel.value = "facebook_grupa";
+      name.value = "grupa_swiadczenia_renty";
+      content.value = preset.content;
+      style.value = "educational";
+      generate();
+      if (communityPresetStatus)
+        communityPresetStatus.textContent =
+          "Przygotowano post i link UTM. Skopiuj treść poniżej i opublikuj samodzielnie w grupie. Nic nie zostało wysłane do Facebooka.";
     });
   }
   generate();

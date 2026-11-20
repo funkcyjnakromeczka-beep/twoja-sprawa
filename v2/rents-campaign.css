@@ -1,0 +1,69 @@
+/* Renty powypadkowe — lekka strona kampanii. Wykorzystuje wspólne style,
+   a poniższe reguły modyfikują wyłącznie stronę rentową. */
+.campaign-page.campaign-rents .campaign-hero{
+  background:
+    radial-gradient(ellipse at 92% 5%,rgba(188,31,59,.2),transparent 38%),
+    linear-gradient(115deg,#08182b,#16384b);
+  border-top:3px solid #c02e4c;
+}
+.campaign-page.campaign-rents .campaign-persona{
+  border-color:rgba(212,222,239,.7);
+  background:linear-gradient(125deg,#122c44,#173d51);
+}
+.campaign-page.campaign-rents .campaign-persona-photo{
+  border-color:#ced9e9;
+}
+.campaign-page.campaign-rents .campaign-info .campaign-steps{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:clamp(10px,1.8vw,18px);
+}
+.campaign-page.campaign-rents .campaign-info .campaign-steps article{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.campaign-page.campaign-rents .campaign-info .campaign-steps article h3{
+  font-size:clamp(1.05rem,1.4vw,1.2rem);
+  line-height:1.3;
+  overflow-wrap:anywhere;
+}
+.campaign-page.campaign-rents .campaign-stage-pick{
+  margin-top:auto;
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  padding:12px 8px;
+  color:#164a64;
+  font-weight:800;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+.campaign-page.campaign-rents .campaign-stage-pick:hover{color:#9b2241}
+.campaign-page.campaign-rents .campaign-stage-pick:focus-visible{
+  outline:3px solid #bf3050;
+  outline-offset:2px;
+}
+.campaign-page.campaign-rents .campaign-disclaimer{
+  color:#e5ecf5;
+}
+@media(max-width:1000px){
+  .campaign-page.campaign-rents .campaign-info .campaign-steps{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:600px){
+  .campaign-page.campaign-rents .campaign-info .campaign-steps{
+    grid-template-columns:minmax(0,1fr);
+  }
+  .campaign-page.campaign-rents .campaign-info .campaign-steps article{
+    padding:17px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .campaign-page.campaign-rents .campaign-stage-pick{transition:none}
+}
+@media print{
+  .campaign-page.campaign-rents .campaign-hero{background:#fff;color:#111}
+  .campaign-page.campaign-rents .campaign-mobile-actions{display:none!important}
+}

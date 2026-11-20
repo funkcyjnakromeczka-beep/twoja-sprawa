@@ -63,7 +63,7 @@ assert.ok(flyerArea.textContent.includes("gmina Lubin"));
 verify("szkody","polkowice","plakat","/lokalnie/szkody-gornicze-polkowice","796 441 345");
 assert.ok(flyerHeading.textContent.includes("Polkowice"));
 verify("swiadczenie","ogolnie","ulotka","/kampanie/swiadczenie-wspierajace","500 171 531");
-verify("renty","ogolnie","plakat","/uslugi/renty-powypadkowe","500 171 531");
+verify("renty","ogolnie","plakat","/kampanie/renty-powypadkowe","500 171 531");
 verify("skd","ogolnie","qr","/kampanie/skd","796 441 345");
 verify("przesyl","ogolnie","ulotka","/uslugi/sluzebnosc-przesylu","796 441 345");
 verify("franki","ogolnie","plakat","/uslugi/kredyty-frankowe","796 441 345");

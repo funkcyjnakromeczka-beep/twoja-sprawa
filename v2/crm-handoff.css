@@ -37,3 +37,13 @@
 .crm-handoff .crm-handoff-confirm input[type=checkbox]{width:20px;height:20px;min-width:20px;min-height:20px;flex:none;accent-color:#a82c4c;margin:2px 0 0;padding:0}
 .crm-handoff .crm-handoff-confirm span{font-weight:600;font-size:.92rem}
 @media(max-width:560px){.crm-handoff-import button{width:100%}}
+
+
+/* Checklist kompletności i planowany kontakt: czytelność bez danych klienta. */
+.crm-handoff .crm-handoff-checklist{display:grid;gap:11px;border:1px solid #b7cbd7;border-radius:10px;padding:14px 16px;margin:4px 0 16px;background:#fff}
+.crm-handoff .crm-handoff-checklist legend{font-weight:800;color:#163d57;padding:0 5px}
+.crm-handoff .crm-handoff-checklist label{display:flex;flex-direction:row;align-items:flex-start;gap:10px;font-weight:550;line-height:1.5}
+.crm-handoff .crm-handoff-checklist input[type=checkbox]{width:20px;height:20px;min-width:20px;min-height:20px;margin:2px 0 0;accent-color:#9f294a;padding:0}
+.crm-handoff .crm-handoff-followup{max-width:390px;margin:4px 0 18px}
+.crm-handoff .crm-handoff-followup small{font-weight:400;color:#355366;line-height:1.5}
+@media(max-width:560px){.crm-handoff .crm-handoff-followup{max-width:100%}}

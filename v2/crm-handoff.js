@@ -31,7 +31,10 @@
    prepared=api.note({
     ref:get("ref").value,service:get("service").value,
     source:get("source").value,campaign:get("campaign").value,status:get("status").value,
-    confirmed:get("confirmed")?.checked===true
+    confirmed:get("confirmed")?.checked===true,
+    received:get("received")?.checked===true,
+    checkedDuplicates:get("checkedDuplicates")?.checked===true,
+    followUp:get("followUp")?.value||""
    });
    output.value=prepared;
    copy.disabled=false;

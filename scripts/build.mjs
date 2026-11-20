@@ -303,8 +303,9 @@ function stripCssComments(css){
  // Preserve all token separators: the newline stays intact, only
  // indentation at the beginning of each line is removed from production.
  // This does not touch quoted CSS strings, URLs, selectors or declarations.
+ // Collapse repeated empty lines in generated CSS; do not alter source files.
  const commentFree=result+css.slice(start);
- return commentFree.replace(/^[ \t]+/gm,"");
+ return commentFree.replace(/^[ \t]+/gm,"").replace(/\n{2,}/g,"\n");
 }
 // Combine home CSS in source cascade order. Keep separate CSS for service pages.
 const homeStyleOrder=["styles.css","premium-v2.css","portrait-upgrade.css","journey.css",

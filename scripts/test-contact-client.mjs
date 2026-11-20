@@ -375,6 +375,45 @@ assert.ok(!/localStorage|sessionStorage|document\.cookie|sendBeacon/.test(source
  assert.equal(payloads[0].case_stage,"Mam decyzję WZON","Lead must carry the selected WZON stage");
  assert.ok(!("damage_area" in payloads[0]),"WZON leads must not include mining damage category");
 }
+// Rent campaign: stage cards route to Paulina and choose the validated case stage.
+for(const [code,expected] of [
+ ["nowa","Nie otrzymuję jeszcze renty"],
+ ["podwyzszenie","Mam rentę i chcę sprawdzić jej podwyższenie"],
+ ["odmowa","Ubezpieczyciel odmówił ustalenia lub zmiany renty"],
+ ["ugoda","Otrzymałem/am propozycję ugody lub kapitalizacji"]
+]){
+ const host=new Node("host");
+ const stageButton=new Node("a");
+ stageButton.getAttribute=key=>key==="data-stage-option"?code:key==="data-stage-service"?"renty":null;
+ const document={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:key=>key==="data-service"?"Renty powypadkowe":""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-stage-option]"?[stageButton]:[],
+  createElement:tag=>new Node(tag),
+  createTextNode:text=>({tag:"text",textContent:text})
+ };
+ const window={location:{search:"?utm_source=facebook&utm_campaign=renty"},setTimeout:()=>1,clearTimeout:()=>{}};
+ const captured=[];
+ const fetch=async(_url,options)=>{captured.push(JSON.parse(options.body));return {ok:true,json:async()=>({success:true})};};
+ runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0];
+ const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const stage=visit(form,n=>n.id?.startsWith("cf-stage-"));
+ const name=visit(form,n=>n.autocomplete==="given-name");
+ const email=visit(form,n=>n.autocomplete==="email");
+ assert.equal(service.value,"Renty powypadkowe");
+ stageButton.events.click();
+ assert.equal(stage.value,expected,"Rent landing card must select the exact allowed stage "+code);
+ const direct=visit(form,n=>n.className==="contact-direct-alternatives");
+ assert.ok(visit(direct,n=>n.href==="tel:+48500171531"),"Rent campaign must give Paulina phone");
+ name.value="Test";email.value="test@example.com";
+ await form.events.submit({preventDefault(){}});
+ assert.equal(captured.length,1,"Card must never submit an extra lead");
+ assert.equal(captured[0].case_stage,expected,"Rent lead stage mismatch "+code);
+ assert.equal(captured[0].advisor,"Paulina Chandrała","Rent lead assigned to wrong adviser");
+}
+console.log("RENT_CAMPAIGN_CONTACT_OK: four explicit stages, contact Paulina, no duplicate test leads.");
+
 const supportLanding=await readFile("v2/kampanie/swiadczenie-wspierajace.html","utf8");
 assert.equal((supportLanding.match(/data-stage-option="/g)||[]).length,3,"Support landing must have three stage shortcuts");
 for(const value of ["wniosek","oczekiwanie","decyzja"]){

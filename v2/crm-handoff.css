@@ -1,0 +1,30 @@
+/* Ręczne przenoszenie anonimowego kodu do CRM; styl oszczędny i mobilny. */
+.crm-handoff{
+  background:#f8fafc;color:#1a3547;
+  border:1px solid #c5d3dc;border-top:3px solid #b82549;
+  border-radius:16px;padding:clamp(18px,3vw,30px);
+  margin:22px auto 50px;max-width:1100px
+}
+.crm-handoff h2{color:#193c4e;margin-top:8px;line-height:1.25}
+.crm-handoff p{color:#24465a;line-height:1.58}
+.crm-handoff .eyebrow{color:#8a2041}
+.crm-handoff-privacy{padding:13px 15px;border-left:4px solid #375e80;background:#edf3f8;border-radius:7px}
+.crm-handoff-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:18px 0}
+.crm-handoff label{display:flex;flex-direction:column;gap:7px;font-weight:700;min-width:0;color:#193b4d}
+.crm-handoff input,.crm-handoff select,.crm-handoff textarea{
+  box-sizing:border-box;width:100%;max-width:100%;background:#fff;color:#172f41;
+  border:1px solid #849db0;border-radius:8px;padding:10px 12px;
+  min-height:44px;font:inherit
+}
+.crm-handoff textarea{font:.86rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical;min-height:185px;overflow-wrap:anywhere}
+.crm-handoff button{min-height:44px;padding:11px 15px;border-radius:8px;border:1px solid #21556f;background:#174a69;color:#fff;font:700 1rem system-ui,sans-serif;cursor:pointer}
+.crm-handoff button:hover:not(:disabled){background:#0c354f}
+.crm-handoff button:disabled{opacity:.55;cursor:not-allowed}
+.crm-handoff :is(input,select,textarea,button,a):focus-visible{outline:3px solid #b92c4e;outline-offset:3px}
+.crm-handoff-result{margin-top:20px}
+.crm-handoff-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:12px 0}
+.crm-handoff-actions a{display:inline-flex;align-items:center;min-height:44px;padding:9px 14px;border:1px solid #21556f;border-radius:8px;background:#fff;color:#174a69;text-decoration:underline;font-weight:700}
+.crm-handoff-status{min-height:1.5em;font-weight:650;color:#174a69!important}
+@media(max-width:920px){.crm-handoff-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.crm-handoff-fields{grid-template-columns:1fr}.crm-handoff{margin:18px 12px 30px}.crm-handoff-actions>*{width:100%;justify-content:center}}
+@media print{.crm-handoff-form,.crm-handoff-actions{display:none!important}.crm-handoff{border:0;color:#111;background:#fff}}

@@ -32,7 +32,7 @@ assert.equal(breakdown.qualified,9);
 assert.equal(breakdown.clients,4);
 assert.equal(breakdown.sources.length,2);
 assert.equal(breakdown.campaigns.length,2);
-assert.deepEqual(breakdown.campaigns.map(x=>x.campaign),["lokalna_pomoc","post_2"],"Campaign ranking sorts signed clients, then qualified and leads");
+assert.equal([...breakdown.campaigns].map(x=>x.campaign).join("|"),"lokalna_pomoc|post_2","Campaign ranking sorts signed clients, then qualified and leads");
 const repeatedLabel=core.normalize({...a,service:"renty",source:"facebook",leads:"5",qualified:"3",clients:"1"});
 const ranked=core.summarize([x,repeatedLabel],"wszystkie");
 assert.equal(ranked.campaigns.length,2,"Identical campaign names across services must not merge");

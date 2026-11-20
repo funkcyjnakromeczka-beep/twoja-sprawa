@@ -36,6 +36,7 @@ const routes=[
  "", // Homepage: Google Business Profile destination.
  "kampanie/szkody-gornicze",
  "kampanie/swiadczenie-wspierajace",
+ "kampanie/renty-powypadkowe",
  "kampanie/skd",
  "uslugi/renty-powypadkowe",
  "uslugi/sluzebnosc-przesylu",
@@ -86,4 +87,4 @@ for(const piece of ["szkody-gornicze.html","swiadczenie-wspierajace.html","skd.h
 // promotional banner, and stays unchanged when the campaign builder evolves.
 const guide=await read("wiedza/ugoda-z-kopalnia-co-sprawdzic");
 assert.ok(!get(guide,"og:image")[0].includes("og-twoja-sprawa-votum"),"Do not change guide previews globally");
-console.log("OG_FACEBOOK_OK: 1536x803 self-hosted image, 12 campaign and service destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");
+console.log("OG_FACEBOOK_OK: 1536x803 self-hosted image, 13 campaign and service destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");

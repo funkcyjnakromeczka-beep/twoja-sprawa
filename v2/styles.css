@@ -655,3 +655,13 @@ h3{line-height:1.25}
 .contact-form .contact-validation-notice[hidden]{display:none!important}
 .contact-form :is(input,select,textarea)[aria-invalid="true"]{border:2px solid #b0354d!important}
 @media(max-width:600px){.contact-form :is(input,select,textarea){font-size:16px;scroll-margin-top:90px;scroll-margin-bottom:130px}}
+
+/* Mobile form: prevent horizontal scroll and keep submission comfortably tappable. */
+@media(max-width:600px){
+ .contact-form{box-sizing:border-box;width:100%;max-width:100%;min-width:0;padding:clamp(14px,4vw,20px)}
+ .contact-form :is(input:not([type=checkbox]),select,textarea){min-width:0;max-width:100%;min-height:48px;font-size:16px}
+ .contact-form>button[type=submit]{justify-self:stretch;width:100%;min-height:52px;margin-top:10px}
+ .contact-form .check{min-height:44px;align-items:center}
+ .contact-form .check input{width:22px;height:22px;flex:0 0 22px}
+ .contact-form :is(.contact-validation-notice,.contact-status-error,.contact-status-success){overflow-wrap:anywhere}
+}

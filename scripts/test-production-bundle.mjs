@@ -293,6 +293,37 @@ for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampani
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="noindex,follow"'),"excluded page accidentally indexable: "+path);
 }
+// All six primary services must publish one canonical breadcrumb trail.
+// Google uses this markup to understand page hierarchy, not as a ranking guarantee.
+for(const [slug,label] of [
+ ["szkody-gornicze","Szkody górnicze"],
+ ["swiadczenie-wspierajace","Świadczenie wspierające"],
+ ["renty-powypadkowe","Renty powypadkowe"],
+ ["kredyty-pln","Sankcja Kredytu Darmowego (SKD)"],
+ ["kredyty-frankowe","Kredyty frankowe CHF"],
+ ["sluzebnosc-przesylu","Służebność przesyłu"]
+]){
+ const path="uslugi/"+slug+".html";
+ const html=await read(path);
+ const canonical=origin+"/uslugi/"+slug;
+ const head=html.slice(0,html.indexOf("</head>"));
+ assert.ok(head.includes('rel="canonical" href="'+canonical+'"'),"Canonical mismatch for "+path);
+ const schemas=[...head.matchAll(/<script[^>]*type="application\\/ld\\+json"[^>]*>([\\s\\S]*?)<\\/script>/g)]
+  .map(match=>JSON.parse(match[1]));
+ const crumbs=schemas.filter(item=>item["@type"]==="BreadcrumbList");
+ assert.equal(crumbs.length,1,"Exactly one breadcrumb schema expected for "+path);
+ assert.equal(crumbs[0].itemListElement.length,2,"Breadcrumb path should contain site and service: "+path);
+ assert.equal(crumbs[0].itemListElement[0].item,origin+"/","Breadcrumb home URL mismatch: "+path);
+ assert.equal(crumbs[0].itemListElement[1].item,canonical,"Breadcrumb URL mismatch: "+path);
+ assert.equal(crumbs[0].itemListElement[1].name,label,"Breadcrumb service label mismatch: "+path);
+ assert.ok(html.includes('name="robots" content="index,follow'),"Primary service must remain indexable: "+path);
+}
+const homeSeoTitle=home.match(/<title>([^<]+)<\\/title>/)?.[1]||"";
+const miningSeoTitle=(await read("uslugi/szkody-gornicze.html")).match(/<title>([^<]+)<\\/title>/)?.[1]||"";
+assert.notEqual(homeSeoTitle,miningSeoTitle,"Homepage and mining service require distinct descriptive titles");
+assert.ok(homeSeoTitle.includes("świadczenie wspierające"),"Homepage must describe both flagship services");
+console.log("SERVICE_BREADCRUMBS_OK: six canonical trails, unique homepage title, indexable service pages.");
+
 // Build-level regression: the UTM module must never attach twice.
 for(const target of ["index.html","kontakt.html","faq.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","kampanie/renty-powypadkowe.html","kampanie/skd.html"]){
  const html=await read(target);

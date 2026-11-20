@@ -163,7 +163,7 @@
  display:block;color:#173747;font-weight:800;font-size:1rem;line-height:1.4;
 }
 .premium-v2 #kontakt .contact-shortcuts-actions{
- display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:11px 0 9px;
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:11px 0 9px;
 }
 .premium-v2 #kontakt .contact-shortcuts-actions a{
  display:flex;align-items:center;justify-content:center;
@@ -189,6 +189,9 @@
  min-height:0;margin:7px 0 0;color:#204e3f;font-size:.86rem;font-weight:750;
 }
 .premium-v2 #kontakt [data-contact-shortcut-status]:empty{display:none}
+@media(min-width:571px) and (max-width:850px){
+ .premium-v2 #kontakt .contact-shortcuts-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:570px){
  .premium-v2 #kontakt .contact-service-shortcuts{margin:15px auto 0;padding:14px}
  .premium-v2 #kontakt .contact-shortcuts-actions{grid-template-columns:minmax(0,1fr);gap:8px}

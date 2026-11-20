@@ -4139,3 +4139,16 @@ html{scroll-padding-top:16px}
 .social-community .social-community-platform .social-brand-icon{
   display:block;flex:0 0 27px;width:27px;height:27px;border-radius:6px;
 }
+
+/* BRAND-SUBPAGES-20261120: subtelna srebrno-czerwona ciągłość identyfikacji. 
+   Nie zmieniaj barw tematycznych wsparcia ani treści porad prawnych. */
+.premium-subpage .subhero{
+  border-top:3px solid #c3314d;
+}
+.premium-subpage .subhero :is(a,button):focus-visible{
+  outline:3px solid #f2e6ed;
+  outline-offset:4px;
+}
+@media print{
+  .premium-subpage .subhero{border-top-color:#999}
+}

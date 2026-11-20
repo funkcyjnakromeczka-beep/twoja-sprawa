@@ -238,16 +238,16 @@ function upsertSocialMetadata(markup,route,origin){
     "/lokalnie/szkody-gornicze-polkowice.html"
   ]);
   const branded=brandedRoutes.has(route);
-  const image=origin+"/assets/"+(branded?"og-twoja-sprawa-votum-odszkodowania-v2.jpg":(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg"));
-  const imageAlt=branded?"Twoja Sprawa — Votum Odszkodowania; grafika serwisu niezależnego przedstawiciela współpracującego z VOTUM":person+" — osoba do pierwszego kontaktu, Twoja Sprawa";
+  const image=origin+"/assets/"+(branded?"og-twoja-sprawa-metallic-v1.jpg":(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg"));
+  const imageAlt=branded?"Twoja Sprawa — VOTUM Odszkodowania; SuccessTree — współpraca agencyjna z VOTUM":person+" — osoba do pierwszego kontaktu, Twoja Sprawa";
   setContent("property","og:title",title);
   if(description)setContent("property","og:description",description);
   setContent("property","og:image",image);
   setContent("property","og:image:secure_url",image);
   setContent("property","og:image:type","image/jpeg");
   if(branded){
-    setContent("property","og:image:width","1200");
-    setContent("property","og:image:height","630");
+    setContent("property","og:image:width","1536");
+    setContent("property","og:image:height","803");
   }
   setContent("property","og:image:alt",imageAlt);
   setContent("name","twitter:card","summary_large_image");

@@ -51,6 +51,7 @@
 <h2 id="crm-handoff-heading">Przygotuj notatkę do CRM bez danych osobowych</h2>
 <p>Po otrzymaniu zgłoszenia sprawdź wiadomość Web3Forms i ewentualny istniejący rekord klienta. Wprowadź <strong>wyłącznie kod TS</strong> oraz metadane sprawy, a następnie skopiuj notatkę do CRM. Opiekun jest przypisany automatycznie do rodzaju usługi. <strong>To nie jest automatyczna integracja.</strong></p>
 <p class="crm-handoff-privacy"><strong>Ochrona danych:</strong> nie wpisuj imienia, numeru telefonu, adresu e-mail, diagnozy, PESEL ani treści dokumentów. Narzędzie nie wysyła ani nie zapisuje danych, także po odświeżeniu strony. Kod zgłoszenia może umożliwiać powiązanie z klientem — korzystaj tylko na zaufanym urządzeniu.</p>
+<div class="crm-handoff-import"><button type="button" data-crm-from-campaign>Użyj danych z generatora kampanii</button><small>Skopiuje do poniższego formularza tylko usługę, źródło i identyfikator UTM z aktualnego linku. Kod TS, status i potwierdzenia uzupełniasz samodzielnie. Nie przejmuje danych klientów.</small></div>
 <form data-crm-handoff class="crm-handoff-form" aria-label="Przygotuj notatkę przekazania">
 <div class="crm-handoff-fields">
 <label>Kod zgłoszenia TS <input name="ref" required type="text" maxlength="24" placeholder="TS-20261120-ABCDEF123456" autocomplete="off" spellcheck="false"></label>
@@ -59,6 +60,7 @@
 <label>Kampania UTM (opcjonalnie) <input name="campaign" type="text" maxlength="40" placeholder="np. renty_rolka_3" autocomplete="off" spellcheck="false"></label>
 <label>Status sprawy <select name="status" required><option value="">Wybierz status</option><option value="nowe">Nowe zgłoszenie</option><option value="kontakt">Kontakt nawiązany</option><option value="dokumenty">Oczekiwanie na dokumenty</option><option value="analiza">Wstępna analiza</option><option value="przekazane">Przekazane do VOTUM (po potwierdzeniu)</option><option value="umowa">Umowa podpisana (po potwierdzeniu)</option><option value="zamkniete">Sprawa zamknięta</option></select></label>
 </div>
+<label class="crm-handoff-confirm"><input name="confirmed" type="checkbox" value="tak"> <span>Jeżeli wybieram „Przekazane do VOTUM” lub „Umowa podpisana”, potwierdzam zgodność statusu z dokumentami. Bez tego nie oznaczaj sprawy jako zakończonej sukcesem.</span></label>
 <button type="submit">Przygotuj notatkę do CRM</button>
 </form>
 <label class="crm-handoff-result">Notatka do ręcznego przeniesienia <textarea data-crm-note rows="10" readonly placeholder="Najpierw wprowadź kod zgłoszenia i wybierz kategorię sprawy."></textarea></label>

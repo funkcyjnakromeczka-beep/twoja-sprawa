@@ -52,7 +52,21 @@
     }
     const sources=[...bySource.entries()].map(([source,records])=>({source,...total(records)}))
       .sort((a,b)=>b.leads-a.leads||a.source.localeCompare(b.source));
-    return {count:chosen.length,...total(chosen),sources};
+    // Kampania jest jednoznaczna dopiero łącznie z usługą i źródłem.
+    // Nie mieszaj identycznych nazw z różnych kampanii ani dat; bez kontaktów klientów.
+    const byCampaign=new Map();
+    for(const x of chosen){
+      const k=[x.service,x.source,x.campaign].join("|");
+      if(!byCampaign.has(k))byCampaign.set(k,[]);
+      byCampaign.get(k).push(x);
+    }
+    const campaigns=[...byCampaign.values()].map(records=>({
+      service:records[0].service,source:records[0].source,campaign:records[0].campaign,
+      ...total(records)
+    })).sort((a,b)=>b.clients-a.clients||b.qualified-a.qualified||
+      b.leads-a.leads||a.service.localeCompare(b.service)||
+      a.source.localeCompare(b.source)||a.campaign.localeCompare(b.campaign));
+    return {count:chosen.length,...total(chosen),sources,campaigns};
   }
   function csv(rows){
     const list=rows.map(normalize);

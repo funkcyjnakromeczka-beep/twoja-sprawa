@@ -18,6 +18,9 @@
   const openAction = document.querySelector("[data-open-link]");
   const communityPresetButtons = document.querySelectorAll?.("[data-community-preset]") || [];
   const communityPresetStatus = document.querySelector("[data-community-preset-status]");
+  const platformNote = document.querySelector("[data-platform-note]");
+  const platformPresetButtons = document.querySelectorAll?.("[data-platform-preset]") || [];
+  const platformPresetStatus = document.querySelector("[data-platform-preset-status]");
   const qrImage = document.querySelector("[data-campaign-qr-image]");
   const qrDownload = document.querySelector("[data-campaign-qr-download]");
   const qrCaption = document.querySelector("[data-campaign-qr-caption]");
@@ -143,7 +146,20 @@
         ? (chosenRegion?.hook || hooks[service.value]) + "\n\n" + publicationText
         : publicationText;
     const contactFooter = service.value === "skd" ? "Umowa kredytowa: wojciech.obieglo@votum-ds.pl\nTelefon: 796 441 345" : "Kontakt: " + (["swiadczenie", "renty"].includes(service.value) ? "500 171 531" : "796 441 345");
-    postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + contactFooter;
+    // Plain URLs in Instagram/TikTok captions are not reliable clickable links.
+    // Keep the tagged URL separately for a profile link or Story link sticker
+    // where the platform/account permits it. Give readers a manual fallback.
+    const captionOnly = selectedChannel === "instagram" || selectedChannel === "tiktok";
+    const captionContact = captionOnly
+      ? "Informacje: twoja-sprawa.pages.dev (wpisz adres w przeglądarce)"
+      : target.href;
+    postOutput.value = selectedText + "\n\n" + captionContact + "\n\n" + contactFooter;
+    if (platformNote) {
+      platformNote.hidden = !captionOnly;
+      platformNote.textContent = !captionOnly ? "" : selectedChannel === "instagram"
+        ? "Instagram: adres w zwykłym opisie posta lub rolki zazwyczaj nie jest klikalny. Skopiuj link UTM z pola powyżej i dodaj go do linków profilu albo naklejki linku w Stories. Nie pisz „link w bio”, dopóki naprawdę go tam nie ustawisz. Wpisanie krótkiego adresu ręcznie nie przeniesie parametrów UTM."
+        : "TikTok: adres w opisie filmu zwykle nie jest klikalny. Skopiuj link UTM z pola powyżej do strony WWW profilu tylko wtedy, gdy Twoje konto udostępnia taką funkcję. W przeciwnym razie widz może wpisać krótki adres w przeglądarce lub zadzwonić. Ręczne wejście bez UTM nie przypisze źródła kampanii.";
+    }
     openAction.href = target.href;
     // Generate QR locally, using exactly the public UTM link shown to the user.
     // No remote QR service, extra tracker, cookies, or storing client data.
@@ -247,6 +263,29 @@
       if (communityPresetStatus)
         communityPresetStatus.textContent =
           "Przygotowano post i link UTM. Skopiuj treść poniżej i opublikuj samodzielnie w grupie. Nic nie zostało wysłane do Facebooka.";
+    });
+  }
+  // One-click organic presets. Explicit user click is the only trigger;
+  // no external publish, message, profile edit, localStorage or telemetry.
+  const platformPresets = Object.freeze({
+    "tiktok-szkody": {service:"szkody",channel:"tiktok",campaign:"tiktok_szkody",variant:"wideo_1"},
+    "instagram-szkody": {service:"szkody",channel:"instagram",campaign:"instagram_szkody",variant:"rolka_1"},
+    "instagram-skd": {service:"skd",channel:"instagram",campaign:"instagram_skd",variant:"rolka_1"}
+  });
+  for (const button of platformPresetButtons) {
+    button.addEventListener("click", () => {
+      const preset = platformPresets[button.getAttribute("data-platform-preset")];
+      if (!preset) return;
+      service.value = preset.service;
+      region.value = "ogolnie";
+      channel.value = preset.channel;
+      name.value = preset.campaign;
+      content.value = preset.variant;
+      style.value = "short";
+      generate();
+      if (platformPresetStatus)
+        platformPresetStatus.textContent =
+          "Przygotowano opis i osobny link UTM. Wybierz, gdzie w profilu możesz umieścić klikalny odnośnik. Niczego nie opublikowano.";
     });
   }
   generate();

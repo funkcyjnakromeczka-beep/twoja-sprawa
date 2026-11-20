@@ -3,7 +3,8 @@
   "use strict";
   const services=["szkody","swiadczenie","skd","renty","przesyl","franki"];
   const sources=["facebook","instagram","tiktok","google","ulotka","plakat","qr","polecenie","organiczne","strona","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","inne","nieoznaczone"];
-  const header="date,service,source,campaign,leads,qualified,clients";
+  const header="date,service,source,campaign,variant,leads,qualified,clients";
+  const legacyHeader="date,service,source,campaign,leads,qualified,clients";
   const maxRows=300;
   function integer(value){
     const s=String(value??"").trim();
@@ -26,11 +27,13 @@
     if(!services.includes(service)||!sources.includes(source))throw Error("Wybierz jedną z dostępnych usług i źródeł.");
     const campaign=String(input.campaign??"").trim().toLowerCase()||"bez_kampanii";
     if(!/^[a-z0-9_-]{1,40}$/.test(campaign))throw Error("Kampania: maksymalnie 40 znaków a-z, 0-9, _ lub -. Nie wpisuj danych osobowych.");
+    const variant=String(input.variant??"").trim().toLowerCase()||"bez_wariantu";
+    if(!/^[a-z0-9_-]{1,40}$/.test(variant))throw Error("Wariant publikacji: maksymalnie 40 znaków a-z, 0-9, _ lub -. Nie wpisuj danych osobowych.");
     const leads=integer(input.leads),qualified=integer(input.qualified),clients=integer(input.clients);
     if(qualified>leads||clients>qualified)throw Error("Umowy nie mogą przekraczać leadów kwalifikowanych, a kwalifikowane — wszystkich leadów.");
-    return {date,service,source,campaign,leads,qualified,clients};
+    return {date,service,source,campaign,variant,leads,qualified,clients};
   }
-  const key=x=>[x.date,x.service,x.source,x.campaign].join("|");
+  const key=x=>[x.date,x.service,x.source,x.campaign,x.variant].join("|");
   function upsert(rows,item){
     const entry=normalize(item),list=rows.map(normalize);
     const i=list.findIndex(x=>key(x)===key(entry));
@@ -52,38 +55,41 @@
     }
     const sources=[...bySource.entries()].map(([source,records])=>({source,...total(records)}))
       .sort((a,b)=>b.leads-a.leads||a.source.localeCompare(b.source));
-    // Kampania jest jednoznaczna dopiero łącznie z usługą i źródłem.
+    // Wariant utm_content rozróżnia dwie rolki w obrębie jednej kampanii.
     // Nie mieszaj identycznych nazw z różnych kampanii ani dat; bez kontaktów klientów.
     const byCampaign=new Map();
     for(const x of chosen){
-      const k=[x.service,x.source,x.campaign].join("|");
+      const k=[x.service,x.source,x.campaign,x.variant].join("|");
       if(!byCampaign.has(k))byCampaign.set(k,[]);
       byCampaign.get(k).push(x);
     }
     const campaigns=[...byCampaign.values()].map(records=>({
-      service:records[0].service,source:records[0].source,campaign:records[0].campaign,
+      service:records[0].service,source:records[0].source,campaign:records[0].campaign,variant:records[0].variant,
       ...total(records)
     })).sort((a,b)=>b.clients-a.clients||b.qualified-a.qualified||
       b.leads-a.leads||a.service.localeCompare(b.service)||
-      a.source.localeCompare(b.source)||a.campaign.localeCompare(b.campaign));
+      a.source.localeCompare(b.source)||a.campaign.localeCompare(b.campaign)||a.variant.localeCompare(b.variant));
     return {count:chosen.length,...total(chosen),sources,campaigns};
   }
   function csv(rows){
     const list=rows.map(normalize);
-    return [header,...list.map(x=>[x.date,x.service,x.source,x.campaign,x.leads,x.qualified,x.clients].join(","))].join("\n")+"\n";
+    return [header,...list.map(x=>[x.date,x.service,x.source,x.campaign,x.variant,x.leads,x.qualified,x.clients].join(","))].join("\n")+"\n";
   }
   function parseCsv(raw){
     if(typeof raw!=="string"||raw.length>90000)throw Error("Plik CSV jest zbyt duży.");
     const lines=raw.replace(/^\uFEFF/,"").replaceAll("\r\n","\n").trim().split("\n");
-    if(lines.shift()!==header)throw Error("Nieprawidłowy nagłówek CSV. Importuj tylko CSV wyeksportowany z tego narzędzia.");
+    const importedHeader=lines.shift();
+    if(importedHeader!==header&&importedHeader!==legacyHeader)throw Error("Nieprawidłowy nagłówek CSV. Importuj tylko CSV wyeksportowany z tego narzędzia.");
+    const isLegacy=importedHeader===legacyHeader;
     if(lines.length>maxRows)throw Error("Import ma więcej niż 300 pozycji.");
     let rows=[];
     for(let i=0;i<lines.length;i++){
       if(!lines[i].trim())continue;
       const values=lines[i].split(",");
-      if(values.length!==7)throw Error("Nieprawidłowa liczba kolumn w wierszu "+(i+2)+".");
-      const [date,service,source,campaign,leads,qualified,clients]=values;
-      try{rows=upsert(rows,{date,service,source,campaign,leads,qualified,clients}).rows;}
+      if(values.length!==(isLegacy?7:8))throw Error("Nieprawidłowa liczba kolumn w wierszu "+(i+2)+".");
+      const [date,service,source,campaign,...tail]=values;
+      const [variant,leads,qualified,clients]=isLegacy?["bez_wariantu",...tail]:tail;
+      try{rows=upsert(rows,{date,service,source,campaign,variant,leads,qualified,clients}).rows;}
       catch(error){throw Error("Wiersz "+(i+2)+": "+error.message);}
     }
     return rows;

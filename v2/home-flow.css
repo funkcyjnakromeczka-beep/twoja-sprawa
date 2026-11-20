@@ -505,3 +505,45 @@
 @media(prefers-reduced-motion:reduce){
   .premium-v2 .hero-visual .hero-metallic-art {transition:none}
 }
+
+
+/* Brand polish: metaliczne srebro i czerwony akcent, wyłącznie wybrane
+   elementy strony głównej. Zielony wyróżnik świadczeń pozostaje bez zmian. */
+.premium-v2 .hero-glamour .hero-gold{
+  color:#f0f4fb;
+  text-shadow:0 1px 12px rgba(176,195,223,.13);
+}
+.premium-v2 .hero-glamour .eyebrow{
+  color:#e9f1fb;
+}
+.premium-v2 .hero-glamour .eyebrow:before{
+  background:linear-gradient(90deg,#ccd5e5,#d12a4a);
+}
+.premium-v2 .hero-skd-third{
+  border-color:#a9b9cd;
+  background:linear-gradient(115deg,#102039,#1a2d46);
+  box-shadow:inset 3px 0 0 #bd294a,0 9px 27px rgba(3,13,30,.28);
+}
+.premium-v2 .hero-skd-third:hover{
+  background:linear-gradient(115deg,#1a314c,#25415a);
+  border-color:#dde6f1;
+}
+.premium-v2 .hero-skd-third .hero-skd-third-symbol{
+  background:linear-gradient(120deg,#f4f7fb,#aebbcf);
+  color:#14223c;
+}
+.premium-v2 #uslugi .primary-services>.primary-card.mining-featured{
+  border-top-color:#bc2947!important;
+}
+.premium-v2 #uslugi .primary-services>.primary-card.skd-featured{
+  border-top-color:#a6b5cc!important;
+}
+@media(prefers-contrast:more){
+  .premium-v2 .hero-skd-third{
+    border-color:#fff;
+  }
+  .premium-v2 .hero-glamour .hero-gold{
+    color:#fff;
+    text-shadow:none;
+  }
+}

@@ -601,6 +601,9 @@
   form.addEventListener("invalid",event=>{
    const field=event.target;
    if(!field||field===honeypot)return;
+   // Native validation focuses the first invalid control. Keep its message
+   // instead of replacing it with the last of multiple invalid controls.
+   if(!validationNotice.hidden)return;
    // The message remains general: no names, contact details or case text.
    validationNotice.textContent="Popraw formularz przed wysłaniem. "+explainInvalid(field);
    validationNotice.hidden=false;

@@ -32,6 +32,7 @@ on:
       - 'scripts/test-lead-summary.mjs'
       - 'scripts/test-crm-handoff.mjs'
       - 'scripts/test-service-share.mjs'
+      - 'scripts/test-campaign-links.mjs'
       - 'scripts/test-geo-editorial.mjs'
       - '.github/workflows/release-candidate.yml'
   pull_request:
@@ -89,6 +90,7 @@ jobs:
           node --check scripts/test-lead-summary.mjs
           node --check scripts/test-crm-handoff.mjs
           node --check scripts/test-service-share.mjs
+          node --check scripts/test-campaign-links.mjs
           node --check scripts/test-geo-editorial.mjs
           node --check scripts/test-search-index-freshness.mjs
       - name: Zbuduj i przetestuj kandydata wydania (bez publikacji)
@@ -127,6 +129,7 @@ jobs:
           node scripts/test-lead-summary.mjs
           node scripts/test-crm-handoff.mjs
           node scripts/test-service-share.mjs
+          node scripts/test-campaign-links.mjs
           node scripts/test-geo-editorial.mjs
           node scripts/test-search-index-freshness.mjs
       - name: Identyfikator zbudowanej wersji

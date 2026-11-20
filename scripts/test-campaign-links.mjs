@@ -99,7 +99,7 @@ listeners.change();
 assert.equal(new URL(link.value).pathname,"/kampanie/szkody-gornicze","All-region default remains intact");
 check("swiadczenie","/kampanie/swiadczenie-wspierajace","500 171 531");
 assert.equal(regionControl.hidden,true,"Region selector must hide for unrelated benefit services");
-check("renty","/uslugi/renty-powypadkowe","500 171 531");
+check("renty","/kampanie/renty-powypadkowe","500 171 531");
 check("skd","/kampanie/skd","796 441 345");
 assert.ok(post.value.includes("wojciech.obieglo@votum-ds.pl"),"SKD message must offer VOTUM contract mailbox");
 assert.ok(post.value.includes("pełną umowę")&&post.value.includes("numer telefonu"),"Default SKD social post must explain full contract and callback");
@@ -179,7 +179,7 @@ assert.ok(generatorGuide.includes('href="https://www.facebook.com/groups/twojasp
 assert.ok(generatorGuide.includes("nie nastąpi automatyczna publikacja"),"Manual posting must be explicit");
 for(const [code,path,variant] of [
  ["swiadczenie","/kampanie/swiadczenie-wspierajace","wspierajace_post"],
- ["renty","/uslugi/renty-powypadkowe","renty_post"]
+ ["renty","/kampanie/renty-powypadkowe","renty_post"]
 ]){
  presetControls[code].events.click();
  const presetUrl=new URL(link.value);

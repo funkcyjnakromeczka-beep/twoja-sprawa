@@ -73,6 +73,8 @@ const run=async(error=false)=>{
  assert.equal(validationNotice.hidden,false);
  assert.ok(validationNotice.textContent.includes("Wpisz imię"));
  assert.equal(firstName.getAttribute("aria-invalid"),"true");
+ form.events.invalid({target:phone});
+ assert.ok(validationNotice.textContent.includes("Wpisz imię"),"First invalid field must remain visible");
  assert.ok(!validationNotice.textContent.includes("test@example.com"));
  form.events.input({target:firstName});
  assert.equal(validationNotice.hidden,true);

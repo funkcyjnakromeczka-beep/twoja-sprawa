@@ -232,6 +232,7 @@ function upsertSocialMetadata(markup,route,origin){
     "/uslugi/sluzebnosc-przesylu.html",
     "/uslugi/kredyty-frankowe.html",
     "/uslugi/szkody-gornicze.html",
+    "/uslugi/kredyty-pln.html",
     "/lokalnie/szkody-gornicze-lubin.html",
     "/lokalnie/szkody-gornicze-polkowice.html"
   ]);

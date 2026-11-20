@@ -24,6 +24,7 @@ on:
       - 'scripts/public-routes.mjs'
       - 'scripts/seo-policy.mjs'
       - 'scripts/test-production-bundle.mjs'
+      - 'scripts/test-brand-hero.mjs'
       - 'scripts/test-html-tags.mjs'
       - 'scripts/test-internal-links.mjs'
       - 'scripts/test-ai-referrals.mjs'
@@ -71,6 +72,7 @@ jobs:
           node --check scripts/test-1000-release-checks.mjs
           node --check scripts/test-production-bundle.mjs
           node --check scripts/test-og-facebook.mjs
+          node --check scripts/test-brand-hero.mjs
           node --check scripts/test-network-brand.mjs
           node --check scripts/test-core-metadata.mjs
           node --check scripts/test-recruitment-guide.mjs
@@ -96,6 +98,7 @@ jobs:
           node scripts/test-campaign-flyer.mjs
           node scripts/test-offline-qr.mjs
           node scripts/test-og-facebook.mjs
+          node scripts/test-brand-hero.mjs
           node scripts/test-page-navigation.mjs
           node scripts/test-media-navigation-quality.mjs
           node scripts/test-content-anchors.mjs

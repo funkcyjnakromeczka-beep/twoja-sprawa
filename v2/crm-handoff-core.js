@@ -55,6 +55,23 @@
   // fragments, names, phones, tokens or free-form text.
   return {source,campaign};
  }
+ function parseFollowUpDate(value){
+  const text=String(value||"").trim();
+  if(!text)return "";
+  if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(text))throw Error("Podaj poprawną datę kolejnego kontaktu w formacie RRRR-MM-DD.");
+  const year=Number(text.slice(0,4)),month=Number(text.slice(5,7)),day=Number(text.slice(8,10));
+  const date=new Date(Date.UTC(year,month-1,day));
+  if(year<2020||year>2100||date.getUTCFullYear()!==year||
+     date.getUTCMonth()!==month-1||date.getUTCDate()!==day)
+   throw Error("Data kolejnego kontaktu nie istnieje w kalendarzu.");
+  return text;
+ }
+ function verification(input){
+  return {
+   received:input.received===true,
+   checkedDuplicates:input.checkedDuplicates===true
+  };
+ }
  function prepare(input){
   const ref=String(input.ref||"").trim().toUpperCase();
   if(!refPattern.test(ref)||!calendarDateFromReference(ref))throw Error("Podaj pełny kod TS z prawidłową datą i 12 znakami, zgodny z potwierdzeniem.");
@@ -68,7 +85,7 @@
   if(!Object.prototype.hasOwnProperty.call(statuses,status))throw Error("Wybierz bieżący status sprawy.");
   if(["przekazane","umowa"].includes(status)&&input.confirmed!==true)
    throw Error("Przed oznaczeniem przekazania lub umowy potwierdź ten fakt w dokumentach.");
-  return {ref,service:services[service].name,advisor:services[service].advisor,source,campaign,status:statuses[status]};
+  return {ref,service:services[service].name,advisor:services[service].advisor,source,campaign,status:statuses[status],followUp:parseFollowUpDate(input.followUp),...verification(input)};
  }
  function note(input){
   const item=prepare(input);
@@ -81,9 +98,12 @@
    "Kampania UTM: "+item.campaign,
    "Etap obsługi (deklarowany): "+item.status,
    "Następny krok (zalecenie wewnętrzne): "+nextSteps[String(input.status||"")],
+   "Wpływ zgłoszenia zweryfikowany: "+(item.received?"TAK — zaznaczono ręcznie":"NIE — wymaga sprawdzenia"),
+   "Sprawdzono duplikaty w CRM: "+(item.checkedDuplicates?"TAK — zaznaczono ręcznie":"NIE — wymaga sprawdzenia"),
+   "Następny kontakt (plan wewnętrzny): "+(item.followUp||"nie ustalono"),
    "Weryfikacja: sprawdź e-mail Web3Forms i istniejącą kartę w CRM przed utworzeniem nowej.",
    "Uwaga: notatka nie potwierdza dostarczenia e-maila, podpisania umowy ani przekazania sprawy."
   ].join("\n");
  }
- root.TwojaSprawaCrmHandoff=Object.freeze({services,sources,statuses,nextSteps,prepare,note,campaignFromUrl});
+ root.TwojaSprawaCrmHandoff=Object.freeze({services,sources,statuses,nextSteps,prepare,note,campaignFromUrl,parseFollowUpDate});
 })(window);

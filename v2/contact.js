@@ -717,12 +717,12 @@
     updateGuidePlan();
    });
   }
-  // Home only: three highlighted topic links select the same existing form, without
+  // Home only: four highlighted topic links select the same existing form, without
   // creating duplicate lead forms or collecting data before explicit submission.
   const primaryShortcuts=[...document.querySelectorAll("[data-contact-shortcut]")];
   if(primaryShortcuts.length){
    const shortcutStatus=document.querySelectorAll("[data-contact-shortcut-status]")[0];
-   const pickService=code=>["szkody","swiadczenie","skd"].includes(code)?serviceAlias[code]:"";
+   const pickService=code=>["szkody","swiadczenie","skd","renty"].includes(code)?serviceAlias[code]:"";
    const syncShortcuts=()=>{
     let active=false;
     for(const link of primaryShortcuts){

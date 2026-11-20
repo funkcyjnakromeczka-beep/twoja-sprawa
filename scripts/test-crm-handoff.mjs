@@ -45,7 +45,7 @@ for(const change of [
  {campaign:"Jan Kowalski"},
  {campaign:"=IMPORTXML(x)"},
  {status:"signed_without_confirmation"}
-])assert.throws(()=>api.prepare({...sample,...change}),Error);
+])assert.throws(()=>api.prepare({...sample,...change}),/Podaj|Wybierz|Kampania/);
 assert.equal(api.prepare({...sample,campaign:""}).campaign,"brak");
 assert.ok(html.includes('id="przekazanie-do-crm"'),"Handoff visible in campaign builder");
 assert.ok(html.includes('data-crm-handoff')&&html.includes('data-crm-note')&&html.includes('data-crm-copy'));

@@ -24,9 +24,31 @@
  });
  const refPattern=/^TS-\d{8}-[A-F0-9]{12}$/;
  const codePattern=/^[a-z0-9_-]{1,40}$/;
+ function calendarDateFromReference(ref){
+  const year=Number(ref.slice(3,7)),month=Number(ref.slice(7,9)),day=Number(ref.slice(9,11));
+  const date=new Date(Date.UTC(year,month-1,day));
+  return year>=2020&&year<=2100&&date.getUTCFullYear()===year&&
+   date.getUTCMonth()===month-1&&date.getUTCDate()===day;
+ }
+ function campaignFromUrl(rawUrl,origin){
+  let url,base;
+  try{
+   base=new URL(String(origin));
+   url=new URL(String(rawUrl||""),base);
+  }catch{throw Error("Nieprawidłowy link kampanii.");}
+  if(!["https:","http:"].includes(base.protocol)||url.origin!==base.origin||
+     !["https:","http:"].includes(url.protocol))throw Error("Wybierz link z własnej witryny Twoja Sprawa.");
+  const source=(url.searchParams.get("utm_source")||"").toLowerCase().trim();
+  const campaign=(url.searchParams.get("utm_campaign")||"").toLowerCase().trim();
+  if(!sources.includes(source)||!codePattern.test(campaign))
+   throw Error("Link nie zawiera poprawnego źródła i nazwy kampanii UTM.");
+  // Import exactly two categorical tags, never unrelated URL parameters,
+  // fragments, names, phones, tokens or free-form text.
+  return {source,campaign};
+ }
  function prepare(input){
   const ref=String(input.ref||"").trim().toUpperCase();
-  if(!refPattern.test(ref))throw Error("Podaj pełny kod zgłoszenia zaczynający się od TS-, zgodny z potwierdzeniem.");
+  if(!refPattern.test(ref)||!calendarDateFromReference(ref))throw Error("Podaj pełny kod TS z prawidłową datą i 12 znakami, zgodny z potwierdzeniem.");
   const service=String(input.service||"");
   if(!Object.prototype.hasOwnProperty.call(services,service))throw Error("Wybierz jedną z sześciu usług.");
   const source=String(input.source||"");
@@ -35,6 +57,8 @@
   if(!codePattern.test(campaign))throw Error("Kampania może zawierać tylko 1–40 znaków a-z, 0-9, _ i -. Nie wpisuj danych klienta.");
   const status=String(input.status||"");
   if(!Object.prototype.hasOwnProperty.call(statuses,status))throw Error("Wybierz bieżący status sprawy.");
+  if(["przekazane","umowa"].includes(status)&&input.confirmed!==true)
+   throw Error("Przed oznaczeniem przekazania lub umowy potwierdź ten fakt w dokumentach.");
   return {ref,service:services[service].name,advisor:services[service].advisor,source,campaign,status:statuses[status]};
  }
  function note(input){
@@ -51,5 +75,5 @@
    "Uwaga: notatka nie potwierdza dostarczenia e-maila, podpisania umowy ani przekazania sprawy."
   ].join("\n");
  }
- root.TwojaSprawaCrmHandoff=Object.freeze({services,sources,statuses,prepare,note});
+ root.TwojaSprawaCrmHandoff=Object.freeze({services,sources,statuses,prepare,note,campaignFromUrl});
 })(window);

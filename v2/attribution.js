@@ -29,23 +29,34 @@
   const value=(query.get(field)||"").toLowerCase().trim();
   if(valid(value))tracking[field]=value;
  }
- document.addEventListener("click",event=>{
-  const link=event.target?.closest?.("a[href]");
-  if(!link || event.defaultPrevented || event.button!==0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.hasAttribute("download"))return;
+ // Set safe attribution on static same-origin anchors before activation.
+ // This also covers keyboard activation, context-menu "open in new tab"
+ // and middle click, which do not always dispatch an ordinary click.
+ // Dynamic links are still handled on an actual click below.
+ const tagLink=link=>{
+  if(!link||link.hasAttribute("download"))return;
   const raw=link.getAttribute("href");
-  if(!raw || raw.startsWith("#") || raw.startsWith("mailto:") || raw.startsWith("tel:") || raw.startsWith("javascript:"))return;
+  if(!raw||raw.startsWith("#")||raw.startsWith("mailto:")||raw.startsWith("tel:")||raw.startsWith("javascript:"))return;
   let target;
   try{target=new URL(raw,window.location.href);}catch{return;}
-  if(target.origin!==window.location.origin || !/^https?:$/.test(target.protocol))return;
+  if(target.origin!==window.location.origin||!/^https?:$/.test(target.protocol))return;
   const existing=(target.searchParams.get("utm_source")||"").toLowerCase().trim();
-  if(existing && existing!=="organiczne")return;
-  if(existing==="organiczne" && source==="organiczne")return;
+  if(existing&&existing!=="organiczne")return;
+  if(existing==="organiczne"&&source==="organiczne")return;
   for(const [field,value] of Object.entries(tracking))target.searchParams.set(field,value);
-  if(existing==="organiczne" && source!=="organiczne"){
+  if(existing==="organiczne"&&source!=="organiczne"){
    for(const field of ["utm_medium","utm_campaign","utm_content"]){
     if(!(field in tracking))target.searchParams.delete(field);
    }
   }
   link.href=target.href;
+ };
+ if(typeof document.querySelectorAll==="function"){
+  for(const link of document.querySelectorAll("a[href]"))tagLink(link);
+ }
+ document.addEventListener("click",event=>{
+  const link=event.target?.closest?.("a[href]");
+  if(!link || event.defaultPrevented || event.button!==0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)return;
+  tagLink(link);
  },true);
 })();

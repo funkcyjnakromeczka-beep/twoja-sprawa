@@ -60,11 +60,20 @@
 <label>Kampania UTM (opcjonalnie) <input name="campaign" type="text" maxlength="40" placeholder="np. renty_rolka_3" autocomplete="off" spellcheck="false"></label>
 <label>Status sprawy <select name="status" required><option value="">Wybierz status</option><option value="nowe">Nowe zgłoszenie</option><option value="kontakt">Kontakt nawiązany</option><option value="dokumenty">Oczekiwanie na dokumenty</option><option value="analiza">Wstępna analiza</option><option value="przekazane">Przekazane do VOTUM (po potwierdzeniu)</option><option value="umowa">Umowa podpisana (po potwierdzeniu)</option><option value="zamkniete">Sprawa zamknięta</option></select></label>
 </div>
+<fieldset class="crm-handoff-checklist"><legend>Kompletność zgłoszenia (potwierdzenia ręczne)</legend>
+<label><input name="received" type="checkbox" value="tak"><span>Sprawdziłem(-am), czy wiadomość Web3Forms dotarła lub czy zgłoszenie jest potwierdzone innym kanałem.</span></label>
+<label><input name="checkedDuplicates" type="checkbox" value="tak"><span>Wyszukałem(-am) kod TS w rzeczywistym CRM i sprawdziłem(-am), czy zgłoszenie już istnieje.</span></label>
+</fieldset>
+<label class="crm-handoff-followup">Planowana data następnego kontaktu (opcjonalnie)
+<input name="followUp" type="date" min="2020-01-01" max="2100-12-31" autocomplete="off">
+<small>Wyłącznie plan organizacyjny: bez automatycznego przypomnienia, zapisu lub ustalania terminów prawnych. Możesz pozostawić puste.</small>
+</label>
 <label class="crm-handoff-confirm"><input name="confirmed" type="checkbox" value="tak"> <span>Jeżeli wybieram „Przekazane do VOTUM” lub „Umowa podpisana”, potwierdzam zgodność statusu z dokumentami. Bez tego nie oznaczaj sprawy jako zakończonej sukcesem.</span></label>
 <button type="submit">Przygotuj notatkę do CRM</button>
 </form>
 <label class="crm-handoff-result">Notatka do ręcznego przeniesienia <textarea data-crm-note rows="10" readonly placeholder="Najpierw wprowadź kod zgłoszenia i wybierz kategorię sprawy."></textarea></label>
 <div class="crm-handoff-actions"><button type="button" data-crm-copy disabled>Skopiuj notatkę</button><a href="https://crm-sprawy-kontakty.airyzinnia.chatgpt.site/" rel="noopener noreferrer" target="_blank">Otwórz CRM (nowa karta)</a></div>
 <p class="crm-handoff-status" data-crm-status role="status" aria-live="polite"></p>
+<p><small><strong>Oznaczenia kompletności i data kontaktu</strong> są deklarowane ręcznie. Odznaczone pola stanowią informację „do sprawdzenia”; data nie jest terminem sądowym ani urzędowym. Informacje pojawiają się wyłącznie w skopiowanej notatce.</small></p>
 <p><small><strong>Przed utworzeniem sprawy:</strong> wyszukaj kod TS w CRM i skrzynce, sprawdź czy zgłoszenie nie zostało już przypisane drugiej osobie. Nie oznaczaj „umowa podpisana” ani „przekazane” bez potwierdzenia. Notatka zawiera proponowany następny krok — nie jest to automatyczne zlecenie ani potwierdzenie wykonania czynności. Narzędzie ostrzeże, jeśli ten sam kod został już skopiowany <strong>w bieżącej karcie</strong>, ale nie wykrywa duplikatów w samym CRM, innych kartach ani na innych urządzeniach. Format notatki nie jest potwierdzonym formatem importu CRM.</small></p>
 </section></main><footer><p><strong>Twoja Sprawa</strong> — SuccessTree OBIEGŁO WOJCIECH, przedstawiciel współpracujący z VOTUM. Serwis nie jest oficjalną stroną VOTUM ani kancelarią prawną.</p><a href="/v2/polityka-prywatnosci.html">Informacje o prywatności</a></footer><script src="/v2/vendor/qrcode-generator.js" defer></script><script src="/v2/campaign-links.js" defer></script><script src="/v2/lead-summary-core.js" defer></script><script src="/v2/lead-summary.js" defer></script><script src="/v2/crm-handoff-core.js" defer></script><script src="/v2/crm-handoff.js" defer></script></body></html>

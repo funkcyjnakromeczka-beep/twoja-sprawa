@@ -62,6 +62,26 @@ const run=async(error=false)=>{
  const reported=visit(form,n=>n.id?.startsWith("cf-discovery-"));
  const reportedWrap=visit(form,n=>n.className==="contact-optional-details contact-source-details");
  assert.ok(firstName&&location&&phone&&email&&method&&callback&&select&&reported&&reportedWrap);
+ // Errors that prevent native form submission must remain understandable
+ // without echoing submitted personal information or changing the server API.
+ const validationNotice=visit(form,n=>n.className==="contact-validation-notice");
+ assert.ok(validationNotice,"An accessible field-error summary must exist");
+ assert.equal(validationNotice.hidden,true);
+ assert.equal(validationNotice.attributes.role,"alert");
+ assert.ok(typeof form.events.invalid==="function");
+ form.events.invalid({target:firstName});
+ assert.equal(validationNotice.hidden,false);
+ assert.ok(validationNotice.textContent.includes("Wpisz imię"));
+ assert.equal(firstName.getAttribute("aria-invalid"),"true");
+ assert.ok(!validationNotice.textContent.includes("test@example.com"));
+ form.events.input({target:firstName});
+ assert.equal(validationNotice.hidden,true);
+ assert.equal(firstName.getAttribute("aria-invalid"),"false");
+ form.events.invalid({target:phone});
+ assert.ok(validationNotice.textContent.includes("7–15 cyfr"));
+ form.events.change({target:phone});
+ assert.equal(validationNotice.hidden,true);
+
  // Android: each primary input signals the appropriate soft keyboard and
  // advances through fields without changing the contact validation policy.
  assert.equal(firstName.enterKeyHint,"next","Name advances to next input on Android");

@@ -490,6 +490,16 @@ assert.ok(campaignQuickBar.includes('const formHasFocus=formRegion.contains(docu
  campaignQuickBar.includes('bar.hidden=overlapsForm||formHasFocus;'),
  "Campaign bottom CTA must hide when the contact form is visible or focused");
 const campaignStyles=await read("styles.css");
+// Shared contact form must remain usable on narrow 320px phones without
+// clipping fields, browser auto-zoom or undersized submit controls.
+assert.ok(campaignStyles.includes(".contact-form>button[type=submit]")&&
+ campaignStyles.includes("justify-self:stretch;width:100%;min-height:52px"),
+ "Mobile submit button must remain full width and easy to tap");
+assert.ok(campaignStyles.includes(".contact-form{box-sizing:border-box;width:100%;max-width:100%;min-width:0")&&
+ campaignStyles.includes("max-width:100%;min-height:48px;font-size:16px"),
+ "Narrow mobile forms must not overflow and must avoid input auto-zoom");
+assert.ok(campaignStyles.includes(".contact-form .check input{width:22px;height:22px"),
+ "Mobile contact consent checkbox must have a readable tap target");
 assert.ok(campaignStyles.includes(".campaign-mobile-actions[hidden]{display:none!important}")&&
  campaignStyles.includes(".campaign-page:has(.campaign-mobile-actions:not([hidden]))"),
  "Hidden campaign bar must not leave extra mobile bottom space");

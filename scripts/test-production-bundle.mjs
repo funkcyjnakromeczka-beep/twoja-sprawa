@@ -153,6 +153,22 @@ for(const page of ["index.html","kontakt.html"]){
 }
 
 
+// Indexed guides must remain contactable without JavaScript. These fallbacks
+// are replaced by the real form when it initializes successfully.
+for(const [page,telephone,email] of [
+ ["wiedza/drobne-pekniecia-szkody-gornicze.html","+48796441345","wojciech.obieglo@votum-ds.pl"],
+ ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","+48500171531","paulina.chandrala@votum-ds.pl"]
+]){
+ const html=await read(page);
+ const region=html.match(/<div data-contact-form>([\\s\\S]*?)<\\/div>/)?.[1]||"";
+ assert.ok(region.includes('class="contact-load-fallback"'),"Guide missing fallback after no-JS: "+page);
+ assert.ok(region.includes('href="tel:'+telephone+'"'),"Guide wrong fallback phone: "+page);
+ assert.ok(region.includes('href="mailto:'+email+'"'),"Guide wrong fallback e-mail: "+page);
+ assert.ok(region.includes("Wiadomość e-mail trzeba wysłać samodzielnie"),"Guide must explain mailto is not sending: "+page);
+}
+console.log("GUIDE_NOJS_FALLBACK_OK: both flagship guides retain working phone/e-mail if the form fails.");
+
+
 
 const homeBundle=await read("home-bundle.css");
 // The old partner strip is removed from production markup in favor of the

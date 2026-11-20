@@ -18,9 +18,9 @@ for (const [name,html,expectedPath] of [
   ["source",src,"/v2/assets/og-twoja-sprawa-metallic-v1.jpg"],
   ["production",built,"/assets/og-twoja-sprawa-metallic-v1.jpg"]
 ]) {
-  const visual=html.match(/<div class="hero-visual">([\\s\\S]*?)<\\/div>/)?.[1]||"";
+  const visual=html.match(/<div class="hero-visual">([\s\S]*?)<\/div>/)?.[1]||"";
   assert.ok(visual, name+" is missing the homepage hero visual");
-  assert.equal((visual.match(/<img\\b/g)||[]).length,1,name+" must contain exactly one meaningful image");
+  assert.equal((visual.match(/<img\b/g)||[]).length,1,name+" must contain exactly one meaningful image");
   assert.ok(visual.includes('src="'+expectedPath+'"'),name+" image path mismatch");
   assert.ok(visual.includes('width="1536" height="803"'),name+" missing intrinsic image dimensions");
   assert.ok(visual.includes('fetchpriority="high"'),name+" hero lacks fetch priority");

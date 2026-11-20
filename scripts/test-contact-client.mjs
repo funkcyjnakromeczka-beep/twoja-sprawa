@@ -62,6 +62,15 @@ const run=async(error=false)=>{
  const reported=visit(form,n=>n.id?.startsWith("cf-discovery-"));
  const reportedWrap=visit(form,n=>n.className==="contact-optional-details contact-source-details");
  assert.ok(firstName&&location&&phone&&email&&method&&callback&&select&&reported&&reportedWrap);
+ // Android: each primary input signals the appropriate soft keyboard and
+ // advances through fields without changing the contact validation policy.
+ assert.equal(firstName.enterKeyHint,"next","Name advances to next input on Android");
+ assert.equal(location.enterKeyHint,"next","City advances to next input");
+ assert.equal(phone.inputMode,"tel","Phone must request the telephone keypad");
+ assert.equal(phone.enterKeyHint,"next","Phone must not prematurely close the keyboard");
+ assert.equal(email.inputMode,"email","Email must request the e-mail keypad");
+ assert.equal(email.enterKeyHint,"next","Email must preserve keyboard navigation");
+
  assert.equal(reported.required,undefined,"Reported source must not be required");
  assert.equal(reported.value,"","A Facebook UTM must NOT silently become the visitor's own declaration");
  assert.ok(visit(reportedWrap,n=>n.tag==="summary"&&n.textContent.includes("Skąd dowiedziałeś się o nas?")));
@@ -83,6 +92,7 @@ const run=async(error=false)=>{
  const example=visit(form,n=>n.className==="contact-message-example");
  const exampleResult=visit(form,n=>n.className==="contact-example-feedback");
  assert.ok(message&&example&&exampleResult,"Editable example available without sending a lead");
+ assert.equal(message.enterKeyHint,"done","Optional message uses the Android done key");
  assert.equal(message.value||"","","No text inserted before explicit click");
  assert.equal(requestBody,null,"Example must not call Web3Forms");
  example.events.click();

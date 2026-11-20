@@ -436,3 +436,77 @@
 .hero-reading-shortcuts>span{width:100%}
 .hero-reading-shortcuts a{padding:10px 4px;color:#ffe5ac!important}
 .hero-reading-shortcuts a:focus-visible{outline:3px solid}
+
+
+/* BRAND-METALLIC-20261120: user-approved social artwork on the homepage.
+   Scoping prevents changes to the local SEO landing pages and form workflows. */
+.premium-v2 .hero-glamour {
+  background:
+    radial-gradient(ellipse at 93% 12%,rgba(195,24,52,.29),transparent 36%),
+    radial-gradient(ellipse at 75% 100%,rgba(67,97,138,.25),transparent 48%),
+    linear-gradient(115deg,#07101f 0%,#0d1b31 53%,#080e1c 100%);
+}
+.premium-v2 .hero-glamour::before {
+  opacity:1;
+  background:linear-gradient(151deg,transparent 0 80%,rgba(196,22,50,.3) 80.2%,transparent 81.3%);
+}
+.premium-v2 .site-header {
+  background:linear-gradient(115deg,#080f1d,#0d1c32);
+  border-bottom:1px solid rgba(205,29,57,.48);
+}
+.premium-v2 .hero-visual {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  min-height:0;
+  overflow:visible;
+}
+.premium-v2 .hero-visual .hero-themis-figure,
+.premium-v2 .hero-visual .hero-art,
+.premium-v2 .hero-visual .hero-visual-caption {
+  display:none;
+}
+.premium-v2 .hero-visual .hero-metallic-art {
+  display:block;
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:760px;
+  height:auto;
+  aspect-ratio:1536 / 803;
+  object-fit:contain;
+  border:1px solid rgba(205,214,232,.5);
+  border-radius:14px;
+  box-shadow:0 24px 62px rgba(0,0,0,.4),0 0 40px rgba(189,22,48,.13);
+}
+.premium-v2 .hero-glamour .hero-scarlet-tag {
+  border-color:rgba(234,73,103,.55);
+}
+.premium-v2 .hero-glamour .hero-reading-shortcuts a:focus-visible,
+.premium-v2 .hero-visual .hero-metallic-art:focus-visible {
+  outline:3px solid #f4c8d0;
+  outline-offset:4px;
+}
+@media(max-width:850px){
+  .premium-v2 .hero-visual{
+    width:100%;
+    max-width:650px;
+    margin:18px auto 0;
+  }
+}
+@media(max-width:600px){
+  .premium-v2 .hero-visual {
+    display:flex;
+    width:100%;
+    max-width:480px;
+    margin:12px auto 0;
+  }
+  .premium-v2 .hero-visual .hero-metallic-art {
+    border-radius:9px;
+    box-shadow:0 10px 26px rgba(0,0,0,.29);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-v2 .hero-visual .hero-metallic-art {transition:none}
+}

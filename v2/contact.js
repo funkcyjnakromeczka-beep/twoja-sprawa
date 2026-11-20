@@ -68,6 +68,13 @@
   const heading = document.createElement("h3"); heading.textContent = automatic?"Zostaw kontakt — oddzwonimy lub odpiszemy":"Przygotuj zapytanie"; form.append(heading);
   const benefits=document.createElement("div");benefits.className="contact-benefits";const benefitNodes=[];for(const item of ["Bez zobowiązania do zawarcia umowy","Bez wysyłania dokumentów na początek","Kontakt w wybranej formie"]){const el=document.createElement("span");el.textContent="✓ "+item;benefitNodes.push(el);benefits.append(el);}form.append(benefits);if(compactHome)benefits.hidden=true;
   const note = document.createElement("p"); note.textContent = automatic ? (compactHome?"Na początek wystarczą dane kontaktowe. Nie wpisuj PESEL ani szczegółowych danych medycznych.":"Wyślij zgłoszenie bezpośrednio z tej strony. Nie podawaj PESEL, informacji medycznych ani danych dokumentów.") : "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
+  // Native browser validation still controls submission. A concise message
+  // also makes failures discoverable to screen readers on small devices.
+  const validationNotice=document.createElement("p");
+  validationNotice.className="contact-validation-notice";
+  validationNotice.setAttribute("role","alert");
+  validationNotice.hidden=true;
+  form.append(validationNotice);
   function field(labelText,type,required,limit,auto) {
    const id = "cf-"+(auto||type)+"-"+Math.random().toString(36).slice(2,8);
    const label=document.createElement("label"); label.htmlFor=id;label.textContent=labelText;
@@ -582,6 +589,32 @@
   // changes the selected service after an unsuccessful Web3Forms attempt.
   let synchronizeFailureLinks=()=>{};
   select.addEventListener("change",()=>synchronizeFailureLinks());
+  // Browser-generated invalid events fire even when the native constraint
+  // validation prevents 'submit'. Do not log or echo any entered values.
+  const explainInvalid=field=>{
+   if(field===select)return "Wybierz rodzaj sprawy.";
+   if(field===name)return "Wpisz imię.";
+   if(field===phone)return "Sprawdź telefon: 7–15 cyfr. W sprawach SKD numer jest wymagany.";
+   if(field===email)return "Sprawdź poprawność adresu e-mail lub wybierz kontakt telefoniczny.";
+   return "Sprawdź zaznaczone pole i popraw wskazaną informację.";
+  };
+  form.addEventListener("invalid",event=>{
+   const field=event.target;
+   if(!field||field===honeypot)return;
+   // The message remains general: no names, contact details or case text.
+   validationNotice.textContent="Popraw formularz przed wysłaniem. "+explainInvalid(field);
+   validationNotice.hidden=false;
+   field.setAttribute?.("aria-invalid","true");
+  },true);
+  const dismissInvalid=event=>{
+   const field=event.target;
+   if(!field)return;
+   field.setAttribute?.("aria-invalid","false");
+   validationNotice.hidden=true;
+   validationNotice.textContent="";
+  };
+  form.addEventListener("input",dismissInvalid);
+  form.addEventListener("change",dismissInvalid);
   form.addEventListener("submit",async event=>{
    event.preventDefault();if(sending)return;
    if(!checkName()){name.focus();name.reportValidity();return;}

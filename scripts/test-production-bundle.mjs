@@ -444,6 +444,14 @@ assert.ok(skdNavigator.includes('service:"kredyty-pln.html",landing:"kampanie/sk
  "Navigator must offer dedicated SKD campaign form");
 assert.ok(skdChatbot.includes('form:"kampanie/skd.html"+params,alias:"skd"'),
  "Chatbot must offer dedicated SKD campaign form");
+const mobileFourNav=home.split('<nav class="mobile-quick-nav"')[1]?.split('</nav>')[0]||"";
+assert.ok(mobileFourNav,"Homepage must have the four-service mobile navigation");
+for(const token of ["mobile-mining-priority","mobile-support-priority","mobile-skd-priority","mobile-rents-priority"]){
+ assert.ok(mobileFourNav.includes(token),"Mobile navigation missing priority "+token);
+}
+assert.ok(mobileFourNav.indexOf("mobile-rents-priority")>mobileFourNav.indexOf("mobile-skd-priority"),
+ "Rents must follow the three original flagship projects");
+assert.ok(mobileFourNav.includes("kampanie/renty-powypadkowe"),"Rents button must lead to the verified campaign landing");
 const homeFlowCss=await read("home-flow.css");
 // Production builder removes comments to reduce CSS bytes. Assert the actual
 // mobile layout rule, never the discarded authoring comment.
@@ -452,6 +460,12 @@ assert.ok(/@media\(max-width:760px\)\s*\{\s*\.premium-v2 \.hero-priority-grid\s*
 assert.ok(homeFlowCss.includes("@media(max-width:420px)")&&
  homeFlowCss.includes(".premium-v2 .mobile-quick-nav>a.mobile-skd-priority{grid-column:1 / -1}"),
  "On narrow phones SKD must remain visible, readable and third");
+assert.ok(homeFlowCss.includes("mobile-rents-priority")&&
+ homeFlowCss.includes("grid-template-columns:repeat(2,minmax(0,1fr))"),
+ "Four mobile projects should use readable two-column layout");
+assert.ok(homeFlowCss.includes(".mobile-quick-nav>a.mobile-rents-priority")&&
+ homeFlowCss.includes("grid-column:1 / -1"),
+ "On very narrow phones rents should not be compressed into a half-empty row");
 assert.ok(homeFlowCss.includes(".premium-v2 .hero-skd-third{display:none}"),
  "SKD hero CTA must not duplicate its mobile nav button");
 

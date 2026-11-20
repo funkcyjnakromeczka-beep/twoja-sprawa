@@ -8,6 +8,7 @@
  const output=document.querySelector("[data-crm-note]");
  const status=document.querySelector("[data-crm-status]");
  const copy=document.querySelector("[data-crm-copy]");
+ const calendar=document.querySelector("[data-crm-calendar]");
  const fromCampaign=document.querySelector("[data-crm-from-campaign]");
  const campaignLink=document.querySelector("[data-campaign-url]");
  const campaignBuilder=document.querySelector("[data-campaign-builder]");
@@ -21,6 +22,7 @@
   repeatConfirmation="";
   output.value="";
   copy.disabled=true;
+  if(calendar)calendar.disabled=true;
   status.textContent="";
  };
  form.addEventListener("input",resetPreview);
@@ -38,6 +40,7 @@
    });
    output.value=prepared;
    copy.disabled=false;
+   if(calendar)calendar.disabled=!api.parseFollowUpDate(get("followUp")?.value||"");
    status.textContent="Przygotowano notatkę lokalnie. Sprawdź ją przed wklejeniem do CRM.";
   }catch(error){
    resetPreview();
@@ -57,6 +60,28 @@
     get("campaign").value=campaign.campaign;
     status.textContent="Pobrano wyłącznie usługę i oznaczenia UTM. Uzupełnij kod TS i status po sprawdzeniu zgłoszenia.";
    }catch(error){status.textContent=error.message;}
+  });
+ }
+ if(calendar){
+  calendar.addEventListener("click",()=>{
+   if(calendar.disabled||!prepared||output.value!==prepared)return;
+   try{
+    const date=api.parseFollowUpDate(get("followUp")?.value||"");
+    if(!date)return;
+    const random=window.crypto?.randomUUID?.()||("local-"+Date.now()+"-"+Math.floor(Math.random()*1e12).toString(36));
+    const body=api.calendarReminder(date,random);
+    const blob=new Blob([body],{type:"text/calendar;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;a.download="twoja-sprawa-przeglad-kontaktow-"+date+".ics";
+    a.style.display="none";
+    document.body.append(a);
+    a.click();a.remove();
+    window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+    status.textContent="Pobrano neutralny plik .ics. W aplikacji kalendarza wybierz import. Sam plik nie uruchamia powiadomień i nie jest terminem prawnym.";
+   }catch(error){
+    status.textContent="Nie udało się przygotować pliku kalendarza. "+error.message;
+   }
   });
  }
  copy.addEventListener("click",async()=>{

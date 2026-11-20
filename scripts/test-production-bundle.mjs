@@ -255,7 +255,7 @@ console.log("TEXT_SITEMAP_MATCH_OK: "+textUrls.length+" canonical URLs in identi
 for(const route of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-frankowe","/wiedza/","/faq","/plan-dzialania"]){
  assert.ok(sitemap.includes("<loc>"+origin+route+"</loc>"),"required SEO route missing: "+route);
 }
-for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/kampanie/skd","/polityka-prywatnosci","/start"]){
+for(const route of ["/404","/szukaj","/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace","/kampanie/renty-powypadkowe","/kampanie/skd","/polityka-prywatnosci","/start"]){
  assert.ok(!sitemap.includes("<loc>"+origin+route+"</loc>"),"nonindex route leaked into sitemap: "+route);
 }
 assert.ok(!headers.includes("X-Robots-Tag: noindex"),"preview response headers leaked");
@@ -273,12 +273,12 @@ for(const path of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczeni
  assert.ok(html.includes('class="network-brand-bar"'),"missing agency branding: "+path);
  assert.ok(!html.includes('href="/v2/')&&!html.includes('src="/v2/'),"source path leaked into HTML: "+path);
 }
-for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampanie/szkody-gornicze.html","kampanie/swiadczenie-wspierajace.html","kampanie/skd.html","start.html"]){
+for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampanie/szkody-gornicze.html","kampanie/swiadczenie-wspierajace.html","kampanie/renty-powypadkowe.html","kampanie/skd.html","start.html"]){
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="noindex,follow"'),"excluded page accidentally indexable: "+path);
 }
 // Build-level regression: the UTM module must never attach twice.
-for(const target of ["index.html","kontakt.html","faq.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","kampanie/skd.html"]){
+for(const target of ["index.html","kontakt.html","faq.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","kampanie/renty-powypadkowe.html","kampanie/skd.html"]){
  const html=await read(target);
  const modules=[...html.matchAll(/<script\b[^>]*\bsrc="\/attribution\.js"/g)];
  assert.equal(modules.length,1,"Duplicated or missing campaign attribution: "+target);
@@ -337,8 +337,8 @@ for(const [page,photo] of [
   assert.ok(html.includes('<meta property="og:title" content="'+title+'">'),"social title not page-specific: "+page);
   assert.ok(html.includes('<meta name="twitter:title" content="'+title+'">'),"Twitter title not page-specific: "+page);
   assert.ok(html.includes('<meta property="og:description" content="'+description+'">'),"social description not page-specific: "+page);
-  const socialPreview=["index.html","uslugi/szkody-gornicze.html","uslugi/renty-powypadkowe.html","uslugi/kredyty-frankowe.html"].includes(page)
-    ? "og-twoja-sprawa-votum-odszkodowania-v2.jpg" : photo;
+  const socialPreview=["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","uslugi/renty-powypadkowe.html","uslugi/kredyty-frankowe.html"].includes(page)
+    ? "og-twoja-sprawa-metallic-v1.jpg" : photo;
   assert.ok(html.includes('<meta property="og:image" content="'+origin+'/assets/'+socialPreview+'">'),"social preview incorrect: "+page);
   assert.ok(html.includes('<meta name="twitter:image" content="'+origin+'/assets/'+socialPreview+'">'),"Twitter preview incorrect: "+page);
   assert.ok(html.includes('<meta property="og:image:alt" content="'),"missing accessible preview label: "+page);

@@ -598,21 +598,27 @@
    if(field===email)return "Sprawdź poprawność adresu e-mail lub wybierz kontakt telefoniczny.";
    return "Sprawdź zaznaczone pole i popraw wskazaną informację.";
   };
+  let highlightedInvalidField=null;
   form.addEventListener("invalid",event=>{
    const field=event.target;
    if(!field||field===honeypot)return;
-   // Native validation focuses the first invalid control. Keep its message
-   // instead of replacing it with the last of multiple invalid controls.
+   // Preserve the first native validation error; other fields can be edited
+   // without losing the instruction for the field that still needs attention.
    if(!validationNotice.hidden)return;
-   // The message remains general: no names, contact details or case text.
+   if(highlightedInvalidField&&highlightedInvalidField!==field)
+    highlightedInvalidField.setAttribute?.("aria-invalid","false");
+   highlightedInvalidField=field;
+   // No client-entered content appears in the error message.
    validationNotice.textContent="Popraw formularz przed wysłaniem. "+explainInvalid(field);
    validationNotice.hidden=false;
    field.setAttribute?.("aria-invalid","true");
   },true);
   const dismissInvalid=event=>{
    const field=event.target;
-   if(!field)return;
+   // Editing an unrelated field must not hide the first unresolved error.
+   if(!field||field!==highlightedInvalidField)return;
    field.setAttribute?.("aria-invalid","false");
+   highlightedInvalidField=null;
    validationNotice.hidden=true;
    validationNotice.textContent="";
   };

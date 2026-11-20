@@ -550,3 +550,53 @@
     text-shadow:none;
   }
 }
+
+
+/* Six direct contact routes after the service catalog — details links stay intact.
+   One accessible selection, no extra form, tracking or client-side persistence. */
+.premium-v2 #uslugi .services-direct-contact{
+  margin:20px 0 30px;
+  padding:clamp(17px,2.6vw,26px);
+  background:linear-gradient(120deg,#f7f9fc,#edf3f8);
+  border:1px solid #b9c8d7;
+  border-top:3px solid #ba2948;
+  border-radius:16px;
+  box-shadow:0 9px 26px rgba(14,34,53,.08);
+  color:#183349;
+}
+.premium-v2 #uslugi .services-direct-contact>strong{
+  display:block;color:#16354b;font-size:clamp(1.08rem,1.8vw,1.3rem);line-height:1.35;
+}
+.premium-v2 #uslugi .services-direct-contact>p{
+  margin:7px 0 15px;color:#355568;font-size:.94rem;line-height:1.52;
+}
+.premium-v2 #uslugi .services-direct-contact-links{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;
+}
+.premium-v2 #uslugi .services-direct-contact-links a{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  min-height:48px;padding:12px 14px;
+  border:1px solid #b9c7d5;border-radius:10px;
+  background:#fff;color:#164459;
+  font-size:.9rem;font-weight:760;line-height:1.35;
+  text-decoration:none;overflow-wrap:anywhere;
+}
+.premium-v2 #uslugi .services-direct-contact-links a span{flex:none;color:#ac2b49}
+.premium-v2 #uslugi .services-direct-contact-links a:hover{
+  border-color:#b72d4d;background:#fdf3f5;color:#782039;
+}
+.premium-v2 #uslugi .services-direct-contact-links a:focus-visible{
+  outline:3px solid #b92c4e;outline-offset:3px;
+}
+.premium-v2 #uslugi .services-direct-contact-links a[data-selected="true"]{
+  background:#163950;border-color:#163950;color:#fff;
+}
+.premium-v2 #uslugi .services-direct-contact-links a[data-selected="true"] span{color:#f6c1cd}
+@media(min-width:581px) and (max-width:960px){
+ .premium-v2 #uslugi .services-direct-contact-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:580px){
+ .premium-v2 #uslugi .services-direct-contact-links{grid-template-columns:minmax(0,1fr)}
+ .premium-v2 #uslugi .services-direct-contact-links a{min-height:48px}
+}
+@media print{.premium-v2 #uslugi .services-direct-contact{display:none}}

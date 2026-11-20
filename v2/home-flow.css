@@ -462,11 +462,6 @@
   min-height:0;
   overflow:visible;
 }
-.premium-v2 .hero-visual .hero-themis-figure,
-.premium-v2 .hero-visual .hero-art,
-.premium-v2 .hero-visual .hero-visual-caption {
-  display:none;
-}
 .premium-v2 .hero-visual .hero-metallic-art {
   display:block;
   position:relative;

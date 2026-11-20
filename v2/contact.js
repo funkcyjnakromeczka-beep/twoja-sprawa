@@ -309,10 +309,10 @@
     stage.focus();stage.scrollIntoView({block:"nearest",behavior:"auto"});
   });
   updateContextNotice();
-  const name=field("Imię","text",true,80,"given-name");
+  const name=field("Imię","text",true,80,"given-name");name.enterKeyHint="next";
   const checkName=()=>{const valid=Boolean(name.value.trim());name.setCustomValidity(valid?"":"Wpisz imię, abyśmy mogli się do Ciebie zwrócić.");return valid;};
   name.addEventListener("input",()=>{if(name.value.trim())name.setCustomValidity("");});
-  const city=field("Miejscowość (opcjonalnie)","text",false,100,"address-level2");
+  const city=field("Miejscowość (opcjonalnie)","text",false,100,"address-level2");city.enterKeyHint="next";
   // Podstrona lokalna sugeruje miasto, ale mieszkaniec może je dowolnie zmienić.
   if(select.value==="Szkody górnicze" && suggestedCity){city.value=suggestedCity;city.defaultValue=suggestedCity;}
   // Szybkie podanie miasta tylko dla szkód górniczych; inne miejscowości pozostają w zwykłym polu.
@@ -344,8 +344,8 @@
   const cityHint=document.createElement("small");cityHint.textContent="Wpisz dowolną miejscowość w okolicy. Lokalizacja nie przesądza o przyczynie uszkodzeń.";
   cityQuick.append(cityQuickTitle,cityOptions,cityOther,cityHint);form.append(cityQuick);
   city.addEventListener("input",syncCityQuick);select.addEventListener("change",syncCityQuick);syncCityQuick();
-  const phone=field("Telefon kontaktowy","tel",false,30,"tel");phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";
-  const email=field("Adres e-mail (opcjonalnie, jeśli podasz telefon)","email",false,150,"email");
+  const phone=field("Telefon kontaktowy","tel",false,30,"tel");phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";phone.enterKeyHint="next";
+  const email=field("Adres e-mail (opcjonalnie, jeśli podasz telefon)","email",false,150,"email");email.inputMode="email";email.enterKeyHint="next";
   const phoneFieldLabel=form.querySelector('label[for="'+phone.id+'"]');
   const emailFieldLabel=form.querySelector('label[for="'+email.id+'"]');
   const phoneHint=document.createElement("small");phoneHint.className="contact-field-hint";phoneHint.textContent="Wystarczy telefon lub e-mail. Numer telefonu powinien zawierać 7–15 cyfr (spacje i myślniki są dozwolone). Nie wpisuj numeru PESEL ani danych dokumentów.";phoneHint.id="cf-phone-help-"+Math.random().toString(36).slice(2,8);phone.setAttribute("aria-describedby",phoneHint.id);phone.insertAdjacentElement("afterend",phoneHint);
@@ -395,7 +395,7 @@
     else if((method.value==="Telefon"||select.value==="Kredyt w PLN / SKD")&&!phonePresent)focus=phone;
     else if(method.value==="E-mail"&&!emailPresent)focus=email;
     else if(!phonePresent&&!emailPresent)focus=method.value==="E-mail"?email:phone;
-    if(focus){focus.reportValidity();focus.focus();return false;}
+    if(focus){focus.focus();focus.reportValidity();return false;}
     return true;
   };
   method.addEventListener("change",syncContactPreference);select.addEventListener("change",syncContactPreference);phone.addEventListener("input",syncContactPreference);email.addEventListener("input",syncContactPreference);syncContactPreference();
@@ -430,7 +430,7 @@
   discoveryHint.textContent="Dobrowolna informacja o źródle kontaktu. Oznaczenia kampanii z linku są zapisywane oddzielnie i nie zastępują Twojej odpowiedzi. Nie podawaj tu danych osobowych.";
   discoveryDetails.append(discoverySummary,discoveryLabel,discoveryChoice,discoveryHint);
   form.append(discoveryDetails);
-  const msgLabel=document.createElement("label");msgLabel.textContent="Treść wiadomości (opcjonalnie)";const msg=document.createElement("textarea");msg.id="cf-message-"+Math.random().toString(36).slice(2,8);msgLabel.htmlFor=msg.id;msg.rows=4;msg.maxLength=1200;msg.placeholder="Opisz sprawę ogólnie, bez numeru PESEL, informacji medycznych i danych dokumentów.";form.append(msgLabel,msg);
+  const msgLabel=document.createElement("label");msgLabel.textContent="Treść wiadomości (opcjonalnie)";const msg=document.createElement("textarea");msg.id="cf-message-"+Math.random().toString(36).slice(2,8);msgLabel.htmlFor=msg.id;msg.rows=4;msg.maxLength=1200;msg.enterKeyHint="done";msg.placeholder="Opisz sprawę ogólnie, bez numeru PESEL, informacji medycznych i danych dokumentów.";form.append(msgLabel,msg);
   // On the homepage show the minimum fields first. Optional case information stays accessible.
   if(compactHome){
     const extra=document.createElement("details");extra.className="contact-case-details";
@@ -584,7 +584,7 @@
   select.addEventListener("change",()=>synchronizeFailureLinks());
   form.addEventListener("submit",async event=>{
    event.preventDefault();if(sending)return;
-   if(!checkName()){name.reportValidity();name.focus();return;}
+   if(!checkName()){name.focus();name.reportValidity();return;}
    if(!checkContact())return;
    if(!checkSensitiveWarning())return;
    if(!form.reportValidity())return;

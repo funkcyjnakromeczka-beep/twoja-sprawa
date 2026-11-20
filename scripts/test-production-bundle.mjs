@@ -293,14 +293,15 @@ for(const path of ["404.html","szukaj.html","polityka-prywatnosci.html","kampani
  const html=await read(path);
  assert.ok(html.includes('name="robots" content="noindex,follow"'),"excluded page accidentally indexable: "+path);
 }
-// All six primary services must publish one canonical breadcrumb trail.
-// Google uses this markup to understand page hierarchy, not as a ranking guarantee.
+// Validate *published* breadcrumbs, which the build derives from visible
+// navigation in @graph. Source-authored BreadcrumbLists are intentionally
+// stripped to avoid duplicate schemas.
 for(const [slug,label] of [
  ["szkody-gornicze","Szkody górnicze"],
  ["swiadczenie-wspierajace","Świadczenie wspierające"],
  ["renty-powypadkowe","Renty powypadkowe"],
- ["kredyty-pln","Sankcja Kredytu Darmowego (SKD)"],
- ["kredyty-frankowe","Kredyty frankowe CHF"],
+ ["kredyty-pln","Sankcja kredytu darmowego"],
+ ["kredyty-frankowe","Kredyty frankowe"],
  ["sluzebnosc-przesylu","Służebność przesyłu"]
 ]){
  const path="uslugi/"+slug+".html";
@@ -308,21 +309,24 @@ for(const [slug,label] of [
  const canonical=origin+"/uslugi/"+slug;
  const head=html.slice(0,html.indexOf("</head>"));
  assert.ok(head.includes('rel="canonical" href="'+canonical+'"'),"Canonical mismatch for "+path);
- const schemas=head.split('<script type="application/ld+json">').slice(1)
-  .map(chunk=>JSON.parse(chunk.split("</script>")[0]));
- const crumbs=schemas.filter(item=>item["@type"]==="BreadcrumbList");
- assert.equal(crumbs.length,1,"Exactly one breadcrumb schema expected for "+path);
- assert.equal(crumbs[0].itemListElement.length,2,"Breadcrumb path should contain site and service: "+path);
- assert.equal(crumbs[0].itemListElement[0].item,origin+"/","Breadcrumb home URL mismatch: "+path);
- assert.equal(crumbs[0].itemListElement[1].item,canonical,"Breadcrumb URL mismatch: "+path);
- assert.equal(crumbs[0].itemListElement[1].name,label,"Breadcrumb service label mismatch: "+path);
+ const nodes=head.split('<script type="application/ld+json">').slice(1)
+  .map(chunk=>JSON.parse(chunk.split("</script>")[0]))
+  .flatMap(schema=>schema["@graph"]||[schema]);
+ const crumbs=nodes.filter(item=>item["@type"]==="BreadcrumbList");
+ assert.equal(crumbs.length,1,"Exactly one *published* breadcrumb expected for "+path);
+ const items=crumbs[0].itemListElement;
+ assert.equal(items.length,3,"Breadcrumb path should contain start, services and current page: "+path);
+ assert.equal(items[0].item,origin+"/","Breadcrumb home URL mismatch: "+path);
+ assert.equal(items[1].item,origin+"/#uslugi","Breadcrumb services URL mismatch: "+path);
+ assert.equal(items[2].item,canonical,"Breadcrumb URL mismatch: "+path);
+ assert.equal(items[2].name,label,"Breadcrumb label must match visible navigation: "+path);
  assert.ok(html.includes('name="robots" content="index,follow'),"Primary service must remain indexable: "+path);
 }
 const homeSeoTitle=home.split("<title>")[1]?.split("</title>")[0]||"";
 const miningSeoTitle=(await read("uslugi/szkody-gornicze.html")).split("<title>")[1]?.split("</title>")[0]||"";
 assert.notEqual(homeSeoTitle,miningSeoTitle,"Homepage and mining service require distinct descriptive titles");
 assert.ok(homeSeoTitle.includes("świadczenie wspierające"),"Homepage must describe both flagship services");
-console.log("SERVICE_BREADCRUMBS_OK: six canonical trails, unique homepage title, indexable service pages.");
+console.log("SERVICE_BREADCRUMBS_OK: six generated canonical trails, unique homepage title, indexable service pages.");
 
 // Build-level regression: the UTM module must never attach twice.
 for(const target of ["index.html","kontakt.html","faq.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","kampanie/renty-powypadkowe.html","kampanie/skd.html"]){

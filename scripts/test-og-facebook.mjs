@@ -4,12 +4,12 @@ import assert from "node:assert/strict";
 import {createHash} from "node:crypto";
 import {readFile} from "node:fs/promises";
 const root="https://twoja-sprawa.pages.dev";
-const imagePath="/assets/og-twoja-sprawa-votum-odszkodowania-v2.jpg";
+const imagePath="/assets/og-twoja-sprawa-metallic-v1.jpg";
 const preview=process.argv.includes("--preview");
 const output=preview?"dist-preview":"dist";
 const image=await readFile(output+imagePath);
-assert.ok(image.length>15000&&image.length<600000,"Social JPEG should be optimized but readable");
-assert.equal(createHash("sha256").update(image).digest("hex"),"4b3b2a11c7512d96fe218b022385abea28811fec067a5e7b5cb2874cdbc5433c","Published preview must match the exact approved original graphic (not reconstructed Canva thumbnail)");
+assert.ok(image.length>50000&&image.length<600000,"Social JPEG should be optimized but readable");
+assert.equal(createHash("sha256").update(image).digest("hex"),"489f8b499f49f841c6dec3f5777a791f4007ad9d5e8c109ceeed6cc83187798c","Published preview must match the exact approved original graphic (not reconstructed Canva thumbnail)");
 assert.equal(image[0],0xff);assert.equal(image[1],0xd8);
 const jpegSize=data=>{
  let i=2;
@@ -27,9 +27,9 @@ const jpegSize=data=>{
  }
  throw Error("JPEG size marker not found");
 };
-assert.deepEqual(jpegSize(image),{width:1200,height:630});
+assert.deepEqual(jpegSize(image),{width:1536,height:803});
 if(preview){
- console.log("OG_PREVIEW_ASSET_OK: first-party 1200x630 image copied into the noindex preview.");
+ console.log("OG_PREVIEW_ASSET_OK: first-party 1536x803 image copied into the noindex preview.");
  process.exit(0);
 }
 const routes=[
@@ -55,8 +55,8 @@ for(const route of routes){
  assert.deepEqual(get(html,"og:image"),[root+imagePath],"Incorrect OG image on "+route);
  assert.deepEqual(get(html,"og:image:secure_url"),[root+imagePath],"Secure OG image on "+route);
  assert.deepEqual(get(html,"og:image:type"),["image/jpeg"]);
- assert.deepEqual(get(html,"og:image:width"),["1200"]);
- assert.deepEqual(get(html,"og:image:height"),["630"]);
+ assert.deepEqual(get(html,"og:image:width"),["1536"]);
+ assert.deepEqual(get(html,"og:image:height"),["803"]);
  assert.equal((get(html,"og:image:alt")||[]).length,1,"One descriptive image alt per route");
  assert.ok(html.includes('name="twitter:card" content="summary_large_image"'),"Twitter preview must be landscape");
  assert.ok(html.includes('name="twitter:image" content="'+root+imagePath+'"'),"Twitter and Facebook must use the same image");
@@ -68,13 +68,15 @@ for(const route of routes){
 for(const route of routes){
  const source=await readFile("v2/"+(route||"index")+".html","utf8");
  assert.deepEqual(get(source,"og:image"),[root+imagePath],"Authored source has stale preview: "+route);
- assert.deepEqual(get(source,"og:image:width"),["1200"],"Authored source width: "+route);
- assert.deepEqual(get(source,"og:image:height"),["630"],"Authored source height: "+route);
+ assert.deepEqual(get(source,"og:image:width"),["1536"],"Authored source width: "+route);
+ assert.deepEqual(get(source,"og:image:height"),["803"],"Authored source height: "+route);
  assert.ok(source.includes('property="og:url" content="'+root+"/"+route+'"'),"Authored source OG URL: "+route);
  assert.ok(source.includes('name="twitter:image" content="'+root+imagePath+'"'),"Authored source Twitter image: "+route);
 }
 const generatorSource=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
 assert.ok(generatorSource.includes('src="'+imagePath+'"'),"Generator must preview the public /assets path, never /v2/assets");
+const brand=await readFile("scripts/sync-approved-social-banner.mjs","utf8");
+assert.ok(brand.includes("489f8b499f49f841c6dec3f5777a791f4007ad9d5e8c109ceeed6cc83187798c"),"Approved source sha256 must be pinned");
 const builder=await readFile("scripts/build.mjs","utf8");
 assert.ok(builder.includes('const brandedRoutes=new Set('),"Build must preserve social preview after every deploy");
 const campaignLinks=await readFile("v2/campaign-links.js","utf8");
@@ -84,4 +86,4 @@ for(const piece of ["szkody-gornicze.html","swiadczenie-wspierajace.html","skd.h
 // promotional banner, and stays unchanged when the campaign builder evolves.
 const guide=await read("wiedza/ugoda-z-kopalnia-co-sprawdzic");
 assert.ok(!get(guide,"og:image")[0].includes("og-twoja-sprawa-votum"),"Do not change guide previews globally");
-console.log("OG_FACEBOOK_OK: 1200x630 self-hosted image, 12 campaign and service destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");
+console.log("OG_FACEBOOK_OK: 1536x803 self-hosted image, 12 campaign and service destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");

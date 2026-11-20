@@ -47,13 +47,13 @@
   for(const item of visible){
    const tr=document.createElement("tr");
    cell(tr,item.date);cell(tr,display(item.service));cell(tr,display(item.source));
-   cell(tr,item.campaign);cell(tr,item.leads);cell(tr,item.qualified);cell(tr,item.clients);
+   cell(tr,item.campaign);cell(tr,item.variant);cell(tr,item.leads);cell(tr,item.qualified);cell(tr,item.clients);
    const last=document.createElement("td");
    const remove=document.createElement("button");remove.type="button";remove.className="lead-summary-remove";
    remove.textContent="Usuń";
-   remove.setAttribute("aria-label","Usuń wpis: "+item.date+", "+display(item.service)+", "+display(item.source)+", "+item.campaign);
+   remove.setAttribute("aria-label","Usuń wpis: "+item.date+", "+display(item.service)+", "+display(item.source)+", "+item.campaign+", "+item.variant);
    remove.addEventListener("click",()=>{
-    rows=rows.filter(x=>!(x.date===item.date&&x.service===item.service&&x.source===item.source&&x.campaign===item.campaign));
+    rows=rows.filter(x=>!(x.date===item.date&&x.service===item.service&&x.source===item.source&&x.campaign===item.campaign&&x.variant===item.variant));
     show();feedback("Wpis został usunięty z pamięci tej karty.");
    });
    last.append(remove);tr.append(last);entries.append(tr);
@@ -69,7 +69,7 @@
    campaignBreakdown.replaceChildren();
    for(const group of data.campaigns){
     const tr=document.createElement("tr");
-    cell(tr,display(group.service));cell(tr,display(group.source));cell(tr,group.campaign);
+    cell(tr,display(group.service));cell(tr,display(group.source));cell(tr,group.campaign);cell(tr,group.variant);
     cell(tr,group.leads);cell(tr,group.qualified);cell(tr,group.clients);
     cell(tr,percentage(group.clients,group.leads));
     campaignBreakdown.append(tr);
@@ -83,12 +83,34 @@
   const f=key=>form.elements.namedItem(key)?.value||"";
   try{
    const result=core.upsert(rows,{
-    date:f("date"),service:f("service"),source:f("source"),campaign:f("campaign"),
+    date:f("date"),service:f("service"),source:f("source"),campaign:f("campaign"),variant:f("variant"),
     leads:f("leads"),qualified:f("qualified"),clients:f("clients")
    });
    rows=result.rows;show();
    feedback(result.replaced?"Zaktualizowano istniejący dzienny wiersz (bez podwójnego liczenia).":"Dodano dzienny wynik kampanii.");
   }catch(error){feedback(error.message,true);}
+ });
+ const useCampaign=find("[data-lead-from-campaign]");
+ if(useCampaign)useCampaign.addEventListener("click",()=>{
+  try{
+   const built=document.querySelector("[data-campaign-url]")?.value||"";
+   const builder=document.querySelector("[data-campaign-builder]");
+   const parsed=new URL(built);
+   if(parsed.origin!==window.location.origin)throw Error("Źródło linku nie pasuje do tej strony.");
+   const params=parsed.searchParams;
+   const service=builder?.querySelector("[name=service]")?.value||"";
+   const source=params.get("utm_source")||"";
+   const campaign=params.get("utm_campaign")||"";
+   const variant=params.get("utm_content")||"bez_wariantu";
+   const valid=value=>/^[a-z0-9_-]{1,40}$/.test(value);
+   if(!core.services.includes(service)||!core.sources.includes(source)||!valid(campaign)||!valid(variant))
+    throw Error("Nie udało się odczytać bezpiecznych oznaczeń kampanii.");
+   for(const [key,value] of Object.entries({service,source,campaign,variant})){
+    const field=form.elements.namedItem(key);
+    if(field)field.value=value;
+   }
+   feedback("Przeniesiono jedynie usługę i oznaczenia UTM. Wpisz datę i potwierdzone liczby; niczego nie naliczono ani nie wysłano.");
+  }catch(error){feedback("Nie można przenieść oznaczeń: "+error.message,true);}
  });
  filter.addEventListener("change",show);
  find("[data-copy-summary]").addEventListener("click",async()=>{

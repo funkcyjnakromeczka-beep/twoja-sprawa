@@ -665,3 +665,19 @@ h3{line-height:1.25}
  .contact-form .check input{width:22px;height:22px;flex:0 0 22px}
  .contact-form :is(.contact-validation-notice,.contact-status-error,.contact-status-success){overflow-wrap:anywhere}
 }
+
+
+/* On service pages, bypass optional prep details without losing form validation. */
+.contact-form .contact-fast-track{
+  display:inline-flex;align-items:center;justify-content:center;justify-self:start;
+  min-height:44px;max-width:100%;box-sizing:border-box;
+  padding:10px 14px;margin:4px 0 12px;border:1px solid #5c839a;
+  border-radius:10px;background:#eef5f9;color:#173c54;
+  font-weight:700;line-height:1.35;text-decoration:underline;text-underline-offset:3px;
+  overflow-wrap:anywhere
+}
+.contact-form .contact-fast-track:hover{background:#dcecf4;color:#102f44}
+.contact-form .contact-fast-track:focus-visible{outline:3px solid #b42e50;outline-offset:3px}
+@media(max-width:600px){
+ .contact-form .contact-fast-track{width:100%;justify-self:stretch;text-align:center;min-height:48px}
+}

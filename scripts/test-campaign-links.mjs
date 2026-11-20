@@ -46,6 +46,8 @@ const platformControls={
  "instagram-skd":makePlatformPreset("instagram-skd")
 };
 const platformNote={textContent:"",hidden:true};
+const linkConfirmation={checked:false,events:{},addEventListener(name,fn){this.events[name]=fn}};
+const linkConfirmationWrap={hidden:true};
 const platformStatus={textContent:""};
 const nodes={
  "[data-campaign-builder]":form,
@@ -60,6 +62,8 @@ const nodes={
  "[data-preview-host]":previewHost,
  "[data-community-preset-status]":presetStatus,
  "[data-platform-note]":platformNote,
+ "[data-profile-link-confirmed]":linkConfirmation,
+ "[data-profile-confirm-wrap]":linkConfirmationWrap,
  "[data-platform-preset-status]":platformStatus
 };
 const document={querySelector:sel=>nodes[sel],querySelectorAll:sel=>sel==="[data-community-preset]"?Object.values(presetControls):sel==="[data-platform-preset]"?Object.values(platformControls):[]};
@@ -237,12 +241,29 @@ for(const [preset,serviceName,channelName,variant,path,phone] of [
  assert.ok(platformNote.textContent.includes(channelName==="instagram"?"Instagram":"TikTok"));
  assert.ok(platformNote.textContent.includes("UTM"),"Warn of lost attribution for manual entry");
  assert.ok(platformStatus.textContent.includes("Niczego nie opublikowano"));
+ assert.equal(linkConfirmationWrap.hidden,false,"Reel channels reveal profile-link verification");
+ assert.equal(linkConfirmation.checked,false,"No automatic assumption that campaign URL is in the profile");
+ assert.ok(!post.value.includes("link w profilu"),"Do not claim bio link before confirming placement");
+ linkConfirmation.checked=true;
+ linkConfirmation.events.change();
+ assert.ok(post.value.includes("przejdź przez link w profilu"),"Verified exact link enables profile CTA");
+ assert.ok(platformNote.textContent.includes("Twojego potwierdzenia"),"Make the conditional claim explicit");
+ assert.ok(!post.value.includes(campaignLink.href),"Do not put long URLs in captions");
+ values.content.value=variant+"_nowy";
+ listeners.input();
+ assert.equal(linkConfirmation.checked,false,"Changing UTM must invalidate stale confirmation");
+ assert.ok(!post.value.includes("link w profilu"),"Changed URL must restore honest manual fallback");
+ values.content.value=variant;listeners.change();
  assert.equal(open.href,link.value,"Public destination remains openable");
 }
+assert.ok(generatorGuide.includes("data-profile-link-confirmed")&&generatorGuide.includes("dokładnie ten wygenerowany link UTM"),
+ "Manual profile-link confirmation must be explicit and precise");
 assert.ok(generatorGuide.includes("data-platform-note")&&generatorGuide.includes("link UTM"),
  "Generator must explain the separate clickable-link workflow");
 values.channel.value="facebook_grupa";
 listeners.change();
 assert.equal(platformNote.hidden,true,"No Instagram/TikTok warning for Facebook");
+assert.equal(linkConfirmationWrap.hidden,true,"Facebook needs no profile verification");
+assert.equal(linkConfirmation.checked,false,"Profile verification resets outside reel channels");
 assert.ok(post.value.includes(link.value),"Facebook retains clickable campaign-link caption");
 console.log("LOCAL_CAMPAIGN_LINKS_OK: 6 services, 2 city campaigns, group UTMs, city messages, Google Business Profile and no telemetry.");

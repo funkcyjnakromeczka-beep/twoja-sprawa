@@ -8,6 +8,9 @@
  const output=document.querySelector("[data-crm-note]");
  const status=document.querySelector("[data-crm-status]");
  const copy=document.querySelector("[data-crm-copy]");
+ const fromCampaign=document.querySelector("[data-crm-from-campaign]");
+ const campaignLink=document.querySelector("[data-campaign-url]");
+ const campaignBuilder=document.querySelector("[data-campaign-builder]");
  let prepared="";
  const resetPreview=()=>{
   prepared="";
@@ -22,7 +25,8 @@
   try{
    prepared=api.note({
     ref:get("ref").value,service:get("service").value,
-    source:get("source").value,campaign:get("campaign").value,status:get("status").value
+    source:get("source").value,campaign:get("campaign").value,status:get("status").value,
+    confirmed:get("confirmed")?.checked===true
    });
    output.value=prepared;
    copy.disabled=false;
@@ -32,6 +36,21 @@
    status.textContent=error.message;
   }
  });
+ if(fromCampaign){
+  fromCampaign.addEventListener("click",()=>{
+   resetPreview();
+   try{
+    const campaign=api.campaignFromUrl(campaignLink?.value,window.location.origin);
+    const service=campaignBuilder?.querySelector("[name=service]")?.value||"";
+    if(!Object.prototype.hasOwnProperty.call(api.services,service))
+     throw Error("Wybierz obsługiwaną usługę w generatorze kampanii.");
+    get("service").value=service;
+    get("source").value=campaign.source;
+    get("campaign").value=campaign.campaign;
+    status.textContent="Pobrano wyłącznie usługę i oznaczenia UTM. Uzupełnij kod TS i status po sprawdzeniu zgłoszenia.";
+   }catch(error){status.textContent=error.message;}
+  });
+ }
  copy.addEventListener("click",async()=>{
   if(!prepared||output.value!==prepared)return;
   if(!navigator.clipboard?.writeText){

@@ -93,6 +93,7 @@ jobs:
           FORM_APPROVED: '1'
         run: |
           node scripts/build.mjs
+          node scripts/test-offline-qr.mjs
           node scripts/test-og-facebook.mjs
           node scripts/test-page-navigation.mjs
           node scripts/test-media-navigation-quality.mjs

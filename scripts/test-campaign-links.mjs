@@ -43,7 +43,11 @@ const makePlatformPreset=code=>({
 const platformControls={
  "tiktok-szkody":makePlatformPreset("tiktok-szkody"),
  "instagram-szkody":makePlatformPreset("instagram-szkody"),
- "instagram-skd":makePlatformPreset("instagram-skd")
+ "instagram-skd":makePlatformPreset("instagram-skd"),
+ "tiktok-swiadczenie":makePlatformPreset("tiktok-swiadczenie"),
+ "instagram-swiadczenie":makePlatformPreset("instagram-swiadczenie"),
+ "tiktok-renty":makePlatformPreset("tiktok-renty"),
+ "instagram-renty":makePlatformPreset("instagram-renty")
 };
 const platformNote={textContent:"",hidden:true};
 const linkConfirmation={checked:false,events:{},addEventListener(name,fn){this.events[name]=fn}};
@@ -220,7 +224,11 @@ for(const [code,path,variant] of [
 for(const [preset,serviceName,channelName,variant,path,phone] of [
  ["tiktok-szkody","szkody","tiktok","wideo_1","/kampanie/szkody-gornicze","796 441 345"],
  ["instagram-szkody","szkody","instagram","rolka_1","/kampanie/szkody-gornicze","796 441 345"],
- ["instagram-skd","skd","instagram","rolka_1","/kampanie/skd","796 441 345"]
+ ["instagram-skd","skd","instagram","rolka_1","/kampanie/skd","796 441 345"],
+ ["tiktok-swiadczenie","swiadczenie","tiktok","wideo_1","/kampanie/swiadczenie-wspierajace","500 171 531"],
+ ["instagram-swiadczenie","swiadczenie","instagram","rolka_1","/kampanie/swiadczenie-wspierajace","500 171 531"],
+ ["tiktok-renty","renty","tiktok","wideo_1","/kampanie/renty-powypadkowe","500 171 531"],
+ ["instagram-renty","renty","instagram","rolka_1","/kampanie/renty-powypadkowe","500 171 531"]
 ]){
  assert.ok(generatorGuide.includes('data-platform-preset="'+preset+'"'),"Missing organic preset button");
  platformControls[preset].events.click();
@@ -237,6 +245,12 @@ for(const [preset,serviceName,channelName,variant,path,phone] of [
  assert.ok(!post.value.includes(link.value),"Captions should not mislead users with full non-clickable UTM links");
  assert.ok(post.value.includes("twoja-sprawa.pages.dev")&&post.value.includes("wpisz adres w przeglądarce"));
  assert.ok(post.value.includes(phone),"Correct advisor telephone in post");
+ if(serviceName==="swiadczenie"||serviceName==="renty"){
+  assert.ok(!post.value.includes("796 441 345"),"Paulina's publications should not include Wojciech's number");
+  assert.ok(post.value.includes(serviceName==="renty"?"Bez gwarancji podwyższenia":"Bez obietnic wyniku"),
+    "Sensitive financial/benefit claims must carry a clear non-guarantee");
+  assert.ok(!post.value.includes("PESEL"),"No unnecessary reference to sensitive identifiers in the public description");
+ }
  assert.equal(platformNote.hidden,false);
  assert.ok(platformNote.textContent.includes(channelName==="instagram"?"Instagram":"TikTok"));
  assert.ok(platformNote.textContent.includes("UTM"),"Warn of lost attribution for manual entry");
@@ -266,4 +280,5 @@ assert.equal(platformNote.hidden,true,"No Instagram/TikTok warning for Facebook"
 assert.equal(linkConfirmationWrap.hidden,true,"Facebook needs no profile verification");
 assert.equal(linkConfirmation.checked,false,"Profile verification resets outside reel channels");
 assert.ok(post.value.includes(link.value),"Facebook retains clickable campaign-link caption");
+assert.equal(Object.keys(platformControls).length,7,"Seven mobile social presets must be covered");
 console.log("LOCAL_CAMPAIGN_LINKS_OK: 6 services, 2 city campaigns, group UTMs, city messages, Google Business Profile and no telemetry.");

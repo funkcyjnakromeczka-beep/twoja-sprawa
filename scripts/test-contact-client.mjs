@@ -41,13 +41,15 @@ const run=async(error=false)=>{
   setTimeout:callback=>{scheduled.push(callback);return scheduled.length;},clearTimeout:()=>{}
  };
  let requestBody=null;
+ const copied=[];
+ const navigator={clipboard:{writeText:async value=>{copied.push(value);}}};
  const fetch=async(url,opts)=>{
   assert.equal(url,"https://api.web3forms.com/submit");
   requestBody=JSON.parse(opts.body);
   if(error)throw Error("mock network failure");
   return {ok:true,json:async()=>({success:true})};
  };
- runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
+ runInNewContext(source,{document,window,navigator,fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  assert.equal(form.tag,"form");
  const firstName=visit(form,n=>n.autocomplete==="given-name");
@@ -130,7 +132,15 @@ const run=async(error=false)=>{
  assert.equal(requestBody.lead_path,"formularz");
  const status=visit(form,n=>n.attributes?.role==="status");
  assert.ok(status);
+ const refPanel=visit(form,n=>n.className==="contact-ref-panel");
+ const refCode=visit(refPanel,n=>n.className==="contact-ref-code");
+ const refCopy=visit(refPanel,n=>n.className==="contact-ref-copy");
+ const refFeedback=visit(refPanel,n=>n.className==="contact-ref-feedback");
+ assert.ok(refPanel&&refCode&&refCopy&&refFeedback,"Confirmed reference UI must exist");
  if(error){
+  assert.equal(refPanel.hidden,true,"An unconfirmed delivery must not show a successful reference");
+  assert.equal(refCode.textContent,"","No success code after a network error");
+  assert.equal(copied.length,0,"A failed submission must not copy anything");
   assert.equal(status.className,"contact-status-error");
  assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
   assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
@@ -173,6 +183,13 @@ const run=async(error=false)=>{
  }else{
   assert.equal(status.className,"contact-status-success");
   assert.ok(status.textContent.includes(requestBody.reference_code),"Confirmation must display reference");
+  assert.equal(refPanel.hidden,false,"Confirmed submission reveals the reference");
+  assert.equal(refCode.textContent,requestBody.reference_code,"Only the anonymous reference is displayed separately");
+  assert.equal(refCopy.hidden,false,"Clipboard button is available on HTTPS-capable browsers");
+  await refCopy.events.click();
+  assert.equal(copied.length,1,"Exactly one clipboard write on explicit click");
+  assert.equal(copied[0],requestBody.reference_code,"Clipboard must not contain customer data or UTM fields");
+  assert.ok(refFeedback.textContent.includes("wyłącznie kod"),"Explain what was copied");
  }
 };
 await run(false);

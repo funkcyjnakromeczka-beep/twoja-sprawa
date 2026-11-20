@@ -34,7 +34,8 @@
  let formVisible=false;
  let chatOpen=false;
  const syncVisibility=()=>{
-  const visible=!formVisible&&!chatOpen&&!Boolean(target?.contains(document.activeElement));
+  const keyboardLikeViewport=Boolean(window.visualViewport?.height&&window.innerHeight&&window.visualViewport.height<window.innerHeight*.7);
+  const visible=!formVisible&&!chatOpen&&!keyboardLikeViewport&&!Boolean(target?.contains(document.activeElement));
   nav.hidden=!visible;
   // CSS :has() cannot reserve safe bottom space on older Android browsers.
   document.body.classList?.toggle("has-visible-mobile-service-cta",visible);
@@ -66,9 +67,14 @@
   window.visualViewport?.addEventListener("resize",checkFormPosition,{passive:true});
   checkFormPosition();
  }
+ // The virtual keyboard changes the visual viewport on many Android browsers.
+ // Hide the CTA even if an intersection callback has not arrived yet.
+ if(window.visualViewport?.addEventListener){
+  window.visualViewport.addEventListener("resize",syncVisibility,{passive:true});
+ }
  // Hide while the contact form has keyboard focus, including mobile keyboards.
  document.addEventListener("focusin",event=>{
-  if(target?.contains(event.target))nav.hidden=true;
+  if(target?.contains(event.target))syncVisibility();
  });
  document.addEventListener("focusout",event=>{
   if(!target?.contains(event.target))return;

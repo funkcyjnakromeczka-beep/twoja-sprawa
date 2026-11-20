@@ -9,18 +9,37 @@ const clientSrc=await readFile("v2/crm-handoff.js","utf8");
 const html=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
 const css=await readFile("v2/crm-handoff.css","utf8");
 const win={};
-runInNewContext(coreSrc,{window:win});
+runInNewContext(coreSrc,{window:win,URL});
 const api=win.TwojaSprawaCrmHandoff;
 assert.ok(api,"Expected manual CRM handoff core");
 assert.equal(Object.keys(api.services).length,6);
 assert.equal(Object.keys(api.statuses).length,7);
 assert.equal(api.sources.length,18);
+assert.ok(typeof api.campaignFromUrl==="function","Safe campaign importer should be public");
+const sourceUrl="https://twoja-sprawa.pages.dev/kampanie/renty-powypadkowe?utm_source=facebook&utm_campaign=renty_rolka_2&email=private%40example.com";
+const importedCampaign=api.campaignFromUrl(sourceUrl,"https://twoja-sprawa.pages.dev");
+assert.equal(importedCampaign.source,"facebook");
+assert.equal(importedCampaign.campaign,"renty_rolka_2");
+assert.equal(Object.keys(importedCampaign).sort().join("|"),"campaign|source","Never transfer email or other URL data");
+for(const badUrl of [
+ "https://twoja-sprawa.pages.dev.evil.example/?utm_source=facebook&utm_campaign=x",
+ "javascript:alert(1)",
+ "https://evil.example/?utm_source=facebook&utm_campaign=x",
+ "https://twoja-sprawa.pages.dev/?utm_source=unknown&utm_campaign=x",
+ "https://twoja-sprawa.pages.dev/?utm_source=facebook&utm_campaign=Jan%20Kowalski"
+]) assert.throws(()=>api.campaignFromUrl(badUrl,"https://twoja-sprawa.pages.dev"),/Nieprawidłowy|własnej witryny|poprawnego/);
 const sample={ref:"ts-20261120-ab12cd34ef56",service:"renty",source:"facebook",campaign:"renty_rolka_2",status:"nowe"};
 const item=api.prepare(sample);
 assert.equal(item.ref,"TS-20261120-AB12CD34EF56");
 assert.equal(item.service,"Renty powypadkowe");
 assert.equal(item.advisor,"Paulina Chandrała");
 assert.equal(item.source,"facebook");
+assert.throws(()=>api.prepare({...sample,ref:"TS-20260230-AB12CD34EF56"}),/Podaj pełny kod TS/,"Impossible calendar date must fail");
+assert.throws(()=>api.prepare({...sample,ref:"TS-20261131-AB12CD34EF56"}),/Podaj pełny kod TS/);
+assert.equal(api.prepare({...sample,ref:"TS-20240229-AB12CD34EF56"}).ref,"TS-20240229-AB12CD34EF56","Leap day is valid");
+assert.throws(()=>api.prepare({...sample,status:"umowa"}),/potwierdź/,"Signed contract requires verification");
+assert.throws(()=>api.prepare({...sample,status:"przekazane"}),/potwierdź/,"Transfer to VOTUM requires verification");
+assert.ok(api.note({...sample,status:"umowa",confirmed:true}).includes("wymaga potwierdzenia"));
 const note=api.note(sample);
 assert.ok(note.includes("Kod zgłoszenia: TS-20261120-AB12CD34EF56"));
 assert.ok(note.includes("Kampania UTM: renty_rolka_2"));
@@ -49,6 +68,8 @@ for(const change of [
 assert.equal(api.prepare({...sample,campaign:""}).campaign,"brak");
 assert.ok(html.includes('id="przekazanie-do-crm"'),"Handoff visible in campaign builder");
 assert.ok(html.includes('data-crm-handoff')&&html.includes('data-crm-note')&&html.includes('data-crm-copy'));
+assert.ok(html.includes('data-crm-from-campaign'),"One-click import must be available");
+assert.ok(html.includes('name="confirmed" type="checkbox"'),"Confirmation of sensitive statuses must be explicit");
 assert.ok(html.includes('name="robots" content="noindex,follow"'),"Internal tool remains noindex");
 assert.ok(html.includes('src="/v2/crm-handoff-core.js" defer')&&html.includes('src="/v2/crm-handoff.js" defer'));
 assert.ok(html.includes('href="/v2/crm-handoff.css"'));
@@ -59,16 +80,21 @@ const banned=/\b(fetch|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|doc
 assert.ok(!banned.test(coreSrc+clientSrc),"No network, tracking, or storage should be added");
 
 const fields=Object.fromEntries(Object.entries(sample).map(([k,v])=>[k,{value:v}]));
+fields.confirmed={checked:false};
 const listeners={};
 const form={elements:{namedItem:key=>fields[key]},addEventListener:(name,fn)=>listeners[name]=fn};
 const output={value:"",focused:false,selected:false,focus(){this.focused=true;},select(){this.selected=true;}};
 const status={textContent:""};
 const button={disabled:false,addEventListener:(name,fn)=>button[name]=fn};
-const elements={"[data-crm-handoff]":form,"[data-crm-note]":output,"[data-crm-status]":status,"[data-crm-copy]":button};
+const importButton={addEventListener:(name,fn)=>importButton[name]=fn};
+const campaignLink={value:sourceUrl};
+const campaignBuilder={querySelector:selector=>selector==='[name=service]'?{value:"renty"}:null};
+const elements={"[data-crm-handoff]":form,"[data-crm-note]":output,"[data-crm-status]":status,"[data-crm-copy]":button,
+ "[data-crm-from-campaign]":importButton,"[data-campaign-url]":campaignLink,"[data-campaign-builder]":campaignBuilder};
 const document={querySelector:selector=>elements[selector]||null};
 const copied=[];
 const navigator={clipboard:{writeText:async v=>copied.push(v)}};
-runInNewContext(clientSrc,{window:{TwojaSprawaCrmHandoff:api},document,navigator});
+runInNewContext(clientSrc,{window:{TwojaSprawaCrmHandoff:api,location:{origin:"https://twoja-sprawa.pages.dev"}},document,navigator});
 assert.equal(button.disabled,true,"Must not copy before preparing a note");
 listeners.submit({preventDefault(){}});
 assert.equal(button.disabled,false);
@@ -87,4 +113,22 @@ fields.campaign.value="Klient Jan";
 listeners.submit({preventDefault(){}});
 assert.equal(button.disabled,true,"Reject unsafe campaign text");
 assert.ok(status.textContent.includes("Kampania"));
+await importButton.click();
+assert.equal(fields.service.value,"renty","Campaign import must retain the service");
+assert.equal(fields.source.value,"facebook");
+assert.equal(fields.campaign.value,"renty_rolka_2");
+assert.equal(fields.ref.value,sample.ref,"Import must not touch the case reference");
+assert.equal(fields.status.value,"nowe","Import must not change case status");
+assert.equal(output.value,"","Import must invalidate earlier note");
+assert.equal(copied.length,1,"Import alone cannot write clipboard");
+assert.ok(status.textContent.includes("wyłącznie usługę")||status.textContent.includes("Pobrano wyłącznie usługę"));
+fields.status.value="umowa";
+listeners.submit({preventDefault(){}});
+assert.equal(button.disabled,true,"Contract claim must be blocked without verification");
+assert.ok(status.textContent.includes("potwierdź"));
+fields.confirmed.checked=true;
+listeners.change();
+listeners.submit({preventDefault(){}});
+assert.equal(button.disabled,false,"Verified status can be prepared for manual CRM review");
+assert.ok(output.value.includes("Umowa podpisana"));
 console.log("CRM_HANDOFF_OK: six advisers, 18 channels, strict TS reference, explicit clipboard, no network/storage or client data.");

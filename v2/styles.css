@@ -638,3 +638,14 @@ h3{line-height:1.25}
 .contact-form :is(.contact-sensitive-warning,.contact-sensitive-remove)[hidden]{display:none!important}
 .contact-form .contact-sensitive-remove:focus-visible{outline:3px solid #e4a247}
 
+
+
+/* Confirmed anonymous reference: readable on desktop/mobile and print. */
+.contact-form .contact-ref-panel{display:flex;flex-wrap:wrap;align-items:center;gap:9px 14px;padding:14px;border:1px solid #8ca7b8;border-radius:10px;background:#eef5f9;color:#173548;min-width:0}
+.contact-form .contact-ref-panel[hidden]{display:none!important}
+.contact-form .contact-ref-panel strong{flex-basis:100%;font-size:.92rem}
+.contact-form .contact-ref-code{font:700 clamp(.88rem,2.8vw,1.04rem)/1.4 ui-monospace,SFMono-Regular,monospace;overflow-wrap:anywhere;user-select:text}
+.contact-form .contact-ref-copy{min-height:44px;margin:0!important;padding:9px 15px;color:#fff!important;background:#174e69!important;border:2px solid #174e69!important;border-radius:8px!important;box-shadow:none!important}
+.contact-form .contact-ref-copy:focus-visible{outline:3px solid #b42e50;outline-offset:3px}
+.contact-form .contact-ref-feedback{width:100%;color:#183e50;line-height:1.4}
+@media print{.contact-form .contact-ref-copy{display:none}}

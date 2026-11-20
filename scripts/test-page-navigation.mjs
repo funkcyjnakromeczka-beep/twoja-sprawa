@@ -33,7 +33,17 @@ async function gather(dir="",base="v2"){
  }
 }
 await gather();
-assert.deepEqual(actual.sort(),[...PAGE_PATHS].sort(),"Source page inventory changed; refresh the audit");
+// Historical 47-page, 1000-check audit remains unchanged. The new noindex
+// conversion page has a separate regression suite; do not claim 1000+ legacy fixes.
+const newConversionPage="kampanie/renty-powypadkowe.html";
+assert.ok(!PAGE_PATHS.includes(newConversionPage),"New campaign must not be double-counted in historical audit");
+assert.deepEqual(actual.sort(),[...PAGE_PATHS,newConversionPage].sort(),"Source page inventory changed; refresh the audit");
+const rentLanding=await readFile("v2/"+newConversionPage,"utf8");
+assert.ok(rentLanding.includes('<main id="main" aria-labelledby="renty-title">'),"Rents landing must label its main landmark");
+assert.ok(rentLanding.includes('<h1 id="renty-title">'),"Rents landing landmark must reference the H1");
+assert.ok(rentLanding.includes('class="skip-link" href="#main"'),"Rents landing must have a functional skip link");
+assert.ok(!rentLanding.includes('aria-label="Ścieżka nawigacji"'),"No distracting breadcrumbs in the campaign");
+
 
 let labelled=0,breadcrumbs=0,skips=0;
 for(const p of PAGE_PATHS){

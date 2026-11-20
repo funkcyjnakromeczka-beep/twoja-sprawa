@@ -308,8 +308,8 @@ for(const [slug,label] of [
  const canonical=origin+"/uslugi/"+slug;
  const head=html.slice(0,html.indexOf("</head>"));
  assert.ok(head.includes('rel="canonical" href="'+canonical+'"'),"Canonical mismatch for "+path);
- const schemas=[...head.matchAll(/<script[^>]*type="application\\/ld\\+json"[^>]*>([\\s\\S]*?)<\\/script>/g)]
-  .map(match=>JSON.parse(match[1]));
+ const schemas=head.split('<script type="application/ld+json">').slice(1)
+  .map(chunk=>JSON.parse(chunk.split("</script>")[0]));
  const crumbs=schemas.filter(item=>item["@type"]==="BreadcrumbList");
  assert.equal(crumbs.length,1,"Exactly one breadcrumb schema expected for "+path);
  assert.equal(crumbs[0].itemListElement.length,2,"Breadcrumb path should contain site and service: "+path);
@@ -318,8 +318,8 @@ for(const [slug,label] of [
  assert.equal(crumbs[0].itemListElement[1].name,label,"Breadcrumb service label mismatch: "+path);
  assert.ok(html.includes('name="robots" content="index,follow'),"Primary service must remain indexable: "+path);
 }
-const homeSeoTitle=home.match(/<title>([^<]+)<\\/title>/)?.[1]||"";
-const miningSeoTitle=(await read("uslugi/szkody-gornicze.html")).match(/<title>([^<]+)<\\/title>/)?.[1]||"";
+const homeSeoTitle=home.split("<title>")[1]?.split("</title>")[0]||"";
+const miningSeoTitle=(await read("uslugi/szkody-gornicze.html")).split("<title>")[1]?.split("</title>")[0]||"";
 assert.notEqual(homeSeoTitle,miningSeoTitle,"Homepage and mining service require distinct descriptive titles");
 assert.ok(homeSeoTitle.includes("świadczenie wspierające"),"Homepage must describe both flagship services");
 console.log("SERVICE_BREADCRUMBS_OK: six canonical trails, unique homepage title, indexable service pages.");

@@ -570,3 +570,30 @@
 @media(min-width:581px) and (max-width:960px){.premium-v2 #uslugi .services-direct-contact-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){.premium-v2 #uslugi .services-direct-contact-links{grid-template-columns:minmax(0,1fr)}}
 @media print{.premium-v2 #uslugi .services-direct-contact{display:none}}
+
+
+/* Mobile priority four: 2 x 2 menu, preserving the original three choices.
+   On phones ≤420px, SKD and rents each use a full accessible row. */
+@media(max-width:760px){
+ .premium-v2 .mobile-quick-nav{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+ }
+ .premium-v2 .mobile-quick-nav>a.mobile-rents-priority{
+  background:linear-gradient(115deg,#1c344b,#263e57);
+  border-color:#b6c8dd;
+  color:#fff;
+ }
+ .premium-v2 .mobile-quick-nav>a.mobile-rents-priority span{
+  color:#f3dfe7;
+ }
+ .premium-v2 .mobile-quick-nav>a.mobile-rents-priority:focus-visible{
+  outline:3px solid #e4d0de;
+  outline-offset:3px;
+ }
+}
+@media(max-width:420px){
+ .premium-v2 .mobile-quick-nav>a.mobile-rents-priority{
+  grid-column:1 / -1;
+  min-height:50px;
+ }
+}

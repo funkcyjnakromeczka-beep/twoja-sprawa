@@ -722,7 +722,7 @@
   const primaryShortcuts=[...document.querySelectorAll("[data-contact-shortcut]")];
   if(primaryShortcuts.length){
    const shortcutStatus=document.querySelectorAll("[data-contact-shortcut-status]")[0];
-   const pickService=code=>["szkody","swiadczenie","skd","renty"].includes(code)?serviceAlias[code]:"";
+   const pickService=code=>["szkody","swiadczenie","skd","renty","franki","przesyl"].includes(code)?serviceAlias[code]:"";
    const syncShortcuts=()=>{
     let active=false;
     for(const link of primaryShortcuts){

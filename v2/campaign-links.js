@@ -266,7 +266,7 @@
     });
   }
   // One-click organic presets. Explicit user click is the only trigger;
-  // no external publish, message, profile edit, localStorage or telemetry.
+  // no external publishing, message, profile edits, persistence or telemetry.
   const platformPresets = Object.freeze({
     "tiktok-szkody": {service:"szkody",channel:"tiktok",campaign:"tiktok_szkody",variant:"wideo_1"},
     "instagram-szkody": {service:"szkody",channel:"instagram",campaign:"instagram_szkody",variant:"rolka_1"},

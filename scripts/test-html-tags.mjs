@@ -13,9 +13,9 @@ const routes=[
  ["index.html",["https://www.facebook.com/groups/4385749378342889/"],true],
  ["uslugi/szkody-gornicze.html",["https://www.tiktok.com/@w.o.votum","https://www.facebook.com/szkodygornicze.pomoc/"],true],
  ["kampanie/szkody-gornicze.html",["https://www.tiktok.com/@w.o.votum","https://www.facebook.com/szkodygornicze.pomoc/"],false],
- ["uslugi/swiadczenie-wspierajace.html",["https://www.facebook.com/groups/1774654267299204/"],true],
- ["kampanie/swiadczenie-wspierajace.html",["https://www.facebook.com/groups/1774654267299204/"],false],
- ["uslugi/renty-powypadkowe.html",["https://www.facebook.com/groups/1774654267299204/"],true],
+ ["uslugi/swiadczenie-wspierajace.html",["https://www.facebook.com/groups/twojasprawa.swiadczenia.renty"],true],
+ ["kampanie/swiadczenie-wspierajace.html",["https://www.facebook.com/groups/twojasprawa.swiadczenia.renty"],false],
+ ["uslugi/renty-powypadkowe.html",["https://www.facebook.com/groups/twojasprawa.swiadczenia.renty"],true],
  ["uslugi/kredyty-pln.html",["https://www.facebook.com/w.bieglo/"],true],
  ["kampanie/skd.html",["https://www.facebook.com/w.bieglo/"],false]
 ];

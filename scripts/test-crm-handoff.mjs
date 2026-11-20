@@ -15,6 +15,11 @@ assert.ok(api,"Expected manual CRM handoff core");
 assert.equal(Object.keys(api.services).length,6);
 assert.equal(Object.keys(api.statuses).length,7);
 assert.equal(Object.keys(api.nextSteps).length,7,"Each status needs an explicit next step");
+assert.equal(api.parseFollowUpDate(""),"","Follow-up must be optional");
+assert.equal(api.parseFollowUpDate("2028-02-29"),"2028-02-29","Allow leap-day dates");
+for(const bad of ["2027-02-29","2026-11-31","2026-13-01","tomorrow","2026-1-2","2026-11-20 Jan Kowalski"]){
+ assert.throws(()=>api.parseFollowUpDate(bad),/datę|Data/,"Reject invalid follow-up "+bad);
+}
 assert.equal(api.sources.length,18);
 assert.ok(typeof api.campaignFromUrl==="function","Safe campaign importer should be public");
 const sourceUrl="https://twoja-sprawa.pages.dev/kampanie/renty-powypadkowe?utm_source=facebook&utm_campaign=renty_rolka_2&email=private%40example.com";
@@ -46,6 +51,15 @@ assert.ok(note.includes("Kod zgłoszenia: TS-20261120-AB12CD34EF56"));
 assert.ok(note.includes("Kampania UTM: renty_rolka_2"));
 assert.ok(note.includes("Opiekun: Paulina Chandrała"));
 assert.ok(note.includes("Następny krok (zalecenie wewnętrzne):"),"Include a status-specific checklist recommendation");
+assert.ok(note.includes("Wpływ zgłoszenia zweryfikowany: NIE — wymaga sprawdzenia"));
+assert.ok(note.includes("Sprawdzono duplikaty w CRM: NIE — wymaga sprawdzenia"));
+assert.ok(note.includes("Następny kontakt (plan wewnętrzny): nie ustalono"));
+const verifiedNote=api.note({...sample,received:true,checkedDuplicates:true,followUp:"2026-11-27"});
+assert.ok(verifiedNote.includes("Wpływ zgłoszenia zweryfikowany: TAK — zaznaczono ręcznie"));
+assert.ok(verifiedNote.includes("Sprawdzono duplikaty w CRM: TAK — zaznaczono ręcznie"));
+assert.ok(verifiedNote.includes("Następny kontakt (plan wewnętrzny): 2026-11-27"));
+assert.ok(!verifiedNote.includes("Automatyczne przypomnienie"));
+
 for(const status of Object.keys(api.statuses)){
  const statusNote=api.note({...sample,status,confirmed:true});
  assert.ok(statusNote.includes(api.nextSteps[status]),"Next step must match status "+status);
@@ -77,6 +91,11 @@ assert.ok(html.includes('id="przekazanie-do-crm"'),"Handoff visible in campaign 
 assert.ok(html.includes('data-crm-handoff')&&html.includes('data-crm-note')&&html.includes('data-crm-copy'));
 assert.ok(html.includes('data-crm-from-campaign'),"One-click import must be available");
 assert.ok(html.includes('name="confirmed" type="checkbox"'),"Confirmation of sensitive statuses must be explicit");
+assert.ok(html.includes('name="received" type="checkbox"'),"Check delivery manually");
+assert.ok(html.includes('name="checkedDuplicates" type="checkbox"'),"Check the CRM manually for duplicates");
+assert.ok(html.includes('name="followUp" type="date"'),"The follow-up date must be optional");
+assert.ok(html.includes("bez automatycznego przypomnienia"),"No automation promised");
+
 assert.ok(html.includes('name="robots" content="noindex,follow"'),"Internal tool remains noindex");
 assert.ok(html.includes('src="/v2/crm-handoff-core.js" defer')&&html.includes('src="/v2/crm-handoff.js" defer'));
 assert.ok(html.includes('href="/v2/crm-handoff.css"'));
@@ -90,6 +109,9 @@ assert.ok(!banned.test(coreSrc+clientSrc),"No network, tracking, or storage shou
 
 const fields=Object.fromEntries(Object.entries(sample).map(([k,v])=>[k,{value:v}]));
 fields.confirmed={checked:false};
+fields.received={checked:false};
+fields.checkedDuplicates={checked:false};
+fields.followUp={value:""};
 const listeners={};
 const form={elements:{namedItem:key=>fields[key]},addEventListener:(name,fn)=>listeners[name]=fn};
 const output={value:"",focused:false,selected:false,focus(){this.focused=true;},select(){this.selected=true;}};
@@ -146,4 +168,18 @@ listeners.change();
 listeners.submit({preventDefault(){}});
 assert.equal(button.disabled,false,"Verified status can be prepared for manual CRM review");
 assert.ok(output.value.includes("Umowa podpisana"));
+fields.status.value="kontakt";
+fields.confirmed.checked=false;
+fields.received.checked=true;
+fields.checkedDuplicates.checked=true;
+fields.followUp.value="2026-11-27";
+listeners.change();
+listeners.submit({preventDefault(){}});
+assert.ok(output.value.includes("Następny kontakt (plan wewnętrzny): 2026-11-27"));
+assert.ok(output.value.includes("Sprawdzono duplikaty w CRM: TAK — zaznaczono ręcznie"));
+fields.followUp.value="2026-02-30";
+listeners.change();
+listeners.submit({preventDefault(){}});
+assert.equal(button.disabled,true,"Impossible follow-up date blocks the note");
+assert.ok(status.textContent.includes("Data kolejnego kontaktu"));
 console.log("CRM_HANDOFF_OK: six advisers, 18 channels, strict TS reference, explicit clipboard, no network/storage or client data.");

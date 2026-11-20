@@ -11,6 +11,7 @@ const src=await readFile("v2/index.html","utf8");
 const built=await readFile("dist/index.html","utf8");
 const css=await readFile("dist/home-bundle.css","utf8");
 const art=await readFile("dist/assets/og-twoja-sprawa-metallic-v1.jpg");
+const headers=await readFile("dist/_headers","utf8");
 const sha256=createHash("sha256").update(art).digest("hex");
 assert.equal(sha256,"489f8b499f49f841c6dec3f5777a791f4007ad9d5e8c109ceeed6cc83187798c","Only the approved brand image may be published");
 
@@ -32,4 +33,5 @@ for (const [name,html,expectedPath] of [
 assert.ok(css.includes(".premium-v2 .hero-visual .hero-metallic-art"),"Production bundle does not include responsive approved banner CSS");
 assert.ok(css.includes("@media(max-width:600px)"),"Mobile media rules missing");
 assert.ok(!css.includes(".premium-v2 .hero-visual .hero-themis-figure,\n"),"Obsolete hidden-image rule returned");
+assert.ok(headers.includes("/assets/og-twoja-sprawa-metallic-v1.jpg\\n  Cache-Control: public, max-age=604800".replaceAll("\\\\n","\\n")),"Versioned social image should have 7 day public cache");
 console.log("BRAND_HERO_OK: one optimized, approved banner; no obsolete hidden images, responsive CSS and social metadata preserved.");

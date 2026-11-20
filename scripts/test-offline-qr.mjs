@@ -17,8 +17,8 @@ assert.ok(html.includes('src="/vendor/qrcode-generator.js"')&&html.includes('src
 assert.ok(html.indexOf('src="/vendor/qrcode-generator.js"')<html.indexOf('src="/campaign-links.js"'),"QR library must load first");
 assert.ok(html.includes("Pobierz kod QR (SVG) do Canvy i druku")&&html.includes('data-campaign-qr-image'));
 assert.ok(html.includes("nie liczy automatycznie skanów"),"No false tracking claims");
-assert.ok(!/<script\\b[^>]+src="https?:\\/\\//i.test(html),"No remote QR scripts");
-assert.ok(!/fetch\\(|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|document\\.cookie/.test(generator),"No QR tracking requests or storage");
+assert.ok(!/<script\b[^>]+src="https?:\/\//i.test(html),"No remote QR scripts");
+assert.ok(!/fetch\(|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|document\.cookie/.test(generator),"No QR tracking requests or storage");
 
 const values={
  service:{value:"szkody"},region:{value:"ogolnie"},channel:{value:"facebook"},
@@ -27,7 +27,7 @@ const values={
 const handlers={};
 const regionControl={hidden:true};
 const form={
- querySelector:sel=>sel==="[data-campaign-region]"?regionControl:values[sel.match(/\\[name=(\\w+)\\]/)?.[1]],
+ querySelector:sel=>sel==="[data-campaign-region]"?regionControl:values[sel.match(/\[name=(\w+)\]/)?.[1]],
  addEventListener:(name,fn)=>{handlers[name]=fn;}
 };
 const node=()=>({value:"",textContent:"",src:"",href:"",download:"",hidden:true,addEventListener:()=>{}});
@@ -81,12 +81,12 @@ const verify=(service,region,channel,path)=>{
  assert.equal(qrDownload.hidden,false);
  assert.ok(qrImage.src.startsWith("data:image/svg+xml;charset=utf-8,"));
  assert.equal(qrDownload.href,qrImage.src,"The saved file must match its on-page preview");
- assert.match(qrDownload.download,/^twoja-sprawa-qr-[a-z0-9_.-]+\\.svg$/);
+ assert.match(qrDownload.download,/^twoja-sprawa-qr-[a-z0-9_.-]+\.svg$/);
  assert.ok(qrDownload.download.includes(service),"File should identify the service");
  if(service==="szkody"&&region!=="ogolnie")assert.ok(qrDownload.download.includes("-"+region+"-"),"Filename must distinguish city");
  assert.ok(qrStatus.textContent.includes("Zeskanuj"),"Print test reminder missing");
  assert.ok(svg().startsWith("<svg ")&&svg().includes('fill="white"')&&svg().includes('fill="black"'));
- const box=svg().match(/viewBox="0 0 (\\d+) (\\d+)"/);
+ const box=svg().match(/viewBox="0 0 (\d+) (\d+)"/);
  assert.ok(box,"SVG must use an explicit viewBox");
  assert.equal(Number(box[1]),qrModules*8+64,"Keep four modules of white quiet space");
  assert.equal(box[1],box[2]);

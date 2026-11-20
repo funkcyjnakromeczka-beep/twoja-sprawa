@@ -10,7 +10,7 @@ import {toPublicRoute} from "./public-routes.mjs";
 
 const origin="https://twoja-sprawa.pages.dev";
 const routes=[
- ["index.html",["https://www.facebook.com/groups/4385749378342889/"],true],
+ ["index.html",["https://www.facebook.com/groups/4385749378342889/","https://www.facebook.com/groups/twojasprawa.swiadczenia.renty"],true],
  ["uslugi/szkody-gornicze.html",["https://www.tiktok.com/@w.o.votum","https://www.facebook.com/szkodygornicze.pomoc/"],true],
  ["kampanie/szkody-gornicze.html",["https://www.tiktok.com/@w.o.votum","https://www.facebook.com/szkodygornicze.pomoc/"],false],
  ["uslugi/swiadczenie-wspierajace.html",["https://www.facebook.com/groups/twojasprawa.swiadczenia.renty"],true],

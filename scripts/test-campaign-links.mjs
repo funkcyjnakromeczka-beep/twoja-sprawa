@@ -36,6 +36,17 @@ const presetControls={
  renty:makePreset("renty")
 };
 const presetStatus={textContent:""};
+const makePlatformPreset=code=>({
+ events:{},getAttribute:key=>key==="data-platform-preset"?code:null,
+ addEventListener(name,fn){this.events[name]=fn;}
+});
+const platformControls={
+ "tiktok-szkody":makePlatformPreset("tiktok-szkody"),
+ "instagram-szkody":makePlatformPreset("instagram-szkody"),
+ "instagram-skd":makePlatformPreset("instagram-skd")
+};
+const platformNote={textContent:"",hidden:true};
+const platformStatus={textContent:""};
 const nodes={
  "[data-campaign-builder]":form,
  "[data-campaign-url]":link,
@@ -47,9 +58,11 @@ const nodes={
  "[data-preview-title]":previewTitle,
  "[data-preview-description]":previewDescription,
  "[data-preview-host]":previewHost,
- "[data-community-preset-status]":presetStatus
+ "[data-community-preset-status]":presetStatus,
+ "[data-platform-note]":platformNote,
+ "[data-platform-preset-status]":platformStatus
 };
-const document={querySelector:sel=>nodes[sel],querySelectorAll:sel=>sel==="[data-community-preset]"?Object.values(presetControls):[]};
+const document={querySelector:sel=>nodes[sel],querySelectorAll:sel=>sel==="[data-community-preset]"?Object.values(presetControls):sel==="[data-platform-preset]"?Object.values(platformControls):[]};
 const window={location:{origin:"https://twoja-sprawa.pages.dev",hostname:"twoja-sprawa.pages.dev"},isSecureContext:true};
 runInNewContext(source,{window,document,URL,console});
 const check=(service,path,phone)=>{
@@ -198,4 +211,38 @@ for(const [code,path,variant] of [
    "Campaign URL must not carry customer data");
  assert.ok(presetStatus.textContent.includes("Nic nie zostało wysłane do Facebooka"));
 }
+// Instagram/TikTok organic descriptions must never assume caption links
+// are clickable. Keep tagged profile/Story links separate from the caption.
+for(const [preset,serviceName,channelName,variant,path,phone] of [
+ ["tiktok-szkody","szkody","tiktok","wideo_1","/kampanie/szkody-gornicze","796 441 345"],
+ ["instagram-szkody","szkody","instagram","rolka_1","/kampanie/szkody-gornicze","796 441 345"],
+ ["instagram-skd","skd","instagram","rolka_1","/kampanie/skd","796 441 345"]
+]){
+ assert.ok(generatorGuide.includes('data-platform-preset="'+preset+'"'),"Missing organic preset button");
+ platformControls[preset].events.click();
+ const campaignLink=new URL(link.value);
+ assert.equal(values.service.value,serviceName);
+ assert.equal(values.channel.value,channelName);
+ assert.equal(values.style.value,"short");
+ assert.equal(campaignLink.pathname,path);
+ assert.equal(campaignLink.searchParams.get("utm_source"),channelName);
+ assert.equal(campaignLink.searchParams.get("utm_medium"),"social");
+ assert.equal(campaignLink.searchParams.get("utm_campaign"),channelName+"_"+serviceName);
+ assert.equal(campaignLink.searchParams.get("utm_content"),variant);
+ assert.ok(link.value.includes("utm_"),"The separate link must retain attribution");
+ assert.ok(!post.value.includes(link.value),"Captions should not mislead users with full non-clickable UTM links");
+ assert.ok(post.value.includes("twoja-sprawa.pages.dev")&&post.value.includes("wpisz adres w przeglądarce"));
+ assert.ok(post.value.includes(phone),"Correct advisor telephone in post");
+ assert.equal(platformNote.hidden,false);
+ assert.ok(platformNote.textContent.includes(channelName==="instagram"?"Instagram":"TikTok"));
+ assert.ok(platformNote.textContent.includes("UTM"),"Warn of lost attribution for manual entry");
+ assert.ok(platformStatus.textContent.includes("Niczego nie opublikowano"));
+ assert.equal(open.href,link.value,"Public destination remains openable");
+}
+assert.ok(generatorGuide.includes("data-platform-note")&&generatorGuide.includes("link UTM"),
+ "Generator must explain the separate clickable-link workflow");
+values.channel.value="facebook_grupa";
+listeners.change();
+assert.equal(platformNote.hidden,true,"No Instagram/TikTok warning for Facebook");
+assert.ok(post.value.includes(link.value),"Facebook retains clickable campaign-link caption");
 console.log("LOCAL_CAMPAIGN_LINKS_OK: 6 services, 2 city campaigns, group UTMs, city messages, Google Business Profile and no telemetry.");

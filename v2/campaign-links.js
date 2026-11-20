@@ -104,8 +104,8 @@
   };
   const shorts = {
     szkody: "Lubin, Polkowice i okolice: pęknięcia ścian, elewacji lub uszkodzenia kostki? Warto udokumentować szkody i sprawdzić możliwości działania. Pierwszy kontakt bez zobowiązania do umowy.",
-    swiadczenie: "Świadczenie wspierające: WZON, ZUS, decyzja lub wniosek? Uporządkuj etap sprawy i poznaj możliwe dalsze kroki. Bez obietnic wyniku.",
-    renty: "Renta powypadkowa: sprawdź, jakie dokumenty i informacje mogą być potrzebne do analizy indywidualnej sytuacji.",
+    swiadczenie: "Świadczenie wspierające: jesteś przed oceną WZON, czekasz na decyzję czy składasz wniosek do ZUS? Zapytaj o możliwe dalsze kroki i przygotowanie sprawy. Bez obietnic wyniku.",
+    renty: "Otrzymujesz rentę powypadkową od ubezpieczyciela lub zastanawiasz się, czy możesz o nią wystąpić? Zapytaj o indywidualną analizę świadczenia i możliwych dalszych kroków. Bez gwarancji podwyższenia.",
     skd: "Kredyt konsumencki w PLN? Wyślij pełną umowę na wojciech.obieglo@votum-ds.pl, zostaw numer telefonu i zapytaj o indywidualną analizę SKD. Bez gwarancji wyniku.",
     przesyl: "Słupy lub linie na działce? Warto ustalić dokumentację i stan prawny urządzeń przesyłowych przed podjęciem dalszych działań.",
     franki: "Kredyt frankowy CHF? Sprawdź, jakie zapisy umowy i dokumenty mogą mieć znaczenie dla indywidualnej analizy możliwych rozliczeń z bankiem. Bez obietnic wyniku."
@@ -294,7 +294,11 @@
   const platformPresets = Object.freeze({
     "tiktok-szkody": {service:"szkody",channel:"tiktok",campaign:"tiktok_szkody",variant:"wideo_1"},
     "instagram-szkody": {service:"szkody",channel:"instagram",campaign:"instagram_szkody",variant:"rolka_1"},
-    "instagram-skd": {service:"skd",channel:"instagram",campaign:"instagram_skd",variant:"rolka_1"}
+    "instagram-skd": {service:"skd",channel:"instagram",campaign:"instagram_skd",variant:"rolka_1"},
+    "tiktok-swiadczenie": {service:"swiadczenie",channel:"tiktok",campaign:"tiktok_swiadczenie",variant:"wideo_1"},
+    "instagram-swiadczenie": {service:"swiadczenie",channel:"instagram",campaign:"instagram_swiadczenie",variant:"rolka_1"},
+    "tiktok-renty": {service:"renty",channel:"tiktok",campaign:"tiktok_renty",variant:"wideo_1"},
+    "instagram-renty": {service:"renty",channel:"instagram",campaign:"instagram_renty",variant:"rolka_1"}
   });
   for (const button of platformPresetButtons) {
     button.addEventListener("click", () => {

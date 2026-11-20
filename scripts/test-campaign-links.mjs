@@ -27,6 +27,15 @@ const previewTitle={textContent:""};
 const previewDescription={textContent:""};
 const previewHost={textContent:""};
 const noOpControl={addEventListener:()=>{}};
+const makePreset=code=>({
+ events:{},getAttribute:key=>key==="data-community-preset"?code:null,
+ addEventListener(name,fn){this.events[name]=fn;}
+});
+const presetControls={
+ swiadczenie:makePreset("swiadczenie"),
+ renty:makePreset("renty")
+};
+const presetStatus={textContent:""};
 const nodes={
  "[data-campaign-builder]":form,
  "[data-campaign-url]":link,
@@ -37,9 +46,10 @@ const nodes={
  "[data-open-link]":open,
  "[data-preview-title]":previewTitle,
  "[data-preview-description]":previewDescription,
- "[data-preview-host]":previewHost
+ "[data-preview-host]":previewHost,
+ "[data-community-preset-status]":presetStatus
 };
-const document={querySelector:sel=>nodes[sel]};
+const document={querySelector:sel=>nodes[sel],querySelectorAll:sel=>sel==="[data-community-preset]"?Object.values(presetControls):[]};
 const window={location:{origin:"https://twoja-sprawa.pages.dev",hostname:"twoja-sprawa.pages.dev"},isSecureContext:true};
 runInNewContext(source,{window,document,URL,console});
 const check=(service,path,phone)=>{
@@ -106,7 +116,9 @@ listeners.change();
 const gbp=new URL(link.value);
 assert.equal(gbp.origin,"https://twoja-sprawa.pages.dev");
 assert.equal(gbp.pathname,"/","Business Profile website field should link to the indexed home");
-assert.ok(previewTitle.textContent.includes("Szkody górnicze Lubin i Polkowice | Twoja Sprawa"),"GBP must preview the actual homepage");
+const homepage=await readFile("v2/index.html","utf8");
+const publishedTitle=homepage.split("<title>")[1]?.split("</title>")[0]||"";
+assert.equal(previewTitle.textContent,publishedTitle,"GBP preview must match current homepage title");
 assert.equal(gbp.searchParams.get("utm_source"),"google");
 assert.equal(gbp.searchParams.get("utm_medium"),"local");
 assert.equal(gbp.searchParams.get("utm_campaign"),"wizytowka_google_lubin");
@@ -160,4 +172,30 @@ assert.equal(new URL(link.value).searchParams.get("utm_content"),"hook");
 assert.ok(post.value.includes("Czy na Twojej działce"));
 assert.ok(status.textContent.includes("Darmowa domena Cloudflare Pages"));
 assert.ok(!status.textContent.includes("wersji testowej"),"Cloudflare production must not be called a preview");
+// Two owned-group presets set category-only UTM, never publish a post.
+assert.ok(generatorGuide.includes('data-community-preset="swiadczenie"'));
+assert.ok(generatorGuide.includes('data-community-preset="renty"'));
+assert.ok(generatorGuide.includes('href="https://www.facebook.com/groups/twojasprawa.swiadczenia.renty"'));
+assert.ok(generatorGuide.includes("nie nastąpi automatyczna publikacja"),"Manual posting must be explicit");
+for(const [code,path,variant] of [
+ ["swiadczenie","/kampanie/swiadczenie-wspierajace","wspierajace_post"],
+ ["renty","/uslugi/renty-powypadkowe","renty_post"]
+]){
+ presetControls[code].events.click();
+ const presetUrl=new URL(link.value);
+ assert.equal(values.service.value,code,"Preset selects correct service");
+ assert.equal(values.channel.value,"facebook_grupa","Preset must use organic group channel");
+ assert.equal(values.campaign.value,"grupa_swiadczenia_renty");
+ assert.equal(values.content.value,variant,"Distinct attribution for each topic");
+ assert.equal(presetUrl.pathname,path,"Preset must lead to the correct public form");
+ assert.equal(presetUrl.searchParams.get("utm_source"),"facebook");
+ assert.equal(presetUrl.searchParams.get("utm_medium"),"grupa");
+ assert.equal(presetUrl.searchParams.get("utm_campaign"),"grupa_swiadczenia_renty");
+ assert.equal(presetUrl.searchParams.get("utm_content"),variant);
+ assert.ok(post.value.includes(presetUrl.href)&&post.value.includes("500 171 531"),
+   "Ready post includes own URL and Paulina phone");
+ assert.ok(!link.value.includes("PESEL")&&!link.value.includes("email="),
+   "Campaign URL must not carry customer data");
+ assert.ok(presetStatus.textContent.includes("Nic nie zostało wysłane do Facebooka"));
+}
 console.log("LOCAL_CAMPAIGN_LINKS_OK: 6 services, 2 city campaigns, group UTMs, city messages, Google Business Profile and no telemetry.");

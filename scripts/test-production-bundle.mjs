@@ -160,7 +160,7 @@ for(const [page,telephone,email] of [
  ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","+48500171531","paulina.chandrala@votum-ds.pl"]
 ]){
  const html=await read(page);
- const region=html.match(/<div data-contact-form>([\\s\\S]*?)<\\/div>/)?.[1]||"";
+ const region=html.match(/<div data-contact-form>([\s\S]*?)<\/div>/)?.[1]||"";
  assert.ok(region.includes('class="contact-load-fallback"'),"Guide missing fallback after no-JS: "+page);
  assert.ok(region.includes('href="tel:'+telephone+'"'),"Guide wrong fallback phone: "+page);
  assert.ok(region.includes('href="mailto:'+email+'"'),"Guide wrong fallback e-mail: "+page);

@@ -39,6 +39,43 @@ function navigate(sourceQuery,href,referrer=""){
  }
  return link.href;
 }
+// Static links must retain attribution even when opened in a new tab via
+// context menu or keyboard (events that may bypass ordinary click).
+function preparedLinks(sourceQuery,hrefs){
+ const origin="https://twoja-sprawa.pages.dev";
+ const location={origin,href:origin+"/"+sourceQuery,search:sourceQuery};
+ const links=hrefs.map(raw=>({
+  href:raw,
+  getAttribute(name){return name==="href"?raw:null;},
+  hasAttribute(){return false;}
+ }));
+ const document={referrer:"",querySelectorAll:selector=>selector==="a[href]"?links:[],
+  addEventListener(){}};
+ runInNewContext(attribution,{window:{location},document,URL,URLSearchParams});
+ return links.map(link=>link.href);
+}
+const initial=preparedLinks("?utm_source=facebook&utm_medium=social&utm_campaign=renty_rolka&utm_content=post_3&phone=500000000",[
+ "/kampanie/renty-powypadkowe#formularz",
+ "/uslugi/renty-powypadkowe?utm_source=organiczne&utm_campaign=old",
+ "/kampanie/skd?utm_source=tiktok",
+ "https://votum-sa.pl/",
+ "tel:+48500171531",
+ "#formularz"
+]);
+const first=new URL(initial[0]);
+assert.equal(first.searchParams.get("utm_source"),"facebook","New tab must keep first-party UTM source");
+assert.equal(first.searchParams.get("utm_campaign"),"renty_rolka","New tab must keep campaign code");
+assert.equal(first.searchParams.get("utm_content"),"post_3");
+assert.equal(first.searchParams.get("phone"),null,"Do not propagate caller input into new tab URL");
+assert.equal(first.hash,"#formularz","Existing form anchor must survive tagging");
+const updated=new URL(initial[1]);
+assert.equal(updated.searchParams.get("utm_source"),"facebook","Organic placeholder should be replaced");
+assert.equal(updated.searchParams.get("utm_campaign"),"renty_rolka","Outdated campaign must not be used");
+assert.equal(initial[2],"/kampanie/skd?utm_source=tiktok","Existing explicit campaign wins");
+assert.equal(initial[3],"https://votum-sa.pl/","Never change external websites");
+assert.equal(initial[4],"tel:+48500171531","Never change telephone links");
+assert.equal(initial[5],"#formularz","Never change same-page anchors");
+
 const search="?utm_source=chatgpt.com&utm_medium=referral&utm_campaign=szkody_ai&utm_content=odpowiedz&email=private%40example.com";
 const next=new URL(navigate(search,"/kampanie/szkody-gornicze?utm_source=organiczne&utm_campaign=homepage"),origin);
 assert.equal(next.searchParams.get("utm_source"),"chatgpt.com");

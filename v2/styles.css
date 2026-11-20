@@ -649,3 +649,9 @@ h3{line-height:1.25}
 .contact-form .contact-ref-copy:focus-visible{outline:3px solid #b42e50;outline-offset:3px}
 .contact-form .contact-ref-feedback{width:100%;color:#183e50;line-height:1.4}
 @media print{.contact-form .contact-ref-copy{display:none}}
+
+/* Accessible native-error summary; never reflects visitor-entered data. */
+.contact-form .contact-validation-notice:not([hidden]){display:block;margin:8px 0 12px;padding:12px 14px;border:2px solid #b0354d;border-radius:9px;background:#fff0f2;color:#681c30!important;font-weight:700;line-height:1.5}
+.contact-form .contact-validation-notice[hidden]{display:none!important}
+.contact-form :is(input,select,textarea)[aria-invalid="true"]{border:2px solid #b0354d!important}
+@media(max-width:600px){.contact-form :is(input,select,textarea){font-size:16px;scroll-margin-top:90px;scroll-margin-bottom:130px}}

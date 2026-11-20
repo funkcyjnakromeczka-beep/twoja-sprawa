@@ -22,6 +22,15 @@
   umowa:"Umowa podpisana — wymaga potwierdzenia",
   zamkniete:"Sprawa zamknięta"
  });
+ const nextSteps=Object.freeze({
+  nowe:"Sprawdź potwierdzenie Web3Forms, wyszukaj kod TS w CRM i ustal preferowaną formę pierwszego kontaktu.",
+  kontakt:"Zweryfikuj rodzaj sprawy i uzgodnij bezpieczny sposób przekazania dokumentów, jeśli są potrzebne.",
+  dokumenty:"Sprawdź, których dokumentów brakuje, i uzgodnij termin kolejnego kontaktu bez wpisywania danych wrażliwych w notatce.",
+  analiza:"Ustal, kto analizuje dokumenty, oraz jaki krok można podjąć po uzyskaniu wyniku analizy.",
+  przekazane:"Sprawdź potwierdzenie przekazania do VOTUM i przypisanie osoby odpowiedzialnej za dalszy kontakt.",
+  umowa:"Potwierdź podpisanie umowy w dokumentacji i wskaż kolejny krok obsługi, bez obiecywania wyniku.",
+  zamkniete:"Zweryfikuj przyczynę zamknięcia sprawy i zakończ dalsze przypomnienia zgodnie z ustaleniami."
+ });
  const refPattern=/^TS-\d{8}-[A-F0-9]{12}$/;
  const codePattern=/^[a-z0-9_-]{1,40}$/;
  function calendarDateFromReference(ref){
@@ -71,9 +80,10 @@
    "Źródło kontaktu: "+item.source,
    "Kampania UTM: "+item.campaign,
    "Etap obsługi (deklarowany): "+item.status,
+   "Następny krok (zalecenie wewnętrzne): "+nextSteps[String(input.status||"")],
    "Weryfikacja: sprawdź e-mail Web3Forms i istniejącą kartę w CRM przed utworzeniem nowej.",
    "Uwaga: notatka nie potwierdza dostarczenia e-maila, podpisania umowy ani przekazania sprawy."
   ].join("\n");
  }
- root.TwojaSprawaCrmHandoff=Object.freeze({services,sources,statuses,prepare,note,campaignFromUrl});
+ root.TwojaSprawaCrmHandoff=Object.freeze({services,sources,statuses,nextSteps,prepare,note,campaignFromUrl});
 })(window);

@@ -57,6 +57,16 @@ for(const path of [
 const homepage=await readFile("dist/index.html","utf8");
 assert.ok(homepage.includes('href="https://www.facebook.com/groups/4385749378342889/"'),
  "General Twoja Sprawa community group should remain unchanged");
+const homeCommunity=homepage.match(/<section class="social-community social-community-home"[\s\S]*?<\/section>/)?.[0]||"";
+assert.ok(homeCommunity,"Homepage must visibly present both groups");
+assert.equal((homeCommunity.match(/<a href="https:\/\/www\.facebook\.com\/groups\//g)||[]).length,2,
+ "Homepage must include exactly two group links");
+assert.ok(homeCommunity.includes('href="'+communityUrl+'"'),"Support and rents group link missing from homepage");
+assert.ok(homeCommunity.includes("Twoja Sprawa — grupa ogólna")&&
+ homeCommunity.includes("Świadczenie wspierające i renty powypadkowe"),
+ "Home community links must distinguish their topics");
+assert.ok(homeCommunity.includes("Ochrona danych"),"Protect privacy in home community section");
+
 console.log("SOCIAL_COMMUNITY_LINK_OK: three current Facebook links, relevant labels, general group preserved.");
 
 const shareJs=await readFile("v2/share-page.js","utf8");

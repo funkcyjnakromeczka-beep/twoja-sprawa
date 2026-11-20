@@ -102,7 +102,7 @@ const polkowice=verify("szkody","polkowice","facebook_grupa","/lokalnie/szkody-g
 assert.equal(polkowice.searchParams.get("utm_medium"),"grupa");
 verify("swiadczenie","ogolnie","facebook","/kampanie/swiadczenie-wspierajace");
 verify("skd","ogolnie","facebook","/kampanie/skd");
-verify("renty","ogolnie","facebook","/uslugi/renty-powypadkowe");
+verify("renty","ogolnie","facebook","/kampanie/renty-powypadkowe");
 verify("przesyl","ogolnie","facebook","/uslugi/sluzebnosc-przesylu");
 verify("franki","ogolnie","facebook","/uslugi/kredyty-frankowe");
 const business=verify("szkody","lubin","google_wizytowka","/");

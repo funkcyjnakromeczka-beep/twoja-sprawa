@@ -22,6 +22,20 @@ for(const bad of ["2027-02-29","2026-11-31","2026-13-01","tomorrow","2026-1-2","
 }
 assert.equal(api.sources.length,18);
 assert.ok(typeof api.campaignFromUrl==="function","Safe campaign importer should be public");
+assert.equal(typeof api.calendarReminder,"function","Standalone neutral calendar event must be available");
+const ics=api.calendarReminder("2026-11-27","local-event-000001");
+assert.ok(ics.startsWith("BEGIN:VCALENDAR\\r\\n"),"ICS must use CRLF line breaks");
+assert.ok(ics.includes("DTSTART;VALUE=DATE:20261127\\r\\n"));
+assert.ok(ics.includes("DTEND;VALUE=DATE:20261128\\r\\n"));
+assert.match(ics,/DTSTAMP:\\d{8}T\\d{6}Z/);
+assert.ok(ics.includes("SUMMARY:Twoja Sprawa - przeglad zaplanowanych kontaktow"));
+assert.ok(!ics.includes("AB12CD34EF56")&&!ics.includes("Paulina")&&!ics.includes("facebook"),"Calendar has no customer reference, advisor or marketing metadata");
+const yearEnd=api.calendarReminder("2026-12-31","year-end-000001");
+assert.ok(yearEnd.includes("DTEND;VALUE=DATE:20270101"),"Calendar event correctly rolls into the next year");
+assert.throws(()=>api.calendarReminder("2026-02-30","valid-event-001"),/Data kolejnego kontaktu/);
+assert.throws(()=>api.calendarReminder("","valid-event-001"),/Ustal datę/);
+assert.throws(()=>api.calendarReminder("2026-11-27","../illegal"),/identyfikator/);
+
 const sourceUrl="https://twoja-sprawa.pages.dev/kampanie/renty-powypadkowe?utm_source=facebook&utm_campaign=renty_rolka_2&email=private%40example.com";
 const importedCampaign=api.campaignFromUrl(sourceUrl,"https://twoja-sprawa.pages.dev");
 assert.equal(importedCampaign.source,"facebook");
@@ -90,6 +104,9 @@ assert.equal(api.prepare({...sample,campaign:""}).campaign,"brak");
 assert.ok(html.includes('id="przekazanie-do-crm"'),"Handoff visible in campaign builder");
 assert.ok(html.includes('data-crm-handoff')&&html.includes('data-crm-note')&&html.includes('data-crm-copy'));
 assert.ok(html.includes('data-crm-from-campaign'),"One-click import must be available");
+assert.ok(html.includes('data-crm-calendar'),"User should be able to download a neutral calendar entry");
+assert.ok(html.includes("Plik .ics obejmuje cały wybrany dzień"),"No implied automatic reminders");
+
 assert.ok(html.includes('name="confirmed" type="checkbox"'),"Confirmation of sensitive statuses must be explicit");
 assert.ok(html.includes('name="received" type="checkbox"'),"Check delivery manually");
 assert.ok(html.includes('name="checkedDuplicates" type="checkbox"'),"Check the CRM manually for duplicates");
@@ -117,15 +134,26 @@ const form={elements:{namedItem:key=>fields[key]},addEventListener:(name,fn)=>li
 const output={value:"",focused:false,selected:false,focus(){this.focused=true;},select(){this.selected=true;}};
 const status={textContent:""};
 const button={disabled:false,addEventListener:(name,fn)=>button[name]=fn};
+const calendarButton={disabled:false,addEventListener:(name,fn)=>calendarButton[name]=fn};
+let savedCalendarFile="",calendarBlob=null,revokedUrl="";
+const URLmock={
+ createObjectURL:blob=>{calendarBlob=blob;return "blob:mock-calendar";},
+ revokeObjectURL:url=>{revokedUrl=url;}
+};
+
 const importButton={addEventListener:(name,fn)=>importButton[name]=fn};
 const campaignLink={value:sourceUrl};
 const campaignBuilder={querySelector:selector=>selector==='[name=service]'?{value:"renty"}:null};
-const elements={"[data-crm-handoff]":form,"[data-crm-note]":output,"[data-crm-status]":status,"[data-crm-copy]":button,
+const elements={"[data-crm-handoff]":form,"[data-crm-note]":output,"[data-crm-status]":status,"[data-crm-copy]":button,"[data-crm-calendar]":calendarButton,
  "[data-crm-from-campaign]":importButton,"[data-campaign-url]":campaignLink,"[data-campaign-builder]":campaignBuilder};
-const document={querySelector:selector=>elements[selector]||null};
+const document={
+ querySelector:selector=>elements[selector]||null,
+ body:{append(){}},
+ createElement:()=>({href:"",download:"",style:{},click(){savedCalendarFile=this.download;},remove(){}})
+};
 const copied=[];
 const navigator={clipboard:{writeText:async v=>copied.push(v)}};
-runInNewContext(clientSrc,{window:{TwojaSprawaCrmHandoff:api,location:{origin:"https://twoja-sprawa.pages.dev"}},document,navigator});
+runInNewContext(clientSrc,{window:{TwojaSprawaCrmHandoff:api,location:{origin:"https://twoja-sprawa.pages.dev"},crypto:{randomUUID:()=>"mock-event-000001"},setTimeout:callback=>{callback();return 1;}},document,navigator,Blob,URL:URLmock});
 assert.equal(button.disabled,true,"Must not copy before preparing a note");
 listeners.submit({preventDefault(){}});
 assert.equal(button.disabled,false);
@@ -182,4 +210,19 @@ listeners.change();
 listeners.submit({preventDefault(){}});
 assert.equal(button.disabled,true,"Impossible follow-up date blocks the note");
 assert.ok(status.textContent.includes("Data kolejnego kontaktu"));
+assert.equal(calendarButton.disabled,true,"Impossible follow-up date blocks calendar download");
+fields.followUp.value="2026-11-27";
+listeners.change();
+listeners.submit({preventDefault(){}});
+assert.equal(calendarButton.disabled,false,"Valid date after preparing the note enables ICS download");
+calendarButton.click();
+assert.equal(savedCalendarFile,"twoja-sprawa-przeglad-kontaktow-2026-11-27.ics");
+assert.ok(calendarBlob instanceof Blob,"Calendar must be a local Blob, not a network request");
+const exportedIcs=await calendarBlob.text();
+assert.ok(exportedIcs.includes("DTSTART;VALUE=DATE:20261127"));
+assert.ok(!exportedIcs.includes(sample.ref)&&!exportedIcs.includes("Paulina")&&!exportedIcs.includes("facebook"));
+assert.equal(revokedUrl,"blob:mock-calendar","Object URL must be revoked after download");
+fields.followUp.value="";
+listeners.input();
+assert.equal(calendarButton.disabled,true,"Editing the form invalidates calendar preview");
 console.log("CRM_HANDOFF_OK: six advisers, 18 channels, strict TS reference, explicit clipboard, no network/storage or client data.");

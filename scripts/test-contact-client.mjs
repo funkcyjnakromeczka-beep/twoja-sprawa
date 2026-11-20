@@ -710,16 +710,16 @@ for(const sample of [
   }
 }
 
-// Three homepage shortcuts change one form without sending data on selection.
+// Four homepage shortcuts change one form without sending data on selection.
 {
  const host=new Node("host");
- const mining=new Node("a"),support=new Node("a"),skd=new Node("a"),feedback=new Node("p");
+ const mining=new Node("a"),support=new Node("a"),skd=new Node("a"),renty=new Node("a"),feedback=new Node("p");
  const makeKey=(node,key)=>{node.getAttribute=name=>name==="data-contact-shortcut"?key:(node.attributes[name]??null);};
- makeKey(mining,"szkody");makeKey(support,"swiadczenie");makeKey(skd,"skd");
+ makeKey(mining,"szkody");makeKey(support,"swiadczenie");makeKey(skd,"skd");makeKey(renty,"renty");
  const document={
   body:{classList:{contains:()=>false}},
   currentScript:{getAttribute:()=>""},
-  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-contact-shortcut]"?[mining,support,skd]:selector==="[data-contact-shortcut-status]"?[feedback]:[],
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-contact-shortcut]"?[mining,support,skd,renty]:selector==="[data-contact-shortcut-status]"?[feedback]:[],
   createElement:tag=>new Node(tag),
   createTextNode:text=>({tag:"text",textContent:text})
  };
@@ -772,13 +772,22 @@ for(const sample of [
  skd.events.click({preventDefault(){}});
  assert.equal(service.value,"Kredyt w PLN / SKD","Normal keyboard/click activation remains functional");
  assert.equal(skd.attributes["data-selected"],"true");
- service.value="Renty powypadkowe";service.events.change();
+ renty.events.click({preventDefault(){}});
+ assert.equal(service.value,"Renty powypadkowe","Renty shortcut must select accident pension");
+ assert.equal(renty.attributes["data-selected"],"true");
+ assert.equal(skd.attributes["data-selected"],"false");
+ assert.equal(damage.hidden,true,"Renty shortcut must hide the mining-specific qualifier");
+ assert.equal(quickPhone.required,false,"Renty accepts email-only contact, unlike SKD");
+ assert.ok(feedback.textContent.includes("Renty powypadkowe"));
+ assert.ok(advisor.children.some(n=>(n.textContent||"").includes("Paulina Chandrała")),"Renty must route to Paulina");
+ service.value="Kredyty frankowe CHF";service.events.change();
  assert.equal(mining.attributes["data-selected"],"false");
  assert.equal(support.attributes["data-selected"],"false");
+ assert.equal(renty.attributes["data-selected"],"false");
  assert.equal(feedback.textContent,"","Other services should not show stale shortcut feedback");
  makeKey(mining,"__proto__");
  mining.events.click({preventDefault(){throw Error("Unknown shortcut should not intercept navigation");}});
- assert.equal(service.value,"Renty powypadkowe","Unexpected shortcut code must not change selection");
+ assert.equal(service.value,"Kredyty frankowe CHF","Unexpected shortcut code must not change selection");
  makeKey(support,"swiadczenie");
  support.events.click({preventDefault(){}});
  const name=visit(form,n=>n.autocomplete==="given-name");
@@ -788,20 +797,21 @@ for(const sample of [
  await form.events.submit({preventDefault(){}});
  assert.equal(mining.attributes["data-selected"],"false");
  assert.equal(support.attributes["data-selected"],"false","Successful send should clear the selected shortcut");
+ assert.equal(renty.attributes["data-selected"],"false","Renty shortcut must clear after successful reset");
  assert.equal(feedback.textContent,"","Shortcut confirmation must clear when the form resets");
 }
 
 // A homepage shortcut does not dispatch the select's native change event.
 // Verify it still refreshes every recovery route after a failed submission.
 {
- const host=new Node("host"),mining=new Node("a"),support=new Node("a"),skd=new Node("a");
+ const host=new Node("host"),mining=new Node("a"),support=new Node("a"),skd=new Node("a"),renty=new Node("a");
  const code=(link,name)=>link.getAttribute=key=>key==="data-contact-shortcut"?name:(link.attributes[key]??null);
- code(mining,"szkody");code(support,"swiadczenie");code(skd,"skd");
+ code(mining,"szkody");code(support,"swiadczenie");code(skd,"skd");code(renty,"renty");
  const document={
   body:{classList:{contains:token=>token==="premium-v2"}},
   currentScript:{getAttribute:()=>""},
   querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:
-   selector==="[data-contact-shortcut]"?[mining,support,skd]:[],
+   selector==="[data-contact-shortcut]"?[mining,support,skd,renty]:[],
   createElement:tag=>new Node(tag),
   createTextNode:value=>({tag:"text",textContent:value})
  };
@@ -828,7 +838,8 @@ for(const sample of [
  for(const [link,recipient,telephone] of [
   [mining,"wojciech.obieglo@votum-ds.pl","tel:+48796441345"],
   [skd,"wojciech.obieglo@votum-ds.pl","tel:+48796441345"],
-  [support,"paulina.chandrala@votum-ds.pl","tel:+48500171531"]
+  [support,"paulina.chandrala@votum-ds.pl","tel:+48500171531"],
+  [renty,"paulina.chandrala@votum-ds.pl","tel:+48500171531"]
  ]){
   link.events.click({preventDefault(){}});
   assert.ok(fallback.href.startsWith("mailto:"+recipient+"?"),"Recovery email stayed on wrong person");

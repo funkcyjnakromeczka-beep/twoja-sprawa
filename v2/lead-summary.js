@@ -10,6 +10,7 @@
  const filter=find("[data-summary-filter]");
  const entries=find("[data-lead-entries]");
  const breakdown=find("[data-source-breakdown]");
+ const campaignBreakdown=find("[data-campaign-breakdown]");
  const csvOutput=find("[data-csv-output]");
  const csvInput=find("[data-csv-input]");
  const fileInput=find("[data-csv-file]");
@@ -63,6 +64,16 @@
    cell(tr,display(group.source));cell(tr,group.leads);cell(tr,group.qualified);
    cell(tr,group.clients);cell(tr,percentage(group.qualified,group.leads));
    breakdown.append(tr);
+  }
+  if(campaignBreakdown){
+   campaignBreakdown.replaceChildren();
+   for(const group of data.campaigns){
+    const tr=document.createElement("tr");
+    cell(tr,display(group.service));cell(tr,display(group.source));cell(tr,group.campaign);
+    cell(tr,group.leads);cell(tr,group.qualified);cell(tr,group.clients);
+    cell(tr,percentage(group.clients,group.leads));
+    campaignBreakdown.append(tr);
+   }
   }
   csvOutput.value=core.csv(rows);
   report.hidden=false;

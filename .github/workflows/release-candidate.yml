@@ -30,6 +30,7 @@ on:
       - 'scripts/test-contact-client.mjs'
       - 'scripts/test-ai-referrals.mjs'
       - 'scripts/test-lead-summary.mjs'
+      - 'scripts/test-crm-handoff.mjs'
       - 'scripts/test-service-share.mjs'
       - 'scripts/test-geo-editorial.mjs'
       - '.github/workflows/release-candidate.yml'
@@ -86,6 +87,7 @@ jobs:
           node --check scripts/test-internal-links.mjs
           node --check scripts/test-ai-referrals.mjs
           node --check scripts/test-lead-summary.mjs
+          node --check scripts/test-crm-handoff.mjs
           node --check scripts/test-service-share.mjs
           node --check scripts/test-geo-editorial.mjs
           node --check scripts/test-search-index-freshness.mjs
@@ -123,6 +125,7 @@ jobs:
           node scripts/test-internal-links.mjs
           node scripts/test-ai-referrals.mjs
           node scripts/test-lead-summary.mjs
+          node scripts/test-crm-handoff.mjs
           node scripts/test-service-share.mjs
           node scripts/test-geo-editorial.mjs
           node scripts/test-search-index-freshness.mjs

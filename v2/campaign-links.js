@@ -19,6 +19,9 @@
   const communityPresetButtons = document.querySelectorAll?.("[data-community-preset]") || [];
   const communityPresetStatus = document.querySelector("[data-community-preset-status]");
   const platformNote = document.querySelector("[data-platform-note]");
+  const profileConfirmed = document.querySelector("[data-profile-link-confirmed]");
+  const profileConfirmWrap = document.querySelector("[data-profile-confirm-wrap]");
+  let confirmedProfileUrl = "";
   const platformPresetButtons = document.querySelectorAll?.("[data-platform-preset]") || [];
   const platformPresetStatus = document.querySelector("[data-platform-preset-status]");
   const qrImage = document.querySelector("[data-campaign-qr-image]");
@@ -139,6 +142,14 @@
     if (variant) target.searchParams.set("utm_content", variant);
     if (isBusinessProfile) target.searchParams.set("usluga", service.value);
     urlOutput.value = target.href;
+    const isReelChannel = selectedChannel === "instagram" || selectedChannel === "tiktok";
+    if (profileConfirmed) {
+      if (confirmedProfileUrl !== target.href || !isReelChannel) {
+        confirmedProfileUrl = "";
+        profileConfirmed.checked = false;
+      }
+      if (profileConfirmWrap) profileConfirmWrap.hidden = !isReelChannel;
+    }
     const publicationText = chosenRegion?.text || chosen.text;
     const selectedText = style.value === "short"
       ? (chosenRegion?.short || shorts[service.value])
@@ -150,13 +161,20 @@
     // Keep the tagged URL separately for a profile link or Story link sticker
     // where the platform/account permits it. Give readers a manual fallback.
     const captionOnly = selectedChannel === "instagram" || selectedChannel === "tiktok";
+    const liveProfileLink = captionOnly && Boolean(
+      profileConfirmed?.checked && confirmedProfileUrl === target.href
+    );
     const captionContact = captionOnly
-      ? "Informacje: twoja-sprawa.pages.dev (wpisz adres w przeglądarce)"
+      ? liveProfileLink
+        ? "Szczegóły i formularz kontaktowy: przejdź przez link w profilu."
+        : "Informacje: twoja-sprawa.pages.dev (wpisz adres w przeglądarce)"
       : target.href;
     postOutput.value = selectedText + "\n\n" + captionContact + "\n\n" + contactFooter;
     if (platformNote) {
       platformNote.hidden = !captionOnly;
-      platformNote.textContent = !captionOnly ? "" : selectedChannel === "instagram"
+      platformNote.textContent = liveProfileLink
+        ? "Podano w opisie link w profilu wyłącznie na podstawie Twojego potwierdzenia. Przed publikacją sprawdź, czy właśnie ten pełny link UTM jest aktywny i otwiera właściwy formularz."
+        : !captionOnly ? "" : selectedChannel === "instagram"
         ? "Instagram: adres w zwykłym opisie posta lub rolki zazwyczaj nie jest klikalny. Skopiuj link UTM z pola powyżej i dodaj go do linków profilu albo naklejki linku w Stories. Nie pisz „link w bio”, dopóki naprawdę go tam nie ustawisz. Wpisanie krótkiego adresu ręcznie nie przeniesie parametrów UTM."
         : "TikTok: adres w opisie filmu zwykle nie jest klikalny. Skopiuj link UTM z pola powyżej do strony WWW profilu tylko wtedy, gdy Twoje konto udostępnia taką funkcję. W przeciwnym razie widz może wpisać krótki adres w przeglądarce lub zadzwonić. Ręczne wejście bez UTM nie przypisze źródła kampanii.";
     }
@@ -234,6 +252,12 @@
       (label === "Link" ? urlOutput : postOutput).select();
     }
   };
+  if (profileConfirmed) {
+    profileConfirmed.addEventListener("change", () => {
+      confirmedProfileUrl = profileConfirmed.checked ? urlOutput.value : "";
+      generate();
+    });
+  }
   form.addEventListener("input", generate);
   form.addEventListener("change", generate);
   linkAction.addEventListener("click", () => copy(urlOutput.value, "Link"));

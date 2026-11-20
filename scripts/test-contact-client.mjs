@@ -30,6 +30,8 @@ const mobileCss=await readFile("v2/styles.css","utf8");
 assert.ok(mobileCss.includes(".contact-form>button[type=submit]{justify-self:stretch;width:100%;min-height:52px"),
  "On phones the submit button must fill the available width and remain tappable");
 assert.ok(mobileCss.includes("scroll-margin-bottom:130px"),"Keep keyboard clearance around focused fields");
+assert.ok(mobileCss.includes(".contact-form .contact-fast-track")&&
+ mobileCss.includes("min-height:48px"),"Fast track stays discoverable and tappable on mobile");
 assert.ok(mobileCss.includes('.contact-form :is(input,select,textarea)[aria-invalid="true"]'),
  "Keep an explicit visual indication of the unresolved field error");
 const run=async(error=false)=>{
@@ -68,6 +70,15 @@ const run=async(error=false)=>{
  const reported=visit(form,n=>n.id?.startsWith("cf-discovery-"));
  const reportedWrap=visit(form,n=>n.className==="contact-optional-details contact-source-details");
  assert.ok(firstName&&location&&phone&&email&&method&&callback&&select&&reported&&reportedWrap);
+ const fastTrack=visit(form,n=>n.className==="contact-fast-track");
+ assert.ok(fastTrack,"Full service forms must allow skipping optional preparation");
+ assert.equal(fastTrack.href,"#"+firstName.id,"Shortcut points to the actual contact input");
+ assert.ok(fastTrack.textContent.includes("Przejdź do danych kontaktowych"));
+ let jumped=0;
+ fastTrack.events.click({preventDefault:()=>{jumped++;}});
+ assert.equal(jumped,1,"Jump must not navigate away, lose UTM or create a lead");
+ assert.equal(firstName.focused,true,"Jump puts keyboard focus on the first required contact field");
+ assert.equal(requestBody,null,"Jump must never submit a lead");
  // Errors that prevent native form submission must remain understandable
  // without echoing submitted personal information or changing the server API.
  const validationNotice=visit(form,n=>n.className==="contact-validation-notice");

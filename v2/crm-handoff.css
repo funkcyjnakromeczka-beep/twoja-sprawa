@@ -28,3 +28,12 @@
 @media(max-width:920px){.crm-handoff-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.crm-handoff-fields{grid-template-columns:1fr}.crm-handoff{margin:18px 12px 30px}.crm-handoff-actions>*{width:100%;justify-content:center}}
 @media print{.crm-handoff-form,.crm-handoff-actions{display:none!important}.crm-handoff{border:0;color:#111;background:#fff}}
+
+
+/* Bezpieczne ręczne przenoszenie kontekstu kampanii; wyraźne potwierdzenie statusów. */
+.crm-handoff-import{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:17px 0;padding:14px;border:1px solid #b8ccda;border-left:4px solid #c43151;border-radius:8px;background:#edf4f9}
+.crm-handoff-import small{flex:1 1 280px;line-height:1.55;color:#264a5e}
+.crm-handoff .crm-handoff-confirm{display:flex;flex-direction:row;gap:11px;align-items:flex-start;margin:4px 0 18px;padding:13px;border:1px solid #b9cfde;border-radius:8px;background:#fff;line-height:1.52}
+.crm-handoff .crm-handoff-confirm input[type=checkbox]{width:20px;height:20px;min-width:20px;min-height:20px;flex:none;accent-color:#a82c4c;margin:2px 0 0;padding:0}
+.crm-handoff .crm-handoff-confirm span{font-weight:600;font-size:.92rem}
+@media(max-width:560px){.crm-handoff-import button{width:100%}}

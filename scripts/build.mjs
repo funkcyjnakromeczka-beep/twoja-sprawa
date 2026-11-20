@@ -227,6 +227,7 @@ function upsertSocialMetadata(markup,route,origin){
     "/", // Homepage is the destination of Google Business Profile links.
     "/kampanie/szkody-gornicze.html",
     "/kampanie/swiadczenie-wspierajace.html",
+    "/kampanie/renty-powypadkowe.html",
     "/kampanie/skd.html",
     "/uslugi/renty-powypadkowe.html",
     "/uslugi/sluzebnosc-przesylu.html",

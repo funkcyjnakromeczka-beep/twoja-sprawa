@@ -801,6 +801,66 @@ for(const sample of [
  assert.equal(feedback.textContent,"","Shortcut confirmation must clear when the form resets");
 }
 
+// Homepage catalog must support direct one-tap contact for all six services,
+// while retaining the six educational links. The form is never auto-submitted.
+{
+ const home=await readFile("v2/index.html","utf8");
+ const segment=home.split('<nav class="services-direct-contact"')[1]?.split('</nav>')[0]||"";
+ assert.ok(segment.includes('aria-label="Szybkie zgłoszenie wybranej usługi"'),"Direct contact nav must be labeled");
+ assert.ok(segment.includes("Nie wysyła zgłoszenia bez Twojego zatwierdzenia"),"Visitors must know selection does not submit");
+ const codes=["szkody","swiadczenie","skd","renty","franki","przesyl"];
+ const matches=[...segment.matchAll(/<a href="#kontakt" data-contact-shortcut="([^"]+)"/g)].map(m=>m[1]);
+ assert.equal(matches.join("|"),codes.join("|"),"Every one of the six services needs a direct contact path");
+ for(const path of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","kredyty-frankowe","sluzebnosc-przesylu"]){
+  assert.ok(home.includes('href="/v2/uslugi/'+path+'.html"'),"Educational card must remain intact: "+path);
+ }
+ const host=new Node("host");
+ const links=Object.fromEntries(codes.map(code=>{
+  const node=new Node("a");
+  node.getAttribute=name=>name==="data-contact-shortcut"?code:(node.attributes[name]??null);
+  return [code,node];
+ }));
+ const doc={
+  body:{classList:{contains:()=>false}},
+  currentScript:{getAttribute:()=>""},
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-contact-shortcut]"?Object.values(links):[],
+  createElement:tag=>new Node(tag),
+  createTextNode:value=>({tag:"text",textContent:value})
+ };
+ const window={location:{search:"?utm_source=organiczne&utm_campaign=homepage_catalog"},setTimeout:()=>1,clearTimeout:()=>{}};
+ let sends=0;
+ const fetch=async()=>{sends++;throw Error("Service selection must not submit");};
+ runInNewContext(source,{document:doc,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
+ const form=host.children[0],service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const advisor=visit(form,n=>n.className==="contact-advisor");
+ const phone=visit(form,n=>n.autocomplete==="tel");
+ const email=visit(form,n=>n.autocomplete==="email");
+ const method=visit(form,n=>n.id?.startsWith("cf-method-"));
+ method.value="Dowolny";
+ email.value="test@example.com";email.events.input();
+ for(const [code,expected,adviser] of [
+  ["szkody","Szkody górnicze","Wojciech Obiegło"],
+  ["swiadczenie","Świadczenie wspierające","Paulina Chandrała"],
+  ["skd","Kredyt w PLN / SKD","Wojciech Obiegło"],
+  ["renty","Renty powypadkowe","Paulina Chandrała"],
+  ["franki","Kredyty frankowe CHF","Wojciech Obiegło"],
+  ["przesyl","Służebność przesyłu","Wojciech Obiegło"]
+ ]){
+  let stopped=false;
+  links[code].events.click({preventDefault(){stopped=true;}});
+  assert.equal(stopped,true,"Direct service CTA should select without jumping away");
+  assert.equal(service.value,expected,"Direct CTA selected wrong service "+code);
+  assert.ok(advisor.children.some(n=>(n.textContent||"").includes(adviser)),"Wrong adviser for "+code);
+  assert.equal(phone.required,code==="skd","Phone preference must be required only for SKD with existing email");
+  assert.equal(links[code].attributes["data-selected"],"true");
+  assert.ok(Object.values(links).every(n=>n===links[code]||n.attributes["data-selected"]==="false"),"Only the selected service is highlighted");
+  assert.equal(service.focused,true,"Focus must go to the original form");
+ }
+ assert.equal(sends,0,"Choosing a service must not submit, leak or track a lead");
+ assert.equal(email.value,"test@example.com","Changing service must preserve entered contact details");
+}
+console.log("HOME_DIRECT_CONTACT_OK: six service CTAs, proper adviser and validation, zero automatic submissions.");
+
 // A homepage shortcut does not dispatch the select's native change event.
 // Verify it still refreshes every recovery route after a failed submission.
 {

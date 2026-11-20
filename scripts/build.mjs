@@ -300,7 +300,11 @@ function stripCssComments(css){
   }
  }
  if(quote)throw new Error("Unterminated CSS string in homepage bundle");
- return result+css.slice(start);
+ // Preserve all token separators: the newline stays intact, only
+ // indentation at the beginning of each line is removed from production.
+ // This does not touch quoted CSS strings, URLs, selectors or declarations.
+ const commentFree=result+css.slice(start);
+ return commentFree.replace(/^[ \\t]+/gm,"");
 }
 // Combine home CSS in source cascade order. Keep separate CSS for service pages.
 const homeStyleOrder=["styles.css","premium-v2.css","portrait-upgrade.css","journey.css",

@@ -218,3 +218,15 @@
 @media(max-width:800px){.local-mining-page .local-settlement-guide{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.local-mining-page .local-settlement-guide{padding:19px;margin-top:22px;margin-bottom:22px}}
 @media print{.local-mining-page .local-settlement-guide{box-shadow:none;break-inside:avoid}}
+
+/* BRAND-LOCAL-20261120: spójny detal graficzny na stronach Lubina i Polkowic. */
+.local-mining-page .local-hero{
+  border-top:3px solid #bf2e4c;
+}
+.local-mining-page .local-hero :is(a,button):focus-visible{
+  outline:3px solid #fff;
+  outline-offset:3px;
+}
+@media print{
+  .local-mining-page .local-hero{border-top-color:#999}
+}

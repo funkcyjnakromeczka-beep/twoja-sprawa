@@ -29,6 +29,8 @@ jobs:
           node --check scripts/indexnow-routes.mjs
           node --check scripts/submit-indexnow.mjs
           node --check scripts/test-indexnow-routes.mjs
+          node --check v2/vendor/qrcode-generator.js
+          node --check scripts/test-offline-qr.mjs
           node --check v2/campaign-links.js
           node --check v2/attribution.js
           node --check scripts/test-attribution.mjs
@@ -182,6 +184,7 @@ jobs:
       - name: Zbuduj podgląd bez indeksowania
         run: |
           node scripts/preview.mjs
+          node scripts/test-offline-qr.mjs --preview
           node scripts/test-og-facebook.mjs --preview
           test -f dist-preview/index.html
           test -f dist-preview/robots.txt

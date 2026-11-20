@@ -27,6 +27,7 @@ on:
       - 'scripts/test-brand-hero.mjs'
       - 'scripts/test-html-tags.mjs'
       - 'scripts/test-internal-links.mjs'
+      - 'scripts/test-contact-client.mjs'
       - 'scripts/test-ai-referrals.mjs'
       - 'scripts/test-lead-summary.mjs'
       - 'scripts/test-service-share.mjs'

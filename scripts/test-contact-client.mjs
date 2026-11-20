@@ -130,7 +130,7 @@ const run=async(error=false)=>{
  assert.equal(requestBody.campaign_name,"grupa_lubin");
  assert.equal(requestBody.campaign_variant,"post_2");
  assert.equal(requestBody.lead_path,"formularz");
- const status=visit(form,n=>n.attributes?.role==="status");
+ const status=visit(form,n=>n.tag==="p"&&n.attributes?.role==="status");
  assert.ok(status);
  const refPanel=visit(form,n=>n.className==="contact-ref-panel");
  const refCode=visit(refPanel,n=>n.className==="contact-ref-code");

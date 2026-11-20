@@ -26,6 +26,12 @@ class Node {
 }
 const visit=(node,pred)=>{if(!node)return null;if(pred(node))return node;for(const child of node.children||[]){const found=visit(child,pred);if(found)return found;}return null;};
 const source=await readFile("v2/contact.js","utf8");
+const mobileCss=await readFile("v2/styles.css","utf8");
+assert.ok(mobileCss.includes(".contact-form>button[type=submit]{justify-self:stretch;width:100%;min-height:52px"),
+ "On phones the submit button must fill the available width and remain tappable");
+assert.ok(mobileCss.includes("scroll-margin-bottom:130px"),"Keep keyboard clearance around focused fields");
+assert.ok(mobileCss.includes('.contact-form :is(input,select,textarea)[aria-invalid="true"]'),
+ "Keep an explicit visual indication of the unresolved field error");
 const run=async(error=false)=>{
  const host=new Node("host");
  const document={
@@ -76,13 +82,22 @@ const run=async(error=false)=>{
  form.events.invalid({target:phone});
  assert.ok(validationNotice.textContent.includes("Wpisz imię"),"First invalid field must remain visible");
  assert.ok(!validationNotice.textContent.includes("test@example.com"));
+ // On phones, users may edit another field before correcting the reported one.
+ // The first unresolved error must not disappear or lose its red border.
+ form.events.input({target:location});
+ assert.equal(validationNotice.hidden,false,"Unrelated edits must not dismiss the first error");
+ assert.equal(firstName.getAttribute("aria-invalid"),"true");
  form.events.input({target:firstName});
  assert.equal(validationNotice.hidden,true);
  assert.equal(firstName.getAttribute("aria-invalid"),"false");
  form.events.invalid({target:phone});
  assert.ok(validationNotice.textContent.includes("7–15 cyfr"));
+ form.events.change({target:email});
+ assert.equal(validationNotice.hidden,false,"Switching contact method must not silently clear the phone error");
+ assert.equal(phone.getAttribute("aria-invalid"),"true");
  form.events.change({target:phone});
  assert.equal(validationNotice.hidden,true);
+ assert.equal(phone.getAttribute("aria-invalid"),"false");
 
  // Android: each primary input signals the appropriate soft keyboard and
  // advances through fields without changing the contact validation policy.

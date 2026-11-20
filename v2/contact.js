@@ -539,7 +539,7 @@
   let confirmedRef="";
   refButton.hidden=!navigator.clipboard?.writeText;
   refButton.addEventListener("click",async()=>{
-    if(!confirmedRef||!/^TS-\\d{8}-[A-F0-9]{12}$/.test(confirmedRef))return;
+    if(!confirmedRef||!/^TS-\d{8}-[A-F0-9]{12}$/.test(confirmedRef))return;
     if(!navigator.clipboard?.writeText){
       refFeedback.textContent="Zaznacz kod widoczny powyżej i skopiuj ręcznie.";
       return;

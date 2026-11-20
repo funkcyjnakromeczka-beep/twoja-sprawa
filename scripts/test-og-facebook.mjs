@@ -42,6 +42,7 @@ const routes=[
  "uslugi/kredyty-frankowe",
  "uslugi/szkody-gornicze",
  "uslugi/kredyty-pln",
+ "uslugi/swiadczenie-wspierajace",
  "lokalnie/szkody-gornicze-lubin",
  "lokalnie/szkody-gornicze-polkowice"
 ];
@@ -83,4 +84,4 @@ for(const piece of ["szkody-gornicze.html","swiadczenie-wspierajace.html","skd.h
 // promotional banner, and stays unchanged when the campaign builder evolves.
 const guide=await read("wiedza/ugoda-z-kopalnia-co-sprawdzic");
 assert.ok(!get(guide,"og:image")[0].includes("og-twoja-sprawa-votum"),"Do not change guide previews globally");
-console.log("OG_FACEBOOK_OK: 1200x630 self-hosted image, 11 campaign and service destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");
+console.log("OG_FACEBOOK_OK: 1200x630 self-hosted image, 12 campaign and service destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");

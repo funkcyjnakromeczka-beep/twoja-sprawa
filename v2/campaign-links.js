@@ -21,6 +21,14 @@
   const qrCaption = document.querySelector("[data-campaign-qr-caption]");
   const qrStatus = document.querySelector("[data-campaign-qr-status]");
   const qrFigure = document.querySelector("[data-campaign-qr-figure]");
+  const flyer = document.querySelector("[data-campaign-flyer]");
+  const flyerHeading = document.querySelector("[data-flyer-heading]");
+  const flyerArea = document.querySelector("[data-flyer-area]");
+  const flyerText = document.querySelector("[data-flyer-text]");
+  const flyerPhone = document.querySelector("[data-flyer-phone]");
+  const flyerQr = document.querySelector("[data-flyer-qr]");
+  const flyerPrint = document.querySelector("[data-print-flyer]");
+  const flyerHint = document.querySelector("[data-flyer-hint]");
   // Reviewed public page metadata; the regression test validates the live preview.
   // Categorical, first-party information only: no user data, cookies or requests.
   const previewCards={"/":{"title":"Szkody górnicze Lubin i Polkowice | Twoja Sprawa","description":"Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające w całej Polsce, SKD i renty. Sprawdź, jak zgłosić sprawę do SuccessTree."},"/kampanie/szkody-gornicze":{"title":"Szkody górnicze Lubin i Polkowice — zgłoś szkodę | Twoja Sprawa","description":"Pęknięcia ścian, elewacji, nierówna kostka? Zgłoś szkodę górniczą w Lubinie, Polkowicach i okolicy do wstępnej analizy. Formularz i telefon."},"/kampanie/swiadczenie-wspierajace":{"title":"Świadczenie wspierające — zostaw kontakt | Twoja Sprawa","description":"Świadczenie wspierające: pomoc w ustaleniu etapu postępowania WZON i ZUS. Zostaw kontakt bez przesyłania dokumentacji medycznej."},"/kampanie/skd":{"title":"SKD — wyślij umowę kredytową i zostaw telefon | Twoja Sprawa","description":"Sankcja Kredytu Darmowego (SKD): wyślij pełną umowę kredytu konsumenckiego w PLN i zostaw numer telefonu do wstępnej analizy."},"/uslugi/renty-powypadkowe":{"title":"Renty powypadkowe — analiza i podwyższenie | Twoja Sprawa","description":"Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia."},"/uslugi/sluzebnosc-przesylu":{"title":"Służebność przesyłu — słup na działce | Twoja Sprawa","description":"Słup, linia energetyczna lub gazociąg na działce? Poznaj dokumenty potrzebne do analizy praw operatora i możliwych roszczeń właściciela."},"/uslugi/kredyty-frankowe":{"title":"Kredyty CHF — analiza umowy frankowej | Twoja Sprawa","description":"Analiza aktywnych i spłaconych kredytów CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny."},"/lokalnie/szkody-gornicze-lubin":{"title":"Szkody górnicze Lubin — pęknięcia ścian | Twoja Sprawa","description":"Lubin i gmina Lubin: zauważyłeś pęknięcia ścian, rysy elewacji lub uszkodzone płytki? Sprawdź, jak udokumentować szkodę i zgłosić ją do analizy."},"/lokalnie/szkody-gornicze-polkowice":{"title":"Szkody górnicze Polkowice — szkody posesji | Twoja Sprawa","description":"Polkowice i gmina Polkowice: nierówna kostka brukowa, spękania elewacji i uszkodzenia posesji? Dowiedz się, jak przygotować dokumentację szkody do analizy."}};
@@ -162,6 +170,27 @@
         qrStatus.textContent = "Kod QR niedostępny. Skopiuj link i przygotuj kod w Canvie.";
       }
     }
+    // A4 print is limited to true print campaigns. Otherwise the QR would
+    // wrongly label a paper lead as Facebook, search or a Google profile visit.
+    if (flyer && flyerHeading && flyerArea && flyerText && flyerPhone && flyerQr && flyerPrint && flyerHint) {
+      const printChannel = new Set(["ulotka","plakat","qr"]).has(channel.value);
+      const hasQr = Boolean(qrImage && qrImage.src && !qrFigure.hidden);
+      const ready = printChannel && hasQr;
+      flyer.hidden = !ready;
+      flyerPrint.disabled = !ready;
+      flyerHint.textContent = ready
+        ? "Ulotka A4 jest gotowa. Przed drukiem zeskanuj kod i sprawdź stronę docelową."
+        : "Aby utworzyć ulotkę A4, ustaw źródło odbiorców: Ulotka papierowa, Plakat albo Kod QR.";
+      if (ready) {
+        const printTitle = isMining && chosenRegion ? "Szkody górnicze — " + chosenRegion.name : chosen.title;
+        flyerHeading.textContent = printTitle;
+        flyerArea.textContent = isMining ? (chosenRegion ? chosenRegion.name : "Lubin, Polkowice i okolice") : "Kontakt z całej Polski";
+        flyerText.textContent = isMining && chosenRegion ? chosenRegion.short : shorts[service.value];
+        flyerPhone.textContent = ["swiadczenie","renty"].includes(service.value)
+          ? "500 171 531" : "796 441 345";
+        flyerQr.src = qrImage.src;
+      }
+    }
     const preview=Object.prototype.hasOwnProperty.call(previewCards,target.pathname)
       ? previewCards[target.pathname] : {title:chosen.title,description:publicationText};
     if(previewTitle)previewTitle.textContent=preview.title;
@@ -191,5 +220,10 @@
   form.addEventListener("change", generate);
   linkAction.addEventListener("click", () => copy(urlOutput.value, "Link"));
   postAction.addEventListener("click", () => copy(postOutput.value, "Treść posta"));
+  if (flyerPrint) {
+    flyerPrint.addEventListener("click", () => {
+      if (flyer && !flyer.hidden && !flyerPrint.disabled && typeof window.print === "function") window.print();
+    });
+  }
   generate();
 })();

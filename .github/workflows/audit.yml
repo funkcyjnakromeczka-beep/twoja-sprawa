@@ -31,6 +31,7 @@ jobs:
           node --check scripts/test-indexnow-routes.mjs
           node --check v2/vendor/qrcode-generator.js
           node --check scripts/test-offline-qr.mjs
+          node --check scripts/test-campaign-flyer.mjs
           node --check v2/campaign-links.js
           node --check v2/attribution.js
           node --check scripts/test-attribution.mjs
@@ -104,7 +105,9 @@ jobs:
       - name: Testy formularza API bez wysyłania e-maili
         run: node scripts/test-contact.mjs
       - name: Przetestuj generator kampanii bez połączenia z siecią
-        run: node scripts/test-campaign-links.mjs
+        run: |
+          node scripts/test-campaign-links.mjs
+          node scripts/test-campaign-flyer.mjs
       - name: Sprawdź prywatny raport kampanii, CSV i brak duplikatów
         run: node scripts/test-lead-summary.mjs
       - name: Przetestuj formularz w przeglądarce symulowanej bez wysyłki danych

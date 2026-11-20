@@ -1,0 +1,48 @@
+/* Ink-saving A4 print view for the existing first-party campaign generator. */
+.campaign-flyer{margin:20px 0 26px;padding:16px;border:1px solid #c1ced4;border-radius:12px;background:#f8fbfc;color:#173748}
+.campaign-flyer[hidden]{display:none!important}
+.campaign-flyer>h3{color:#173748;margin:0 0 8px;font-size:1.16rem}
+.campaign-flyer-intro,.campaign-flyer-hint{color:#2b4d5a;font-size:.88rem;line-height:1.6}
+.campaign-flyer-paper{box-sizing:border-box;background:#fff;border:1px solid #9aadb6;color:#142b38;padding:clamp(16px,3vw,28px);max-width:580px;margin:15px 0 14px;font:400 16px/1.48 system-ui,-apple-system,"Segoe UI",sans-serif;overflow-wrap:anywhere}
+.campaign-flyer-header{border-bottom:2px solid #2c424d;padding-bottom:13px}
+.campaign-flyer-brand{font-size:1.45rem;font-weight:850;letter-spacing:.06em;color:#153746;margin:0}
+.campaign-flyer-brand strong{color:#8e1d20}
+.campaign-flyer-eyebrow{letter-spacing:.11em;font-size:.7rem;font-weight:800;color:#355460;margin:6px 0 0}
+.campaign-flyer-paper h4{font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:850;line-height:1.23;color:#193341;margin:23px 0 8px}
+.campaign-flyer-area{font-size:.97rem;color:#35525d;font-weight:750;margin:0 0 18px}
+.campaign-flyer-text{font-size:.97rem;line-height:1.6;margin:0 0 24px}
+.campaign-flyer-contact{display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid #b7c4c9;padding:16px 0 10px}
+.campaign-flyer-contact-text{flex:1;min-width:0}
+.campaign-flyer-contact-text p{line-height:1.5;font-size:.87rem;margin:8px 0}
+.campaign-flyer-call{font-weight:800;color:#173748}
+.campaign-flyer-phone{font-size:1.55rem!important;line-height:1.24!important;font-weight:850;letter-spacing:.025em;color:#152f3d}
+.campaign-flyer-contact img{display:block;flex:none;width:min(40%,185px);height:auto;background:white;image-rendering:pixelated}
+.campaign-flyer-address{font-size:1rem;font-weight:800;margin:16px 0 0;color:#173748}
+.campaign-flyer-consent,.campaign-flyer-disclosure{font-size:.75rem;line-height:1.5;color:#405660}
+.campaign-flyer-consent{margin:18px 0 0}
+.campaign-flyer-disclosure{border-top:1px solid #bdc8ca;padding-top:10px;margin:12px 0 0}
+.campaign-flyer-print{min-height:45px;background:#193d4f;border:0;border-radius:8px;color:#fff;padding:11px 18px;font-weight:800;cursor:pointer}
+.campaign-flyer-print:hover{background:#25566b}
+.campaign-flyer-print:focus-visible{outline:3px solid #a87516;outline-offset:3px}
+.campaign-flyer-print:disabled{opacity:.52;cursor:not-allowed}
+@media(max-width:480px){.campaign-flyer{padding:10px}.campaign-flyer-paper{padding:13px}.campaign-flyer-contact{flex-direction:column-reverse;align-items:start}.campaign-flyer-contact img{width:170px;max-width:100%}.campaign-flyer-phone{font-size:1.3rem!important}}
+@page{size:A4 portrait;margin:12mm}
+@media print{
+ html,body.campaign-page{background:#fff!important;color:#000!important;margin:0!important;padding:0!important;font-family:Arial,sans-serif!important}
+ body.campaign-page>:not(main){display:none!important}
+ body.campaign-page main>:not(.campaign-builder-layout){display:none!important}
+ body.campaign-page main,body.campaign-page .campaign-builder-layout,body.campaign-page .campaign-builder-results{display:block!important;width:100%!important;max-width:none!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:#fff!important}
+ body.campaign-page .campaign-builder-layout>:not(.campaign-builder-results){display:none!important}
+ body.campaign-page .campaign-builder-results>:not(.campaign-flyer){display:none!important}
+ body.campaign-page .campaign-flyer{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:#fff!important}
+ body.campaign-page .campaign-flyer>:not(.campaign-flyer-paper){display:none!important}
+ body.campaign-page .campaign-flyer-paper{display:flex!important;flex-direction:column!important;justify-content:space-between!important;width:185mm!important;max-width:185mm!important;min-height:252mm!important;margin:0!important;padding:9mm!important;border:1px solid #666!important;box-shadow:none!important;page-break-inside:avoid!important;break-inside:avoid!important;color:#111!important;background:white!important;print-color-adjust:economy;-webkit-print-color-adjust:economy}
+ body.campaign-page .campaign-flyer-paper *{color:#111!important;text-shadow:none!important;background:transparent!important;box-shadow:none!important}
+ body.campaign-page .campaign-flyer-paper h4{font-size:23pt!important;line-height:1.2!important;margin:6mm 0 2mm!important}
+ body.campaign-page .campaign-flyer-text{font-size:12pt!important;line-height:1.5!important}
+ body.campaign-page .campaign-flyer-phone{font-size:22pt!important}
+ body.campaign-page .campaign-flyer-contact{flex-direction:row!important;align-items:center!important;gap:9mm!important}
+ body.campaign-page .campaign-flyer-contact img{width:56mm!important;height:56mm!important;flex:none!important;image-rendering:auto!important}
+ body.campaign-page .campaign-flyer-brand{font-size:19pt!important}
+ body.campaign-page .campaign-flyer-consent,body.campaign-page .campaign-flyer-disclosure{font-size:9pt!important}
+}

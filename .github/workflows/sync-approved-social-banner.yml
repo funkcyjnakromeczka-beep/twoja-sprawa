@@ -1,0 +1,34 @@
+name: Synchronizacja zatwierdzonej grafiki Twoja Sprawa
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/sync-approved-social-banner.mjs'
+permissions:
+  contents: write
+jobs:
+  sync-approved-banner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pobierz dokładnie zatwierdzony obraz i sprawdź integralność
+        run: |
+          curl --fail --location --retry 2 --connect-timeout 10 --max-time 60 \
+            'https://d2ol7oe51mr4n9.cloudfront.net/user_3Kc8Vi9SYstjvA5jmNDbIGrrvDv/f2e4767b-a015-4d8b-8576-05671a8ff7ce.png' \
+            --output /tmp/twoja-sprawa-approved.jpg
+          echo '489f8b499f49f841c6dec3f5777a791f4007ad9d5e8c109ceeed6cc83187798c  /tmp/twoja-sprawa-approved.jpg' | sha256sum --check
+          test "$(stat -c %s /tmp/twoja-sprawa-approved.jpg)" -eq 175149
+          mkdir -p v2/assets
+          cp /tmp/twoja-sprawa-approved.jpg v2/assets/og-twoja-sprawa-metallic-v1.jpg
+      - name: Opublikuj grafikę jako zasób strony
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add v2/assets/og-twoja-sprawa-metallic-v1.jpg
+          if git diff --cached --quiet; then
+            echo 'Asset already matches the approved original'
+            exit 0
+          fi
+          git commit -m 'assets: zatwierdzony baner Twoja Sprawa VOTUM'
+          git push origin HEAD:main

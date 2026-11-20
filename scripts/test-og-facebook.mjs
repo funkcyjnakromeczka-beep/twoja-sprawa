@@ -41,6 +41,7 @@ const routes=[
  "uslugi/sluzebnosc-przesylu",
  "uslugi/kredyty-frankowe",
  "uslugi/szkody-gornicze",
+ "uslugi/kredyty-pln",
  "lokalnie/szkody-gornicze-lubin",
  "lokalnie/szkody-gornicze-polkowice"
 ];
@@ -61,6 +62,18 @@ for(const route of routes){
  assert.equal(get(html,"og:image").length,1,"No duplicate og:image tags");
  assert.ok(html.includes('property="og:url" content="'+root+"/"+route+'"'),"Share card URL must be canonical, not UTM variant");
 }
+// Source files can also be published directly from v2/ by Cloudflare Pages.
+// Verify their server-visible metadata, not only the generated dist/ build.
+for(const route of routes){
+ const source=await readFile("v2/"+(route||"index")+".html","utf8");
+ assert.deepEqual(get(source,"og:image"),[root+imagePath],"Authored source has stale preview: "+route);
+ assert.deepEqual(get(source,"og:image:width"),["1200"],"Authored source width: "+route);
+ assert.deepEqual(get(source,"og:image:height"),["630"],"Authored source height: "+route);
+ assert.ok(source.includes('property="og:url" content="'+root+"/"+route+'"'),"Authored source OG URL: "+route);
+ assert.ok(source.includes('name="twitter:image" content="'+root+imagePath+'"'),"Authored source Twitter image: "+route);
+}
+const generatorSource=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
+assert.ok(generatorSource.includes('src="'+imagePath+'"'),"Generator must preview the public /assets path, never /v2/assets");
 const builder=await readFile("scripts/build.mjs","utf8");
 assert.ok(builder.includes('const brandedRoutes=new Set('),"Build must preserve social preview after every deploy");
 const campaignLinks=await readFile("v2/campaign-links.js","utf8");
@@ -70,4 +83,4 @@ for(const piece of ["szkody-gornicze.html","swiadczenie-wspierajace.html","skd.h
 // promotional banner, and stays unchanged when the campaign builder evolves.
 const guide=await read("wiedza/ugoda-z-kopalnia-co-sprawdzic");
 assert.ok(!get(guide,"og:image")[0].includes("og-twoja-sprawa-votum"),"Do not change guide previews globally");
-console.log("OG_FACEBOOK_OK: 1200x630 self-hosted image, 10 campaign destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");
+console.log("OG_FACEBOOK_OK: 1200x630 self-hosted image, 11 campaign and service destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");

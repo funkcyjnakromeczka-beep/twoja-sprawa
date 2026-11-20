@@ -74,7 +74,7 @@
   const start=day.replaceAll("-","");
   const next=new Date(Date.UTC(Number(day.slice(0,4)),Number(day.slice(5,7))-1,Number(day.slice(8,10))+1))
    .toISOString().slice(0,10).replaceAll("-","");
-  const stamp=(createdAt instanceof Date?createdAt:new Date()).toISOString().replace(/[-:]/g,"").replace(/\\.\\d{3}Z$/,"Z");
+  const stamp=(createdAt instanceof Date?createdAt:new Date()).toISOString().replace(/[-:]/g,"").replace(/\.\d{3}Z$/,"Z");
   return [
    "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Twoja Sprawa//Kontakty//PL",
    "CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:"+safeId+"@twoja-sprawa.pages.dev",
@@ -82,7 +82,7 @@
    "SUMMARY:Twoja Sprawa - przeglad zaplanowanych kontaktow",
    "DESCRIPTION:Otworz prywatny CRM i sprawdz zaplanowane zadania. Bez danych klientow.",
    "TRANSP:TRANSPARENT","END:VEVENT","END:VCALENDAR",""
-  ].join("\\r\\n");
+  ].join("\r\n");
  }
  function verification(input){
   return {

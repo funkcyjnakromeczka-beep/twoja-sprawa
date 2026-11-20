@@ -16,6 +16,11 @@
   const linkAction = document.querySelector("[data-copy-link]");
   const postAction = document.querySelector("[data-copy-post]");
   const openAction = document.querySelector("[data-open-link]");
+  const qrImage = document.querySelector("[data-campaign-qr-image]");
+  const qrDownload = document.querySelector("[data-campaign-qr-download]");
+  const qrCaption = document.querySelector("[data-campaign-qr-caption]");
+  const qrStatus = document.querySelector("[data-campaign-qr-status]");
+  const qrFigure = document.querySelector("[data-campaign-qr-figure]");
   // Reviewed public page metadata; the regression test validates the live preview.
   // Categorical, first-party information only: no user data, cookies or requests.
   const previewCards={"/":{"title":"Szkody górnicze Lubin i Polkowice | Twoja Sprawa","description":"Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające w całej Polsce, SKD i renty. Sprawdź, jak zgłosić sprawę do SuccessTree."},"/kampanie/szkody-gornicze":{"title":"Szkody górnicze Lubin i Polkowice — zgłoś szkodę | Twoja Sprawa","description":"Pęknięcia ścian, elewacji, nierówna kostka? Zgłoś szkodę górniczą w Lubinie, Polkowicach i okolicy do wstępnej analizy. Formularz i telefon."},"/kampanie/swiadczenie-wspierajace":{"title":"Świadczenie wspierające — zostaw kontakt | Twoja Sprawa","description":"Świadczenie wspierające: pomoc w ustaleniu etapu postępowania WZON i ZUS. Zostaw kontakt bez przesyłania dokumentacji medycznej."},"/kampanie/skd":{"title":"SKD — wyślij umowę kredytową i zostaw telefon | Twoja Sprawa","description":"Sankcja Kredytu Darmowego (SKD): wyślij pełną umowę kredytu konsumenckiego w PLN i zostaw numer telefonu do wstępnej analizy."},"/uslugi/renty-powypadkowe":{"title":"Renty powypadkowe — analiza i podwyższenie | Twoja Sprawa","description":"Renta od ubezpieczyciela po wypadku. Sprawdź dokumenty, zwiększone potrzeby i możliwości ustalenia lub podwyższenia świadczenia."},"/uslugi/sluzebnosc-przesylu":{"title":"Służebność przesyłu — słup na działce | Twoja Sprawa","description":"Słup, linia energetyczna lub gazociąg na działce? Poznaj dokumenty potrzebne do analizy praw operatora i możliwych roszczeń właściciela."},"/uslugi/kredyty-frankowe":{"title":"Kredyty CHF — analiza umowy frankowej | Twoja Sprawa","description":"Analiza aktywnych i spłaconych kredytów CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny."},"/lokalnie/szkody-gornicze-lubin":{"title":"Szkody górnicze Lubin — pęknięcia ścian | Twoja Sprawa","description":"Lubin i gmina Lubin: zauważyłeś pęknięcia ścian, rysy elewacji lub uszkodzone płytki? Sprawdź, jak udokumentować szkodę i zgłosić ją do analizy."},"/lokalnie/szkody-gornicze-polkowice":{"title":"Szkody górnicze Polkowice — szkody posesji | Twoja Sprawa","description":"Polkowice i gmina Polkowice: nierówna kostka brukowa, spękania elewacji i uszkodzenia posesji? Dowiedz się, jak przygotować dokumentację szkody do analizy."}};
@@ -130,6 +135,33 @@
     const contactFooter = service.value === "skd" ? "Umowa kredytowa: wojciech.obieglo@votum-ds.pl\nTelefon: 796 441 345" : "Kontakt: " + (["swiadczenie", "renty"].includes(service.value) ? "500 171 531" : "796 441 345");
     postOutput.value = selectedText + "\n\n" + target.href + "\n\n" + contactFooter;
     openAction.href = target.href;
+    // Generate QR locally, using exactly the public UTM link shown to the user.
+    // No remote QR service, extra tracker, cookies, or storing client data.
+    if (qrImage && qrDownload && qrStatus && qrCaption && qrFigure) {
+      try {
+        if (typeof qrcode !== "function") throw new Error("QR library unavailable");
+        const code = qrcode(0, "M");
+        code.addData(target.href);
+        code.make();
+        // Four-module white quiet zone, black artwork, lossless vector SVG.
+        const svg = code.createSvgTag({cellSize:8, margin:32, scalable:true});
+        const dataUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+        qrImage.src = dataUrl;
+        qrImage.hidden = false;
+        qrFigure.hidden = false;
+        qrDownload.href = dataUrl;
+        qrDownload.download = "twoja-sprawa-qr-" + slug(service.value) +
+          (chosenRegion ? "-" + slug(region.value) : "") +
+          "-" + slug(selectedChannel) + "-" + campaign + ".svg";
+        qrDownload.hidden = false;
+        qrCaption.textContent = target.href;
+        qrStatus.textContent = "Kod QR jest gotowy. Zeskanuj go telefonem przed drukowaniem.";
+      } catch {
+        qrFigure.hidden = true;
+        qrDownload.hidden = true;
+        qrStatus.textContent = "Kod QR niedostępny. Skopiuj link i przygotuj kod w Canvie.";
+      }
+    }
     const preview=Object.prototype.hasOwnProperty.call(previewCards,target.pathname)
       ? previewCards[target.pathname] : {title:chosen.title,description:publicationText};
     if(previewTitle)previewTitle.textContent=preview.title;

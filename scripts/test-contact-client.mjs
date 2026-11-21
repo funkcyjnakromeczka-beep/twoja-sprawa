@@ -798,6 +798,7 @@ assert.ok(shortcutStyles.includes(".contact-shortcuts-secondary"),"Secondary top
  runInNewContext(source,{document,window,navigator:{},fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const firstName=visit(form,n=>n.autocomplete==="given-name");
  const advisor=visit(form,n=>n.className==="contact-advisor");
  const damage=visit(form,n=>n.className==="contact-damage-area");
  assert.equal(service.value,"","Homepage starts with no service preselected");

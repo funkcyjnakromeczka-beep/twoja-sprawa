@@ -777,7 +777,7 @@ for(const topic of ["szkody","swiadczenie","skd","renty","franki","przesyl"])
  assert.ok(contactMarkup.includes('data-contact-shortcut="'+topic+'"'),"Homepage contact selector missing "+topic);
 const shortcutStyles=await readFile("v2/home-flow.css","utf8");
 assert.ok(shortcutStyles.includes(".contact-shortcuts-more>summary:focus-visible"),"Expandable topics need visible keyboard focus");
-assert.ok(shortcutStyles.includes(".contact-shortcuts-secondary"),"Secondary topics must stay responsive");
+assert.ok(contactMarkup.includes('class="contact-shortcuts-actions contact-shortcuts-secondary" style="grid-template-columns:repeat(auto-fit'),"Secondary topics must remain responsive without increasing the homepage CSS budget");
 // No personal information or additional lead fields are collected by these links.
 
 // Six homepage shortcuts (four primary, two expandable) change one form without sending data.

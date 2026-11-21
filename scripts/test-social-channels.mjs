@@ -16,6 +16,7 @@ const cases=[
  ["v2/uslugi/swiadczenie-wspierajace.html",[supportGroup],"social-swiadczenie"],
  ["v2/kampanie/swiadczenie-wspierajace.html",[supportGroup],"social-swiadczenie"],
  ["v2/uslugi/renty-powypadkowe.html",[supportGroup],"social-renty"],
+ ["v2/kampanie/renty-powypadkowe.html",[supportGroup],"social-renty"],
  ["v2/uslugi/kredyty-pln.html",[skdProfile],"social-skd"],
  ["v2/kampanie/skd.html",[skdProfile],"social-skd"]
 ];
@@ -88,4 +89,4 @@ for(const brand of ["facebook","tiktok"]){
  assert.ok(logo.startsWith("<svg")&&logo.includes("<path")&&logo.includes("</svg>"),"Malformed local brand SVG for "+brand);
 }
 console.log("SOCIAL_BRAND_ICONS_OK: 10 correctly matched Facebook/TikTok icons, all served locally.");
-console.log("SOCIAL_CHANNELS_OK: 8 page placements, five destinations, accessible external links, private on-site hand-off, data safety and no tracking.");
+console.log("SOCIAL_CHANNELS_OK: 9 page placements, five destinations, accessible external links, private on-site hand-off, data safety and no tracking.");

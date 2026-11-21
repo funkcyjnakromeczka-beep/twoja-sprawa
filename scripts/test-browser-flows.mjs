@@ -81,6 +81,30 @@ console.log("GOOGLEBOT_STYLE_MAP_CHECK_OK "+JSON.stringify({
 
 const browser=await chromium.launch({headless:true});
 try{
+ // Every printed brochure deep-links to the existing privacy-aware contact form.
+ // No lead data is entered; outgoing Web3Forms submissions are explicitly blocked.
+ const handoffPage=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+ try{
+  await handoffPage.route("https://api.web3forms.com/submit",route=>route.abort());
+  for(const [slug,alias,service,phone] of [
+   ["szkody-gornicze","szkody","Szkody górnicze","+48796441345"],
+   ["swiadczenie-wspierajace","swiadczenie","Świadczenie wspierające","+48500171531"],
+   ["renty-powypadkowe","renty","Renty powypadkowe","+48500171531"],
+   ["skd","skd","Kredyt w PLN / SKD","+48796441345"],
+   ["kredyty-frankowe","franki","Kredyty frankowe CHF","+48796441345"],
+   ["sluzebnosc-przesylu","przesyl","Służebność przesyłu","+48796441345"]
+  ]){
+   const uri=origin+"/kontakt?usluga="+alias+"&utm_source=broszura&utm_medium=material&utm_campaign=broszura_"+slug.replaceAll("-","_")+"#formularz";
+   const res=await handoffPage.goto(uri,{waitUntil:"domcontentloaded",timeout:40000});
+   assert.equal(res.status(),200,"Contact handoff failed for "+slug);
+   const selector=handoffPage.locator('.contact-form select[id^="cf-service-"]');
+   await selector.waitFor({state:"visible",timeout:15000});
+   assert.equal(await selector.inputValue(),service,"Brochure did not preselect correct contact category: "+slug);
+   assert.equal(await handoffPage.locator('.contact-people a[href^="tel:"]').getAttribute("href"),
+    "tel:"+phone,"Brochure adviser phone mismatch: "+slug);
+  }
+  console.log("BROCHURE_HANDOFF_LIVE_OK: all six services selected, correct adviser phone, zero lead submissions.");
+ }finally{await handoffPage.close();}
  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
  const errors=[];
  page.on("pageerror",error=>errors.push(error.message));

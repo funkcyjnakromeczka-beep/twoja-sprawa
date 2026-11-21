@@ -15,11 +15,13 @@ assert.ok(html.includes('role="status" aria-live="polite"'),"Copy status must be
 assert.ok(css.includes("plan-brochure-promo-fields")&&css.includes("@media(max-width:700px)"),"Mobile editor styling absent");
 assert.ok(html.includes("Niczego nie publikujemy automatycznie."),"Explicit no-publishing disclosure missing");
 const chooser={value:"szkody-gornicze",events:{},addEventListener(type,fn){this.events[type]=fn;}};
+const channel={value:"facebook",events:{},addEventListener(type,fn){this.events[type]=fn;}};
 const draft={value:"",focused:false,selected:false,focus(){this.focused=true;},select(){this.selected=true;}};
 const feedback={textContent:""};
 const copy={disabled:false,events:{},addEventListener(type,fn){this.events[type]=fn;}};
 const nodes={
  "[data-brochure-promo-service]":chooser,
+ "[data-brochure-promo-channel]":channel,
  "[data-brochure-promo-draft]":draft,
  "[data-brochure-promo-copy]":copy,
  "[data-brochure-promo-status]":feedback
@@ -28,7 +30,7 @@ const root={querySelector:selector=>nodes[selector]};
 const document={querySelector:selector=>selector==="[data-brochure-promo]"?root:null};
 let copied="";
 const navigator={clipboard:{writeText:async text=>{copied=text;}}};
-runInNewContext(source,{document,navigator,encodeURIComponent,Object});
+runInNewContext(source,{document,navigator,URL,Set,Object,encodeURIComponent});
 const cases=[
  ["szkody-gornicze","Wojciech Obiegło","796 441 345","Lubinie lub Polkowicach"],
  ["swiadczenie-wspierajace","Paulina Chandrała","500 171 531","WZON"],
@@ -44,8 +46,18 @@ for(const [key,advisor,phone,detail] of cases){
  assert.equal(copy.disabled,false);
  assert.ok(draft.value.includes(advisor)&&draft.value.includes(phone),"Wrong adviser for "+key);
  assert.ok(draft.value.includes(detail),"Missing service-specific substance for "+key);
- assert.ok(draft.value.includes("https://twoja-sprawa.pages.dev/plan-dzialania?broszura="+key+"#broszura"),"Wrong clean share link for "+key);
- assert.ok(!draft.value.includes("utm_"),"Social posts should use clean links");
+ const shareUrl=draft.value.match(/https:\/\/twoja-sprawa\.pages\.dev\/plan-dzialania\?[^\s]+/)?.[0];
+ assert.ok(shareUrl,"Missing brochure link: "+key);
+ const link=new URL(shareUrl);
+ assert.equal(link.pathname,"/plan-dzialania");
+ assert.equal(link.searchParams.get("broszura"),key,"Wrong brochure for "+key);
+ assert.equal(link.searchParams.get("utm_source"),"facebook","Default platform must be Facebook");
+ assert.equal(link.searchParams.get("utm_medium"),"social");
+ assert.equal(link.searchParams.get("utm_campaign"),"broszura_"+key.replaceAll("-","_"));
+ assert.equal(link.searchParams.get("utm_content"),"post_organic");
+ assert.equal(link.hash,"#broszura");
+ for(const disallowed of ["name","phone","pesel","email","gclid","fbclid"])
+  assert.equal(link.searchParams.has(disallowed),false,"No visitor identifiers in social posts");
  assert.ok(!/gwarantujemy|100% pewności|wygramy|przyznamy świadczenie/i.test(draft.value),"Unsupported promise: "+key);
  assert.ok(!/[0-9]{11}/.test(draft.value),"Do not print PESEL-like identifiers");
  const tags=draft.value.match(/#[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż0-9]+/g)||[];
@@ -56,6 +68,14 @@ for(const [key,advisor,phone,detail] of cases){
  outputs.add(draft.value);
 }
 assert.equal(outputs.size,6,"Six service posts must have unique copy");
+assert.ok(html.includes('data-brochure-promo-channel'),"A selectable promotion channel must be visible");
+for(const source of ["instagram","tiktok","inne","facebook"]){
+ channel.value=source;channel.events.change();
+ const shareUrl=draft.value.match(/https:\/\/twoja-sprawa\.pages\.dev\/plan-dzialania\?[^\s]+/)?.[0];
+ assert.equal(new URL(shareUrl).searchParams.get("utm_source"),source,"Post source should match channel selection");
+}
+channel.value="unrecognized";channel.events.change();
+assert.ok(draft.value.includes("utm_source=inne"),"Unrecognized channel must not propagate arbitrary URL content");
 chooser.value="unknown";chooser.events.change();
 assert.equal(draft.value,"");
 assert.equal(copy.disabled,true,"Invalid selection must disable copy");
@@ -65,4 +85,4 @@ await copy.events.click();
 assert.equal(draft.focused,true,"Failed clipboard copy should focus selectable caption");
 assert.equal(draft.selected,true,"Failed clipboard copy should select text for manual copying");
 assert.ok(feedback.textContent.includes("ręcznie"),"Do not claim copy succeeded after clipboard rejection");
-console.log("BROCHURE_ORGANIC_POSTS_OK: 6 distinct posts, correct advisers, safe social links, fallback copy, no data collection.");
+console.log("BROCHURE_ORGANIC_POSTS_OK: six service posts, 4 source-labelled channel variants, correct advisers, clean UTM fields, clipboard fallback.");

@@ -7,6 +7,13 @@ import {runInNewContext} from "node:vm";
 const brochureJs=await readFile("v2/brochure-view.js","utf8");
 const brochureCss=await readFile("v2/brochure-view.css","utf8");
 const planHtml=await readFile("v2/plan-dzialania.html","utf8");
+const hubHtml=await readFile("v2/wiedza/index.html","utf8");
+const homeHtml=await readFile("v2/index.html","utf8");
+assert.ok(homeHtml.includes('Broszury dokumentów do wydruku'),"Homepage must surface printed brochures near service choices");
+assert.ok(homeHtml.includes('/v2/plan-dzialania.html#brochure-library-heading'),"Homepage brochure entry must open gallery directly");
+assert.ok(hubHtml.includes('aria-label="Broszury do druku dla sześciu usług"'),"Editorial hub must expose brochure topic navigation");
+assert.ok(hubHtml.includes('Broszury dokumentów — do druku i udostępniania'),"Knowledge hub section heading missing");
+
 const brochurePages=[
  ["szkody-gornicze","szkody-gornicze","Wojciech Obiegło"],
  ["swiadczenie-wspierajace","swiadczenie-wspierajace","Paulina Chandrała"],
@@ -48,6 +55,9 @@ for(const [service,topic,advisor] of brochurePages){
  const expected="/v2/plan-dzialania.html?broszura="+topic+"#broszura";
  assert.ok(source.includes('href="'+expected+'"'),"Service missing unique graphic brochure link: "+service);
  assert.ok(planHtml.includes('href="?broszura='+topic+'#broszura"'),"Library missing "+topic);
+ assert.ok(hubHtml.includes('href="/v2/plan-dzialania.html?broszura='+topic+'#broszura"'),
+  "Knowledge hub missing direct brochure for "+topic);
+
  const thumbnail='/v2/assets/og-broszura-'+topic+'.jpg';
  assert.ok(planHtml.includes('src="'+thumbnail+'"'),"Gallery missing custom topic thumbnail: "+topic);
  const thumbnailMarkup=planHtml.match(new RegExp('<img src="'+thumbnail.replaceAll(".","\\.")+'"[^>]*>'));

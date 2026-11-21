@@ -48,6 +48,12 @@ for(const [service,topic,advisor] of brochurePages){
  const expected="/v2/plan-dzialania.html?broszura="+topic+"#broszura";
  assert.ok(source.includes('href="'+expected+'"'),"Service missing unique graphic brochure link: "+service);
  assert.ok(planHtml.includes('href="?broszura='+topic+'#broszura"'),"Library missing "+topic);
+ const thumbnail='/v2/assets/og-broszura-'+topic+'.jpg';
+ assert.ok(planHtml.includes('src="'+thumbnail+'"'),"Gallery missing custom topic thumbnail: "+topic);
+ const thumbnailMarkup=planHtml.match(new RegExp('<img src="'+thumbnail.replaceAll(".","\\.")+'"[^>]*>'));
+ assert.ok(thumbnailMarkup?.[0].includes('loading="lazy"'),"Gallery must lazy-load thumbnails: "+topic);
+ assert.ok(thumbnailMarkup?.[0].includes('alt=""'),"Decorative thumbnails must not duplicate accessible service link label: "+topic);
+
  const {document,root}=fake();
  let copiedUrl="";
  const navigator={clipboard:{writeText:async text=>{copiedUrl=text;}}};

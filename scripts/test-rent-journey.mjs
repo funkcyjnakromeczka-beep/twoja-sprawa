@@ -7,8 +7,11 @@ const css=await readFile("v2/rent-journey.css","utf8");
 const guide=await readFile("v2/poradniki/renta-powypadkowa-dokumenty.html","utf8");
 const reviewed=await readFile("v2/wiedza/renta-powypadkowa-dokumenty.html","utf8");
 const reviewedHref="/v2/wiedza/renta-powypadkowa-dokumenty.html";
-assert.equal(html.split('href="'+reviewedHref+'"').length-1,1,
- "The rent service must link exactly once to the indexed guide");
+const guideSection=html.match(/<section class="focus-detail" aria-labelledby="guide-renty-powypadkowe"[\\s\\S]*?<\\/section>/)?.[0]||"";
+assert.equal(guideSection.split('href="'+reviewedHref+'"').length-1,1,
+ "The practical preparation section must link once to the indexed guide");
+assert.ok(html.split('href="'+reviewedHref+'"').length-1>=2,
+ "Keep a separate editorial link under the service's educational answers");
 assert.ok(html.includes('href="/v2/poradniki/renta-powypadkowa-dokumenty.html"'),
  "Keep the compact noindex checklist alongside the reviewed article");
 assert.ok(reviewed.includes('<meta name="robots" content="index,follow'),

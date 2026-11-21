@@ -72,7 +72,7 @@ assert.throws(()=>core.normalize({...a,leads:"-1"}),/Liczby/);
 assert.throws(()=>core.normalize({...a,leads:100000}),/99999/);
 assert.throws(()=>core.normalize({...a,source:"sklep-fake"}),/źródeł/);
 assert.throws(()=>core.parseCsv("name,phone\nJan,500000000"),/nagłówek/);
-assert.throws(()=>core.parseCsv(exported+"2026-11-19,szkody,facebook,=BAD,5,2,1\n"),/Wiersz/);
+assert.throws(()=>core.parseCsv(exported+"2026-11-19,szkody,facebook,=BAD,wideo_1,5,2,1\n"),/Wiersz/);
 assert.throws(()=>core.parseCsv(exported+"2026-11-19,szkody,facebook\n"),/kolumn/);
 const many=Array.from({length:301},(_,i)=>[ "2026-11-19","szkody","facebook","week_"+i,"wideo_1","1","0","0"].join(","));
 assert.throws(()=>core.parseCsv(core.header+"\n"+many.join("\n")),/300/);

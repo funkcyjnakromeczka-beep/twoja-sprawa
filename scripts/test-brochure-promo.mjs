@@ -17,11 +17,13 @@ assert.ok(html.includes("Niczego nie publikujemy automatycznie."),"Explicit no-p
 const chooser={value:"szkody-gornicze",events:{},addEventListener(type,fn){this.events[type]=fn;}};
 const channel={value:"facebook",events:{},addEventListener(type,fn){this.events[type]=fn;}};
 const draft={value:"",focused:false,selected:false,focus(){this.focused=true;},select(){this.selected=true;}};
+const channelNote={textContent:""};
 const feedback={textContent:""};
 const copy={disabled:false,events:{},addEventListener(type,fn){this.events[type]=fn;}};
 const nodes={
  "[data-brochure-promo-service]":chooser,
  "[data-brochure-promo-channel]":channel,
+ "[data-brochure-promo-channel-note]":channelNote,
  "[data-brochure-promo-draft]":draft,
  "[data-brochure-promo-copy]":copy,
  "[data-brochure-promo-status]":feedback
@@ -69,10 +71,14 @@ for(const [key,advisor,phone,detail] of cases){
 }
 assert.equal(outputs.size,6,"Six service posts must have unique copy");
 assert.ok(html.includes('data-brochure-promo-channel'),"A selectable promotion channel must be visible");
+assert.ok(html.includes('data-brochure-promo-channel-note'),"Channel-specific accessibility note missing");
 for(const source of ["instagram","tiktok","inne","facebook"]){
  channel.value=source;channel.events.change();
  const shareUrl=draft.value.match(/https:\/\/twoja-sprawa\.pages\.dev\/plan-dzialania\?[^\s]+/)?.[0];
  assert.equal(new URL(shareUrl).searchParams.get("utm_source"),source,"Post source should match channel selection");
+ assert.ok(channelNote.textContent.length>40,"Missing platform-specific publishing guidance");
+ if(source==="instagram")assert.ok(channelNote.textContent.includes("linkach profilu"),"Instagram needs link-in-profile guidance");
+ if(source==="tiktok")assert.ok(channelNote.textContent.includes("profilu"),"TikTok needs link availability warning");
 }
 channel.value="unrecognized";channel.events.change();
 assert.ok(draft.value.includes("utm_source=inne"),"Unrecognized channel must not propagate arbitrary URL content");

@@ -6,8 +6,10 @@
 .ts-brochure-control h2{margin:5px 0;font:700 clamp(1.4rem,2.4vw,1.9rem)/1.25 Georgia,serif;color:#1f2d36}
 .ts-brochure-control p{max-width:65ch;margin:5px 0;line-height:1.5;color:#42535f}
 .ts-brochure-actions{display:flex;gap:10px;flex-wrap:wrap}
-.ts-brochure-actions button,.ts-brochure-service-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #9c2333;border-radius:9px;background:#aa2334;padding:12px 16px;color:#fff!important;font-weight:750;font:inherit;text-decoration:none;cursor:pointer}
+.ts-brochure-actions button,.ts-brochure-service-link,.ts-brochure-contact-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #9c2333;border-radius:9px;background:#aa2334;padding:12px 16px;color:#fff!important;font-weight:750;font:inherit;text-decoration:none;cursor:pointer}
 .ts-brochure-service-link{background:#fff;color:#74303a!important}
+.ts-brochure-actions .ts-brochure-contact-link{background:#164c5a;color:#fff!important;border-color:#164c5a}
+.ts-brochure-actions .ts-brochure-contact-link:hover{background:#0b3643;color:#fff!important}
 .ts-brochure-actions .ts-brochure-share{background:#fff6e9;color:#543728!important;border-color:#af7f53}
 .ts-brochure-actions .ts-brochure-share:hover{background:#f5e5cc;color:#2b2a2b!important}
 .ts-brochure-share-feedback{flex:0 0 100%;margin:0;color:#23445c;font-size:.88rem;line-height:1.5;overflow-wrap:anywhere}
@@ -69,7 +71,7 @@
  .plan-page .ts-brochure{width:calc(100% - 20px)}
  .ts-brochure-control{padding:17px}
  .ts-brochure-actions{width:100%}
- .ts-brochure-actions button,.ts-brochure-service-link{flex:1 1 145px}
+ .ts-brochure-actions button,.ts-brochure-service-link,.ts-brochure-contact-link{flex:1 1 145px}
  .ts-brochure-spread .ts-brochure-panel{padding:22px}
  .ts-brochure-spread h3{font-size:1.65rem}
  .ts-brochure-contact .ts-brochure-endnote{padding-top:12px}

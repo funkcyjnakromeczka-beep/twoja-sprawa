@@ -10,6 +10,8 @@
  const filter=find("[data-summary-filter]");
  const entries=find("[data-lead-entries]");
  const breakdown=find("[data-source-breakdown]");
+ const topicBreakdown=find("[data-topic-breakdown]");
+ const briefOutput=find("[data-summary-brief]");
  const campaignBreakdown=find("[data-campaign-breakdown]");
  const csvOutput=find("[data-csv-output]");
  const csvInput=find("[data-csv-input]");
@@ -58,6 +60,16 @@
    });
    last.append(remove);tr.append(last);entries.append(tr);
   }
+  if(topicBreakdown){
+   topicBreakdown.replaceChildren();
+   for(const group of data.topics){
+    const tr=document.createElement("tr");
+    cell(tr,display(group.service));cell(tr,group.leads);cell(tr,group.qualified);
+    cell(tr,group.clients);cell(tr,percentage(group.clients,group.leads));
+    cell(tr,group.leads<10?"Mała próba":"Wyniki wstępne");
+    topicBreakdown.append(tr);
+   }
+  }
   breakdown.replaceChildren();
   for(const group of data.sources){
    const tr=document.createElement("tr");
@@ -74,6 +86,31 @@
     cell(tr,percentage(group.clients,group.leads));
     campaignBreakdown.append(tr);
    }
+  }
+  if(briefOutput){
+   const lines=[
+    "Twoja Sprawa — zbiorcze wyniki kampanii (ręczna ewidencja)",
+    "Zakres: "+(filter.value==="wszystkie"?"wszystkie usługi":display(filter.value)),
+    "Zgłoszenia: "+data.leads+" | kwalifikowane: "+data.qualified+" | umowy: "+data.clients,
+    "Tematy:"
+   ];
+   if(!data.topics.length)lines.push("Brak wpisanych wyników.");
+   for(const group of data.topics)lines.push(
+    "- "+display(group.service)+": "+group.leads+" zgłoszeń, "+group.qualified+
+    " kwalifikowanych, "+group.clients+" umów ("+percentage(group.clients,group.leads)+
+    " umowy/zgłoszenia)"+(group.leads<10?" — mała próba":"")
+   );
+   lines.push("Źródła:");
+   for(const group of data.sources)lines.push(
+    "- "+display(group.source)+": "+group.leads+" zgłoszeń, "+group.clients+" umów"
+   );
+   lines.push("Publikacje (maks. 3, wg liczby umów — nie ranking skuteczności):");
+   for(const group of data.campaigns.slice(0,3))lines.push(
+    "- "+display(group.service)+" / "+display(group.source)+" / "+group.campaign+
+    " / "+group.variant+": "+group.leads+" zgłoszeń, "+group.clients+" umów"
+   );
+   lines.push("Uwaga: dane ręczne, bez automatycznego pomiaru odsłon. Małe próby nie przesądzają o skuteczności. Nie wpisuj danych klientów.");
+   briefOutput.value=lines.join("\n");
   }
   csvOutput.value=core.csv(rows);
   report.hidden=false;
@@ -113,6 +150,17 @@
   }catch(error){feedback("Nie można przenieść oznaczeń: "+error.message,true);}
  });
  filter.addEventListener("change",show);
+ const copyBrief=find("[data-copy-brief]");
+ if(copyBrief&&briefOutput)copyBrief.addEventListener("click",async()=>{
+  try{
+   if(!navigator.clipboard?.writeText)throw Error("Schowek niedostępny.");
+   await navigator.clipboard.writeText(briefOutput.value);
+   feedback("Skopiowano zbiorczy raport tekstowy bez danych klientów.");
+  }catch{
+   briefOutput.focus();briefOutput.select();
+   feedback("Zaznaczony raport tekstowy skopiuj ręcznie.",true);
+  }
+ });
  find("[data-copy-summary]").addEventListener("click",async()=>{
   try{
    if(!navigator.clipboard?.writeText)throw Error("Brak dostępu do schowka.");

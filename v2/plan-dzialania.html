@@ -30,6 +30,31 @@
 <a href="?broszura=kredyty-frankowe#broszura" aria-label="Kredyty frankowe — zobacz broszurę do pobrania i wydruku"><img src="/v2/assets/og-broszura-kredyty-frankowe.jpg" alt="" width="360" height="189" loading="lazy" decoding="async"><span class="plan-brochure-link-copy"><strong>Kredyty frankowe</strong> <span aria-hidden="true">↗</span></span></a>
 <a href="?broszura=sluzebnosc-przesylu#broszura" aria-label="Służebność przesyłu — zobacz broszurę do pobrania i wydruku"><img src="/v2/assets/og-broszura-sluzebnosc-przesylu.jpg" alt="" width="360" height="189" loading="lazy" decoding="async"><span class="plan-brochure-link-copy"><strong>Służebność przesyłu</strong> <span aria-hidden="true">↗</span></span></a>
 </nav>
+<details class="plan-brochure-promo" id="promocja-broszur">
+<summary>Bezpłatna promocja: skopiuj gotowy post o broszurze</summary>
+<div data-brochure-promo>
+<p>Wybierz usługę, a przygotujemy krótki tekst do posta na Facebooku lub w grupie. Post zawiera link do właściwej broszury i kontakt do odpowiedniego opiekuna. Niczego nie publikujemy automatycznie.</p>
+<div class="plan-brochure-promo-fields">
+<div><label for="brochure-promo-topic">Temat postu</label>
+<select id="brochure-promo-topic" data-brochure-promo-service>
+<option value="szkody-gornicze">Szkody górnicze</option>
+<option value="swiadczenie-wspierajace">Świadczenie wspierające</option>
+<option value="renty-powypadkowe">Renty powypadkowe</option>
+<option value="skd">Sankcja kredytu darmowego</option>
+<option value="kredyty-frankowe">Kredyty frankowe</option>
+<option value="sluzebnosc-przesylu">Służebność przesyłu</option>
+</select></div>
+<div><label for="brochure-promo-text">Treść do skopiowania</label>
+<textarea id="brochure-promo-text" data-brochure-promo-draft rows="9" readonly spellcheck="false">Wybierz temat, aby wyświetlić gotowy post z odnośnikiem do broszury.</textarea></div>
+</div>
+<div class="plan-brochure-promo-actions">
+<button type="button" data-brochure-promo-copy>Skopiuj post</button>
+<a href="/v2/narzedzia/linki-kampanii.html">Generator linków i kodów QR <span aria-hidden="true">↗</span></a>
+</div>
+<p class="plan-brochure-promo-status" data-brochure-promo-status role="status" aria-live="polite"></p>
+<small>Sprawdź regulamin grupy przed publikacją. Nie obiecuj przyznania świadczenia, odszkodowania ani wygranej w sądzie.</small>
+</div>
+</details>
 <details class="plan-brochure-print-help"><summary>Jak wydrukować i złożyć broszurę?</summary><p>Wybierz broszurę, kliknij „Drukuj / Zapisz PDF”, ustaw papier A4 i układ poziomy. Aby zachować jasne tła i czerwone akcenty, włącz drukowanie grafik w tle. Na broszurę składaną w trzy części wydrukuj dwie strony na jednej kartce dwustronnie i sprawdź próbny wydruk przed większą liczbą egzemplarzy — ustawienie obrotu kartki zależy od drukarki.</p></details>
 <small>Lista pomaga się przygotować. Nie jest wykazem dokumentów obowiązkowych dla każdej sprawy. Nie wysyłaj poufnych dokumentów przez otwarte komentarze.</small>
 </section>
@@ -77,6 +102,6 @@
 <section class="ts-brochure" id="broszura" data-brochure-root hidden aria-label="Graficzna broszura do wydruku"></section>
 </main>
 <footer>Twoja Sprawa — SuccessTree OBIEGŁO WOJCIECH, współpraca agencyjna z VOTUM. Serwis nie jest kancelarią prawną ani oficjalną witryną VOTUM. <a href="/">Strona główna</a></footer>
-<script src="/v2/plan-dzialania.js" defer></script><script src="/v2/brochure-view.js" defer></script>
+<script src="/v2/plan-dzialania.js" defer></script><script src="/v2/brochure-view.js" defer></script><script src="/v2/brochure-promo.js" defer></script>
 <script src="/v2/chat-assistant.js" data-base="/v2/" defer></script>
 <script src="/v2/attribution.js" defer></script></body></html>

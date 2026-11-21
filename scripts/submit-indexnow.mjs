@@ -13,11 +13,19 @@ if(expectedRoutes.length<10||expectedRoutes.length>200)throw Error("Unexpected n
 if(process.env.INDEXNOW_SUBMIT!=="1"||process.env.GITHUB_REF!=="refs/heads/main"){
  throw Error("IndexNow submission blocked unless explicitly triggered on production main branch.");
 }
+// Two independent IndexNow integrations (GitHub Actions and OpenSEO) publish
+// different ownership keys on this same host. Both keys must stay available.
+// Pin the original GitHub key for stable submissions and validate all key files.
 const files=(await readdir("v2")).filter(name=>/^[0-9a-f]{40}\.txt$/.test(name));
-assert.equal(files.length,1,"Exactly one public IndexNow ownership file required");
-const key=files[0].slice(0,-4);
-const contents=(await readFile("v2/"+files[0],"utf8")).trim();
-assert.equal(contents,key,"IndexNow key filename and content differ");
+assert.ok(files.length>=1&&files.length<=5,"Unexpected number of public IndexNow ownership files");
+const key="cdc63afe4c9cf8e5dade3a9fe8168c328ac5cf74";
+const keyFile=key+".txt";
+assert.ok(files.includes(keyFile),"Original IndexNow ownership file is missing");
+for(const file of files){
+ const fileKey=file.slice(0,-4);
+ const contents=(await readFile("v2/"+file,"utf8")).trim();
+ assert.equal(contents,fileKey,"IndexNow key filename and content differ: "+file);
+}
 const get=async path=>{
  const response=await fetch(origin+path,{headers:{"Cache-Control":"no-cache"}});
  if(!response.ok)throw Error("Live "+path+" returned HTTP "+response.status);
@@ -27,7 +35,7 @@ let sitemap,seen;
 for(let attempt=1;attempt<=16;attempt++){
  try{
   const [liveKey,robots,marker,xml]=await Promise.all([
-   get("/"+files[0]),get("/robots.txt"),get("/deployment-mode.txt"),get("/sitemap.xml")
+   get("/"+keyFile),get("/robots.txt"),get("/deployment-mode.txt"),get("/sitemap.xml")
   ]);
   assert.equal(liveKey.trim(),key,"Ownership file not yet published");
   assert.ok(robots.includes("Allow: /")&&!robots.includes("Disallow: /"),"Robots blocks production indexing");
@@ -55,7 +63,7 @@ for(const uri of urls){
  assert.ok(!url.search&&!url.hash&&!uri.endsWith(".html"),"Uncanonical IndexNow URL");
  assert.ok(!/^\/(?:szukaj|404|kampanie|narzedzia|polityka-prywatnosci)/.test(url.pathname),"Nonindex route in sitemap");
 }
-const request={host,key,keyLocation:origin+"/"+files[0],urlList:urls};
+const request={host,key,keyLocation:origin+"/"+keyFile,urlList:urls};
 const response=await fetch("https://api.indexnow.org/indexnow",{
  method:"POST",
  headers:{"Content-Type":"application/json; charset=utf-8","Accept":"application/json"},

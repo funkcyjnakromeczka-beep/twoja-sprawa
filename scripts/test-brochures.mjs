@@ -49,9 +49,11 @@ for(const [service,topic,advisor] of brochurePages){
  assert.ok(source.includes('href="'+expected+'"'),"Service missing unique graphic brochure link: "+service);
  assert.ok(planHtml.includes('href="?broszura='+topic+'#broszura"'),"Library missing "+topic);
  const {document,root}=fake();
+ let copiedUrl="";
+ const navigator={clipboard:{writeText:async text=>{copiedUrl=text;}}};
  runInNewContext(brochureJs,{
   document,location:{search:"?broszura="+encodeURIComponent(topic)},
-  URLSearchParams,window:{print(){}} ,
+  URLSearchParams,window:{print(){}},navigator,
   Object,String
  });
  assert.equal(root.hidden,false,"Selected brochure not revealed: "+topic);
@@ -64,6 +66,15 @@ for(const [service,topic,advisor] of brochurePages){
  assert.ok(allText(root).includes("Drukuj / Zapisz PDF"),"Print button must appear: "+topic);
  assert.ok(nodes.some(n=>n.tagName==="BUTTON"&&n.events?.click),"Print control must be wired: "+topic);
  assert.ok(allText(root).includes("Nie musisz mieć wszystkiego."),"No mandatory-document claim: "+topic);
+ const share=nodes.find(n=>n.tagName==="BUTTON"&&n.className==="ts-brochure-share");
+ assert.ok(share?.events?.click,"Share button must be available for clients: "+topic);
+ await share.events.click();
+ assert.equal(copiedUrl,"https://twoja-sprawa.pages.dev/plan-dzialania?broszura="+topic+"#broszura",
+  "Share must copy clean, canonical link without personal or advertising parameters: "+topic);
+ const status=nodes.find(n=>n.className==="ts-brochure-share-feedback");
+ assert.ok(status?.textContent.includes("Skopiowano"),"Screen-reader feedback after successful share copy: "+topic);
+ assert.ok(allText(root).includes("niezależna działalność współpracująca z VOTUM"),
+  "Published brochure must distinguish SuccessTree from official VOTUM channels: "+topic);
  const image=nodes.find(n=>n.tagName==="IMG"&&n.className==="ts-brochure-qr-image");
  assert.ok(image,"Every brochure needs a printable, service-specific QR code: "+topic);
  assert.equal(image.src,"/v2/assets/qr-broszura-"+topic+".svg","QR code file must match the selected service");

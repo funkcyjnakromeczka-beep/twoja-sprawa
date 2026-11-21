@@ -34,6 +34,7 @@ on:
       - 'scripts/test-service-share.mjs'
       - 'scripts/test-campaign-links.mjs'
       - 'scripts/test-geo-editorial.mjs'
+      - 'scripts/test-brochures.mjs'
       - '.github/workflows/release-candidate.yml'
   pull_request:
     paths:
@@ -92,6 +93,7 @@ jobs:
           node --check scripts/test-service-share.mjs
           node --check scripts/test-campaign-links.mjs
           node --check scripts/test-geo-editorial.mjs
+          node --check scripts/test-brochures.mjs
           node --check scripts/test-search-index-freshness.mjs
       - name: Zbuduj i przetestuj kandydata wydania (bez publikacji)
         env:
@@ -131,6 +133,7 @@ jobs:
           node scripts/test-service-share.mjs
           node scripts/test-campaign-links.mjs
           node scripts/test-geo-editorial.mjs
+          node scripts/test-brochures.mjs
           node scripts/test-search-index-freshness.mjs
       - name: Identyfikator zbudowanej wersji
         run: cat dist/release-info.json

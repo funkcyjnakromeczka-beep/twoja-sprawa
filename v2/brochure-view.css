@@ -161,7 +161,8 @@
 .plan-page .plan-brochure-promo summary{cursor:pointer;min-height:32px;font-weight:800;line-height:1.45;color:#163b4a}
 .plan-page .plan-brochure-promo summary:focus-visible{outline:3px solid #b98946;outline-offset:3px}
 .plan-page .plan-brochure-promo p{margin:13px 0;max-width:75ch;line-height:1.62;color:#355363}
-.plan-page .plan-brochure-promo-fields{display:grid;grid-template-columns:minmax(195px,1fr) minmax(0,2fr);gap:14px;margin:15px 0}
+.plan-page .plan-brochure-promo-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:15px 0}
+.plan-page .plan-brochure-promo-copy-field{grid-column:1/-1}
 .plan-page .plan-brochure-promo-fields>div{display:flex;flex-direction:column;gap:7px;min-width:0}
 .plan-page .plan-brochure-promo-fields label{display:block;font-weight:800;color:#1e4352}
 .plan-page .plan-brochure-promo-fields select,.plan-page .plan-brochure-promo-fields textarea{box-sizing:border-box;width:100%;border:1px solid #96acb5;border-radius:8px;background:#fff;color:#173643;padding:11px 12px;font:400 .97rem/1.55 system-ui,sans-serif}
@@ -176,5 +177,5 @@
 .plan-page .plan-brochure-promo-actions a:hover{background:#fff1e8}
 .plan-page .plan-brochure-promo-actions :is(button,a):focus-visible{outline:3px solid #b98946;outline-offset:3px}
 .plan-page .plan-brochure-promo-status{margin:8px 0;min-height:1.4em;font-size:.9rem;color:#254a58}
-@media(max-width:700px){.plan-page .plan-brochure-promo-fields{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.plan-page .plan-brochure-promo-fields{grid-template-columns:minmax(0,1fr)}.plan-page .plan-brochure-promo-copy-field{grid-column:auto}}
 @media print{.plan-page .plan-brochure-promo{display:none!important}}

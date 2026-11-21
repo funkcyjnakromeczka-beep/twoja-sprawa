@@ -14,6 +14,21 @@ assert.ok(homeHtml.includes('/v2/plan-dzialania.html#brochure-library-heading'),
 assert.ok(hubHtml.includes('aria-label="Broszury do druku dla sześciu usług"'),"Editorial hub must expose brochure topic navigation");
 assert.ok(hubHtml.includes('Broszury dokumentów — do druku i udostępniania'),"Knowledge hub section heading missing");
 
+for(const [page,brochure] of [
+ ["drobne-pekniecia-szkody-gornicze","szkody-gornicze"],
+ ["ugoda-z-kopalnia-co-sprawdzic","szkody-gornicze"],
+ ["swiadczenie-wspierajace-2026-wzon-zus","swiadczenie-wspierajace"]
+]){
+ const article=await readFile("v2/wiedza/"+page+".html","utf8");
+ assert.ok(article.includes('class="article-brochure-cta"'),
+  "Reviewed/indexable editorial article needs relevant practical brochure: "+page);
+ assert.ok(article.includes('href="/v2/plan-dzialania.html?broszura='+brochure+'#broszura"'),
+  "Reviewed article links to wrong brochure: "+page);
+ assert.equal((article.match(/class="article-brochure-cta"/g)||[]).length,1,
+  "Only one CTA per published article: "+page);
+}
+
+
 const brochurePages=[
  ["szkody-gornicze","szkody-gornicze","Wojciech Obiegło"],
  ["swiadczenie-wspierajace","swiadczenie-wspierajace","Paulina Chandrała"],

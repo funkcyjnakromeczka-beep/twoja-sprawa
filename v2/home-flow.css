@@ -442,6 +442,10 @@
 .hero-reading-shortcuts a:focus-visible{outline:3px solid}
 
 
+.premium-v2 .local-mining-log-cta{margin:17px 0 0!important;line-height:1.65}
+.premium-v2 .local-mining-log-cta a{display:inline-flex;align-items:center;gap:8px;color:#ffe3ac;text-decoration:underline;text-underline-offset:4px;font-weight:750}
+.premium-v2 .local-mining-log-cta a:focus-visible{outline:3px solid #f3d39b;outline-offset:3px}
+
 /* BRAND-METALLIC-20261120: user-approved social artwork on the homepage.
    Scoping prevents changes to the local SEO landing pages and form workflows. */
 .premium-v2 .hero-glamour {

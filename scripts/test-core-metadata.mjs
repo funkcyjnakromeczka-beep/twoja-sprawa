@@ -22,7 +22,8 @@ const cases = [
   ["uslugi/wypadki-przy-pracy.html", "Wypadek przy pracy — dokumenty | Twoja Sprawa", true],
   ["uslugi/wypadki-w-rolnictwie.html", "Wypadek w rolnictwie — dokumenty | Twoja Sprawa", true],
   ["wiedza/drobne-pekniecia-szkody-gornicze.html", "Drobne pęknięcia a szkody górnicze — Lubin i Polkowice", true],
-  ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html", "Świadczenie wspierające 2026 — WZON i ZUS", true]
+  ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html", "Świadczenie wspierające 2026 — WZON i ZUS", true],
+  ["wiedza/renta-powypadkowa-dokumenty.html", "Renta powypadkowa: dokumenty i podwyższenie | Twoja Sprawa", true]
 ];
 const meta = (html, field, key) => {
   const tag = html.match(new RegExp('<meta\\b(?=[^>]*\\b'+field+'="'+key+'")[^>]*>',"i"))?.[0] || "";

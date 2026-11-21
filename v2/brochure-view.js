@@ -103,6 +103,13 @@
   const item=make("div","ts-brochure-detail");item.append(make("b","",lab));
   const link=make("a","",value);link.href=href;if(href.startsWith("https:")){link.target="_blank";link.rel="noopener noreferrer";}item.append(link);contacts.append(item);
  }
+ const qrBox=make("div","ts-brochure-qr");
+ const qrImage=make("img","ts-brochure-qr-image");
+ qrImage.src="/v2/assets/qr-broszura-"+key+".svg";
+ qrImage.alt="Kod QR do informacji o usłudze: "+d.title;
+ qrImage.width=108;qrImage.height=108;qrImage.decoding="async";
+ qrBox.append(qrImage,make("span","ts-brochure-qr-caption","Zeskanuj kod QR, aby otworzyć opis usługi na stronie Twoja Sprawa."));
+ contacts.append(qrBox);
  contacts.append(make("p","ts-brochure-endnote","Nie podawaj danych wrażliwych w publicznych komentarzach. Oryginały dokumentów zachowaj u siebie."));
  const cover=make("article","ts-brochure-panel ts-brochure-cover");
  const coverTop=make("div","");

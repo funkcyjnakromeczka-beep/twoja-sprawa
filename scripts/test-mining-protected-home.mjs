@@ -14,8 +14,18 @@ for(const marker of [
  "nie wykluczają automatycznie","nie oznacza","Nie wpisuj"
 ])assert.ok(section.toLowerCase().includes(marker.toLowerCase()),"Crucial factual or safety qualification missing: "+marker);
 assert.ok(section.includes('href="/v2/uslugi/szkody-gornicze.html?etap=zabezpieczenia#formularz"'),"Article CTA must choose known stage");
-assert.ok(article.includes('"dateModified":"2026-11-19"'),"Article metadata should be updated on the content revision");
+assert.ok(article.includes('"dateModified":"2026-11-21"'),"Article metadata should be updated on the content revision");
 assert.ok(!/gwarantujemy|100%|odszkodowanie należy się każdemu/i.test(section),"No guaranteed award or generic assertions");
+const localDiscovery=article.match(/<section id="lokalnie-pierwsze-objawy" aria-labelledby="local-injury-heading">([\\s\\S]*?)<\\/section>/)?.[1]||"";
+assert.ok(localDiscovery.includes('<h2 id="local-injury-heading">'),"Reviewed mining article needs clear local section");
+for(const slug of ["lubin","polkowice"]){
+ const href='/v2/lokalnie/szkody-gornicze-'+slug+'.html';
+ assert.equal(localDiscovery.split('href="'+href+'"').length-1,1,"Mining article lost "+slug+" discovery");
+}
+assert.ok(localDiscovery.includes("Położenie działki nie przesądza"),
+ "Local entry must not guarantee mining causation");
+assert.ok(!localDiscovery.includes("data-contact-form")&&!localDiscovery.includes("PESEL")&&!localDiscovery.includes("utm_"),
+ "Local editorial crosslinks must not collect data or add tracking");
 const service=await read("v2/uslugi/szkody-gornicze.html");
 const serviceSection=service.match(/<section class="focus-detail" id="wzmocnione-fundamenty" aria-labelledby="wzmocnione-fundamenty-title">([\s\S]*?)<\/section>/)?.[1]||"";
 assert.ok(serviceSection.includes('<h2 id="wzmocnione-fundamenty-title">'),"Visible service block");

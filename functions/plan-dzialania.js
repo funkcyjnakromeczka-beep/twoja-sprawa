@@ -5,7 +5,7 @@
  * This function never processes client documents, form values or personal data.
  */
 const ORIGIN="https://twoja-sprawa.pages.dev";
-const IMAGE=ORIGIN+"/assets/og-twoja-sprawa-metallic-v1.jpg";
+// Each brochure has its own first-party JPEG with exact service headline.
 export const BROCHURE_PREVIEWS=Object.freeze({
  "szkody-gornicze":{
   title:"Szkody górnicze — broszura dokumentów | Twoja Sprawa",
@@ -59,6 +59,7 @@ export function rewriteBrochurePreview(html,key){
  // brochure is a share variant, not an additional SEO landing page.
  const canonical=ORIGIN+"/plan-dzialania";
  const shareUrl=canonical+"?broszura="+encodeURIComponent(key);
+ const image=ORIGIN+"/assets/og-broszura-"+key+".jpg";
  let next=html.replace(/<title>[\s\S]*?<\/title>/i,"<title>"+escapeAttr(info.title)+"</title>");
  next=setMeta(next,"name","robots","noindex,follow");
  next=setMeta(next,"name","description",info.description);
@@ -66,16 +67,16 @@ export function rewriteBrochurePreview(html,key){
  next=setMeta(next,"property","og:description",info.description);
  next=setMeta(next,"property","og:url",shareUrl);
  next=setMeta(next,"property","og:type","website");
- next=setMeta(next,"property","og:image",IMAGE);
- next=setMeta(next,"property","og:image:secure_url",IMAGE);
+ next=setMeta(next,"property","og:image",image);
+ next=setMeta(next,"property","og:image:secure_url",image);
  next=setMeta(next,"property","og:image:type","image/jpeg");
- next=setMeta(next,"property","og:image:width","1536");
- next=setMeta(next,"property","og:image:height","803");
+ next=setMeta(next,"property","og:image:width","1200");
+ next=setMeta(next,"property","og:image:height","630");
  next=setMeta(next,"property","og:image:alt",info.imageAlt);
  next=setMeta(next,"name","twitter:card","summary_large_image");
  next=setMeta(next,"name","twitter:title",info.title);
  next=setMeta(next,"name","twitter:description",info.description);
- next=setMeta(next,"name","twitter:image",IMAGE);
+ next=setMeta(next,"name","twitter:image",image);
  next=setMeta(next,"name","twitter:image:alt",info.imageAlt);
  // The canonical is intentionally the unparameterized, noindex tool page.
  const canonicalTag='<link rel="canonical" href="'+canonical+'">';

@@ -137,7 +137,7 @@ assert.ok(css.includes(".premium-v2 .mobile-contact-bar[hidden]{display:none!imp
 assert.ok(html.includes("data-share-page")&&html.includes("data-share-feedback"),"Share control has no user feedback");
 assert.ok(html.includes('src="/v2/share-page.js"'),"Share control script missing");
 
-// The homepage offers three accessible flagship shortcuts to the same form.
+// The homepage offers four visible service shortcuts and two additional options within a disclosure.
 const shortcutBlock=html.match(/<div class="contact-service-shortcuts"[\s\S]*?<\/div><div class="lead-panel"/)?.[0]||"";
 assert.equal((shortcutBlock.match(/data-contact-shortcut="/g)||[]).length,3,"Exactly three flagship contact shortcuts required");
 assert.ok(shortcutBlock.includes('data-contact-shortcut="szkody"'),"Mining shortcut missing");

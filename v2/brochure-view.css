@@ -115,3 +115,6 @@
 @media(max-width:520px){.plan-brochure-links{grid-template-columns:1fr}.plan-page .plan-brochure-library{padding:20px 16px}}
 @media screen{body.brochure-active .plan-brochure-library{display:none!important}}
 @media print{body.brochure-active .plan-brochure-library{display:none!important}}
+
+/* WCAG: the original gold eyebrow is too light against the library's white panel. */
+.plan-page .plan-brochure-library>.eyebrow{color:#715222!important}

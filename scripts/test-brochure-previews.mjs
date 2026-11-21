@@ -20,6 +20,23 @@ const specs=[
 ];
 assert.deepEqual(Object.keys(BROCHURE_PREVIEWS),specs.map(([slug])=>slug));
 const titles=new Set();
+const images=new Set();
+const getJpegSize=data=>{
+ let i=2;
+ while(i<data.length-10){
+  if(data[i]!==0xff){i++;continue;}
+  const marker=data[i+1];
+  if(marker===0xd9||marker===0xda)break;
+  if(marker===0xff){i++;continue;}
+  const len=data.readUInt16BE(i+2);
+  if([0xc0,0xc1,0xc2,0xc3,0xc5,0xc6,0xc7,0xc9,0xca,0xcb].includes(marker)){
+   return {height:data.readUInt16BE(i+5),width:data.readUInt16BE(i+7)};
+  }
+  if(len<2)throw Error("JPEG invalid segment");
+  i+=2+len;
+ }
+ throw Error("JPEG dimensions missing");
+};
 for(const [slug,topic] of specs){
  const url=origin+"/plan-dzialania?broszura="+slug;
  assert.equal(brochureKeyFromUrl(url),slug);
@@ -35,7 +52,18 @@ for(const [slug,topic] of specs){
  assert.ok(meta(clean,"property","og:description").length>80,"Too short preview description: "+slug);
  assert.equal(meta(clean,"name","description"),meta(clean,"property","og:description"));
  assert.equal(meta(clean,"property","og:url"),url);
- assert.equal(meta(clean,"property","og:image"),origin+"/assets/og-twoja-sprawa-metallic-v1.jpg");
+ const expectedImage=origin+"/assets/og-broszura-"+slug+".jpg";
+ assert.equal(meta(clean,"property","og:image"),expectedImage);
+ assert.equal(meta(clean,"property","og:image:secure_url"),expectedImage);
+ assert.equal(meta(clean,"name","twitter:image"),expectedImage);
+ assert.equal(meta(clean,"property","og:image:width"),"1200");
+ assert.equal(meta(clean,"property","og:image:height"),"630");
+ assert.ok(meta(clean,"property","og:image:alt").includes("broszura"),"Image alt should describe a brochure");
+ const asset=await readFile("dist/assets/og-broszura-"+slug+".jpg");
+ assert.deepEqual(getJpegSize(asset),{width:1200,height:630},"Image size mismatch: "+slug);
+ assert.ok(asset.length>15_000&&asset.length<400_000,"Social image too large/small: "+slug);
+ images.add(expectedImage);
+
  assert.equal(meta(clean,"name","twitter:image"),meta(clean,"property","og:image"));
  assert.ok(clean.includes('data-brochure-root'),"Share metadata must not replace working brochure UI: "+slug);
  assert.equal((clean.match(/property="og:title"/g)||[]).length,1,"Duplicate OG title: "+slug);
@@ -56,6 +84,7 @@ for(const [slug,topic] of specs){
  assert.equal(meta(await response.text(),"property","og:title"),title);
 }
 assert.equal(titles.size,6,"Six brochure previews require distinct titles");
+assert.equal(images.size,6,"Facebook previews must use six distinct graphics");
 for(const url of [
  origin+"/plan-dzialania",
  origin+"/plan-dzialania?broszura=nieznana",
@@ -72,4 +101,4 @@ const failure=await onRequestGet({request:new Request(origin+"/plan-dzialania?br
  next:async()=>new Response("NOT FOUND",{status:404,headers:{"content-type":"text/html"}})});
 assert.equal(failure.status,404);
 assert.equal(await failure.text(),"NOT FOUND");
-console.log("BROCHURE_SOCIAL_PREVIEWS_OK: 6 distinct server-rendered share cards, noindex canonical, no personal data or new indexable pages.");
+console.log("BROCHURE_SOCIAL_PREVIEWS_OK: six unique 1200x630 JPEG images, server-rendered OG/Twitter, noindex canonical, no personal data.");

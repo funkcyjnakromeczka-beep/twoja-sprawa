@@ -1,0 +1,103 @@
+/* Twoja Sprawa — broszury graficzne, A4 landscape / tri-fold.
+   One universal six-service print template; no analytics, inputs, persistence. */
+.plan-page .ts-brochure{width:min(1180px,calc(100% - 32px));margin:36px auto 56px;color:#202d35}
+.ts-brochure[hidden]{display:none!important}
+.ts-brochure-control{display:flex;gap:18px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:18px;padding:22px 24px;border:1px solid #c9d4d8;border-radius:16px;background:#fff}
+.ts-brochure-control h2{margin:5px 0;font:700 clamp(1.4rem,2.4vw,1.9rem)/1.25 Georgia,serif;color:#1f2d36}
+.ts-brochure-control p{max-width:65ch;margin:5px 0;line-height:1.5;color:#42535f}
+.ts-brochure-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ts-brochure-actions button,.ts-brochure-service-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #9c2333;border-radius:9px;background:#aa2334;padding:12px 16px;color:#fff!important;font-weight:750;font:inherit;text-decoration:none;cursor:pointer}
+.ts-brochure-service-link{background:#fff;color:#74303a!important}
+.ts-brochure-actions :is(button,a):focus-visible{outline:3px solid #d4a75d;outline-offset:3px}
+.ts-brochure-spread{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:18px auto;width:100%;min-height:600px;box-shadow:0 15px 43px rgba(17,39,47,.12);border:1px solid #e5ded1;background:#f8f6f0}
+.ts-brochure-spread .ts-brochure-panel{box-sizing:border-box;padding:28px;min-width:0;position:relative;background:#f8f6f0;overflow-wrap:anywhere}
+.ts-brochure-spread .ts-brochure-panel:nth-child(2){background:#f0ede5}
+.ts-brochure-overline{display:block;color:#a0773b;font-weight:800;font-size:.77rem;letter-spacing:.055em;line-height:1.55}
+.ts-brochure-spread h3{margin:14px 0 20px;color:#202b32;font:700 clamp(1.55rem,2.6vw,2rem)/1.18 Georgia,serif}
+.ts-brochure-spread h4{margin:0 0 7px;color:#23323d;font-size:1rem;line-height:1.38}
+.ts-brochure-spread p{margin:0;color:#394a54;font-size:.92rem;line-height:1.54}
+.ts-brochure-rules{display:flex;flex-direction:column}
+.ts-brochure-rule{display:grid;grid-template-columns:27px minmax(0,1fr);align-items:start;gap:8px;margin:0 0 25px}
+.ts-brochure-rule .ts-brochure-num{font:700 1.45rem/1 Georgia,serif;color:#af8b4b}
+.ts-brochure-signature{margin-top:auto!important;color:#202b32!important;font-weight:800}
+.ts-brochure-contact .ts-brochure-intro{margin:0 0 23px}
+.ts-brochure-contact .ts-brochure-advisor{margin:10px 0 3px;font:800 1.18rem/1.3 system-ui,sans-serif}
+.ts-brochure-contact .ts-brochure-agent{margin:0 0 20px;color:#66757d;font-size:.77rem}
+.ts-brochure-detail{display:grid;gap:5px;margin:0 0 16px}
+.ts-brochure-detail b{font-size:.72rem;color:#a0773b}
+.ts-brochure-detail a{color:#1f3440!important;font-size:.91rem;line-height:1.3;text-decoration:none;overflow-wrap:anywhere;font-weight:650}
+.ts-brochure-detail a:hover{text-decoration:underline}
+.ts-brochure-contact .ts-brochure-endnote{position:absolute;bottom:27px;left:28px;right:28px;padding-top:14px;border-top:1px solid #cec5b6;color:#6b7377;font-size:.77rem}
+.ts-brochure-spread .ts-brochure-cover{background:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:33px 26px 0}
+.ts-brochure-cover h3{margin:22px 0 12px;font-size:clamp(1.65rem,2.6vw,2.15rem)}
+.ts-brochure-cover h4{font:700 clamp(1.1rem,2.1vw,1.6rem)/1.25 Georgia,serif;margin:0 0 15px}
+.ts-brochure-emblem{display:grid;place-items:center;align-self:center;margin:22px 0 25px;width:160px;height:160px;border:3px solid #ae884e;box-shadow:inset 0 0 0 4px #f1e8d9;border-radius:50%;font:700 3.4rem/1 Georgia,serif;color:#af2938;background:#f3e9d6}
+.ts-brochure-cover-bottom{margin:0 -26px;padding:26px;background:#202b32;min-height:95px;color:#fff}
+.ts-brochure-cover-bottom strong{display:block;color:#fff;font-size:1rem}
+.ts-brochure-cover-bottom p{color:#f5efe5;margin:7px 0 13px}
+.ts-brochure-cover-bottom small{color:#eacb9e;font-size:.72rem}
+.ts-brochure-back .ts-brochure-panel{padding-top:33px;border-top:3px solid transparent}
+.ts-brochure-back .ts-brochure-panel:before{position:absolute;content:"";top:18px;left:28px;background:#aa2334;width:39px;height:3px}
+.ts-brochure-back h3{font-size:clamp(1.35rem,2vw,1.75rem);margin-top:17px;margin-bottom:24px}
+.ts-brochure-back h4{margin-top:17px;font-size:.96rem}
+.ts-brochure-back ul{list-style:none;padding:0;margin:0}
+.ts-brochure-back li{position:relative;padding-left:16px;margin:0 0 12px;color:#23323d;font-size:.88rem;line-height:1.52}
+.ts-brochure-back li:before{content:"";position:absolute;top:.54em;left:1px;background:#b12837;width:6px;height:6px;border-radius:50%}
+.ts-brochure-back .ts-brochure-footnote{margin-top:24px;padding-top:10px;border-top:1px solid #b48e51;color:#5b6870;font-size:.81rem}
+.ts-brochure-caveat{font-size:.85rem;line-height:1.6;color:#425761;margin-top:15px}
+@media(max-width:980px){
+ .ts-brochure-spread{grid-template-columns:1fr;min-height:0;max-width:650px;margin:20px auto}
+ .ts-brochure-spread .ts-brochure-panel{padding:28px;min-height:0}
+ .ts-brochure-contact .ts-brochure-endnote{position:static;margin-top:28px}
+ .ts-brochure-rules .ts-brochure-signature{margin-top:16px!important}
+ .ts-brochure-spread .ts-brochure-cover{padding:30px 24px 0}
+ .ts-brochure-cover-bottom{margin:0 -24px}
+ .ts-brochure-emblem{width:120px;height:120px}
+}
+@media(max-width:520px){
+ .plan-page .ts-brochure{width:calc(100% - 20px)}
+ .ts-brochure-control{padding:17px}
+ .ts-brochure-actions{width:100%}
+ .ts-brochure-actions button,.ts-brochure-service-link{flex:1 1 145px}
+ .ts-brochure-spread .ts-brochure-panel{padding:22px}
+ .ts-brochure-spread h3{font-size:1.65rem}
+ .ts-brochure-contact .ts-brochure-endnote{padding-top:12px}
+}
+@media screen{
+ body.brochure-active .plan-hero,body.brochure-active [data-plan-root],body.brochure-active .plan-after{display:none!important}
+ body.brochure-active .ts-brochure{margin-top:26px}
+}
+@media print{
+ @page{size:A4 landscape;margin:0}
+ html,body,body.brochure-active{margin:0!important;padding:0!important;width:297mm!important;background:white!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+ body.brochure-active>header,body.brochure-active>footer,body.brochure-active>.partner-identity-bar,body.brochure-active>.skip-link,
+ body.brochure-active .plan-hero,body.brochure-active [data-plan-root],body.brochure-active .plan-after,
+ body.brochure-active .ts-brochure-control,body.brochure-active .ts-brochure-caveat,
+ body.brochure-active .chat-assistant,body.brochure-active [data-chat-launcher]{display:none!important}
+ body.brochure-active main,body.brochure-active .ts-brochure{display:block!important;max-width:none!important;width:297mm!important;margin:0!important;padding:0!important;overflow:visible!important}
+ body.brochure-active .ts-brochure-spread{width:297mm!important;height:210mm!important;min-height:0!important;display:grid!important;grid-template-columns:repeat(3,99mm)!important;break-after:page!important;page-break-after:always!important;box-shadow:none!important;border:0!important;margin:0!important;background:#f8f6f0!important}
+ body.brochure-active .ts-brochure-spread:last-of-type{break-after:auto!important;page-break-after:auto!important}
+ body.brochure-active .ts-brochure-panel{min-height:210mm!important;height:210mm!important;padding:11mm 10mm!important;background:#f8f6f0!important;box-shadow:none!important;overflow:hidden!important}
+ body.brochure-active .ts-brochure-panel:nth-child(2){background:#f0ede5!important}
+ body.brochure-active .ts-brochure-cover{background:#fff!important;padding:12mm 10mm 0!important}
+ body.brochure-active .ts-brochure-spread h3{font-size:17pt!important;line-height:1.2!important;margin:7mm 0 7mm!important}
+ body.brochure-active .ts-brochure-spread h4{font-size:10pt!important;line-height:1.3!important}
+ body.brochure-active .ts-brochure-spread p,body.brochure-active .ts-brochure-back li{font-size:8.5pt!important;line-height:1.42!important}
+ body.brochure-active .ts-brochure-rule{margin-bottom:8mm!important}
+ body.brochure-active .ts-brochure-num{font-size:15pt!important}
+ body.brochure-active .ts-brochure-overline{font-size:7.2pt!important}
+ body.brochure-active .ts-brochure-contact .ts-brochure-advisor{font-size:12pt!important;margin-top:5mm!important}
+ body.brochure-active .ts-brochure-detail{margin-bottom:5.6mm!important}
+ body.brochure-active .ts-brochure-detail a{font-size:8.7pt!important}
+ body.brochure-active .ts-brochure-contact .ts-brochure-endnote{position:absolute!important;bottom:10mm!important;left:10mm!important;right:10mm!important}
+ body.brochure-active .ts-brochure-emblem{width:34mm!important;height:34mm!important;font-size:27pt!important;margin:4mm auto!important}
+ body.brochure-active .ts-brochure-cover-bottom{position:absolute!important;bottom:0!important;left:0!important;right:0!important;margin:0!important;padding:9mm 10mm!important;min-height:30mm!important;background:#202b32!important}
+ body.brochure-active .ts-brochure-cover-bottom strong{font-size:10pt!important}
+ body.brochure-active .ts-brochure-cover-bottom p{font-size:8.2pt!important;color:#fff!important}
+ body.brochure-active .ts-brochure-back .ts-brochure-panel{padding-top:11mm!important}
+ body.brochure-active .ts-brochure-back .ts-brochure-panel:before{top:7mm!important;left:10mm!important}
+ body.brochure-active .ts-brochure-back h3{font-size:15pt!important}
+ body.brochure-active .ts-brochure-back h4{margin-top:5mm!important}
+ body.brochure-active .ts-brochure-back li{margin-bottom:3.5mm!important}
+ body.brochure-active .ts-brochure-back .ts-brochure-footnote{position:absolute!important;bottom:11mm!important;left:10mm!important;right:10mm!important;border-top:1px solid #b48e51!important}
+}

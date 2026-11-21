@@ -43,6 +43,10 @@ try{
    if(!await brochurePage.locator(".ts-brochure-print").isVisible())throw Error("Print control not visible: "+slug);
    const over=await brochurePage.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
    if(over>2)throw Error("Brochure mobile overflow "+over+"px for "+slug);
+   const qr=brochurePage.locator(".ts-brochure-qr-image");
+   if(await qr.count()!==1)throw Error("One offline QR per brochure required: "+slug);
+   const qrLoaded=await qr.evaluate(img=>img.complete&&img.naturalWidth>0);
+   if(!qrLoaded)throw Error("Brochure QR SVG is missing or unloadable: "+slug);
    await brochurePage.screenshot({path:"screenshots/broszura-"+slug+"-telefon.png",fullPage:true,animations:"disabled"});
    const pdf=await brochurePage.pdf({path:"screenshots/broszura-"+slug+"-A4.pdf",printBackground:true,preferCSSPageSize:true,format:"A4",landscape:true});
    const pageCount=(pdf.toString("latin1").match(/\/Type\s*\/Page\b/g)||[]).length;
@@ -667,7 +671,7 @@ try{
  const miningShortcut=flagshipPage.locator('[data-contact-shortcut="szkody"]');
  const supportShortcut=flagshipPage.locator('[data-contact-shortcut="swiadczenie"]');
  const skdShortcut=flagshipPage.locator('[data-contact-shortcut="skd"]');
- if(await flagshipPage.locator("[data-contact-shortcut]").count()!==6)throw Error("Homepage must expose four primary and two expanded contact shortcuts");
+ if(await flagshipPage.locator(".contact-service-shortcuts [data-contact-shortcut]").count()!==6)throw Error("Form selector must expose four primary and two expanded contact shortcuts");
  await miningShortcut.click();
  let flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
  if(flagshipSelection!=="Szkody górnicze")throw Error("Home mining shortcut failed to select service");

@@ -31,6 +31,11 @@ assert.equal(breakdown.leads,17);
 assert.equal(breakdown.qualified,9);
 assert.equal(breakdown.clients,4);
 assert.equal(breakdown.sources.length,2);
+assert.equal(breakdown.topics.length,2,"Service topics must be aggregated independently");
+assert.equal(breakdown.topics[0].service,"szkody");
+assert.equal(breakdown.topics[0].leads,13);
+assert.equal(breakdown.topics[1].service,"renty");
+assert.equal(breakdown.topics[1].clients,1);
 assert.equal(breakdown.campaigns.length,2);
 assert.equal([...breakdown.campaigns].map(x=>x.campaign).join("|"),"lokalna_pomoc|post_2","Campaign ranking sorts signed clients, then qualified and leads");
 // Two clips in the same campaign on the same day must not overwrite each other.
@@ -58,6 +63,8 @@ assert.equal(ranked.campaigns.reduce((sum,x)=>sum+x.leads,0),17);
 assert.equal(core.summarize([x,repeatedLabel],"szkody").campaigns.length,1,"Service filter must apply to campaign ranking");
 assert.equal(core.summarize(two.rows,"szkody").leads,13,"Service filter");
 assert.equal(core.summarize(two.rows,"swiadczenie").leads,0);
+assert.equal(core.summarize(two.rows,"szkody").topics.length,1,"Topic table obeys the service filter");
+assert.equal(core.summarize(two.rows,"swiadczenie").topics.length,0,"No invented topic totals");
 const exported=core.csv(two.rows);
 assert.ok(exported.startsWith("date,service,source,campaign,variant,leads,qualified,clients\n"));
 const imported=core.parseCsv("\uFEFF"+exported.replaceAll("\n","\r\n"));
@@ -81,6 +88,7 @@ assert.ok(!noNetwork.test(coreSrc+widgetSrc),"Aggregate report must not track, t
 assert.ok(markup.includes('name="robots" content="noindex,follow"'),"Internal marketing tool stays noindex");
 assert.ok(markup.includes('data-lead-summary')&&markup.includes('data-lead-report'),"Real UI must be included in current generator");
 assert.ok(markup.includes('data-campaign-breakdown'),"Campaign ranking must be visible");
+assert.ok(markup.includes('data-topic-breakdown')&&markup.includes('data-summary-brief')&&markup.includes('data-copy-brief'),"Topic ranking and executive text export must be available");
 assert.ok(markup.includes('name="variant"')&&markup.includes('data-lead-from-campaign'),"Variant field and manual UTM transfer must be present");
 assert.ok(markup.includes('src="/v2/lead-summary-core.js" defer')&&markup.includes('src="/v2/lead-summary.js" defer'));
 assert.ok(markup.includes('href="/v2/lead-summary.css"'));
@@ -89,7 +97,7 @@ for(const required of ['data-stat="leads"','data-stat="qualified"','data-stat="c
 assert.ok(css.includes(":focus-visible")&&css.includes("@media(max-width:650px)"),"Responsive readable keyboard controls");
 assert.ok(css.includes(".campaign-page .lead-summary>.eyebrow{color:#285967}"),"Eyebrow on light card must have readable contrast");
 assert.ok(css.includes("grid-template-columns:minmax(0,1fr)")&&css.includes(".lead-summary-tables>div{min-width:0}"),"Wide tables must scroll inside small mobile screens");
-assert.equal((markup.match(/class="lead-summary-scroll" tabindex="0" role="region" aria-label="/g)||[]).length,3,"All three horizontal scroll regions must be keyboard-focusable and labeled");
+assert.equal((markup.match(/class="lead-summary-scroll" tabindex="0" role="region" aria-label="/g)||[]).length,4,"All four horizontally scrolling tables must be keyboard-focusable and labeled");
 assert.ok(!markup.includes('data-analytics-lead')&&!/google-analytics|googletagmanager/.test(widgetSrc));
 
 // Browser-free DOM integration: no actual form sends, files, storage or analytics.
@@ -105,7 +113,7 @@ class Node{
 const selectors=[
  "[data-lead-entry]","[data-lead-report]","[data-summary-filter]","[data-lead-entries]",
  "[data-source-breakdown]","[data-csv-output]","[data-csv-input]","[data-csv-file]",
- "[data-lead-status]","[data-lead-empty]","[data-campaign-breakdown]","[data-copy-summary]",
+ "[data-lead-status]","[data-lead-empty]","[data-campaign-breakdown]","[data-topic-breakdown]","[data-summary-brief]","[data-copy-brief]","[data-copy-summary]",
  "[data-download-summary]","[data-import-summary]","[data-clear-summary]","[data-lead-from-campaign]",
  ...["leads","qualified","clients","quality-rate","client-rate"].map(x=>'[data-stat="'+x+'"]')
 ];
@@ -135,6 +143,9 @@ assert.equal(nodes['[data-stat="quality-rate"]'].textContent,"58,3%");
 assert.equal(nodes['[data-stat="client-rate"]'].textContent,"16,7%");
 assert.equal(nodes["[data-lead-entries]"].children.length,1);
 assert.equal(nodes["[data-source-breakdown]"].children.length,1);
+assert.equal(nodes["[data-topic-breakdown]"].children.length,1);
+assert.ok(nodes["[data-summary-brief]"].value.includes("Szkody górnicze"));
+assert.ok(nodes["[data-summary-brief]"].value.includes("mała próba")===false,"Twelve leads must not be labeled a small sample");
 assert.equal(nodes["[data-campaign-breakdown]"].children.length,1);
 inputs.leads.value="13";inputs.qualified.value="8";inputs.clients.value="3";
 nodes["[data-lead-entry]"].events.submit({preventDefault(){}});
@@ -152,10 +163,16 @@ assert.equal(nodes['[data-stat="leads"]'].textContent,existingLeads,
 assert.ok(nodes["[data-lead-status]"].textContent.includes("niczego nie naliczono"));
 await nodes["[data-copy-summary]"].events.click();
 assert.equal(written.at(-1),nodes["[data-csv-output]"].value);
+await nodes["[data-copy-brief]"].events.click();
+assert.equal(written.at(-1),nodes["[data-summary-brief]"].value);
+assert.ok(written.at(-1).includes("ręczna ewidencja"));
+assert.ok(!written.at(-1).includes("796 441 345")&&!written.at(-1).includes("500 171 531"),"Executive report must contain no customer details or adviser contact noise");
 nodes["[data-csv-input]"].value=core.csv([core.normalize(b)]);
 nodes["[data-import-summary]"].events.click();
 assert.equal(nodes['[data-stat="leads"]'].textContent,"4");
 assert.equal(nodes["[data-lead-entries]"].children.length,1);
+assert.equal(nodes["[data-topic-breakdown]"].children.length,1);
+assert.ok(nodes["[data-summary-brief]"].value.includes("mała próba"),"Four manual leads are an insufficient sample");
 nodes["[data-summary-filter]"].value="szkody";
 nodes["[data-summary-filter]"].events.change();
 assert.equal(nodes['[data-stat="leads"]'].textContent,"0");

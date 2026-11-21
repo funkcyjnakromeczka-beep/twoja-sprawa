@@ -16,7 +16,7 @@ for(const marker of [
 assert.ok(section.includes('href="/v2/uslugi/szkody-gornicze.html?etap=zabezpieczenia#formularz"'),"Article CTA must choose known stage");
 assert.ok(article.includes('"dateModified":"2026-11-21"'),"Article metadata should be updated on the content revision");
 assert.ok(!/gwarantujemy|100%|odszkodowanie należy się każdemu/i.test(section),"No guaranteed award or generic assertions");
-const localDiscovery=article.match(/<section id="lokalnie-pierwsze-objawy" aria-labelledby="local-injury-heading">([\\s\\S]*?)<\\/section>/)?.[1]||"";
+const localDiscovery=article.split('<section id="lokalnie-pierwsze-objawy" aria-labelledby="local-injury-heading">')[1]?.split("</section>")[0]||"";
 assert.ok(localDiscovery.includes('<h2 id="local-injury-heading">'),"Reviewed mining article needs clear local section");
 for(const slug of ["lubin","polkowice"]){
  const href='/v2/lokalnie/szkody-gornicze-'+slug+'.html';

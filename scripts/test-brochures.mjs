@@ -105,6 +105,15 @@ for(const [service,topic,advisor] of brochurePages){
  assert.ok(jpg.length>15_000&&jpg.length<400_000,"Social JPEG missing or wrong size: "+topic);
  const contact=nodes.find(n=>n.tagName==="A"&&n.className==="ts-brochure-contact-link");
  assert.ok(contact,"Brochure must link to a user-approved first-party contact form: "+topic);
+ const phone=nodes.find(n=>n.tagName==="A"&&n.className==="ts-brochure-phone-link");
+ assert.ok(phone,"Brochure must enable direct phone contact: "+topic);
+ const expectedPhone=advisor==="Paulina Chandrała"?"+48500171531":"+48796441345";
+ assert.equal(phone.href,"tel:"+expectedPhone,"Wrong adviser phone in brochure: "+topic);
+ assert.equal(phone.attributes["aria-label"],"Zadzwoń do "+advisor+" — "+(advisor==="Paulina Chandrała"?"500 171 531":"796 441 345"));
+ const actions=nodes.find(n=>n.className==="ts-brochure-actions");
+ assert.ok(actions,"Brochure action toolbar must exist: "+topic);
+ assert.equal(actions.children[0],contact,"Contact CTA must precede printing and social utilities: "+topic);
+ assert.equal(actions.children[1],phone,"Direct phone CTA must be second: "+topic);
  const contactURL=new URL(contact.href,"https://twoja-sprawa.pages.dev");
  const alias={ "szkody-gornicze":"szkody","swiadczenie-wspierajace":"swiadczenie",
   "renty-powypadkowe":"renty","skd":"skd","kredyty-frankowe":"franki",

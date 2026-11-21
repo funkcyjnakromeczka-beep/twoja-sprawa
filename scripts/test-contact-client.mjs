@@ -870,7 +870,9 @@ assert.ok(contactMarkup.includes('class="contact-shortcuts-actions contact-short
  assert.equal(mining.attributes["data-selected"],"false");
  assert.equal(support.attributes["data-selected"],"false");
  assert.equal(renty.attributes["data-selected"],"false");
- assert.equal(feedback.textContent,"","Other services should not show stale shortcut feedback");
+ assert.equal(franki.attributes["data-selected"],"true","The CHF service is now an explicit secondary shortcut");
+ assert.equal(przesyl.attributes["data-selected"],"false");
+ assert.ok(feedback.textContent.includes("Kredyty frankowe CHF"),"The selected CHF topic should be announced");
  makeKey(mining,"__proto__");
  mining.events.click({preventDefault(){throw Error("Unknown shortcut should not intercept navigation");}});
  assert.equal(service.value,"Kredyty frankowe CHF","Unexpected shortcut code must not change selection");

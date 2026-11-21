@@ -693,11 +693,12 @@ try{
  await quickNav.waitFor({state:"visible",timeout:15000});
  const mobileDestinations=await quickNav.locator("a").evaluateAll(links=>
   links.map(a=>new URL(a.href).pathname));
- assert.deepEqual(mobileDestinations,[
+ assert.deepEqual(mobileDestinations.slice(0,3),[
   "/kampanie/szkody-gornicze",
   "/kampanie/swiadczenie-wspierajace",
   "/kampanie/skd"
  ],"Mobile navigation must keep mining, support and SKD as first three priorities");
+ assert.ok(mobileDestinations.includes("/kampanie/renty-powypadkowe"),"Mobile navigation should also expose accident rents");
  const partnerLogos=page.locator(".network-brand-bar .network-brand-logos a");
  assert.equal(await partnerLogos.count(),2,
   "Both VOTUM partnership logos should be displayed in the shared header");

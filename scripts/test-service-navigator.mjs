@@ -67,7 +67,7 @@ assert.equal(link.pathname,"/v2/kampanie/swiadczenie-wspierajace");
 assert.equal(link.searchParams.get("etap"),"odwolanie");
 assert.equal(p.phone.href,"tel:+48500171531");
 assert.equal(new URL(p.plan.href,"https://twoja-sprawa.pages.dev").searchParams.get("etap"),"odwolanie");
-for(const [key,path] of [["renty","renty"],["przesyl","przesyl"]]){
+for(const [key,path] of [["przesyl","przesyl"]]){
  const choice=result.select(key);
  const u=new URL(choice.form.href,"https://twoja-sprawa.pages.dev");
  assert.equal(u.pathname,"/v2/kontakt");
@@ -75,11 +75,28 @@ for(const [key,path] of [["renty","renty"],["przesyl","przesyl"]]){
  assert.equal(u.searchParams.get("lead_path"),"navigator");
  assert.equal(u.searchParams.get("etap"),null);
 }
+const rents=result.select("renty");
+assert.ok(rents.stage("podwyzszenie"),"Rent stage selection missing");
+rents.stage("podwyzszenie").events.click();
+const rentsForm=new URL(rents.form.href,"https://twoja-sprawa.pages.dev");
+assert.equal(rentsForm.pathname,"/v2/kampanie/renty-powypadkowe");
+assert.equal(rentsForm.searchParams.get("etap"),"podwyzszenie");
+assert.equal(rentsForm.searchParams.get("lead_path"),"navigator");
+assert.equal(rents.phone.href,"tel:+48500171531");
+assert.equal(new URL(rents.plan.href,"https://twoja-sprawa.pages.dev").searchParams.get("etap"),"podwyzszenie");
 const skd=result.select("skd");
 const skdUrl=new URL(skd.form.href,"https://twoja-sprawa.pages.dev");
 assert.equal(skdUrl.pathname,"/v2/kampanie/skd","SKD must lead directly to the agreement submission campaign");
 assert.equal(skdUrl.searchParams.get("usluga"),null,"Dedicated SKD campaign preselects the service");
 assert.equal(skdUrl.searchParams.get("lead_path"),"navigator");
+assert.ok(skd.stage("splacony"),"SKD stage selection missing");
+skd.stage("splacony").events.click();
+const skdStageUrl=new URL(skd.form.href,"https://twoja-sprawa.pages.dev");
+assert.equal(skdStageUrl.searchParams.get("etap"),"splacony");
+assert.equal(skd.stage("splacony").attrs["aria-pressed"],"true");
+assert.equal(new URL(skd.plan.href,"https://twoja-sprawa.pages.dev").searchParams.get("etap"),"splacony");
+const brochure=run("?utm_source=broszura&utm_medium=material&utm_campaign=broszura_renty");
+assert.equal(new URL(brochure.select("renty").form.href,"https://twoja-sprawa.pages.dev").searchParams.get("utm_source"),"broszura");
 const invalid=run("?utm_source=malware&utm_campaign=bad%20campaign&utm_medium=%3Cscript%3E");
 const safe=invalid.select("szkody");
 const url=new URL(safe.form.href,"https://twoja-sprawa.pages.dev");
@@ -87,4 +104,4 @@ assert.equal(url.searchParams.get("utm_source"),"strona");
 assert.equal(url.searchParams.get("utm_medium"),"wybor_na_stronie");
 assert.equal(url.searchParams.get("utm_campaign"),"wybor_uslugi");
 assert.equal(url.searchParams.get("utm_content"),null);
-console.log("OK: 5 usług, 2 etapy szczegółowe, właściwe telefony, bezpieczne UTM i bez danych osobowych w linkach.");
+console.log("OK: etapy szkód, świadczeń, rent i SKD; poprawne telefony, źródło broszura oraz bezpieczne UTM.");

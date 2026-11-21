@@ -20,6 +20,36 @@ try{
  await wait();
  await mkdir("screenshots",{recursive:true});
  browser=await chromium.launch({headless:true,args:["--no-sandbox"]});
+ // Six real brochure renders: verify browser-generated pages, print layout, adviser and mobile overflow.
+ const brochureCases=[
+  ["szkody-gornicze","Wojciech Obiegło"],
+  ["swiadczenie-wspierajace","Paulina Chandrała"],
+  ["renty-powypadkowe","Paulina Chandrała"],
+  ["skd","Wojciech Obiegło"],
+  ["kredyty-frankowe","Wojciech Obiegło"],
+  ["sluzebnosc-przesylu","Wojciech Obiegło"]
+ ];
+ for(const [slug,advisor] of brochureCases){
+  const brochurePage=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+  try{
+   const route=origin+"/plan-dzialania.html?broszura="+slug+"#broszura";
+   const res=await brochurePage.goto(route,{waitUntil:"load",timeout:30000});
+   if(!res?.ok())throw Error("Brochure route failed: "+slug);
+   await brochurePage.locator("body.ts-brochure-ready").waitFor({state:"attached",timeout:10000});
+   const panels=brochurePage.locator(".ts-brochure-panel");
+   if(await panels.count()!==6)throw Error("Brochure should have two three-panel spreads: "+slug);
+   if(await brochurePage.locator(".ts-brochure-rule").count()!==4)throw Error("Brochure requires four short rules: "+slug);
+   if(!await brochurePage.locator(".ts-brochure-advisor").innerText().then(x=>x.includes(advisor)))throw Error("Brochure wrong adviser: "+slug);
+   if(!await brochurePage.locator(".ts-brochure-print").isVisible())throw Error("Print control not visible: "+slug);
+   const over=await brochurePage.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
+   if(over>2)throw Error("Brochure mobile overflow "+over+"px for "+slug);
+   await brochurePage.screenshot({path:"screenshots/broszura-"+slug+"-telefon.png",fullPage:true,animations:"disabled"});
+   const pdf=await brochurePage.pdf({path:"screenshots/broszura-"+slug+"-A4.pdf",printBackground:true,preferCSSPageSize:true,format:"A4",landscape:true});
+   const pageCount=(pdf.toString("latin1").match(/\/Type\s*\/Page\b/g)||[]).length;
+   if(pageCount!==2)throw Error("Brochure A4 should print as 2 landscape pages, got "+pageCount+" for "+slug);
+   console.log("BROCHURE_PRINT_OK "+JSON.stringify({slug,advisor,pages:pageCount,printBytes:pdf.length,mobileOverflow:over}));
+  }finally{await brochurePage.close();}
+ }
  const pages=[
   ["telefon-360","/",360,800],
   ["telefon-390","/",390,844],

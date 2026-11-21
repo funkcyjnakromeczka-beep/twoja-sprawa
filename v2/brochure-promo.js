@@ -5,10 +5,11 @@
  const root=document.querySelector("[data-brochure-promo]");
  if(!root)return;
  const chooser=root.querySelector("[data-brochure-promo-service]");
+ const channel=root.querySelector("[data-brochure-promo-channel]");
  const draft=root.querySelector("[data-brochure-promo-draft]");
  const copy=root.querySelector("[data-brochure-promo-copy]");
  const feedback=root.querySelector("[data-brochure-promo-status]");
- if(!chooser||!draft||!copy||!feedback)return;
+ if(!chooser||!channel||!draft||!copy||!feedback)return;
  const DATA=Object.freeze({
   "szkody-gornicze":{
    text:"Pęknięcia ścian, rysy elewacji albo nierówna kostka w Lubinie lub Polkowicach?\n\nPrzygotowaliśmy bezpłatną broszurę: jakie zdjęcia, dokumenty i pisma zachować przed rozmową o możliwej szkodzie górniczej. Sama rysa nie przesądza o przyczynie uszkodzenia.",
@@ -39,12 +40,23 @@
   const key=chooser.value;
   const item=Object.prototype.hasOwnProperty.call(DATA,key)?DATA[key]:null;
   if(!item){draft.value="";copy.disabled=true;feedback.textContent="Wybierz temat broszury.";return;}
-  const link="https://twoja-sprawa.pages.dev/plan-dzialania?broszura="+encodeURIComponent(key)+"#broszura";
-  draft.value=item.text+"\n\nBroszura do wydruku: "+link+"\n\nKontakt: "+item.phone+"\ntwoja-sprawa.pages.dev\n"+item.tags;
+  // Only an approved platform category and a fixed brochure slug.
+  // No personal identifiers, cookies or per-visitor tracking are generated.
+  const allowedChannels=new Set(["facebook","instagram","tiktok","inne"]);
+  const source=allowedChannels.has(channel.value)?channel.value:"inne";
+  const url=new URL("https://twoja-sprawa.pages.dev/plan-dzialania");
+  url.searchParams.set("broszura",key);
+  url.searchParams.set("utm_source",source);
+  url.searchParams.set("utm_medium","social");
+  url.searchParams.set("utm_campaign","broszura_"+key.replaceAll("-","_"));
+  url.searchParams.set("utm_content","post_organic");
+  url.hash="broszura";
+  draft.value=item.text+"\n\nBroszura do wydruku: "+url.href+"\n\nKontakt: "+item.phone+"\ntwoja-sprawa.pages.dev\n"+item.tags;
   copy.disabled=false;
   feedback.textContent="";
  };
  chooser.addEventListener("change",render);
+ channel.addEventListener("change",render);
  copy.addEventListener("click",async()=>{
   const content=draft.value;
   if(!content){feedback.textContent="Najpierw wybierz temat.";return;}

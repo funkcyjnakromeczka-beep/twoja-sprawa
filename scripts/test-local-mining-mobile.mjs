@@ -63,6 +63,38 @@ for(const citySlug of ["lubin","polkowice"]){
 assert.ok(css.includes(".local-settlement-actions a:focus-visible")&&css.includes("@media(max-width:800px)"),
  "Agreement guidance must work at 320px and with keyboard focus");
 
+// Contextual information from KGHM is checked against an explicit, reviewed source.
+// Both city pages must keep official information separate from marketing contact.
+const officialSource="https://kghm.com/pl/zrownowazony-rozwoj/ekologia-i-srodowisko/ochrona-obiektow-na-terenach-gorniczych";
+for(const [slug,city,topic] of [
+ ["lubin","Lubin","pęknięcia ścian"],
+ ["polkowice","Polkowice","kostka"]
+]){
+ const html=await readFile("dist/lokalnie/szkody-gornicze-"+slug+".html","utf8");
+ const region=html.match(/<section class="local-source-guide local-container"[\\s\\S]*?<\\/section>/)?.[0]||"";
+ assert.equal((html.match(/class="local-source-guide local-container"/g)||[]).length,1,
+  "One curated KGHM procedure section per city: "+city);
+ assert.ok(region.includes('aria-labelledby="local-source-title"')&&region.includes('id="local-source-title"'),
+  "Source heading must be accessible: "+city);
+ assert.ok(region.includes(city)&&region.includes(topic),
+  "Source must be genuinely specific to this city and type of damage: "+city);
+ assert.ok(region.includes('href="'+officialSource+'"')&&region.includes('rel="noopener noreferrer"'),
+  "Official KGHM source must be directly visitable: "+city);
+ assert.ok(region.includes('href="/plan-dzialania?broszura=szkody-gornicze#broszura"'),
+  "Canonical printable A4 brochure missing: "+city);
+ assert.ok(region.includes('href="#formularz"'),"KGHM context must connect to local contact: "+city);
+ assert.ok(region.includes("PESEL")&&region.includes("protok"),"Privacy or protocol caution missing: "+city);
+ assert.ok(html.indexOf(region)>html.indexOf('class="local-prep-tool"')&&
+  html.indexOf(region)<html.indexOf('class="local-settlement-guide')&&
+  html.indexOf(region)<html.indexOf('id="formularz"'),
+  "Official source must appear after basic steps and before agreement/contact: "+city);
+ assert.ok(!/<form\\b|data-contact-form|<script\\b|onclick=|onload=/.test(region),
+  "Source and brochure section cannot process client data: "+city);
+}
+assert.ok(css.includes(".local-source-guide")&&css.includes(".local-source-guide a:focus-visible")&&
+ css.includes("@media(max-width:800px)"),"New official-source cards require responsive keyboard styles");
+console.log("LOCAL_MINING_KGHM_SOURCE_OK: two city-specific procedural guides, source links and printable A4 pathways.");
+
 console.log("LOCAL_MINING_MOBILE_OK: Lubin and Polkowice have two static 44px+ contact actions.");
 
 const printTool=await readFile("v2/poradniki/checklista-szkody-gorniczej.html","utf8");

@@ -136,6 +136,7 @@ const structured = (route,canonical,title,markup) => {
   const organization={
     "@type":"Organization","@id":origin+"/#successtree",name:"SuccessTree OBIEGŁO WOJCIECH",
     alternateName:"SuccessTree",
+    taxID:"6922462522",
     description:"Odrębna działalność przedstawicielska prowadząca serwis Twoja Sprawa we współpracy agencyjnej z podmiotami Grupy VOTUM. Pierwszy kontakt w sprawach szkód górniczych w Lubinie i Polkowicach, świadczenia wspierającego, sankcji kredytu darmowego (SKD) i rent powypadkowych. Serwis nie jest oficjalną witryną VOTUM.",
     url:origin+"/",email:"wojciech.obieglo@votum-ds.pl",telephone:"+48 796 441 345",
     founder:{"@id":owner["@id"]},

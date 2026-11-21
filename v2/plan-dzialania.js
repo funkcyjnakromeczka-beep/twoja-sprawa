@@ -109,7 +109,7 @@ const DATA={
   links:"/v2/uslugi/sluzebnosc-przesylu.html"
  }
 };
-const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne","broszura"]);
 const incoming=new URLSearchParams(window.location.search);
  const inferredAIReferrer=(()=>{
   try {

@@ -29,6 +29,23 @@ for(const [page,brochure] of [
 }
 
 
+const campaignBrochures=[
+ ["szkody-gornicze","szkody-gornicze"],
+ ["swiadczenie-wspierajace","swiadczenie-wspierajace"],
+ ["renty-powypadkowe","renty-powypadkowe"],
+ ["skd","skd"]
+];
+for(const [page,topic] of campaignBrochures){
+ const campaign=await readFile("v2/kampanie/"+page+".html","utf8");
+ const href='/v2/plan-dzialania.html?broszura='+topic+'#broszura';
+ assert.equal(campaign.split('href="'+href+'"').length-1,1,
+  "Every campaign must expose exactly one matching graphic brochure: "+page);
+ assert.ok(campaign.includes("graficzną broszurę A4"),"Descriptive brochure link missing: "+page);
+ assert.ok(campaign.includes('data-contact-form'),"Campaign must retain its own contact form: "+page);
+ assert.ok(!campaign.includes('href="/v2/plan-dzialania.html?broszura=nieznana'),"Unknown brochure URL: "+page);
+}
+console.log("CAMPAIGN_BROCHURES_OK: four campaigns provide one free, matching brochure each.");
+
 const brochurePages=[
  ["szkody-gornicze","szkody-gornicze","Wojciech Obiegło"],
  ["swiadczenie-wspierajace","swiadczenie-wspierajace","Paulina Chandrała"],

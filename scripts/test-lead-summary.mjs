@@ -33,6 +33,24 @@ assert.equal(breakdown.clients,4);
 assert.equal(breakdown.sources.length,2);
 assert.equal(breakdown.campaigns.length,2);
 assert.equal([...breakdown.campaigns].map(x=>x.campaign).join("|"),"lokalna_pomoc|post_2","Campaign ranking sorts signed clients, then qualified and leads");
+// Two clips in the same campaign on the same day must not overwrite each other.
+const firstClip={...a,variant:"rolka_1",leads:"3",qualified:"2",clients:"1"};
+const secondClip={...a,variant:"rolka_2",leads:"5",qualified:"3",clients:"0"};
+const twoClips=core.upsert(core.upsert([],firstClip).rows,secondClip);
+assert.equal(twoClips.replaced,false);
+assert.equal(twoClips.rows.length,2,"Different utm_content values must preserve independent rows");
+assert.equal(core.summarize(twoClips.rows,"szkody").campaigns.length,2,"Dashboard must compare variants");
+assert.equal(core.summarize(twoClips.rows,"szkody").leads,8);
+const changedClip=core.upsert(twoClips.rows,{...firstClip,leads:"4",qualified:"2",clients:"1"});
+assert.equal(changedClip.replaced,true,"Exact same day/service/source/campaign/variant updates rather than duplicates");
+assert.equal(changedClip.rows.length,2);
+const clipsCsv=core.csv(changedClip.rows);
+assert.equal(core.csv(core.parseCsv(clipsCsv)),clipsCsv,"Variant CSV round trip must preserve all clips");
+const legacy="date,service,source,campaign,leads,qualified,clients\\n2026-11-19,szkody,facebook,lokalna_pomoc,7,3,1\\n";
+const oldRows=core.parseCsv(legacy);
+assert.equal(oldRows.length,1,"Old seven-column exports must remain importable");
+assert.equal(oldRows[0].variant,"bez_wariantu","Legacy imports remain explicitly unattributed to a variant");
+assert.throws(()=>core.normalize({...a,variant:"=HYPERLINK(1)"}),/Wariant/,"Reject spreadsheet formula injection");
 const repeatedLabel=core.normalize({...a,service:"renty",source:"facebook",leads:"5",qualified:"3",clients:"1"});
 const ranked=core.summarize([x,repeatedLabel],"wszystkie");
 assert.equal(ranked.campaigns.length,2,"Identical campaign names across services must not merge");
@@ -41,7 +59,7 @@ assert.equal(core.summarize([x,repeatedLabel],"szkody").campaigns.length,1,"Serv
 assert.equal(core.summarize(two.rows,"szkody").leads,13,"Service filter");
 assert.equal(core.summarize(two.rows,"swiadczenie").leads,0);
 const exported=core.csv(two.rows);
-assert.ok(exported.startsWith("date,service,source,campaign,leads,qualified,clients\n"));
+assert.ok(exported.startsWith("date,service,source,campaign,variant,leads,qualified,clients\n"));
 const imported=core.parseCsv("\uFEFF"+exported.replaceAll("\n","\r\n"));
 assert.equal(core.csv(imported),exported,"Exact round-trip without data loss");
 assert.throws(()=>core.normalize({...a,leads:2,qualified:3}),/Umowy|kwalifikowane/);
@@ -56,13 +74,14 @@ assert.throws(()=>core.normalize({...a,source:"sklep-fake"}),/źródeł/);
 assert.throws(()=>core.parseCsv("name,phone\nJan,500000000"),/nagłówek/);
 assert.throws(()=>core.parseCsv(exported+"2026-11-19,szkody,facebook,=BAD,5,2,1\n"),/Wiersz/);
 assert.throws(()=>core.parseCsv(exported+"2026-11-19,szkody,facebook\n"),/kolumn/);
-const many=Array.from({length:301},(_,i)=>[ "2026-11-19","szkody","facebook","week_"+i,"1","0","0"].join(","));
+const many=Array.from({length:301},(_,i)=>[ "2026-11-19","szkody","facebook","week_"+i,"wideo_1","1","0","0"].join(","));
 assert.throws(()=>core.parseCsv(core.header+"\n"+many.join("\n")),/300/);
 const noNetwork=/\b(fetch|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|document\.cookie)\b/;
 assert.ok(!noNetwork.test(coreSrc+widgetSrc),"Aggregate report must not track, transmit or persist user data");
 assert.ok(markup.includes('name="robots" content="noindex,follow"'),"Internal marketing tool stays noindex");
 assert.ok(markup.includes('data-lead-summary')&&markup.includes('data-lead-report'),"Real UI must be included in current generator");
 assert.ok(markup.includes('data-campaign-breakdown'),"Campaign ranking must be visible");
+assert.ok(markup.includes('name="variant"')&&markup.includes('data-lead-from-campaign'),"Variant field and manual UTM transfer must be present");
 assert.ok(markup.includes('src="/v2/lead-summary-core.js" defer')&&markup.includes('src="/v2/lead-summary.js" defer'));
 assert.ok(markup.includes('href="/v2/lead-summary.css"'));
 for(const required of ['data-stat="leads"','data-stat="qualified"','data-stat="clients"','data-stat="quality-rate"','data-stat="client-rate"','data-csv-file','data-download-summary','data-import-summary'])
@@ -87,21 +106,23 @@ const selectors=[
  "[data-lead-entry]","[data-lead-report]","[data-summary-filter]","[data-lead-entries]",
  "[data-source-breakdown]","[data-csv-output]","[data-csv-input]","[data-csv-file]",
  "[data-lead-status]","[data-lead-empty]","[data-campaign-breakdown]","[data-copy-summary]",
- "[data-download-summary]","[data-import-summary]","[data-clear-summary]",
+ "[data-download-summary]","[data-import-summary]","[data-clear-summary]","[data-lead-from-campaign]",
  ...["leads","qualified","clients","quality-rate","client-rate"].map(x=>'[data-stat="'+x+'"]')
 ];
 const nodes=Object.fromEntries(selectors.map(s=>[s,new Node()]));
 const inputs={date:new Node("input"),service:new Node("select"),source:new Node("select"),
- campaign:new Node("input"),leads:new Node("input"),qualified:new Node("input"),clients:new Node("input")};
+ campaign:new Node("input"),variant:new Node("input"),leads:new Node("input"),qualified:new Node("input"),clients:new Node("input")};
 nodes["[data-lead-entry]"].elements={namedItem:key=>inputs[key]};
 nodes["[data-summary-filter]"].value="wszystkie";
 const host={querySelector:sel=>nodes[sel]||null};
+const campaignUrl={value:"https://twoja-sprawa.pages.dev/kampanie/renty-powypadkowe?utm_source=tiktok&utm_medium=social&utm_campaign=tiktok_renty&utm_content=wideo_1"};
+const builder={querySelector:sel=>sel==='[name=service]'?{value:"renty"}:null};
 const doc={
- querySelector:sel=>sel==="[data-lead-summary]"?host:null,
+ querySelector:sel=>sel==="[data-lead-summary]"?host:sel==="[data-campaign-url]"?campaignUrl:sel==="[data-campaign-builder]"?builder:null,
  createElement:tag=>new Node(tag),
  body:{append:()=>{}}
 };
-const win={TwojaSprawaLeadSummary:core,confirm:()=>true,setTimeout:fn=>fn()};
+const win={TwojaSprawaLeadSummary:core,location:{origin:"https://twoja-sprawa.pages.dev"},confirm:()=>true,setTimeout:fn=>fn()};
 const written=[];
 runInNewContext(widgetSrc,{document:doc,window:win,navigator:{clipboard:{writeText:async x=>{written.push(x);}}},
  Blob,URL,console});
@@ -119,6 +140,16 @@ inputs.leads.value="13";inputs.qualified.value="8";inputs.clients.value="3";
 nodes["[data-lead-entry]"].events.submit({preventDefault(){}});
 assert.equal(nodes["[data-lead-entries]"].children.length,1,"Duplicate should update existing row");
 assert.equal(nodes['[data-stat="leads"]'].textContent,"13");
+const existingLeads=nodes['[data-stat="leads"]'].textContent;
+nodes["[data-lead-from-campaign]"].events.click();
+assert.equal(inputs.service.value,"renty");
+assert.equal(inputs.source.value,"tiktok");
+assert.equal(inputs.campaign.value,"tiktok_renty");
+assert.equal(inputs.variant.value,"wideo_1");
+assert.equal(nodes['[data-stat="leads"]'].textContent,existingLeads,
+ "Pulling categorical UTM from generator must not count any lead");
+assert.ok(nodes["[data-lead-status]"].textContent.includes("niczego nie naliczono"));
+
 assert.ok(nodes["[data-lead-status]"].textContent.includes("Zaktualizowano"));
 await nodes["[data-copy-summary]"].events.click();
 assert.equal(written.at(-1),nodes["[data-csv-output]"].value);

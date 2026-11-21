@@ -63,7 +63,7 @@ assert.deepEqual(ownerContact.hoursAvailable?.dayOfWeek,[
 ],"Structured business hours must match visible Monday-Saturday schedule");
 
 // Strona główna kieruje na kluczowy lokalny obszar pomocy, bez keyword stuffingu.
-const homeTitle="Szkody górnicze Lubin i Polkowice | Twoja Sprawa";
+const homeTitle="Szkody górnicze Lubin | świadczenie wspierające | Twoja Sprawa";
 const homeDescription="Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające w całej Polsce, SKD i renty. Sprawdź, jak zgłosić sprawę do SuccessTree.";
 assert.ok(html.includes("<title>"+homeTitle+"</title>"),"Homepage SEO title must target local mining");
 assert.ok(html.includes('<meta name="description" content="'+homeDescription+'">'),"Missing concise high-intent homepage description");

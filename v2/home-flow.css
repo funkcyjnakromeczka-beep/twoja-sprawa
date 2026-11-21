@@ -440,6 +440,13 @@
 .hero-reading-shortcuts>span{width:100%}
 .hero-reading-shortcuts a{padding:10px 4px;color:#ffe5ac!important}
 .hero-reading-shortcuts a:focus-visible{outline:3px solid}
+/* Two source-backed, indexable mining routes remain visible on the indexed homepage, no JS. */
+.premium-v2 .hero-local-shortcuts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:12px}
+.premium-v2 .hero-local-shortcuts span{color:#d8e6e8;font-size:.82rem;font-weight:750}
+.premium-v2 .hero-local-shortcuts a{display:inline-flex;align-items:center;min-height:44px;padding:8px 11px;border:1px solid rgba(245,214,155,.65);border-radius:9px;color:#ffe5ac;font-size:.84rem;font-weight:750;text-decoration:underline;text-underline-offset:3px;line-height:1.4}
+.premium-v2 .hero-local-shortcuts a:hover{background:rgba(245,214,155,.14)}
+.premium-v2 .hero-local-shortcuts a:focus-visible{outline:3px solid #ffe3a9;outline-offset:3px}
+@media(max-width:650px){.premium-v2 .hero-local-shortcuts span{width:100%}.premium-v2 .hero-local-shortcuts a{flex:1 1 100%;justify-content:center;text-align:center}}
 
 
 .premium-v2 .local-mining-log-cta{margin:17px 0 0!important;line-height:1.65}

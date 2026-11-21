@@ -11,7 +11,7 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/index.html",
     "href": "/v2/",
-    "title": "Twoja Sprawa — szkody górnicze i świadczenie wspierające",
+    "title": "Szkody górnicze i świadczenie wspierające | Twoja Sprawa",
     "description": "Szkody górnicze w Lubinie i Polkowicach, świadczenie wspierające w całej Polsce, SKD i renty. Sprawdź, jak zgłosić sprawę do SuccessTree.",
     "category": "inne",
     "keywords": "Szkody górnicze? Świadczenie wspierające? v2 index html Twoja Sprawa — strona główna"

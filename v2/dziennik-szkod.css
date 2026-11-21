@@ -1,0 +1,37 @@
+/* Twoja Sprawa — dziennik obserwacji szkód; pola tylko w przeglądarce użytkownika. */
+.mining-log{margin:36px 0;padding:clamp(20px,4vw,34px);border:1px solid #c8b18a;border-radius:20px;background:linear-gradient(145deg,#fffdf8,#f5f2ec);color:#173649}
+.mining-log .eyebrow{color:#805d31}
+.mining-log h2{margin:8px 0 12px;line-height:1.2;color:#173649}
+.mining-log>p{line-height:1.7;max-width:80ch}
+.mining-log-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}
+.mining-log label{display:flex;flex-direction:column;gap:8px;font-size:.95rem;font-weight:700;line-height:1.45;color:#173649}
+.mining-log input,.mining-log textarea{box-sizing:border-box;display:block;width:100%;min-width:0;border:1px solid #9daeb6;border-radius:10px;padding:12px;background:#fff;color:#182d38;font:inherit;font-weight:400;line-height:1.5}
+.mining-log input:focus-visible,.mining-log textarea:focus-visible{outline:3px solid #d5ab64;outline-offset:2px}
+.mining-log textarea{resize:vertical;min-height:94px}
+.mining-log-table-wrap{overflow-x:auto;margin:20px 0}
+.mining-log table{border-collapse:collapse;width:100%;min-width:590px;background:#fff;table-layout:fixed}
+.mining-log caption{text-align:left;font-weight:750;line-height:1.55;padding-bottom:11px;color:#173649}
+.mining-log th,.mining-log td{border:1px solid #b9c5cb;padding:9px;text-align:left;vertical-align:top}
+.mining-log th{background:#e7ecee;color:#153446;font-size:.9rem}
+.mining-log th:nth-child(1){width:18%}
+.mining-log th:nth-child(2){width:25%}
+.mining-log th:nth-child(3){width:40%}
+.mining-log th:nth-child(4){width:17%}
+.mining-log td input{width:100%;border:1px solid #cdd7dd;border-radius:6px;padding:8px 6px;font-size:.9rem}
+.mining-log-hint{padding:14px 16px;border-left:4px solid #ab8a56;background:#fff;line-height:1.6;font-size:.93rem}
+.mining-log-back{display:inline-block;margin-top:16px;color:#173649;font-weight:700;text-underline-offset:3px}
+@media(max-width:620px){.mining-log-fields{grid-template-columns:1fr}.mining-log{border-radius:14px}.mining-log-table-wrap{margin-inline:-5px}}
+@media print{
+ @page{size:A4;margin:14mm}
+ .mining-log{background:#fff;color:#111;border:1px solid #777;border-radius:0;padding:14px 0;margin:20px 0;break-before:page}
+ .mining-log h2,.mining-log label,.mining-log caption,.mining-log th{color:#111}
+ .mining-log-fields{grid-template-columns:1fr 1fr;gap:10px}
+ .mining-log-table-wrap{overflow:visible}
+ .mining-log table{min-width:0;font-size:10pt}
+ .mining-log th,.mining-log td{border-color:#777;padding:6px}
+ .mining-log th{background:#eee!important}
+ .mining-log input,.mining-log textarea,.mining-log td input{border:0;border-bottom:1px solid #888;border-radius:0;padding:5px 2px;box-shadow:none;color:#111;background:#fff}
+ .mining-log td{height:36px}
+ .mining-log .mining-log-hint{border-left:2px solid #777;background:#fff}
+ .mining-log-back{display:none!important}
+}

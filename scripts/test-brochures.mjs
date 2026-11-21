@@ -142,5 +142,25 @@ for(const [service,topic,advisor] of brochurePages){
  const qrSvg=await readFile("v2/assets/qr-broszura-"+topic+".svg","utf8");
  assert.ok(qrSvg.startsWith("<svg ")&&qrSvg.includes("<path ")&&!qrSvg.includes("<script"),"QR asset must be a self-contained static SVG");
  assert.ok(!nodes.some(n=>n.tagName==="INPUT"||n.tagName==="TEXTAREA"),"Brochure must not collect client input: "+topic);
+ // Every organic social channel is preserved until the service-selected lead
+ // form; the brochure does not generate or transmit any personal identifier.
+ for(const trafficSource of ["facebook","instagram","tiktok","inne"]){
+  const {document:trackedDocument,root:trackedRoot}=fake();
+  const trackedParams=new URLSearchParams({broszura:topic,utm_source:trafficSource,
+   utm_medium:"social",utm_campaign:"broszura_"+topic.replaceAll("-","_"),utm_content:"post_organic"});
+  runInNewContext(brochureJs,{
+   document:trackedDocument,location:{search:"?"+trackedParams.toString()},
+   URL,URLSearchParams,window:{print(){}},navigator:{},Object,String
+  });
+  const trackedContact=allNodes(trackedRoot).find(n=>n.className==="ts-brochure-contact-link");
+  const nextURL=new URL(trackedContact.href,"https://twoja-sprawa.pages.dev");
+  assert.equal(nextURL.searchParams.get("usluga"),alias,"Incorrect service with incoming social source");
+  assert.equal(nextURL.searchParams.get("utm_source"),trafficSource,"Brochure lost social channel: "+topic);
+  assert.equal(nextURL.searchParams.get("utm_medium"),"material","Brochure contact must identify last referral step");
+  assert.equal(nextURL.searchParams.get("utm_campaign"),"broszura_"+topic.replaceAll("-","_"));
+  assert.equal(nextURL.searchParams.get("utm_content"),"broszura_klient");
+  for(const secret of ["name","email","phone","pesel","fbclid","gclid"])
+   assert.equal(nextURL.searchParams.has(secret),false,"No visitor identifiers passed to form");
+ }
 }
-console.log("BROCHURES_6_OK: six brochure flows, private runtime, six adviser routes, 2x3 A4 print layouts.");
+console.log("BROCHURES_6_OK: 6 brochure flows, 24 social-to-form routes, correct adviser calling, 2x3 A4 printing and safe metadata.");

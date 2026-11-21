@@ -71,7 +71,9 @@ for(const [slug,city,topic] of [
  ["polkowice","Polkowice","kostka"]
 ]){
  const html=await readFile("dist/lokalnie/szkody-gornicze-"+slug+".html","utf8");
- const region=html.match(/<section class="local-source-guide local-container"[\\s\\S]*?<\\/section>/)?.[0]||"";
+ const start=html.indexOf('<section class="local-source-guide local-container"');
+ const end=html.indexOf("</section>",start);
+ const region=start>=0&&end>start?html.slice(start,end+10):"";
  assert.equal((html.match(/class="local-source-guide local-container"/g)||[]).length,1,
   "One curated KGHM procedure section per city: "+city);
  assert.ok(region.includes('aria-labelledby="local-source-title"')&&region.includes('id="local-source-title"'),
@@ -88,7 +90,8 @@ for(const [slug,city,topic] of [
   html.indexOf(region)<html.indexOf('class="local-settlement-guide')&&
   html.indexOf(region)<html.indexOf('id="formularz"'),
   "Official source must appear after basic steps and before agreement/contact: "+city);
- assert.ok(!/<form\\b|data-contact-form|<script\\b|onclick=|onload=/.test(region),
+ assert.ok(!region.includes("<form")&&!region.includes("data-contact-form")&&!region.includes("<script")&&
+  !region.includes("onclick=")&&!region.includes("onload="),
   "Source and brochure section cannot process client data: "+city);
 }
 assert.ok(css.includes(".local-source-guide")&&css.includes(".local-source-guide a:focus-visible")&&

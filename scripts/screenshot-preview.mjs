@@ -715,7 +715,7 @@ try{
  await compactPage.goto(origin+"/?utm_source=facebook",{waitUntil:"domcontentloaded"});
  const mobileHomeBar=compactPage.locator(".mobile-contact-bar");
  await mobileHomeBar.waitFor({state:"visible",timeout:5000});
- await compactPage.locator('[data-contact-shortcut="swiadczenie"]').click();
+ await compactPage.locator('.contact-service-shortcuts [data-contact-shortcut="swiadczenie"]').click();
  await compactPage.locator("#kontakt").scrollIntoViewIfNeeded();
  await mobileHomeBar.waitFor({state:"hidden",timeout:5000});
  if(await compactPage.locator('#kontakt .contact-benefits').isVisible())throw Error("Homepage duplicated benefit banners should be hidden");
@@ -782,7 +782,7 @@ try{
  // or the privacy notice. Both resources must open in a separate browser tab.
  const preservedForm=await browser.newPage({viewport:{width:390,height:844}});
  await preservedForm.goto(origin+"/?utm_source=ulotka",{waitUntil:"domcontentloaded"});
- await preservedForm.locator('[data-contact-shortcut="swiadczenie"]').click();
+ await preservedForm.locator('.contact-service-shortcuts [data-contact-shortcut="swiadczenie"]').click();
  const savedName=preservedForm.locator('.contact-form input[autocomplete="given-name"]');
  await savedName.fill("Testowy klient");
  await preservedForm.locator(".contact-case-details > summary").click();
@@ -1030,7 +1030,7 @@ try{
   return route.fulfill({status:503,contentType:"application/json",body:'{"success":false}'});
  });
  await shortcutRecoveryPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
- await shortcutRecoveryPage.locator('[data-contact-shortcut="swiadczenie"]').click();
+ await shortcutRecoveryPage.locator('.contact-service-shortcuts [data-contact-shortcut="swiadczenie"]').click();
  await shortcutRecoveryPage.locator('.contact-form input[autocomplete="given-name"]').fill("Klient testowy");
  await shortcutRecoveryPage.locator('.contact-form input[autocomplete="tel"]').fill("500 000 000");
  await shortcutRecoveryPage.locator('.contact-form input[type="checkbox"]').check();
@@ -1045,7 +1045,7 @@ try{
   ["skd","wojciech.obieglo@votum-ds.pl","+48796441345"],
   ["swiadczenie","paulina.chandrala@votum-ds.pl","+48500171531"]
  ]){
-  await shortcutRecoveryPage.locator('[data-contact-shortcut="'+shortcut+'"]').click();
+  await shortcutRecoveryPage.locator('.contact-service-shortcuts [data-contact-shortcut="'+shortcut+'"]').click();
   const href=await recoveryLink.getAttribute("href");
   if(!href?.startsWith("mailto:"+email+"?")||href.includes("&body="))throw Error("Homepage recovery email lost routing/privacy after "+shortcut+": "+href);
   if(await recoveryPhone.getAttribute("href")!=="tel:"+phone)throw Error("Homepage recovery phone stale after "+shortcut);
@@ -1144,7 +1144,7 @@ try{
  await quickEmailField.fill("test@example.com");
  await quickService.selectOption("Kredyt w PLN / SKD");
  if(!await quickPhoneField.evaluate(el=>el.required))throw Error("Home SKD did not require a callback number");
- await switchPage.locator('[data-contact-shortcut="szkody"]').click();
+ await switchPage.locator('.contact-service-shortcuts [data-contact-shortcut="szkody"]').click();
  if(await quickService.inputValue()!=="Szkody górnicze"||await quickPhoneField.evaluate(el=>el.required))throw Error("Mining shortcut kept stale SKD phone requirement");
  console.log("SERVICE_SWITCH_CONTACT_RULES_OK",JSON.stringify({from:"skd",to:"szkody",phoneOptionalWithEmail:true}));
  await switchPage.close();

@@ -45,6 +45,7 @@ jobs:
           node --check scripts/test-chat-lead.mjs
           node --check v2/service-navigator.js
           node --check scripts/test-service-navigator.mjs
+          node --check scripts/test-browser-flows.mjs
           node --check scripts/test-home-clarity.mjs
           node --check scripts/test-leaflet-start.mjs
           node --check scripts/test-1000-regressions.mjs

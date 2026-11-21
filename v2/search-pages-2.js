@@ -83,10 +83,10 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/renta-powypadkowa-dokumenty.html",
     "href": "/v2/wiedza/renta-powypadkowa-dokumenty.html",
-    "title": "Renta powypadkowa od ubezpieczyciela — jakie dokumenty zebrać?",
-    "description": "Renta powypadkowa może wiązać się z utratą zdolności zarobkowania, zwiększonymi potrzebami lub zmniejszeniem widoków powodzenia na przyszłość. Ocena zależy od okoliczności i podstawy odpowiedzialności.",
+    "title": "Renta powypadkowa: dokumenty i podwyższenie",
+    "description": "Jakie dokumenty przygotować do renty powypadkowej lub jej podwyższenia? Sprawdź dowody kosztów, utraconych dochodów i możliwości kontaktu z Pauliną.",
     "category": "renty",
-    "keywords": "Renta powypadkowa od ubezpieczyciela — jakie dokumenty zebrać? v2 wiedza renta powypadkowa dokumenty html Renta Powypadkowa Dokumenty"
+    "keywords": "Renta powypadkowa dokumenty podwyższenie waloryzacja art 444 art 907 koszty utracone dochody v2 wiedza renta powypadkowa dokumenty html"
   },
   {
     "id": "page:v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",

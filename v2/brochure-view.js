@@ -148,6 +148,7 @@
  contactUrl.searchParams.set("utm_medium","material");
  contactUrl.searchParams.set("utm_campaign","broszura_"+key.replaceAll("-","_"));
  contactUrl.searchParams.set("utm_content","broszura_klient");
+ contactUrl.searchParams.set("lead_path","broszura");
  contactUrl.hash="formularz";
  const contactAction=make("a","ts-brochure-contact-link","Zostaw kontakt");
  contactAction.href=contactUrl.pathname+contactUrl.search+contactUrl.hash;

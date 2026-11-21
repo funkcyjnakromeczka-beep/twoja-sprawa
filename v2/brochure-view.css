@@ -8,6 +8,10 @@
 .ts-brochure-actions{display:flex;gap:10px;flex-wrap:wrap}
 .ts-brochure-actions button,.ts-brochure-service-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #9c2333;border-radius:9px;background:#aa2334;padding:12px 16px;color:#fff!important;font-weight:750;font:inherit;text-decoration:none;cursor:pointer}
 .ts-brochure-service-link{background:#fff;color:#74303a!important}
+.ts-brochure-actions .ts-brochure-share{background:#fff6e9;color:#543728!important;border-color:#af7f53}
+.ts-brochure-actions .ts-brochure-share:hover{background:#f5e5cc;color:#2b2a2b!important}
+.ts-brochure-share-feedback{flex:0 0 100%;margin:0;color:#23445c;font-size:.88rem;line-height:1.5;overflow-wrap:anywhere}
+.ts-brochure-share-feedback:empty{display:none}
 .ts-brochure-actions :is(button,a):focus-visible{outline:3px solid #d4a75d;outline-offset:3px}
 .ts-brochure-spread{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:18px auto;width:100%;min-height:600px;box-shadow:0 15px 43px rgba(17,39,47,.12);border:1px solid #e5ded1;background:#f8f6f0}
 .ts-brochure-spread .ts-brochure-panel{box-sizing:border-box;padding:28px;min-width:0;position:relative;background:#f8f6f0;overflow-wrap:anywhere}

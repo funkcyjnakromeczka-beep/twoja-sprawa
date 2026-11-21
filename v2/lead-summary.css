@@ -27,6 +27,10 @@
 .lead-summary tbody tr:last-child td{border-bottom:0}
 .lead-summary .lead-summary-remove{padding:7px 10px;min-height:36px;background:#fff;color:#7c2531;border-color:#ae646d}
 .lead-summary .lead-summary-remove:hover{background:#fff2f3}
+.lead-summary-brief{margin:18px 0 6px;padding:15px;border:1px solid #c1d4dc;border-radius:12px;background:#f2f7f9}
+.lead-summary-brief label{margin:10px 0}
+.lead-summary-brief textarea{min-height:170px;white-space:pre-wrap}
+.lead-summary-brief p{margin:7px 0 12px}
 .lead-summary-export{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
 .lead-summary-export>div{min-width:0;display:flex;flex-direction:column;gap:9px}
 .lead-summary-status{min-height:1.5em;margin:10px 0;color:#175a4d!important;font-weight:650}

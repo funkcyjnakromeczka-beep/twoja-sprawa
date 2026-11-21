@@ -34,7 +34,7 @@
  // and middle click, which do not always dispatch an ordinary click.
  // Dynamic links are still handled on an actual click below.
  const tagLink=link=>{
-  if(!link||link.hasAttribute("download"))return;
+  if(!link||link.hasAttribute("download")||link.classList?.contains("service-share-direct"))return;
   const raw=link.getAttribute("href");
   if(!raw||raw.startsWith("#")||raw.startsWith("mailto:")||raw.startsWith("tel:")||raw.startsWith("javascript:"))return;
   let target;

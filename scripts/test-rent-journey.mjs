@@ -5,6 +5,22 @@ import {readFile} from "node:fs/promises";
 const html=await readFile("v2/uslugi/renty-powypadkowe.html","utf8");
 const css=await readFile("v2/rent-journey.css","utf8");
 const guide=await readFile("v2/poradniki/renta-powypadkowa-dokumenty.html","utf8");
+const reviewed=await readFile("v2/wiedza/renta-powypadkowa-dokumenty.html","utf8");
+const reviewedHref="/v2/wiedza/renta-powypadkowa-dokumenty.html";
+const guideSection=html.split('<section class="focus-detail" aria-labelledby="guide-renty-powypadkowe">')[1]?.split("</section>")[0]||"";
+assert.equal(guideSection.split('href="'+reviewedHref+'"').length-1,1,
+ "The practical preparation section must link once to the indexed guide");
+assert.ok(html.split('href="'+reviewedHref+'"').length-1>=2,
+ "Keep a separate editorial link under the service's educational answers");
+assert.ok(html.includes('href="/v2/poradniki/renta-powypadkowa-dokumenty.html"'),
+ "Keep the compact noindex checklist alongside the reviewed article");
+assert.ok(reviewed.includes('<meta name="robots" content="index,follow'),
+ "Rent reference article must remain approved for indexing");
+assert.ok(reviewed.includes('data-contact-form')&&reviewed.includes('data-service="Renty powypadkowe"'),
+ "Linked guide must offer an on-page, preselected lead form");
+assert.ok(reviewed.includes('href="tel:+48500171531"'),
+ "Article must show the rent adviser, not mining contact");
+
 const source=await readFile("v2/contact.js","utf8");
 assert.ok(html.includes('href="/v2/rent-journey.css"'),"Rent-specific styles must be loaded");
 const section=html.match(/<section class="rent-journey wrap" id="wybierz-sytuacje-renty"[\s\S]*?<\/section>/)?.[0];

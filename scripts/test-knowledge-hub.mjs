@@ -83,17 +83,19 @@ assert.ok(html.indexOf('class="hub-services-index"')<html.indexOf('data-knowledg
 
 const readingPaths=html.match(/<section class="hub-reading-paths"[\s\S]*?<\/section>/)?.[0]||"";
 assert.ok(readingPaths.includes('aria-labelledby="hub-reading-paths-title"'),"Reading paths need an accessible heading");
-assert.equal((readingPaths.match(/class="hub-reading-card"/g)||[]).length,3,"Three thematic reading paths required");
-assert.equal((readingPaths.match(/<ol>/g)||[]).length,3,"Each path needs an ordered, practical checklist");
+assert.equal((readingPaths.match(/class="hub-reading-card"/g)||[]).length,4,"Four thematic reading paths required");
+assert.equal((readingPaths.match(/<ol>/g)||[]).length,4,"Each path needs an ordered, practical checklist");
 const readingHrefs=[...readingPaths.matchAll(/href="([^"]+)"/g)].map(([,url])=>url.replaceAll("&amp;","&"));
-assert.equal(readingHrefs.length,6,"Each path should offer two working destinations");
+assert.equal(readingHrefs.length,8,"Each path should offer two working destinations");
 for(const dest of [
 "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
 "/v2/uslugi/szkody-gornicze.html",
 "/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
 "/v2/uslugi/swiadczenie-wspierajace.html",
 "/v2/uslugi/kredyty-pln.html",
-"/v2/plan-dzialania.html?usluga=skd"
+"/v2/plan-dzialania.html?usluga=skd",
+"/v2/wiedza/renta-powypadkowa-dokumenty.html",
+"/v2/uslugi/renty-powypadkowe.html"
 ])assert.equal(readingHrefs.filter(x=>x===dest).length,1,"Missing or duplicate first-step link: "+dest);
 assert.ok(html.indexOf('class="hub-services-index"')<html.indexOf('class="hub-reading-paths"')&&
  html.indexOf('class="hub-reading-paths"')<html.indexOf('data-knowledge-hub'),
@@ -101,7 +103,7 @@ assert.ok(html.indexOf('class="hub-services-index"')<html.indexOf('class="hub-re
 assert.ok(!readingPaths.includes("<form")&&!readingPaths.includes("type=\"submit\"")&&!readingPaths.includes("data-contact-form"),
  "Reading paths must not collect sensitive information");
 const pathCss=await readFile("v2/knowledge-hub.css","utf8");
-assert.ok(pathCss.includes(".hub-reading-grid")&&pathCss.includes("@media(max-width:950px)")&&
+assert.ok(pathCss.includes(".hub-reading-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))")&&pathCss.includes("@media(max-width:950px)")&&
  pathCss.includes(".hub-reading-actions a:focus-visible"),
  "First-step cards need responsive layout and visible keyboard focus");
 

@@ -66,6 +66,12 @@ const DATA={
    "Sprawdź, kiedy i na jakiej podstawie określono aktualną wysokość renty.",
    "Przygotuj pytania do indywidualnej analizy możliwości jej ustalenia lub zmiany."
   ],
+  stages:{
+   nowa:["Nie mam jeszcze renty","Zachowaj informacje o wypadku, zgłoszeniu roszczenia i otrzymanych odpowiedziach od ubezpieczyciela."],
+   podwyzszenie:["Chcę sprawdzić podwyższenie","Zanotuj zmiany potrzeb, kosztów opieki lub rehabilitacji i możliwości zarobkowania; sama inflacja nie gwarantuje podwyższenia."],
+   odmowa:["Ubezpieczyciel odmówił","Zachowaj odmowę, jej uzasadnienie, datę doręczenia i wcześniejszą korespondencję."],
+   ugoda:["Mam propozycję ugody","Sprawdź treść ugody i jej skutki dla przyszłych wypłat i dalszych roszczeń przed podpisaniem."]
+  },
   links:"/v2/uslugi/renty-powypadkowe.html"
  },
  skd:{
@@ -77,6 +83,12 @@ const DATA={
    "Sprawdź daty zawarcia umowy, spłaty i korespondencji z kredytodawcą.",
    "Przekaż dokumenty do indywidualnej weryfikacji — sam kredyt w PLN nie oznacza automatycznej podstawy SKD."
   ],
+  stages:{
+   splata:["Nadal spłacam kredyt","Zachowaj aktualny harmonogram, umowę i zestawienie kosztów, aby sprawdzić przesłanki SKD."],
+   splacony:["Kredyt został spłacony","Ustal datę całkowitej spłaty oraz zachowaj historię płatności. Terminy zastosowania SKD wymagają indywidualnego sprawdzenia."],
+   wczesniejsza:["Spłata przed terminem","Zachowaj potwierdzenie wcześniejszej spłaty i rozliczenie pobranych prowizji oraz innych kosztów."],
+   odmowa:["Kredytodawca odmówił","Zachowaj odpowiedź kredytodawcy, ewentualne oświadczenie o SKD i potwierdzenie doręczenia."]
+  },
   links:"/v2/uslugi/kredyty-pln.html"
  },
 

@@ -66,6 +66,12 @@ for(const [service,topic,advisor] of brochurePages){
  assert.ok(allText(root).includes("Drukuj / Zapisz PDF"),"Print button must appear: "+topic);
  assert.ok(nodes.some(n=>n.tagName==="BUTTON"&&n.events?.click),"Print control must be wired: "+topic);
  assert.ok(allText(root).includes("Nie musisz mieć wszystkiego."),"No mandatory-document claim: "+topic);
+ const media=nodes.find(n=>n.tagName==="A"&&n.className==="ts-brochure-media-link");
+ assert.ok(media,"Each brochure needs its own freely downloadable Facebook card: "+topic);
+ assert.equal(media.href,"/assets/og-broszura-"+topic+".jpg");
+ assert.equal(media.attributes.download,"Twoja-Sprawa-"+topic+"-Facebook.jpg");
+ const jpg=await readFile("v2/assets/og-broszura-"+topic+".jpg");
+ assert.ok(jpg.length>15_000&&jpg.length<400_000,"Social JPEG missing or wrong size: "+topic);
  const contact=nodes.find(n=>n.tagName==="A"&&n.className==="ts-brochure-contact-link");
  assert.ok(contact,"Brochure must link to a user-approved first-party contact form: "+topic);
  const contactURL=new URL(contact.href,"https://twoja-sprawa.pages.dev");

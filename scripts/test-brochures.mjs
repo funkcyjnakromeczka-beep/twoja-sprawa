@@ -64,6 +64,11 @@ for(const [service,topic,advisor] of brochurePages){
  assert.ok(allText(root).includes("Drukuj / Zapisz PDF"),"Print button must appear: "+topic);
  assert.ok(nodes.some(n=>n.tagName==="BUTTON"&&n.events?.click),"Print control must be wired: "+topic);
  assert.ok(allText(root).includes("Nie musisz mieć wszystkiego."),"No mandatory-document claim: "+topic);
+ const image=nodes.find(n=>n.tagName==="IMG"&&n.className==="ts-brochure-qr-image");
+ assert.ok(image,"Every brochure needs a printable, service-specific QR code: "+topic);
+ assert.equal(image.src,"/v2/assets/qr-broszura-"+topic+".svg","QR code file must match the selected service");
+ const qrSvg=await readFile("v2/assets/qr-broszura-"+topic+".svg","utf8");
+ assert.ok(qrSvg.startsWith("<svg ")&&qrSvg.includes("<path ")&&!qrSvg.includes("<script"),"QR asset must be a self-contained static SVG");
  assert.ok(!nodes.some(n=>n.tagName==="INPUT"||n.tagName==="TEXTAREA"),"Brochure must not collect client input: "+topic);
 }
 console.log("BROCHURES_6_OK: six brochure flows, private runtime, six adviser routes, 2x3 A4 print layouts.");

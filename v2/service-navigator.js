@@ -44,12 +44,24 @@
   renty:{
    title:"Renty powypadkowe",short:"Wstępna analiza dokumentów",
    desc:"Można sprawdzić dotychczasową rentę, zmianę potrzeb i utratę możliwości zarobkowych. Znaczenie ma umowa, dotychczasowe rozliczenia i dokumenty.",
-   service:"renty-powypadkowe.html",phone:"500 171 531",tel:"+48500171531"
+   service:"renty-powypadkowe.html",landing:"kampanie/renty-powypadkowe.html",phone:"500 171 531",tel:"+48500171531",
+   stages:[
+    ["Nie mam jeszcze ustalonej renty","nowa","Zanotuj datę wypadku, posiadane decyzje i to, czy zgłoszono już roszczenie do ubezpieczyciela."],
+    ["Chcę sprawdzić podwyższenie","podwyzszenie","Zachowaj dokumenty o obecnej wysokości renty i zanotuj zmiany kosztów, potrzeb lub możliwości zarobkowania."],
+    ["Otrzymałem/am odmowę","odmowa","Zachowaj decyzję odmowną, uzasadnienie, korespondencję i datę doręczenia."],
+    ["Otrzymałem/am propozycję ugody","ugoda","Przed podpisaniem sprawdź zakres ugody, rozliczenie renty i wpływ na dalsze roszczenia."]
+   ]
   },
   skd:{
    title:"Sankcja Kredytu Darmowego (SKD)",short:"Sprawdzenie umowy",
    desc:"Wyślij kopię umowy kredytowej na wojciech.obieglo@votum-ds.pl i zostaw numer telefonu. Możesz przesłać pełną umowę bez zasłaniania danych. Zastosowanie SKD wymaga indywidualnej analizy i oceny terminów.",
-   service:"kredyty-pln.html",landing:"kampanie/skd.html",phone:"796 441 345",tel:"+48796441345"
+   service:"kredyty-pln.html",landing:"kampanie/skd.html",phone:"796 441 345",tel:"+48796441345",
+   stages:[
+    ["Nadal spłacam kredyt","splata","Zachowaj pełną umowę, aneksy, harmonogram i informacje o ponoszonych kosztach kredytu."],
+    ["Kredyt został spłacony","splacony","Przygotuj datę całkowitej spłaty i historię rozliczeń. Możliwe terminy należy ocenić indywidualnie."],
+    ["Spłaciłem/am kredyt przed terminem","wczesniejsza","Zachowaj potwierdzenie wcześniejszej spłaty oraz zestawienie pobranych kosztów i prowizji."],
+    ["Kredytodawca odmówił uznania SKD","odmowa","Zachowaj odpowiedź kredytodawcy i dowód doręczenia wcześniejszego oświadczenia, jeśli zostało złożone."]
+   ]
   },
   franki:{
    title:"Pomoc frankowiczom — kredyty CHF",short:"Aktywny lub spłacony kredyt frankowy",
@@ -62,7 +74,7 @@
    service:"sluzebnosc-przesylu.html",phone:"796 441 345",tel:"+48796441345"
   }
  };
- const sourceAllowed=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+ const sourceAllowed=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne","broszura"]);
  const incoming=new URLSearchParams(window.location.search);
  const inferredAIReferrer=(()=>{
   try {

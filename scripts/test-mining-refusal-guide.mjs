@@ -14,6 +14,15 @@ for(const legal of ["art. 151 ust. 1–2","Art. 149","30 dni","pięcioletni","ni
 }
 assert.ok(section.includes("https://eli.gov.pl/eli/DU/2026/69/ogl"),"Only official verified current statute as legal source");
 assert.ok(section.includes('href="/v2/uslugi/szkody-gornicze.html?etap=odmowa#formularz"'),"Lead must preselect safe known refusal stage");
+const cityGuide=guide.split('<section id="ugoda-pomoc-lokalnie" aria-labelledby="agreement-local-heading">')[1]?.split("</section>")[0]||"";
+assert.ok(cityGuide.includes('<h2 id="agreement-local-heading">'),"Agreement article must expose location-specific navigation");
+for(const slug of ["lubin","polkowice"]){
+ const href='/v2/lokalnie/szkody-gornicze-'+slug+'.html';
+ assert.equal(cityGuide.split('href="'+href+'"').length-1,1,"Agreement guide must point to local "+slug+" page");
+}
+assert.ok(cityGuide.includes("samo miejsce położenia nieruchomości nie rozstrzyga")&&
+ !cityGuide.includes("data-contact-form"),"Do not turn local tips into a liability guarantee or PII form");
+assert.ok(guide.includes('"dateModified":"2026-11-21"'),"Editorial modification date must reflect new local links");
 const service=await read("v2/uslugi/szkody-gornicze.html");
 assert.ok(service.includes('href="/v2/wiedza/ugoda-z-kopalnia-co-sprawdzic.html#odmowa-kopalni"'),"Service must route to the anchored guide");
 assert.ok(service.includes('href="/v2/uslugi/szkody-gornicze.html?etap=odmowa#formularz"'),"Service must let visitor preselect denial stage");

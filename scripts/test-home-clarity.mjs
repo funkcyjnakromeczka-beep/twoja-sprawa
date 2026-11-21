@@ -80,7 +80,7 @@ const beg=html.indexOf('class="grid primary-services"');
 const end=html.indexOf('<details class="service-extra"',beg);
 assert.ok(beg>=0&&end>beg,"Homepage services area missing");
 const segment=html.slice(beg,end);
-// GSC baseline 2026-11-17: Google has indexed the home URL but reports the
+// GSC check 2026-11-21: Google has indexed the home URL but reports the
 // two local mining URLs as unknown. Keep their navigation visible to both
 // visitors and crawlers, not hidden inside a collapsed details element.
 const localBlock=html.match(/<div class="local-areas" id="szkody-lokalnie"[\s\S]*?<\/div><\/div>/)?.[0]||"";
@@ -90,12 +90,26 @@ assert.ok(beg<html.indexOf('id="szkody-lokalnie"')&&html.indexOf('id="szkody-lok
 const collapsedSection=html.slice(end,html.indexOf("</details>",end));
 assert.ok(!collapsedSection.includes('href="/v2/lokalnie/'),
  "Do not hide primary local discovery URLs in collapsed sections");
+const heroLocalBegin=html.indexOf('<nav class="hero-local-shortcuts"');
+const heroLocalEnd=html.indexOf("</nav>",heroLocalBegin);
+const heroLocal=heroLocalBegin>=0&&heroLocalEnd>heroLocalBegin?html.slice(heroLocalBegin,heroLocalEnd+6):"";
+assert.ok(heroLocalBegin>heroGuidesEnd&&heroLocalEnd<html.indexOf('<nav class="mobile-quick-nav"'),
+ "Both local discovery URLs must appear visibly in the indexed first-screen hero");
+assert.ok(heroLocal.includes('aria-label="Szkody górnicze — poradniki lokalne"'),
+ "Local home links need an accessible navigation landmark");
+const cityURLs=["/v2/lokalnie/szkody-gornicze-lubin.html","/v2/lokalnie/szkody-gornicze-polkowice.html"];
+assert.deepEqual([...heroLocal.matchAll(/href="([^"]+)"/g)].map(x=>x[1]),cityURLs,
+ "Hero must link to the exact two public local service pages, no tracking");
 for(const slug of ["szkody-gornicze-lubin","szkody-gornicze-polkowice"]){
  const href='/v2/lokalnie/'+slug+'.html';
- assert.equal(html.split('href="'+href+'"').length-1,1,"Homepage should contain one clear local URL for "+slug);
- assert.ok(localBlock.includes('href="'+href+'"'),"Local URL must be visible for "+slug);
+ assert.equal(html.split('href="'+href+'"').length-1,2,"Keep one hero and one service-area link for "+slug);
+ assert.ok(localBlock.includes('href="'+href+'"'),"Service-area URL must remain visible for "+slug);
+ assert.ok(heroLocal.includes('href="'+href+'"'),"First-screen local URL must be visible for "+slug);
  await access('v2/lokalnie/'+slug+'.html');
 }
+assert.ok(css.includes(".premium-v2 .hero-local-shortcuts a:focus-visible")&&
+ css.includes("min-height:44px")&&css.includes("@media(max-width:650px)"),
+ "First-screen local shortcuts must be keyboard visible and mobile-friendly");
 assert.ok(localBlock.includes("Nie każda rysa oznacza szkodę górniczą"),
  "Local SEO module must retain non-promissory qualification");
 

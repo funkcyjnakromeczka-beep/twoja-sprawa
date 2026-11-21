@@ -123,6 +123,7 @@ for(const [service,topic,advisor] of brochurePages){
  assert.equal(contactURL.searchParams.get("usluga"),alias,"Correct brochure service must be selected");
  assert.equal(contactURL.searchParams.get("utm_source"),"broszura");
  assert.equal(contactURL.searchParams.get("utm_medium"),"material");
+ assert.equal(contactURL.searchParams.get("lead_path"),"broszura","Form must tag brochure-specific last-touch step");
  assert.equal(contactURL.searchParams.get("utm_campaign"),"broszura_"+topic.replaceAll("-","_"));
  for(const key of ["pesel","name","email","phone","doc","token"])
   assert.ok(!contactURL.searchParams.has(key),"Never forward personal data in referral URLs");
@@ -159,6 +160,7 @@ for(const [service,topic,advisor] of brochurePages){
   assert.equal(nextURL.searchParams.get("utm_medium"),"material","Brochure contact must identify last referral step");
   assert.equal(nextURL.searchParams.get("utm_campaign"),"broszura_"+topic.replaceAll("-","_"));
   assert.equal(nextURL.searchParams.get("utm_content"),"broszura_klient");
+  assert.equal(nextURL.searchParams.get("lead_path"),"broszura","All social paths must identify the brochure handoff");
   for(const secret of ["name","email","phone","pesel","fbclid","gclid"])
    assert.equal(nextURL.searchParams.has(secret),false,"No visitor identifiers passed to form");
  }

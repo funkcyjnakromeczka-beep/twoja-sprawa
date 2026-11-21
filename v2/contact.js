@@ -307,7 +307,7 @@
   if(select.value==="Szkody górnicze"&&Object.prototype.hasOwnProperty.call(damageFromLink,requestedDamage)){
    damageArea.value=damageFromLink[requestedDamage];
   }
-  const requestedLeadPath=(campaignParams.get("lead_path")||"").toLowerCase().trim();   const leadPath=["chatbot","navigator","plan"].includes(requestedLeadPath)?requestedLeadPath:"formularz";
+  const requestedLeadPath=(campaignParams.get("lead_path")||"").toLowerCase().trim();   const leadPath=["chatbot","navigator","plan","broszura"].includes(requestedLeadPath)?requestedLeadPath:"formularz";
   // Dyskretny komunikat dla osób, które wybrały konkretną sytuację w przewodniku.
   const contextNotice=document.createElement("div");contextNotice.className="contact-context-notice";
   const contextLabel=document.createElement("strong");contextLabel.textContent=leadPath==="plan"?"Twój wybór w planie przygotowań":"Twój wybór w przewodniku";

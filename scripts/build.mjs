@@ -86,7 +86,8 @@ const cssLayerReport={pages:0,requestsSaved:0,unique:new Set()};
 const publishedArticleRoutes=new Set([
  "/wiedza/drobne-pekniecia-szkody-gornicze.html",
  "/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
- "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"
+ "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
+ "/wiedza/renta-powypadkowa-dokumenty.html"
 ]);
 function reconcilePublishedArticle(markup,route,canonical){
  if(!publishedArticleRoutes.has(route))return markup;

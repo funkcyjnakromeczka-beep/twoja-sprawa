@@ -52,7 +52,7 @@
     return Object.prototype.hasOwnProperty.call(trusted,host)?trusted[host]:"";
   } catch { return ""; }
  })();
- const sourceAllowed=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne"]);
+ const sourceAllowed=new Set(["facebook","instagram","tiktok","google","chatgpt.com","perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com","ulotka","plakat","qr","polecenie","organiczne","strona","inne","broszura"]);
  const campaignSource=(campaignParams.get("utm_source")||"").toLowerCase().trim();
  const source=sourceAllowed.has(campaignSource)?campaignSource:(!campaignSource&&inferredAIReferrer?inferredAIReferrer:"nieoznaczone");
  const campaign=(campaignParams.get("utm_campaign")||"").toLowerCase().trim();

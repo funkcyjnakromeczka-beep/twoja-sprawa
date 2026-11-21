@@ -20,12 +20,16 @@ const draft={value:"",focused:false,selected:false,focus(){this.focused=true;},s
 const channelNote={textContent:""};
 const feedback={textContent:""};
 const copy={disabled:false,events:{},addEventListener(type,fn){this.events[type]=fn;}};
+const copyLink={disabled:false,events:{},addEventListener(type,fn){this.events[type]=fn;}};
+const openLink={href:"",removeAttribute(name){if(name==="href")this.href="";}};
 const nodes={
  "[data-brochure-promo-service]":chooser,
  "[data-brochure-promo-channel]":channel,
  "[data-brochure-promo-channel-note]":channelNote,
  "[data-brochure-promo-draft]":draft,
  "[data-brochure-promo-copy]":copy,
+ "[data-brochure-promo-copy-link]":copyLink,
+ "[data-brochure-promo-open-link]":openLink,
  "[data-brochure-promo-status]":feedback
 };
 const root={querySelector:selector=>nodes[selector]};
@@ -58,6 +62,11 @@ for(const [key,advisor,phone,detail] of cases){
  assert.equal(link.searchParams.get("utm_campaign"),"broszura_"+key.replaceAll("-","_"));
  assert.equal(link.searchParams.get("utm_content"),"post_organic");
  assert.equal(link.hash,"#broszura");
+ assert.equal(openLink.href,shareUrl,"Preview link must match selected post URL: "+key);
+ assert.equal(copyLink.disabled,false,"Copy only URL must be enabled: "+key);
+ await copyLink.events.click();
+ assert.equal(copied,shareUrl,"Copied standalone URL must match service and channel: "+key);
+ assert.ok(feedback.textContent.includes("Skopiowano sam link"),"No correct status for link copy");
  for(const disallowed of ["name","phone","pesel","email","gclid","fbclid"])
   assert.equal(link.searchParams.has(disallowed),false,"No visitor identifiers in social posts");
  assert.ok(!/gwarantujemy|100% pewności|wygramy|przyznamy świadczenie/i.test(draft.value),"Unsupported promise: "+key);
@@ -76,6 +85,9 @@ for(const source of ["instagram","tiktok","inne","facebook"]){
  channel.value=source;channel.events.change();
  const shareUrl=draft.value.match(/https:\/\/twoja-sprawa\.pages\.dev\/plan-dzialania\?[^\s]+/)?.[0];
  assert.equal(new URL(shareUrl).searchParams.get("utm_source"),source,"Post source should match channel selection");
+ assert.equal(openLink.href,shareUrl,"Preview link needs to update on channel changes");
+ await copyLink.events.click();
+ assert.equal(copied,shareUrl,"Copy link should update on channel changes");
  assert.ok(channelNote.textContent.length>40,"Missing platform-specific publishing guidance");
  if(source==="instagram")assert.ok(channelNote.textContent.includes("linkach profilu"),"Instagram needs link-in-profile guidance");
  if(source==="tiktok")assert.ok(channelNote.textContent.includes("profilu"),"TikTok needs link availability warning");
@@ -85,8 +97,13 @@ assert.ok(draft.value.includes("utm_source=inne"),"Unrecognized channel must not
 chooser.value="unknown";chooser.events.change();
 assert.equal(draft.value,"");
 assert.equal(copy.disabled,true,"Invalid selection must disable copy");
+assert.equal(copyLink.disabled,true,"Invalid selection must disable standalone link copying");
+assert.equal(openLink.href,"","Invalid selection must remove preview destination");
 chooser.value="skd";chooser.events.change();
 navigator.clipboard.writeText=async()=>{throw Error("Clipboard forbidden");};
+await copyLink.events.click();
+assert.ok(feedback.textContent.includes("Nie można automatycznie skopiować linku."),"No honest fallback for link-only clipboard failure");
+assert.ok(feedback.textContent.includes("utm_source=inne"),"Link fallback must display exact URL");
 await copy.events.click();
 assert.equal(draft.focused,true,"Failed clipboard copy should focus selectable caption");
 assert.equal(draft.selected,true,"Failed clipboard copy should select text for manual copying");

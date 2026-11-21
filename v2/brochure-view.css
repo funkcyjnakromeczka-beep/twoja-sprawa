@@ -173,6 +173,9 @@
 .plan-page .plan-brochure-promo-actions button,.plan-page .plan-brochure-promo-actions a{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 15px;border-radius:8px;border:1px solid #a52636;font-size:.94rem;line-height:1.35;font-weight:760;text-decoration:none;cursor:pointer}
 .plan-page .plan-brochure-promo-actions button{background:#a52636;color:#fff}
 .plan-page .plan-brochure-promo-actions button:hover{background:#82212e}
+.plan-page .plan-brochure-promo-actions button[data-brochure-promo-copy-link]{background:#fff;color:#8a2533;border-color:#b05c63}
+.plan-page .plan-brochure-promo-actions button[data-brochure-promo-copy-link]:hover{background:#fff0e8;color:#6b1925}
+.plan-page .plan-brochure-promo-actions button:disabled{opacity:.55;cursor:not-allowed}
 .plan-page .plan-brochure-promo-actions a{background:#fff;color:#81303b!important}
 .plan-page .plan-brochure-promo-actions a:hover{background:#fff1e8}
 .plan-page .plan-brochure-promo-actions :is(button,a):focus-visible{outline:3px solid #b98946;outline-offset:3px}

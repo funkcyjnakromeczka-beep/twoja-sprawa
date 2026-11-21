@@ -777,7 +777,7 @@
     updateGuidePlan();
    });
   }
-  // Home only: four highlighted topic links select the same existing form, without
+  // Home only: four priority plus two expandable topics select one existing form, without
   // creating duplicate lead forms or collecting data before explicit submission.
   const primaryShortcuts=[...document.querySelectorAll("[data-contact-shortcut]")];
   if(primaryShortcuts.length){
@@ -789,6 +789,7 @@
      const chosen=pickService(link.getAttribute("data-contact-shortcut"));
      const current=Boolean(chosen&&select.value===chosen);
      link.setAttribute("data-selected",String(current));
+     link.setAttribute("aria-current",current?"true":"false");
      if(current)active=true;
     }
     if(shortcutStatus)shortcutStatus.textContent=active?"Wybrano: "+select.value+". Uzupełnij dane w formularzu poniżej.":"";
@@ -824,8 +825,11 @@
      if(!chosen)return;
      event.preventDefault();
      activateShortcut(chosen);
+     // Topic has already been chosen: jump directly to the first real
+     // contact field instead of making visitors tab through the service select.
      host.scrollIntoView?.({behavior:"auto",block:"start"});
-     select.focus?.({preventScroll:true});
+     name.scrollIntoView?.({behavior:"auto",block:"nearest"});
+     name.focus?.({preventScroll:true});
     });
    }
    refreshShortcutState=syncShortcuts;

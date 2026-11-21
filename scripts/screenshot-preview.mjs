@@ -637,7 +637,7 @@ try{
  const miningShortcut=flagshipPage.locator('[data-contact-shortcut="szkody"]');
  const supportShortcut=flagshipPage.locator('[data-contact-shortcut="swiadczenie"]');
  const skdShortcut=flagshipPage.locator('[data-contact-shortcut="skd"]');
- if(await flagshipPage.locator("[data-contact-shortcut]").count()!==3)throw Error("Homepage should have three flagship shortcut buttons");
+ if(await flagshipPage.locator("[data-contact-shortcut]").count()!==6)throw Error("Homepage must expose four primary and two expanded contact shortcuts");
  await miningShortcut.click();
  let flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
  if(flagshipSelection!=="Szkody górnicze")throw Error("Home mining shortcut failed to select service");

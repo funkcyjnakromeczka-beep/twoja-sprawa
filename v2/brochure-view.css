@@ -101,3 +101,17 @@
  body.brochure-active .ts-brochure-back li{margin-bottom:3.5mm!important}
  body.brochure-active .ts-brochure-back .ts-brochure-footnote{position:absolute!important;bottom:11mm!important;left:10mm!important;right:10mm!important;border-top:1px solid #b48e51!important}
 }
+
+/* Visual chooser is available without JS, on the existing 6-service plan page. */
+.plan-page .plan-brochure-library{margin:42px auto 50px;padding:26px 30px;border:1px solid #cfc7ba;border-radius:17px;background:#fff}
+.plan-brochure-library h2{font:700 clamp(1.4rem,2.4vw,2rem)/1.28 Georgia,serif;color:#173547;margin:12px 0}
+.plan-brochure-library p{line-height:1.65;max-width:84ch}
+.plan-brochure-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:23px 0}
+.plan-brochure-links a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:59px;border:1px solid #d6bca7;border-left:4px solid #a52337;border-radius:9px;background:#f8f6f0;color:#202b32!important;padding:12px 14px;font-weight:780;text-decoration:none;line-height:1.35}
+.plan-brochure-links a:hover{border-color:#a52337;background:#fff8f5}
+.plan-brochure-links a:focus-visible{outline:3px solid #c9a36d;outline-offset:3px}
+.plan-brochure-library small{display:block;color:#627178;line-height:1.6}
+@media(max-width:840px){.plan-brochure-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.plan-brochure-links{grid-template-columns:1fr}.plan-page .plan-brochure-library{padding:20px 16px}}
+@media screen{body.brochure-active .plan-brochure-library{display:none!important}}
+@media print{body.brochure-active .plan-brochure-library{display:none!important}}

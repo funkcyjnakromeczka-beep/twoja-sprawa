@@ -182,12 +182,7 @@
 .premium-v2 #kontakt .contact-shortcuts-actions a:focus-visible{
  outline:3px solid #b58c4f;outline-offset:3px;
 }
-/* Four priority topics remain visible; two less-common topics expand on demand. */
-.premium-v2 #kontakt .contact-shortcuts-more{margin:8px 0 11px;border-top:1px solid #bdd0ca;padding-top:8px}
-.premium-v2 #kontakt .contact-shortcuts-more>summary{min-height:44px;display:list-item;cursor:pointer;padding:11px 8px;font-size:.9rem;line-height:1.4;font-weight:750;color:#174f60}
-.premium-v2 #kontakt .contact-shortcuts-more>summary:focus-visible{outline:3px solid #b58c4f;outline-offset:3px;border-radius:5px}
-.premium-v2 #kontakt .contact-shortcuts-secondary{grid-template-columns:repeat(2,minmax(0,1fr));margin:7px 0 2px}
-@media(max-width:570px){.premium-v2 #kontakt .contact-shortcuts-secondary{grid-template-columns:minmax(0,1fr)}}
+#kontakt .contact-shortcuts-more>summary:focus-visible{outline:3px solid #b58c4f}
 .premium-v2 #kontakt .contact-service-shortcuts>small{
  display:block;color:#48646a;font-size:.83rem;line-height:1.45;
 }

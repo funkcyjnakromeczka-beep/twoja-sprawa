@@ -942,7 +942,7 @@ assert.ok(contactMarkup.includes('class="contact-shortcuts-actions contact-short
   assert.equal(phone.required,code==="skd","Phone preference must be required only for SKD with existing email");
   assert.equal(links[code].attributes["data-selected"],"true");
   assert.ok(Object.values(links).every(n=>n===links[code]||n.attributes["data-selected"]==="false"),"Only the selected service is highlighted");
-  assert.equal(service.focused,true,"Focus must go to the original form");
+  assert.equal(visit(form,n=>n.autocomplete==="given-name").focused,true,"Direct CTA must focus the original first contact field");
  }
  assert.equal(sends,0,"Choosing a service must not submit, leak or track a lead");
  assert.equal(email.value,"test@example.com","Changing service must preserve entered contact details");

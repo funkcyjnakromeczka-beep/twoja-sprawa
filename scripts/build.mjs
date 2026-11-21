@@ -135,6 +135,8 @@ const structured = (route,canonical,title,markup) => {
   const colleague={"@type":"Person","@id":origin+"/#paulina-chandrala",name:"Paulina Chandrała",url:origin+"/o-nas#paulina",image:origin+"/assets/paulina-chandrala.jpg"};
   const organization={
     "@type":"Organization","@id":origin+"/#successtree",name:"SuccessTree OBIEGŁO WOJCIECH",
+    alternateName:"SuccessTree",
+    description:"Odrębna działalność przedstawicielska prowadząca serwis Twoja Sprawa we współpracy agencyjnej z podmiotami Grupy VOTUM. Pierwszy kontakt w sprawach szkód górniczych w Lubinie i Polkowicach, świadczenia wspierającego, sankcji kredytu darmowego (SKD) i rent powypadkowych. Serwis nie jest oficjalną witryną VOTUM.",
     url:origin+"/",email:"wojciech.obieglo@votum-ds.pl",telephone:"+48 796 441 345",
     founder:{"@id":owner["@id"]},
     contactPoint:[

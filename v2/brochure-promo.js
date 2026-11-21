@@ -9,8 +9,11 @@
  const channelNote=root.querySelector("[data-brochure-promo-channel-note]");
  const draft=root.querySelector("[data-brochure-promo-draft]");
  const copy=root.querySelector("[data-brochure-promo-copy]");
+ const copyLink=root.querySelector("[data-brochure-promo-copy-link]");
+ const openLink=root.querySelector("[data-brochure-promo-open-link]");
  const feedback=root.querySelector("[data-brochure-promo-status]");
- if(!chooser||!channel||!channelNote||!draft||!copy||!feedback)return;
+ if(!chooser||!channel||!channelNote||!draft||!copy||!copyLink||!openLink||!feedback)return;
+ let shareUrl="";
  const DATA=Object.freeze({
   "szkody-gornicze":{
    text:"Pęknięcia ścian, rysy elewacji albo nierówna kostka w Lubinie lub Polkowicach?\n\nPrzygotowaliśmy bezpłatną broszurę: jakie zdjęcia, dokumenty i pisma zachować przed rozmową o możliwej szkodzie górniczej. Sama rysa nie przesądza o przyczynie uszkodzenia.",
@@ -40,7 +43,15 @@
  const render=()=>{
   const key=chooser.value;
   const item=Object.prototype.hasOwnProperty.call(DATA,key)?DATA[key]:null;
-  if(!item){draft.value="";copy.disabled=true;feedback.textContent="Wybierz temat broszury.";return;}
+  if(!item){
+   shareUrl="";
+   draft.value="";
+   copy.disabled=true;
+   copyLink.disabled=true;
+   openLink.removeAttribute("href");
+   feedback.textContent="Wybierz temat broszury.";
+   return;
+  }
   // Only an approved platform category and a fixed brochure slug.
   // No personal identifiers, cookies or per-visitor tracking are generated.
   const allowedChannels=new Set(["facebook","instagram","tiktok","inne"]);
@@ -59,12 +70,26 @@
   url.searchParams.set("utm_campaign","broszura_"+key.replaceAll("-","_"));
   url.searchParams.set("utm_content","post_organic");
   url.hash="broszura";
-  draft.value=item.text+"\n\nBroszura do wydruku: "+url.href+"\n\nKontakt: "+item.phone+"\ntwoja-sprawa.pages.dev\n"+item.tags;
+  shareUrl=url.href;
+  openLink.href=shareUrl;
+  draft.value=item.text+"\n\nBroszura do wydruku: "+shareUrl+"\n\nKontakt: "+item.phone+"\ntwoja-sprawa.pages.dev\n"+item.tags;
   copy.disabled=false;
+  copyLink.disabled=false;
   feedback.textContent="";
  };
  chooser.addEventListener("change",render);
  channel.addEventListener("change",render);
+ copyLink.addEventListener("click",async()=>{
+  if(!shareUrl){feedback.textContent="Najpierw wybierz temat.";return;}
+  try{
+   if(navigator.clipboard?.writeText){
+    await navigator.clipboard.writeText(shareUrl);
+    feedback.textContent="Skopiowano sam link do broszury. Możesz go wkleić w dostępne pole linku na wybranej platformie.";
+    return;
+   }
+  }catch{}
+  feedback.textContent="Nie można automatycznie skopiować linku. Zaznacz i skopiuj ręcznie: "+shareUrl;
+ });
  copy.addEventListener("click",async()=>{
   const content=draft.value;
   if(!content){feedback.textContent="Najpierw wybierz temat.";return;}

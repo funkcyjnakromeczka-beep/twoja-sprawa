@@ -139,7 +139,8 @@ assert.ok(html.includes('src="/v2/share-page.js"'),"Share control script missing
 
 // The homepage offers four visible service shortcuts and two additional options within a disclosure.
 const shortcutBlock=html.match(/<div class="contact-service-shortcuts"[\s\S]*?<\/div><div class="lead-panel"/)?.[0]||"";
-assert.equal((shortcutBlock.match(/data-contact-shortcut="/g)||[]).length,3,"Exactly three flagship contact shortcuts required");
+assert.equal((shortcutBlock.match(/data-contact-shortcut="/g)||[]).length,6,"Four primary and two secondary contact shortcuts required");
+assert.ok(shortcutBlock.includes('data-contact-shortcut="renty"')&&shortcutBlock.includes('data-contact-shortcut="franki"')&&shortcutBlock.includes('data-contact-shortcut="przesyl"'),"All secondary paths should select the shared form");
 assert.ok(shortcutBlock.includes('data-contact-shortcut="szkody"'),"Mining shortcut missing");
 assert.ok(shortcutBlock.includes('data-contact-shortcut="swiadczenie"'),"Support shortcut missing");
 assert.ok(shortcutBlock.includes('data-contact-shortcut="skd"'),"SKD shortcut missing");

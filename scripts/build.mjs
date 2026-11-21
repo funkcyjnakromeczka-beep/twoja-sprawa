@@ -305,7 +305,7 @@ function stripCssComments(css){
  // This does not touch quoted CSS strings, URLs, selectors or declarations.
  // Collapse repeated empty lines in generated CSS; do not alter source files.
  const commentFree=result+css.slice(start);
- return commentFree.replace(/^[ \t]+/gm,"").replace(/\n{2,}/g,"\n");
+ // Remove newlines only adjacent to CSS declaration/rule delimiters.\n // Do not join words or values: their whitespace can be semantically significant.\n return commentFree.replace(/^[ \t]+/gm,"").replace(/\n{2,}/g,"\n")\n  .replace(/([{};])\n/g,"$1").replace(/\n(?=[{}])/g,"");
 }
 // Combine home CSS in source cascade order. Keep separate CSS for service pages.
 const homeStyleOrder=["styles.css","premium-v2.css","portrait-upgrade.css","journey.css",

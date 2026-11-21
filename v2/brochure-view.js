@@ -133,6 +133,24 @@
  const actions=make("div","ts-brochure-actions");
  const print=make("button","ts-brochure-print","Drukuj / Zapisz PDF");print.type="button";print.addEventListener("click",()=>window.print());
  const link=make("a","ts-brochure-service-link","Przejdź do usługi");link.href=d.service;
+ // Only closed-set service aliases and first-party UTM labels; no visitor data.
+ const aliases={"szkody-gornicze":"szkody","swiadczenie-wspierajace":"swiadczenie",
+  "renty-powypadkowe":"renty","skd":"skd","kredyty-frankowe":"franki",
+  "sluzebnosc-przesylu":"przesyl"};
+ const allowedSources=new Set(["facebook","instagram","tiktok","google","chatgpt.com",
+  "perplexity.ai","claude.ai","gemini.google.com","copilot.microsoft.com","grok.com",
+  "ulotka","plakat","qr","polecenie","organiczne","strona","inne","broszura"]);
+ const incomingSource=(q.get("utm_source")||"").toLowerCase().trim();
+ const contactSource=allowedSources.has(incomingSource)?incomingSource:"broszura";
+ const contactUrl=new URL("https://twoja-sprawa.pages.dev/kontakt");
+ contactUrl.searchParams.set("usluga",aliases[key]);
+ contactUrl.searchParams.set("utm_source",contactSource);
+ contactUrl.searchParams.set("utm_medium","material");
+ contactUrl.searchParams.set("utm_campaign","broszura_"+key.replaceAll("-","_"));
+ contactUrl.searchParams.set("utm_content","broszura_klient");
+ contactUrl.hash="formularz";
+ const contactAction=make("a","ts-brochure-contact-link","Zostaw kontakt");
+ contactAction.href=contactUrl.pathname+contactUrl.search+contactUrl.hash;
  const share=make("button","ts-brochure-share","Udostępnij broszurę");share.type="button";
  const shareFeedback=make("p","ts-brochure-share-feedback","");
  shareFeedback.setAttribute("role","status");
@@ -158,7 +176,7 @@
   }catch{}
   shareFeedback.textContent="Skopiuj ten adres: "+cleanBrochureUrl;
  });
- actions.append(print,share,link);head.append(info,actions);
+ actions.append(print,share,contactAction,link);head.append(info,actions);
  head.append(shareFeedback);
  const note=make("p","ts-brochure-caveat",d.note+" Materiał informacyjny; nie zastępuje indywidualnej analizy. Dalsza współpraca jest dobrowolna i na zasadach przedstawionych przed podpisaniem umowy.");
  root.replaceChildren(head,front,back,note);

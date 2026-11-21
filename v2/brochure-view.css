@@ -128,3 +128,10 @@
 
 /* WCAG: the original gold eyebrow is too light against the library's white panel. */
 .plan-page .plan-brochure-library>.eyebrow{color:#715222!important}
+
+/* Visual brochure selection is primary; the interactive planner remains optional. */
+.plan-page .brochure-hero-note{margin-top:19px!important;font-size:1rem!important}
+.plan-page .brochure-hero-note a{display:inline-flex;min-height:46px;align-items:center;padding:10px 18px;border:1px solid #e1c99f;border-radius:9px;background:#fff4df;color:#233847!important;font-weight:800;text-decoration:none}
+.plan-page .brochure-hero-note a:hover{background:#fff;color:#102f44!important}
+.plan-page .brochure-hero-note a:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.plan-page .plan-brochure-library{scroll-margin-top:105px}

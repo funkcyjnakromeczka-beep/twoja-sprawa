@@ -16,7 +16,8 @@ export function shouldIndexRoute(route) {
       "/wiedza/",
       "/wiedza/drobne-pekniecia-szkody-gornicze.html",
       "/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
-      "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"
+      "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
+      "/wiedza/renta-powypadkowa-dokumenty.html"
     ]).has(route);
   }
   return true;

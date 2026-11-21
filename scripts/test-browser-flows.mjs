@@ -725,7 +725,7 @@ try{
    const rect=link.getBoundingClientRect();
    return {width:rect.width,height:rect.height,left:rect.left,right:rect.right};
   }));
-  assert.equal(geometry.length,3,"Three mobile navigation options required");
+  assert.equal(geometry.length,4,"Four mobile navigation options required: mining, support, SKD and accident rents");
   for(const [i,rect] of geometry.entries()){
    assert.ok(rect.width>=44&&rect.height>=44,
     "Mobile target "+i+" too small at "+width+"px: "+JSON.stringify(rect));

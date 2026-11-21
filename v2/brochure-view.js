@@ -116,7 +116,7 @@
  coverTop.append(make("span","ts-brochure-overline","PORADNIK DLA KLIENTÓW"),make("h3","",d.title),make("h4","",d.sub),make("p","",d.intro));
  const emblem=make("div","ts-brochure-emblem",d.icon);emblem.setAttribute("aria-hidden","true");
  const bottom=make("div","ts-brochure-cover-bottom");
- bottom.append(make("strong","","Nie musisz mieć wszystkiego."),make("p","","Wystarczy zacząć od tego, co już posiadasz."),make("small","","TWOJA SPRAWA  •  SuccessTree / VOTUM"));
+ bottom.append(make("strong","","Nie musisz mieć wszystkiego."),make("p","","Wystarczy zacząć od tego, co już posiadasz."),make("small","","Twoja Sprawa — SuccessTree, niezależna działalność współpracująca z VOTUM. Materiał informacyjny."));
  cover.append(coverTop,emblem,bottom);front.append(rules,contacts,cover);
  const back=make("div","ts-brochure-spread ts-brochure-back");
  d.panels.forEach(([kicker,title,groups,note],i)=>{
@@ -133,7 +133,33 @@
  const actions=make("div","ts-brochure-actions");
  const print=make("button","ts-brochure-print","Drukuj / Zapisz PDF");print.type="button";print.addEventListener("click",()=>window.print());
  const link=make("a","ts-brochure-service-link","Przejdź do usługi");link.href=d.service;
- actions.append(print,link);head.append(info,actions);
+ const share=make("button","ts-brochure-share","Udostępnij broszurę");share.type="button";
+ const shareFeedback=make("p","ts-brochure-share-feedback","");
+ shareFeedback.setAttribute("role","status");
+ shareFeedback.setAttribute("aria-live","polite");
+ const cleanBrochureUrl="https://twoja-sprawa.pages.dev/plan-dzialania?broszura="+encodeURIComponent(key)+"#broszura";
+ share.addEventListener("click",async()=>{
+  shareFeedback.textContent="";
+  try{
+   if(typeof navigator.share==="function"){
+    try{
+     await navigator.share({title:d.title+" — lista dokumentów",text:"Graficzna broszura Twoja Sprawa",url:cleanBrochureUrl});
+     shareFeedback.textContent="Otwarto udostępnianie broszury.";
+     return;
+    }catch(error){
+     if(error?.name==="AbortError"){shareFeedback.textContent="Anulowano udostępnianie.";return;}
+    }
+   }
+   if(navigator.clipboard?.writeText){
+    await navigator.clipboard.writeText(cleanBrochureUrl);
+    shareFeedback.textContent="Skopiowano link do broszury.";
+    return;
+   }
+  }catch{}
+  shareFeedback.textContent="Skopiuj ten adres: "+cleanBrochureUrl;
+ });
+ actions.append(print,share,link);head.append(info,actions);
+ head.append(shareFeedback);
  const note=make("p","ts-brochure-caveat",d.note+" Materiał informacyjny; nie zastępuje indywidualnej analizy. Dalsza współpraca jest dobrowolna i na zasadach przedstawionych przed podpisaniem umowy.");
  root.replaceChildren(head,front,back,note);
  document.body.classList.add("ts-brochure-ready");

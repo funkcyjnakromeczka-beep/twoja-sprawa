@@ -199,7 +199,8 @@ if(!contact.includes("let refreshDirectContact=()=>{};")||
  warn("Formularz: po resecie zgłoszenia awaryjny telefon/e-mail mogą wskazywać niewłaściwego doradcę");
 
 if(!contact.includes('select.value="Szkody górnicze";updateAdvisor();updatePeople();refreshDirectContact();')||
-   !contact.includes('select.value="Świadczenie wspierające";')||
+   !contact.includes('const service=requested==="renty"?"Renty powypadkowe":"Świadczenie wspierające";')||
+   !contact.includes("select.value=service;\n     updateAdvisor();updatePeople();refreshDirectContact();")||
    !contact.includes('updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();syncContactPreference();'))
  warn("Formularz: po wyborze z karty kampanii awaryjny kontakt może wskazywać inną osobę");
 if(!contact.includes('const callbackNumber=entered&&validPhoneNumber(entered)?entered:"[wpisz numer]";')||

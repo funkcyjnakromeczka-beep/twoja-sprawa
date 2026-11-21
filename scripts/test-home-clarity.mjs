@@ -150,8 +150,8 @@ assert.ok(/<div class="lead-panel"><div data-contact-form(?:\s|>)/.test(html),"S
 assert.ok(!html.includes('class="contact-steps"'),"Homepage form should not repeat an unnecessary three-step banner");
 assert.ok(html.includes('class="contact-alternatives"')&&html.includes('class="contact-alternative-links"'),"Phone and email alternatives must remain accessible");
 
-assert.ok(html.includes('href="/v2/plan-dzialania.html">Przygotuj listę kroków'),
-  "The homepage must visibly link to the six-service preparation tool");
+assert.ok(html.includes('href="/v2/plan-dzialania.html#brochure-library-heading">Broszury dokumentów do wydruku'),
+  "Homepage must directly link to the six-service printable brochure library");
 const visibleNameLabels=[
   ["Wojciech · 796 441 345","Wojciech · 796 441 345 —"],
   ["Paulina · 500 171 531","Paulina · 500 171 531 —"],

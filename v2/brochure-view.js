@@ -151,6 +151,9 @@
  contactUrl.hash="formularz";
  const contactAction=make("a","ts-brochure-contact-link","Zostaw kontakt");
  contactAction.href=contactUrl.pathname+contactUrl.search+contactUrl.hash;
+ const socialGraphic=make("a","ts-brochure-media-link","Pobierz grafikę JPG");
+ socialGraphic.href="/assets/og-broszura-"+key+".jpg";
+ socialGraphic.setAttribute("download","Twoja-Sprawa-"+key+"-Facebook.jpg");
  const share=make("button","ts-brochure-share","Udostępnij broszurę");share.type="button";
  const shareFeedback=make("p","ts-brochure-share-feedback","");
  shareFeedback.setAttribute("role","status");
@@ -176,7 +179,7 @@
   }catch{}
   shareFeedback.textContent="Skopiuj ten adres: "+cleanBrochureUrl;
  });
- actions.append(print,share,contactAction,link);head.append(info,actions);
+ actions.append(print,share,socialGraphic,contactAction,link);head.append(info,actions);
  head.append(shareFeedback);
  const note=make("p","ts-brochure-caveat",d.note+" Materiał informacyjny; nie zastępuje indywidualnej analizy. Dalsza współpraca jest dobrowolna i na zasadach przedstawionych przed podpisaniem umowy.");
  root.replaceChildren(head,front,back,note);

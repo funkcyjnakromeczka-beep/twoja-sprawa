@@ -243,14 +243,15 @@ function dynamicTest(name,path,requiredPhone,expectedService="",switchTopic="",v
     finalize(hasName,hasName?"Wybór usługi, imię, telefon i przycisk obecne":"Nie znaleziono pola imienia");
    }
   };
-  frame.addEventListener("load",()=>{
-   // Give deferred JavaScript time to mount. Recheck until a real form appears.
-   inspect();
-   if(!finished)poll=window.setInterval(inspect,250);
-  },{once:true});
+  // Start inspecting immediately: <iframe load> waits for subresources such
+  // as remote images and can be delayed long after the dynamic form is ready.
+  // This can otherwise report seven false negatives on a slow CI connection.
+  frame.addEventListener("load",inspect,{once:true});
   frame.addEventListener("error",()=>finalize(false,"Nie udało się wczytać strony testowej"),{once:true});
   frame.src=path;
   document.body.appendChild(frame);
+  inspect();
+  if(!finished)poll=window.setInterval(inspect,250);
  });
 }
 

@@ -271,6 +271,7 @@ assert.ok(!/localStorage|sessionStorage|document\.cookie|sendBeacon/.test(source
  runInNewContext(source,{document,window,navigator:{},URLSearchParams,Math});
  const form=host.children[0];
  const service=visit(form,n=>n.id?.startsWith("cf-service-"));
+ const firstName=visit(form,n=>n.autocomplete==="given-name");
  const advisor=visit(form,n=>n.className==="contact-advisor");
  const guide=visit(form,n=>n.className==="contact-guide-box");
  assert.equal(service.value,"Kredyt w PLN / SKD");
@@ -768,16 +769,27 @@ for(const sample of [
   }
 }
 
-// Four homepage shortcuts change one form without sending data on selection.
+const homepageMarkup=await readFile("v2/index.html","utf8");
+const contactMarkup=homepageMarkup.split('class="contact-service-shortcuts"')[1]?.split('class="lead-panel"')[0]||"";
+assert.ok(contactMarkup.includes('class="contact-shortcuts-more"')&&contactMarkup.includes("<details"),
+ "Less common contact topics must be expandable without occupying mobile space");
+for(const topic of ["szkody","swiadczenie","skd","renty","franki","przesyl"])
+ assert.ok(contactMarkup.includes('data-contact-shortcut="'+topic+'"'),"Homepage contact selector missing "+topic);
+const shortcutStyles=await readFile("v2/home-flow.css","utf8");
+assert.ok(shortcutStyles.includes(".contact-shortcuts-more>summary:focus-visible"),"Expandable topics need visible keyboard focus");
+assert.ok(shortcutStyles.includes(".contact-shortcuts-secondary"),"Secondary topics must stay responsive");
+// No personal information or additional lead fields are collected by these links.
+
+// Six homepage shortcuts (four primary, two expandable) change one form without sending data.
 {
  const host=new Node("host");
- const mining=new Node("a"),support=new Node("a"),skd=new Node("a"),renty=new Node("a"),feedback=new Node("p");
+ const mining=new Node("a"),support=new Node("a"),skd=new Node("a"),renty=new Node("a"),franki=new Node("a"),przesyl=new Node("a"),feedback=new Node("p");
  const makeKey=(node,key)=>{node.getAttribute=name=>name==="data-contact-shortcut"?key:(node.attributes[name]??null);};
- makeKey(mining,"szkody");makeKey(support,"swiadczenie");makeKey(skd,"skd");makeKey(renty,"renty");
+ makeKey(mining,"szkody");makeKey(support,"swiadczenie");makeKey(skd,"skd");makeKey(renty,"renty");makeKey(franki,"franki");makeKey(przesyl,"przesyl");
  const document={
   body:{classList:{contains:()=>false}},
   currentScript:{getAttribute:()=>""},
-  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-contact-shortcut]"?[mining,support,skd,renty]:selector==="[data-contact-shortcut-status]"?[feedback]:[],
+  querySelectorAll:selector=>selector==="[data-contact-form]"?[host]:selector==="[data-contact-shortcut]"?[mining,support,skd,renty,franki,przesyl]:selector==="[data-contact-shortcut-status]"?[feedback]:[],
   createElement:tag=>new Node(tag),
   createTextNode:text=>({tag:"text",textContent:text})
  };
@@ -811,7 +823,9 @@ for(const sample of [
  assert.equal(mining.attributes["data-selected"],"true");
  assert.equal(support.attributes["data-selected"],"false");
  assert.ok(feedback.textContent.includes("Szkody górnicze"));
- assert.equal(service.focused,true,"Shortcut should move focus to the service field");
+ assert.equal(firstName.focused,true,"Shortcut should move focus straight to the first contact input");
+ assert.equal(mining.attributes["aria-current"],"true","Screen readers should be told which service is selected");
+ assert.equal(support.attributes["aria-current"],"false");
  support.events.click({preventDefault(){}});
  assert.equal(service.value,"Świadczenie wspierające");
  assert.equal(damage.hidden,true,"Support must hide mining qualifier");
@@ -838,6 +852,19 @@ for(const sample of [
  assert.equal(quickPhone.required,false,"Renty accepts email-only contact, unlike SKD");
  assert.ok(feedback.textContent.includes("Renty powypadkowe"));
  assert.ok(advisor.children.some(n=>(n.textContent||"").includes("Paulina Chandrała")),"Renty must route to Paulina");
+ franki.events.click({preventDefault(){}});
+ assert.equal(service.value,"Kredyty frankowe CHF","Expandable CHF link must select the correct form topic");
+ assert.equal(franki.attributes["data-selected"],"true");
+ assert.equal(franki.attributes["aria-current"],"true");
+ assert.equal(renty.attributes["aria-current"],"false");
+ assert.ok(advisor.children.some(n=>(n.textContent||"").includes("Wojciech Obiegło")),"CHF must route to Wojciech");
+ przesyl.events.click({preventDefault(){}});
+ assert.equal(service.value,"Służebność przesyłu","Expandable easement link must preselect the topic");
+ assert.equal(przesyl.attributes["aria-current"],"true");
+ assert.equal(franki.attributes["aria-current"],"false");
+ assert.equal(damage.hidden,true,"Easement must not show mining qualifier");
+ assert.ok(advisor.children.some(n=>(n.textContent||"").includes("Wojciech Obiegło")),"Easement must route to Wojciech");
+
  service.value="Kredyty frankowe CHF";service.events.change();
  assert.equal(mining.attributes["data-selected"],"false");
  assert.equal(support.attributes["data-selected"],"false");

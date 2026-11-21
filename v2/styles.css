@@ -681,3 +681,6 @@ h3{line-height:1.25}
 @media(max-width:600px){
  .contact-form .contact-fast-track{width:100%;justify-self:stretch;text-align:center;min-height:48px}
 }
+
+/* WCAG: prevent generic gold lead-panel links from overriding the light fast-track button. */
+.lead-panel .contact-form a.contact-fast-track{color:#173c54!important}

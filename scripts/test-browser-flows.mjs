@@ -627,12 +627,14 @@ try{
     "tel:"+number,"Wrong number in navigator: "+key);
    const link=await guided.locator(".navigator-contact-cta").getAttribute("href");
    const url=new URL(link,origin);
-   assert.equal(url.pathname,route,"Wrong navigator destination for "+key);
+   // The rents navigator now opens its dedicated campaign, while chatbot routes remain unchanged.
+   const navigatorRoute=key==="renty"?"/kampanie/renty-powypadkowe":route;
+   assert.equal(url.pathname,navigatorRoute,"Wrong navigator destination for "+key);
    assert.equal(url.hash,"#formularz","Navigator should open target form for "+key);
    assert.equal(url.searchParams.get("utm_source"),"facebook","Source attribution missing: "+key);
    assert.equal(url.searchParams.get("utm_campaign"),"lead_2026","Campaign label missing: "+key);
    assert.equal(url.searchParams.get("lead_path"),"navigator","Navigator lead path missing: "+key);
-   if(route==="/kontakt")assert.equal(url.searchParams.get("usluga"),key,
+   if(navigatorRoute==="/kontakt")assert.equal(url.searchParams.get("usluga"),key,
     "Generic contact page must pre-select "+key);
   }
   // Verify that choosing a support stage actually carries that code into
@@ -656,6 +658,40 @@ try{
     "Mam decyzję WZON","Support form did not pre-select stage from navigator");
    assert.equal(await destinationPage.locator(".contact-advisor-copy-address").textContent(),
     "paulina.chandrala@votum-ds.pl","Support form points to wrong adviser");
+
+   // Real browser regression for the two paths added to the navigator.
+   // The form is inspected without entering private data or triggering Web3Forms.
+   const newStageCases=[
+    ["renty","podwyzszenie","/kampanie/renty-powypadkowe","Renty powypadkowe",
+     "Mam rentę i chcę sprawdzić jej podwyższenie","paulina.chandrala@votum-ds.pl"],
+    ["skd","splacony","/kampanie/skd","Kredyt w PLN / SKD",
+     "Kredyt konsumencki został już spłacony","wojciech.obieglo@votum-ds.pl"]
+   ];
+   for(const [key,stageCode,target,serviceName,stageName,advisorMail] of newStageCases){
+    await guided.locator('#dobierz-pomoc [data-navigator="'+key+'"]').click();
+    await guided.locator('#dobierz-pomoc [data-stage="'+stageCode+'"]').click();
+    const stageUrl=new URL(await guided.locator(".navigator-contact-cta").getAttribute("href"),origin);
+    assert.equal(stageUrl.pathname,target,"Wrong new stage route: "+key);
+    assert.equal(stageUrl.hash,"#formularz","Missing form anchor: "+key);
+    assert.equal(stageUrl.searchParams.get("etap"),stageCode,"Stage missing from lead path: "+key);
+    assert.equal(stageUrl.searchParams.get("utm_source"),"facebook","Social attribution missing: "+key);
+    assert.equal(stageUrl.searchParams.get("lead_path"),"navigator","Lead path missing: "+key);
+    for(const secret of ["name","phone","email","pesel","token"]){
+     assert.equal(stageUrl.searchParams.has(secret),false,"Private parameter in navigator URL: "+key);
+    }
+    const nextResponse=await destinationPage.goto(stageUrl.href,{
+     waitUntil:"domcontentloaded",timeout:40000
+    });
+    assert.equal(nextResponse?.status(),200,"New stage campaign unavailable: "+key);
+    const serviceControl=destinationPage.locator(".contact-form select[id^='cf-service']");
+    await serviceControl.waitFor({state:"visible",timeout:15000});
+    assert.equal(await serviceControl.inputValue(),serviceName,"Wrong service in campaign form: "+key);
+    assert.equal(await destinationPage.locator(".contact-stage select").inputValue(),
+     stageName,"Selected navigator stage was lost in the campaign form: "+key);
+    assert.equal(await destinationPage.locator(".contact-advisor-copy-address").textContent(),
+     advisorMail,"Wrong adviser for navigator stage: "+key);
+   }
+   console.log("NAVIGATOR_CAMPAIGN_HANDOFF_OK: support, rent and SKD stages preselect correct forms and advisers.");
   }finally{await destinationPage.close();}
 
 

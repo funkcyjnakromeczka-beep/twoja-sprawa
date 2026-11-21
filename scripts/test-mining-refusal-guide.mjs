@@ -14,7 +14,7 @@ for(const legal of ["art. 151 ust. 1–2","Art. 149","30 dni","pięcioletni","ni
 }
 assert.ok(section.includes("https://eli.gov.pl/eli/DU/2026/69/ogl"),"Only official verified current statute as legal source");
 assert.ok(section.includes('href="/v2/uslugi/szkody-gornicze.html?etap=odmowa#formularz"'),"Lead must preselect safe known refusal stage");
-const cityGuide=guide.match(/<section id="ugoda-pomoc-lokalnie" aria-labelledby="agreement-local-heading">([\\s\\S]*?)<\\/section>/)?.[1]||"";
+const cityGuide=guide.split('<section id="ugoda-pomoc-lokalnie" aria-labelledby="agreement-local-heading">')[1]?.split("</section>")[0]||"";
 assert.ok(cityGuide.includes('<h2 id="agreement-local-heading">'),"Agreement article must expose location-specific navigation");
 for(const slug of ["lubin","polkowice"]){
  const href='/v2/lokalnie/szkody-gornicze-'+slug+'.html';

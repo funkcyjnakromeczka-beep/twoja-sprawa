@@ -55,6 +55,15 @@
     }
     const sources=[...bySource.entries()].map(([source,records])=>({source,...total(records)}))
       .sort((a,b)=>b.leads-a.leads||a.source.localeCompare(b.source));
+    // Separate service topics. Only confirmed manually entered counts are used;
+    // this grouping does not infer visitors, reach or client attribution.
+    const byService=new Map();
+    for(const x of chosen){
+      if(!byService.has(x.service))byService.set(x.service,[]);
+      byService.get(x.service).push(x);
+    }
+    const topics=[...byService.entries()].map(([service,records])=>({service,...total(records)}))
+      .sort((a,b)=>b.clients-a.clients||b.qualified-a.qualified||b.leads-a.leads||a.service.localeCompare(b.service));
     // Wariant utm_content rozróżnia dwie rolki w obrębie jednej kampanii.
     // Nie mieszaj identycznych nazw z różnych kampanii ani dat; bez kontaktów klientów.
     const byCampaign=new Map();
@@ -69,7 +78,7 @@
     })).sort((a,b)=>b.clients-a.clients||b.qualified-a.qualified||
       b.leads-a.leads||a.service.localeCompare(b.service)||
       a.source.localeCompare(b.source)||a.campaign.localeCompare(b.campaign)||a.variant.localeCompare(b.variant));
-    return {count:chosen.length,...total(chosen),sources,campaigns};
+    return {count:chosen.length,...total(chosen),topics,sources,campaigns};
   }
   function csv(rows){
     const list=rows.map(normalize);

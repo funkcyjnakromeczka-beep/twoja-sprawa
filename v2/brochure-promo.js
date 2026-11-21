@@ -6,10 +6,11 @@
  if(!root)return;
  const chooser=root.querySelector("[data-brochure-promo-service]");
  const channel=root.querySelector("[data-brochure-promo-channel]");
+ const channelNote=root.querySelector("[data-brochure-promo-channel-note]");
  const draft=root.querySelector("[data-brochure-promo-draft]");
  const copy=root.querySelector("[data-brochure-promo-copy]");
  const feedback=root.querySelector("[data-brochure-promo-status]");
- if(!chooser||!channel||!draft||!copy||!feedback)return;
+ if(!chooser||!channel||!channelNote||!draft||!copy||!feedback)return;
  const DATA=Object.freeze({
   "szkody-gornicze":{
    text:"Pęknięcia ścian, rysy elewacji albo nierówna kostka w Lubinie lub Polkowicach?\n\nPrzygotowaliśmy bezpłatną broszurę: jakie zdjęcia, dokumenty i pisma zachować przed rozmową o możliwej szkodzie górniczej. Sama rysa nie przesądza o przyczynie uszkodzenia.",
@@ -44,6 +45,13 @@
   // No personal identifiers, cookies or per-visitor tracking are generated.
   const allowedChannels=new Set(["facebook","instagram","tiktok","inne"]);
   const source=allowedChannels.has(channel.value)?channel.value:"inne";
+  const channelTips={
+   facebook:"Na Facebooku możesz umieścić odnośnik bezpośrednio w treści posta.",
+   instagram:"Na większości kont Instagram link w opisie posta nie jest klikalny. Wstaw adres broszury także w linkach profilu lub jako naklejkę linku w relacji, jeśli funkcja jest dostępna.",
+   tiktok:"Na TikToku adres w opisie filmu zwykle nie jest klikalny. Jeśli Twoje konto pozwala na link do strony w profilu, umieść go tam i wskaż odbiorcom profil.",
+   inne:"Sprawdź, czy wybrana platforma pozwala otworzyć link z opisu posta. W razie potrzeby udostępnij adres również w profilu lub wiadomości prywatnej."
+  };
+  channelNote.textContent=channelTips[source];
   const url=new URL("https://twoja-sprawa.pages.dev/plan-dzialania");
   url.searchParams.set("broszura",key);
   url.searchParams.set("utm_source",source);

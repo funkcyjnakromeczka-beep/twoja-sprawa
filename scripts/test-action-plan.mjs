@@ -81,6 +81,22 @@ for(const [name,expectedTel] of [["swiadczenie","500 171 531"],["skd","796 441 3
  assert.equal(serviceLink.hidden,false);
  assert.equal(serviceLink.href,"/v2/uslugi/"+({swiadczenie:"swiadczenie-wspierajace",skd:"kredyty-pln",renty:"renty-powypadkowe",franki:"kredyty-frankowe",przesyl:"sluzebnosc-przesylu"}[name])+".html");
 }
+state.click("renty");
+const rentsStageSelect=get("[data-plan-stage-select]");
+assert.equal(get("[data-plan-stage-container]").hidden,false,"Rent plan should offer stage selection");
+rentsStageSelect.value="podwyzszenie";rentsStageSelect.events.change();
+assert.equal(get("[data-plan-checklist]").children.length,5);
+let stageContact=new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev");
+assert.equal(stageContact.searchParams.get("etap"),"podwyzszenie");
+assert.equal(get("[data-plan-call]").href,"tel:+48500171531");
+state.click("skd");
+const skdStageSelect=get("[data-plan-stage-select]");
+assert.equal(get("[data-plan-stage-container]").hidden,false,"SKD plan should offer stage selection");
+skdStageSelect.value="splacony";skdStageSelect.events.change();
+assert.equal(get("[data-plan-checklist]").children.length,5);
+stageContact=new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev");
+assert.equal(stageContact.searchParams.get("etap"),"splacony");
+assert.equal(get("[data-plan-call]").href,"tel:+48796441345");
 state.click("skd");
 const skdMail=decodeURIComponent(get("[data-plan-email]").href);
 assert.ok(skdMail.startsWith("mailto:wojciech.obieglo@votum-ds.pl?subject="),"SKD email must go to Wojciech");

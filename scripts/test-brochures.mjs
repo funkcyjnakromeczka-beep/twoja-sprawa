@@ -53,7 +53,7 @@ for(const [service,topic,advisor] of brochurePages){
  const navigator={clipboard:{writeText:async text=>{copiedUrl=text;}}};
  runInNewContext(brochureJs,{
   document,location:{search:"?broszura="+encodeURIComponent(topic)},
-  URLSearchParams,window:{print(){}},navigator,
+  URL,URLSearchParams,window:{print(){}},navigator,
   Object,String
  });
  assert.equal(root.hidden,false,"Selected brochure not revealed: "+topic);
@@ -66,6 +66,21 @@ for(const [service,topic,advisor] of brochurePages){
  assert.ok(allText(root).includes("Drukuj / Zapisz PDF"),"Print button must appear: "+topic);
  assert.ok(nodes.some(n=>n.tagName==="BUTTON"&&n.events?.click),"Print control must be wired: "+topic);
  assert.ok(allText(root).includes("Nie musisz mieć wszystkiego."),"No mandatory-document claim: "+topic);
+ const contact=nodes.find(n=>n.tagName==="A"&&n.className==="ts-brochure-contact-link");
+ assert.ok(contact,"Brochure must link to a user-approved first-party contact form: "+topic);
+ const contactURL=new URL(contact.href,"https://twoja-sprawa.pages.dev");
+ const alias={ "szkody-gornicze":"szkody","swiadczenie-wspierajace":"swiadczenie",
+  "renty-powypadkowe":"renty","skd":"skd","kredyty-frankowe":"franki",
+  "sluzebnosc-przesylu":"przesyl" }[topic];
+ assert.equal(contactURL.pathname,"/kontakt");
+ assert.equal(contactURL.hash,"#formularz");
+ assert.equal(contactURL.searchParams.get("usluga"),alias,"Correct brochure service must be selected");
+ assert.equal(contactURL.searchParams.get("utm_source"),"broszura");
+ assert.equal(contactURL.searchParams.get("utm_medium"),"material");
+ assert.equal(contactURL.searchParams.get("utm_campaign"),"broszura_"+topic.replaceAll("-","_"));
+ for(const key of ["pesel","name","email","phone","doc","token"])
+  assert.ok(!contactURL.searchParams.has(key),"Never forward personal data in referral URLs");
+
  const share=nodes.find(n=>n.tagName==="BUTTON"&&n.className==="ts-brochure-share");
  assert.ok(share?.events?.click,"Share button must be available for clients: "+topic);
  await share.events.click();

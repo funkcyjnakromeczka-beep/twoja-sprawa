@@ -7,7 +7,7 @@ const css=await readFile("v2/rent-journey.css","utf8");
 const guide=await readFile("v2/poradniki/renta-powypadkowa-dokumenty.html","utf8");
 const reviewed=await readFile("v2/wiedza/renta-powypadkowa-dokumenty.html","utf8");
 const reviewedHref="/v2/wiedza/renta-powypadkowa-dokumenty.html";
-const guideSection=html.match(/<section class="focus-detail" aria-labelledby="guide-renty-powypadkowe"[\\s\\S]*?<\\/section>/)?.[0]||"";
+const guideSection=html.split('<section class="focus-detail" aria-labelledby="guide-renty-powypadkowe">')[1]?.split("</section>")[0]||"";
 assert.equal(guideSection.split('href="'+reviewedHref+'"').length-1,1,
  "The practical preparation section must link once to the indexed guide");
 assert.ok(html.split('href="'+reviewedHref+'"').length-1>=2,

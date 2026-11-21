@@ -35,6 +35,7 @@ on:
       - 'scripts/test-campaign-links.mjs'
       - 'scripts/test-geo-editorial.mjs'
       - 'scripts/test-brochures.mjs'
+      - 'scripts/test-brochure-promo.mjs'
       - 'scripts/test-brochure-previews.mjs'
       - 'functions/plan-dzialania.js'
       - '.github/workflows/release-candidate.yml'
@@ -97,6 +98,8 @@ jobs:
           node --check scripts/test-campaign-links.mjs
           node --check scripts/test-geo-editorial.mjs
           node --check scripts/test-brochures.mjs
+          node --check scripts/test-brochure-promo.mjs
+          node --check v2/brochure-promo.js
           node --check scripts/test-brochure-previews.mjs
           node --check functions/plan-dzialania.js
           node --check scripts/test-search-index-freshness.mjs
@@ -139,6 +142,7 @@ jobs:
           node scripts/test-campaign-links.mjs
           node scripts/test-geo-editorial.mjs
           node scripts/test-brochures.mjs
+          node scripts/test-brochure-promo.mjs
           node scripts/test-brochure-previews.mjs
           node scripts/test-search-index-freshness.mjs
       - name: Identyfikator zbudowanej wersji

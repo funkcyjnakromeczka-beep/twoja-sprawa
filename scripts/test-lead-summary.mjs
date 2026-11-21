@@ -46,7 +46,7 @@ assert.equal(changedClip.replaced,true,"Exact same day/service/source/campaign/v
 assert.equal(changedClip.rows.length,2);
 const clipsCsv=core.csv(changedClip.rows);
 assert.equal(core.csv(core.parseCsv(clipsCsv)),clipsCsv,"Variant CSV round trip must preserve all clips");
-const legacy="date,service,source,campaign,leads,qualified,clients\\n2026-11-19,szkody,facebook,lokalna_pomoc,7,3,1\\n";
+const legacy="date,service,source,campaign,leads,qualified,clients\n2026-11-19,szkody,facebook,lokalna_pomoc,7,3,1\n";
 const oldRows=core.parseCsv(legacy);
 assert.equal(oldRows.length,1,"Old seven-column exports must remain importable");
 assert.equal(oldRows[0].variant,"bez_wariantu","Legacy imports remain explicitly unattributed to a variant");
@@ -140,6 +140,7 @@ inputs.leads.value="13";inputs.qualified.value="8";inputs.clients.value="3";
 nodes["[data-lead-entry]"].events.submit({preventDefault(){}});
 assert.equal(nodes["[data-lead-entries]"].children.length,1,"Duplicate should update existing row");
 assert.equal(nodes['[data-stat="leads"]'].textContent,"13");
+assert.ok(nodes["[data-lead-status]"].textContent.includes("Zaktualizowano"));
 const existingLeads=nodes['[data-stat="leads"]'].textContent;
 nodes["[data-lead-from-campaign]"].events.click();
 assert.equal(inputs.service.value,"renty");
@@ -149,8 +150,6 @@ assert.equal(inputs.variant.value,"wideo_1");
 assert.equal(nodes['[data-stat="leads"]'].textContent,existingLeads,
  "Pulling categorical UTM from generator must not count any lead");
 assert.ok(nodes["[data-lead-status]"].textContent.includes("niczego nie naliczono"));
-
-assert.ok(nodes["[data-lead-status]"].textContent.includes("Zaktualizowano"));
 await nodes["[data-copy-summary]"].events.click();
 assert.equal(written.at(-1),nodes["[data-csv-output]"].value);
 nodes["[data-csv-input]"].value=core.csv([core.normalize(b)]);

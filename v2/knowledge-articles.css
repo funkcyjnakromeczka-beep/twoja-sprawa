@@ -35,3 +35,30 @@
 .premium-v2 .faq-explore-all a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 19px;border:1px solid #be965b;border-radius:12px;background:#f2dfbc;color:#173b4b;text-decoration:none;text-align:center;font-weight:800;line-height:1.4}
 .premium-v2 .faq-explore-all a:hover{background:#e9cca0}
 .premium-v2 .faq-explore-all a:focus-visible{outline:3px solid #b58c4f;outline-offset:3px}
+
+/* Editorial-to-document handoff: indexed, reviewed knowledge articles may
+   recommend the matching noindex brochure without duplicating article text. */
+.article-brochure-cta{
+ box-sizing:border-box;width:min(930px,calc(100% - 32px));margin:27px auto 37px;
+ padding:clamp(20px,3.6vw,34px);background:#fff8ef;
+ border:1px solid #d0b79b;border-left:6px solid #a82236;border-radius:12px;
+ color:#1d3e4c;box-shadow:0 10px 25px rgba(21,48,61,.075)
+}
+.article-brochure-cta .article-brochure-eyebrow{
+ text-transform:uppercase;font-weight:800;letter-spacing:.06em;font-size:.77rem;color:#805220
+}
+.article-brochure-cta h2{
+ color:#173d4c;font:700 clamp(1.35rem,2.5vw,1.85rem)/1.24 Georgia,serif;
+ max-width:35ch;margin:9px 0 13px
+}
+.article-brochure-cta p{font-size:.97rem;line-height:1.7;color:#39515f;max-width:75ch;margin:0 0 19px}
+.article-brochure-cta>a{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:12px 18px;
+ border:1px solid #a82236;border-radius:8px;text-decoration:none;font-weight:780;line-height:1.35;
+ background:#a82236;color:#fff!important;box-sizing:border-box}
+.article-brochure-cta>a:hover{background:#861a2a;color:#fff!important}
+.article-brochure-cta>a:focus-visible{outline:3px solid #bc914b;outline-offset:3px}
+@media(max-width:580px){
+ .article-brochure-cta{width:calc(100% - 24px);margin:20px auto 30px;padding:20px 17px}
+ .article-brochure-cta>a{display:flex;justify-content:center;text-align:center}
+}
+@media print{.article-brochure-cta{break-inside:avoid;box-shadow:none}}

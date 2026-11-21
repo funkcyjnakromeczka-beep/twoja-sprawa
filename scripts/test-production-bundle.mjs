@@ -89,7 +89,7 @@ assert.ok(!(await read("sitemap.xml")).includes("<loc>"+origin+"/kontakty/"),
 console.log("VCARD_CONTACTS_OK: two public business vCards, 3 service links, correct format, no lead transmission.");
 
 
-// RSS: only the three legally/editorially approved, canonical guides.
+// RSS: only explicitly reviewed and indexable canonical guides.
 const rss=await read("feed.xml");
 const rssHeaders=await read("_headers");
 const rssSitemap=await read("sitemap.xml");
@@ -98,7 +98,7 @@ assert.ok(rss.includes('<rss version="2.0"')&&rss.includes('xmlns:atom=')&&rss.i
 assert.ok(rss.includes('<language>pl-PL</language>'),"RSS language missing");
 assert.ok(rss.includes('<atom:link href="'+origin+'/feed.xml" rel="self" type="application/rss+xml"/>'),"RSS self reference wrong");
 const rssItems=rss.split("<item>").slice(1).map(item=>item.split("</item>")[0]);
-assert.equal(rssItems.length,3,"RSS should contain exactly three reviewed guides");
+assert.equal(rssItems.length,feedArticlePaths.length,"RSS should match the approved guide allowlist");
 // Each editorial revision changes RSS order; validate the stable source-backed
 // sorting rule instead of freezing the dates/order of a previous release.
 const expectedRSS=(await Promise.all(feedArticlePaths.map(async relative=>{
@@ -125,7 +125,7 @@ for(const page of [home,await read("wiedza/index.html")]){
 }
 assert.ok(rssHeaders.includes("/feed.xml")&&rssHeaders.includes("Content-Type: application/rss+xml; charset=utf-8"),
  "Production RSS Content-Type header missing");
-console.log("VERIFIED_RSS_OK: exactly 3 reviewed guides, date-only updates, clean URLs, autodiscovery, no unpublished drafts.");
+console.log("VERIFIED_RSS_OK: reviewed guide allowlist, date-only updates, clean URLs, autodiscovery, no unpublished drafts.");
 
 assert.equal((recruitmentRelease.match(/class="network-brand-bar"/g)||[]).length,1,
  "Recruitment release must have one persistent VOTUM partner bar");
@@ -157,7 +157,8 @@ for(const page of ["index.html","kontakt.html"]){
 // are replaced by the real form when it initializes successfully.
 for(const [page,telephone,email] of [
  ["wiedza/drobne-pekniecia-szkody-gornicze.html","+48796441345","wojciech.obieglo@votum-ds.pl"],
- ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","+48500171531","paulina.chandrala@votum-ds.pl"]
+ ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","+48500171531","paulina.chandrala@votum-ds.pl"],
+ ["wiedza/renta-powypadkowa-dokumenty.html","+48500171531","paulina.chandrala@votum-ds.pl"]
 ]){
  const html=await read(page);
  const region=html.match(/<div data-contact-form>([\s\S]*?)<\/div>/)?.[1]||"";
@@ -166,7 +167,7 @@ for(const [page,telephone,email] of [
  assert.ok(region.includes('href="mailto:'+email+'"'),"Guide wrong fallback e-mail: "+page);
  assert.ok(region.includes("Wiadomość e-mail trzeba wysłać samodzielnie"),"Guide must explain mailto is not sending: "+page);
 }
-console.log("GUIDE_NOJS_FALLBACK_OK: both flagship guides retain working phone/e-mail if the form fails.");
+console.log("GUIDE_NOJS_FALLBACK_OK: published client guides retain working phone/e-mail if the form fails.");
 
 
 
@@ -337,7 +338,8 @@ for(const target of ["index.html","kontakt.html","faq.html","uslugi/szkody-gorni
 for(const target of [
  "wiedza/drobne-pekniecia-szkody-gornicze.html",
  "wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
- "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"
+ "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
+ "wiedza/renta-powypadkowa-dokumenty.html"
 ]){
  const html=await read(target);
  assert.ok(html.includes('name="robots" content="index,follow"'),"Approved guide should be indexable: "+target);

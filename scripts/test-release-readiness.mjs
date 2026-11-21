@@ -21,12 +21,13 @@ assert.equal(shouldIndexRoute("/404.html"),false);
 assert.equal(shouldIndexRoute("/wiedza/"),true);
 assert.equal(shouldIndexRoute("/wiedza/drobne-pekniecia-szkody-gornicze.html"),true);
 assert.equal(shouldIndexRoute("/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html"),true);
+assert.equal(shouldIndexRoute("/wiedza/renta-powypadkowa-dokumenty.html"),true);
 assert.equal(shouldIndexRoute("/kampanie/szkody-gornicze.html"),false);
 assert.equal(shouldIndexRoute("/kampanie/swiadczenie-wspierajace.html"),false);
 for(const marker of ['id="zespol"','id="uslugi"','id="kontakt"','class="hub-all-link"']){
  assert.ok(home.includes(marker),"Homepage conversion/SEO link missing: "+marker);
 }
-for(const path of ["drobne-pekniecia-szkody-gornicze.html","swiadczenie-wspierajace-2026-wzon-zus.html"]){
+for(const path of ["drobne-pekniecia-szkody-gornicze.html","swiadczenie-wspierajace-2026-wzon-zus.html","renta-powypadkowa-dokumenty.html"]){
  assert.ok(hub.includes(path),"Library hub article not linked: "+path);
 }
 for(const marker of ["data-contact-form","telefon","Web3Forms"]){

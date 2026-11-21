@@ -15,8 +15,7 @@ for(const page of pages){
 // to the mining adviser or to an unrelated homepage form.
 for(const [path,destination] of [
  ["swiadczenie-wspierajace-dokumenty.html","/v2/kampanie/swiadczenie-wspierajace.html#formularz"],
- ["swiadczenie-wspierajace-wzon-zus.html","/v2/kampanie/swiadczenie-wspierajace.html#formularz"],
- ["renta-powypadkowa-dokumenty.html","/v2/uslugi/renty-powypadkowe.html#formularz"]
+ ["swiadczenie-wspierajace-wzon-zus.html","/v2/kampanie/swiadczenie-wspierajace.html#formularz"]
 ]){
  const page=await readFile("v2/wiedza/"+path,"utf8");
  assert.ok(!page.includes('href="tel:+48796441345"'),"Wrong mining contact on educational page "+path);
@@ -24,6 +23,20 @@ for(const [path,destination] of [
  assert.ok(page.includes('class="btn" href="'+destination+'"'),"Primary lead CTA should open the service-specific contact form: "+path);
  assert.ok(page.includes('href="'+destination+'">Kontakt</a>'),"Header contact must retain correct service: "+path);
 }
+// Reviewed rent article now has its own preselected form and static no-JS contact.
+const rentGuide=await readFile("v2/wiedza/renta-powypadkowa-dokumenty.html","utf8");
+for(const required of [
+ 'href="#formularz">Kontakt</a>',
+ 'class="btn" href="#formularz"',
+ 'data-contact-form',
+ 'src="/v2/contact.js" data-service="Renty powypadkowe"',
+ 'href="tel:+48500171531"',
+ 'href="mailto:paulina.chandrala@votum-ds.pl"',
+ 'href="/v2/plan-dzialania.html?broszura=renty-powypadkowe#broszura"'
+]){
+ assert.ok(rentGuide.includes(required),"Reviewed rent guide lost first-contact path: "+required);
+}
+assert.ok(!rentGuide.includes('href="tel:+48796441345"'),"Rent article cannot route to mining adviser");
 // Older knowledge articles now lead directly to the contextual contact form
 // instead of dropping a visitor at an unselected homepage contact form.
 for(const [path,target,phone] of [

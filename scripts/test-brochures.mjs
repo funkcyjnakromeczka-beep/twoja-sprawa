@@ -17,7 +17,8 @@ assert.ok(hubHtml.includes('Broszury dokumentów — do druku i udostępniania')
 for(const [page,brochure] of [
  ["drobne-pekniecia-szkody-gornicze","szkody-gornicze"],
  ["ugoda-z-kopalnia-co-sprawdzic","szkody-gornicze"],
- ["swiadczenie-wspierajace-2026-wzon-zus","swiadczenie-wspierajace"]
+ ["swiadczenie-wspierajace-2026-wzon-zus","swiadczenie-wspierajace"],
+ ["renta-powypadkowa-dokumenty","renty-powypadkowe"]
 ]){
  const article=await readFile("v2/wiedza/"+page+".html","utf8");
  assert.ok(article.includes('class="article-brochure-cta"'),

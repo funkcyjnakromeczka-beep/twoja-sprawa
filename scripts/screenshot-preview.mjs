@@ -1083,7 +1083,7 @@ try{
   ["szkody","/kampanie/szkody-gornicze"],
   ["swiadczenie","/kampanie/swiadczenie-wspierajace"],
   ["skd","/kampanie/skd"],
-  ["renty","/uslugi/renty-powypadkowe"],
+  ["renty","/kampanie/renty-powypadkowe"],
   ["przesyl","/uslugi/sluzebnosc-przesylu"]
  ]){
   await campaignSelector.selectOption(service);

@@ -668,9 +668,9 @@ try{
  // Homepage flagship shortcuts must work by keyboard/touch on a small phone.
  const flagshipPage=await browser.newPage({viewport:{width:390,height:844}});
  await flagshipPage.goto(origin+"/",{waitUntil:"domcontentloaded"});
- const miningShortcut=flagshipPage.locator('[data-contact-shortcut="szkody"]');
- const supportShortcut=flagshipPage.locator('[data-contact-shortcut="swiadczenie"]');
- const skdShortcut=flagshipPage.locator('[data-contact-shortcut="skd"]');
+ const miningShortcut=flagshipPage.locator('.contact-service-shortcuts [data-contact-shortcut="szkody"]');
+ const supportShortcut=flagshipPage.locator('.contact-service-shortcuts [data-contact-shortcut="swiadczenie"]');
+ const skdShortcut=flagshipPage.locator('.contact-service-shortcuts [data-contact-shortcut="skd"]');
  if(await flagshipPage.locator(".contact-service-shortcuts [data-contact-shortcut]").count()!==6)throw Error("Form selector must expose four primary and two expanded contact shortcuts");
  await miningShortcut.click();
  let flagshipSelection=await flagshipPage.locator('.contact-form select[id^="cf-service-"]').inputValue();

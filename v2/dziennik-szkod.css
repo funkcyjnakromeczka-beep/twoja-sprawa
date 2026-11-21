@@ -35,3 +35,12 @@
  .mining-log .mining-log-hint{border-left:2px solid #777;background:#fff}
  .mining-log-back{display:none!important}
 }
+
+/* Preferred graphical brochure entry; old interactive list remains optional. */
+.graphic-brochure-start{display:flex;align-items:center;justify-content:space-between;gap:28px;margin:25px 0 22px;padding:clamp(20px,3.5vw,30px);border:1px solid #d0b596;border-left:5px solid #ad2738;border-radius:14px;background:#fffaf3;box-shadow:0 10px 26px rgba(27,47,58,.07)}
+.graphic-brochure-start h2{color:#1e3443;font:700 clamp(1.4rem,2.5vw,1.9rem)/1.25 Georgia,serif;margin:5px 0 12px}
+.graphic-brochure-start p{color:#4c616c;line-height:1.6;max-width:65ch}
+.graphic-brochure-start .btn{flex:none;text-align:center}
+.graphic-brochure-start a:focus-visible{outline:3px solid #a67e3b;outline-offset:3px}
+@media(max-width:820px){.graphic-brochure-start{flex-direction:column;align-items:stretch}.graphic-brochure-start .btn{width:100%;box-sizing:border-box}}
+@media print{.graphic-brochure-start{display:none!important}}

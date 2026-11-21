@@ -7,10 +7,10 @@ import {readFile} from "node:fs/promises";
 const facebookMining="https://www.facebook.com/szkodygornicze.pomoc/";
 const tiktokMining="https://www.tiktok.com/@w.o.votum";
 const facebookGroup="https://www.facebook.com/groups/4385749378342889/";
-const supportGroup="https://www.facebook.com/groups/1774654267299204/";
+const supportGroup="https://www.facebook.com/groups/twojasprawa.swiadczenia.renty";
 const skdProfile="https://www.facebook.com/w.bieglo/";
 const cases=[
- ["v2/index.html",[facebookGroup],"social-home-community"],
+ ["v2/index.html",[facebookGroup,supportGroup],"social-home-community"],
  ["v2/uslugi/szkody-gornicze.html",[tiktokMining,facebookMining],"social-szkody"],
  ["v2/kampanie/szkody-gornicze.html",[tiktokMining,facebookMining],"social-szkody"],
  ["v2/uslugi/swiadczenie-wspierajace.html",[supportGroup],"social-swiadczenie"],

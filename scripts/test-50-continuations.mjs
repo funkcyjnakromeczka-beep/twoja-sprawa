@@ -58,7 +58,10 @@ add("27. Awaryjny kontakt przez e-mail",()=>assert.ok(
 ));
 add("28. Zgoda na kontakt w formularzu",()=>assert.ok(form.includes("ack.required=true")));
 add("29. Telefon lub e-mail: dynamiczny wymóg",()=>assert.ok(form.includes("syncContactPreference")));
-add("30. Formularz przyjmuje wybór z planu",()=>assert.ok(form.includes('"plan"].includes(requestedLeadPath)')));
+add("30. Formularz przyjmuje wybór z planu i broszury",()=>{
+ assert.match(form,/const leadPath=\[[^\]]*"plan"[^\]]*"broszura"[^\]]*\]\.includes\(requestedLeadPath\)/,
+  "Formularz musi rozpoznawać prawidłowe źródło przejścia: plan oraz broszura");
+});
 add("31. Plan ma kategorię szkód górniczych",()=>assert.ok(plan.includes("szkody:{")));
 add("32. Plan ma kategorię świadczeń",()=>assert.ok(plan.includes("swiadczenie:{")));
 add("33. Plan ma kategorię rent",()=>assert.ok(plan.includes("renty:{")));

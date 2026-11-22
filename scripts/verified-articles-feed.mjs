@@ -11,7 +11,8 @@ export const feedArticlePaths=Object.freeze([
  "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
  "wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
  "wiedza/renta-powypadkowa-dokumenty.html",
- "wiedza/swiadczenie-wspierajace-dokumenty.html"
+ "wiedza/swiadczenie-wspierajace-dokumenty.html",
+ "wiedza/kredyt-pln-dokumenty-skd.html"
 ]);
 const xmlEscape=value=>String(value)
  .replaceAll("&","&amp;").replaceAll("<","&lt;")
@@ -48,7 +49,7 @@ export async function buildVerifiedArticlesFeed({source="v2",origin}){
    throw Error("RSS requires a grounded ISO calendar date: "+relative);
   }
   const canonical=origin+toPublicRoute(path);
-  items.push({title,description,modified,canonical,category:relative.includes("swiadczenie")?"Świadczenie wspierające":relative.includes("renta-powypadkowa")?"Renty powypadkowe":"Szkody górnicze"});
+  items.push({title,description,modified,canonical,category:relative.includes("swiadczenie")?"Świadczenie wspierające":relative.includes("renta-powypadkowa")?"Renty powypadkowe":relative.includes("kredyt-pln")?"Kredyt konsumencki / SKD":"Szkody górnicze"});
  }
  if(new Set(items.map(item=>item.canonical)).size!==items.length)throw Error("RSS canonical URLs not unique");
  items.sort((a,b)=>b.modified.localeCompare(a.modified)||a.canonical.localeCompare(b.canonical));
@@ -68,7 +69,7 @@ export async function buildVerifiedArticlesFeed({source="v2",origin}){
   '<channel>\n'+
   '  <title>Twoja Sprawa — sprawdzone poradniki</title>\n'+
   '  <link>'+xmlEscape(origin+'/wiedza/')+'</link>\n'+
-  '  <description>Materiały edukacyjne SuccessTree o szkodach górniczych, świadczeniu wspierającym i rentach powypadkowych. Bez gwarancji wyników spraw.</description>\n'+
+  '  <description>Materiały edukacyjne SuccessTree o szkodach górniczych, świadczeniu wspierającym, rentach powypadkowych i SKD. Bez gwarancji wyników spraw.</description>\n'+
   '  <language>pl-PL</language>\n'+
   '  <atom:link href="'+xmlEscape(origin+'/feed.xml')+'" rel="self" type="application/rss+xml"/>\n'+
   body+'\n</channel>\n</rss>\n';

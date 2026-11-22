@@ -89,3 +89,17 @@ body.premium-subpage:has(.service-section-nav) .article details summary{min-heig
 .service-first-steps li span{grid-column:2;line-height:1.55;font-size:.9rem}
 @media(max-width:760px){.service-first-steps ol{grid-template-columns:minmax(0,1fr);gap:8px}.service-first-steps li{padding:13px}.service-first-steps{margin-block:16px}.premium-subpage .service-section-nav .service-section-link{padding:10px 8px}}
 @media print{.service-first-steps{break-inside:avoid;background:#fff}.service-first-steps li:before{color:#111;background:#fff;border:1px solid #777}}
+
+
+/* Matching film-panel artwork on the service pages, using verified local SVGs. */
+body.premium-subpage.theme-mining{--film-panel-art:url("/v2/assets/project-mining.svg");--film-panel-bg:#4d2a3c}
+body.premium-subpage.theme-support{--film-panel-art:url("/v2/assets/project-support.svg");--film-panel-bg:#215d47}
+body.premium-subpage.theme-rents{--film-panel-art:url("/v2/assets/project-rents.svg");--film-panel-bg:#275955}
+body.premium-subpage.theme-skd{--film-panel-art:url("/v2/assets/project-credit.svg");--film-panel-bg:#263f60}
+body.premium-subpage.theme-energy{--film-panel-art:url("/v2/assets/project-utility.svg");--film-panel-bg:#255865}
+body.premium-subpage .focus-detail[aria-labelledby^="film-"]{background:linear-gradient(128deg,#0d1c30,var(--film-panel-bg,#25445b));border-color:#aebfce;border-radius:18px}
+body.premium-subpage .focus-detail[aria-labelledby^="film-"]::before{background-image:var(--film-panel-art,none),radial-gradient(ellipse at 78% 30%,var(--film-panel-bg,#25445b),#0d1c30);background-size:70% auto,cover;background-repeat:no-repeat;background-position:center,center;align-content:end;padding:20px;color:#fff;font-size:1.9rem;border-color:#ffffff60;min-height:220px;box-sizing:border-box;text-shadow:0 3px 9px #000}
+body.premium-subpage .focus-detail[aria-labelledby^="film-"] .btn{border-radius:10px;min-height:48px;align-items:center}
+body.premium-subpage .focus-detail[aria-labelledby^="film-"] .btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(max-width:760px){body.premium-subpage .focus-detail[aria-labelledby^="film-"]::before{min-height:160px;aspect-ratio:16/9;max-height:280px;background-size:56% auto,cover}body.premium-subpage .focus-detail[aria-labelledby^="film-"] .btn{width:100%;box-sizing:border-box}}
+@media print{body.premium-subpage .focus-detail[aria-labelledby^="film-"]::before{display:none}body.premium-subpage .focus-detail[aria-labelledby^="film-"]{display:block}}

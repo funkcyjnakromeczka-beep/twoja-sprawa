@@ -718,3 +718,28 @@ for(const path of releaseNavigationPages){
  assert.equal(repeated.html,html,"Final HTML still requires navigation reconciliation: "+path);
 }
 console.log("SITEWIDE_NAVIGATION_OK",JSON.stringify({pages:releaseNavigationPages.length,legacyRules:expectedLegacyRules.length}));
+
+
+// Campaign journeys should retain one visible lead form while allowing a safe
+// secondary reading path. Navigation always targets existing same-page IDs.
+for(const [campaign,service,person,resource] of [
+ ["szkody-gornicze","Szkody górnicze","Wojciech Obiegło","szkody-gornicze"],
+ ["swiadczenie-wspierajace","Świadczenie wspierające","Paulina Chandrała","swiadczenie-wspierajace"],
+ ["skd","Kredyt w PLN / SKD","Wojciech Obiegło","skd"],
+ ["renty-powypadkowe","Renty powypadkowe","Paulina Chandrała","renty-powypadkowe"]
+]){
+ const html=await read("kampanie/"+campaign+".html");
+ const nav=html.match(/<nav class="campaign-reader-path wrap"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+ assert.ok(nav,"Missing compact campaign navigation: "+campaign);
+ const anchors=[...nav.matchAll(/href="#([^"]+)"/g)].map(m=>m[1]);
+ assert.equal(anchors.length,3,"Exactly three secondary reading links required: "+campaign);
+ for(const id of anchors)assert.ok(html.includes('id="'+id+'"'),"Missing reading destination: "+campaign+" #"+id);
+ assert.equal((html.match(/data-contact-form/g)||[]).length,1,"Campaign gained multiple lead forms: "+campaign);
+ assert.ok(html.includes('data-service="'+service+'"'),"Campaign service changed: "+campaign);
+ assert.ok(html.includes("Osoba do kontaktu: "+person),"Campaign adviser changed: "+campaign);
+ assert.ok(html.includes('href="/plan-dzialania?broszura='+resource+'#broszura"'),
+  "Missing direct printable brochure: "+campaign);
+ assert.ok(html.includes('href="/faq?temat='+(campaign==="szkody-gornicze"?"szkody":campaign==="swiadczenie-wspierajace"?"swiadczenie":campaign==="renty-powypadkowe"?"renty":"skd")+'#faq-hub-title"'),
+  "Missing topic FAQ: "+campaign);
+}
+console.log("CAMPAIGN_READING_PATHS_OK: four landings, 12 validated reading anchors, four brochures and unchanged advisers.");

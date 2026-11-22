@@ -5,6 +5,9 @@ import {readFile,stat,readdir} from "node:fs/promises";
 import {pruneHomepageRules} from "./homepage-css-prune.mjs";
 import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 import {feedArticlePaths} from "./verified-articles-feed.mjs";
+import {PAGE_PATHS} from "./page-navigation.mjs";
+import {legacyPageRedirects} from "./legacy-page-redirects.mjs";
+import {enhanceKeyboardNavigation} from "./keyboard-navigation.mjs";
 const origin="https://twoja-sprawa.pages.dev";
 const read=path=>readFile("dist/"+path,"utf8");
 const releaseInfo=JSON.parse(await read("release-info.json"));
@@ -691,3 +694,27 @@ for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkow
 }
 assert.ok((await read("404.html")).includes('href="/plan-dzialania#brochure-library-heading"'),"Missing 404 brochure recovery");
 console.log("BROCHURE_ROUTES_OK: six brochure topics, legacy redirects and recovery link.");
+
+
+// Release-wide accessibility and route recovery: assert actual generated files,
+// not just the existence of a new source stylesheet or a theoretical test count.
+const releaseNavigationPages=[...PAGE_PATHS,"kampanie/renty-powypadkowe.html"];
+const releaseRedirectRules=(await read("_redirects")).split(/\r?\n/);
+const expectedLegacyRules=legacyPageRedirects(releaseNavigationPages);
+const redirectSources=new Set();
+for(const rule of expectedLegacyRules){
+ assert.ok(releaseRedirectRules.includes(rule),"Missing legacy page recovery: "+rule);
+ const [source,destination]=rule.split(" ");
+ assert.ok(!redirectSources.has(source),"Duplicate legacy source: "+source);
+ redirectSources.add(source);
+ assert.ok(!destination.startsWith("/v2"),"Legacy redirect would loop: "+rule);
+}
+for(const path of releaseNavigationPages){
+ const html=await read(path);
+ const main=html.match(/<main\b[^>]*>/i)?.[0]||"";
+ assert.match(main,/\btabindex="-1"/,"Keyboard skip focus target missing: "+path);
+ const repeated=enhanceKeyboardNavigation(html,path);
+ assert.equal(repeated.changes.length,0,"Final navigation pass must be idempotent: "+path);
+ assert.equal(repeated.html,html,"Final HTML still requires navigation reconciliation: "+path);
+}
+console.log("SITEWIDE_NAVIGATION_OK",JSON.stringify({pages:releaseNavigationPages.length,legacyRules:expectedLegacyRules.length}));

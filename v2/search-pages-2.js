@@ -102,7 +102,7 @@ window.TwojaSprawaSearchPages2=[
     "title": "Świadczenie wspierające 2026 — WZON i ZUS",
     "description": "Świadczenie wspierające w 2026 r.: WZON, decyzja o poziomie potrzeby wsparcia od 70 punktów, wniosek do ZUS i ważne terminy. Poradnik SuccessTree.",
     "category": "swiadczenie",
-    "keywords": "Świadczenie wspierające w 2026 r. — od decyzji WZON do ZUS. v2 wiedza swiadczenie wspierajace 2026 wzon zus html Swiadczenie Wspierajace 2026 WZON ZUS"
+    "keywords": "Świadczenie wspierające w 2026 r. — od decyzji WZON do ZUS. v2 wiedza swiadczenie wspierajace 2026 wzon zus html Swiadczenie Wspierajace 2026 WZON ZUS decyzja punktacja 70 punktów odwołanie ponowne rozpatrzenie 14 dni trzy miesiące wyrównanie data doręczenia sąd"
   },
   {
     "id": "page:v2/wiedza/swiadczenie-wspierajace-dokumenty.html",

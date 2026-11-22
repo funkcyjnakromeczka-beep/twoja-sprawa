@@ -252,3 +252,38 @@
  .plan-page .plan-brochure-link-copy>span{width:24px;height:28px;font-size:1rem}
 }
 @media screen and (prefers-reduced-motion:reduce){.plan-page .plan-brochure-links>a{transition:none}}
+
+
+/* BROCHURE-READING-20261122 — screen reading mode; print remains a two-sheet tri-fold. */
+@media screen{
+ .ts-brochure-control{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;padding:20px;border-radius:12px}
+ .ts-brochure-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%}
+ .ts-brochure-tool-group,.ts-brochure-lead-group{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0}
+ .ts-brochure-tool-group>:is(button,a),.ts-brochure-lead-group>a{min-width:0;box-sizing:border-box;text-align:center;line-height:1.4;border-radius:8px;padding:10px 12px;overflow-wrap:anywhere}
+ .ts-brochure-tool-group>.ts-brochure-print{background:#18384e;border-color:#18384e;color:#fff!important;font-weight:800}
+ .ts-brochure-tool-group>:is(.ts-brochure-share,.ts-brochure-media-link){background:#f0f5f9;color:#18384e!important;border-color:#a5bbcb}
+ .ts-brochure-lead-group>.ts-brochure-service-link{background:#fff;color:#18384e!important;border-color:#a4b9c8}
+ .ts-brochure-spread{border-radius:12px;overflow:hidden}
+ /* Absolute positioning can overlap long contact data on desktop. */
+ .ts-brochure-contact .ts-brochure-qr{position:static;margin:20px 0 14px}
+ .ts-brochure-contact .ts-brochure-endnote{position:static;margin-top:16px}
+ .ts-brochure-reading-end{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
+ .ts-brochure-reading-end :is(button,a){display:inline-flex;justify-content:center;align-items:center;min-height:48px;padding:11px 16px;border:1px solid #a3b7c6;border-radius:8px;background:#f2f6fa;color:#18384e;font:750 .92rem/1.4 system-ui,sans-serif;text-align:center;text-decoration:none;cursor:pointer}
+ .ts-brochure-reading-end button{background:#18384e;color:#fff;border-color:#18384e}
+ .ts-brochure-reading-end :is(button,a):focus-visible{outline:3px solid #a62c46;outline-offset:3px}
+}
+@media screen and (max-width:980px){
+ /* On screen, show the cover first rather than the left flap of the print spread. */
+ .ts-brochure-front .ts-brochure-cover{grid-row:1}
+ .ts-brochure-front .ts-brochure-rules{grid-row:2}
+ .ts-brochure-front .ts-brochure-contact{grid-row:3}
+}
+@media screen and (max-width:620px){
+ .ts-brochure-control{padding:14px;gap:12px}
+ .ts-brochure-tool-group,.ts-brochure-lead-group{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ts-brochure-tool-group>.ts-brochure-print,.ts-brochure-lead-group>.ts-brochure-contact-link{grid-column:1/-1}
+ .ts-brochure-reading-end>*{flex:1 1 160px}
+ .ts-brochure-quick-nav a{font-size:.85rem}
+}
+@media screen and (max-width:350px){.ts-brochure-tool-group,.ts-brochure-lead-group{grid-template-columns:minmax(0,1fr)}}
+@media print{.ts-brochure-reading-end{display:none!important}}

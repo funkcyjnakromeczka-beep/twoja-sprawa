@@ -342,7 +342,8 @@ for(const target of [
  "wiedza/renta-powypadkowa-dokumenty.html",
  "wiedza/swiadczenie-wspierajace-dokumenty.html",
  "wiedza/kredyt-pln-dokumenty-skd.html",
- "wiedza/sluzebnosc-przesylu-slup-na-dzialce.html"
+ "wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
+ "wiedza/wypadek-przy-pracy-pierwsze-kroki.html"
 ]){
  const html=await read(target);
  assert.ok(html.includes('name="robots" content="index,follow"'),"Approved guide should be indexable: "+target);

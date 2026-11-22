@@ -116,7 +116,7 @@ for(const [i,item] of rssItems.entries()){
  assert.ok(rssSitemap.includes("<loc>"+rssUris[i]+"</loc>"),"RSS item not present in SEO sitemap");
  assert.ok(!item.includes("/v2/")&&!item.includes(".html"),"RSS must not emit legacy URLs");
 }
-for(const fragment of ["wiedza/kredyt-pln-dokumenty-skd","wiedza/szkody-gornicze-drobne-pekniecia","/poradniki/","PESEL","<script"]){
+for(const fragment of ["wiedza/szkody-gornicze-drobne-pekniecia","/poradniki/","PESEL","<script"]){
  assert.ok(!rss.includes(fragment),"RSS must not publish draft or sensitive source: "+fragment);
 }
 for(const page of [home,await read("wiedza/index.html")]){
@@ -340,7 +340,8 @@ for(const target of [
  "wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
  "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
  "wiedza/renta-powypadkowa-dokumenty.html",
- "wiedza/swiadczenie-wspierajace-dokumenty.html"
+ "wiedza/swiadczenie-wspierajace-dokumenty.html",
+ "wiedza/kredyt-pln-dokumenty-skd.html"
 ]){
  const html=await read(target);
  assert.ok(html.includes('name="robots" content="index,follow"'),"Approved guide should be indexable: "+target);
@@ -348,7 +349,6 @@ for(const target of [
 }
 // Do not accidentally publish draft guides or lead checklists as SEO pages.
 for(const target of [
- "wiedza/kredyt-pln-dokumenty-skd.html",
  "wiedza/szkody-gornicze-drobne-pekniecia.html",
  "poradniki/checklista-szkody-gorniczej.html",
  "poradniki/frankowicze-lista-kontrolna.html",

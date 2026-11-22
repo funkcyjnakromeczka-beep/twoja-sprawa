@@ -798,3 +798,35 @@
  .premium-v2 .site-header .main-nav.nav-open>.nav-more .nav-more-links{margin-top:7px}
 }
 @media(max-width:340px){.premium-v2 .site-header .main-nav.nav-open{grid-template-columns:minmax(0,1fr)}}
+
+
+/* Trust and group credentials: distinguish reported data from individual case outcomes. */
+.premium-v2 #zespol .team-trust-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 0}
+.premium-v2 #zespol .team-trust-links>a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;align-items:center;min-height:74px;padding:13px 16px;border:1px solid #bdcbd8;background:#fff;border-radius:11px;color:#18374e;text-decoration:none;box-sizing:border-box}
+.premium-v2 #zespol .team-trust-links>a strong{font-size:.98rem;line-height:1.4}
+.premium-v2 #zespol .team-trust-links>a small{grid-column:1;color:#485f70;font-size:.82rem;line-height:1.45}
+.premium-v2 #zespol .team-trust-links>a>span{grid-column:2;grid-row:1/3;font-size:1.25rem;color:#a62c46}
+.premium-v2 #zespol .team-trust-links>a:hover{background:#edf3f8;border-color:#8b9fb2}
+.premium-v2 #zespol .team-trust-links>a:focus-visible{outline:3px solid #a62c46;outline-offset:3px}
+.premium-v2 .votum-proof .votum-stats{gap:12px}
+.premium-v2 .votum-proof .votum-stats>.proof-stat{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0;padding:clamp(14px,2.1vw,23px);background:#fff;border:1px solid #c4d1de;border-top:4px solid #a62c46;border-radius:12px;box-shadow:0 7px 21px #18334c0d}
+.premium-v2 .votum-proof .proof-stat .proof-stat-label{display:flex;align-items:center;gap:7px;margin:0;color:#465c70;font-size:.78rem;font-weight:750;line-height:1.4}
+.premium-v2 .votum-proof .proof-stat .proof-stat-label svg{flex:none;color:#a62c46;width:22px;height:22px}
+.premium-v2 .votum-proof .proof-stat strong{display:block;margin:4px 0 0;color:#183650;font:bold clamp(1.55rem,3vw,2.5rem)/1.1 system-ui,sans-serif;letter-spacing:-.045em;font-variant-numeric:tabular-nums;overflow-wrap:normal}
+.premium-v2 .votum-proof .proof-stat .proof-stat-description{margin:0;font-size:.86rem;line-height:1.5;color:#425767}
+.premium-v2 .votum-proof .proof-note{border-top:1px solid #c8d1d8;padding-top:14px;font-size:.87rem;line-height:1.6}
+.premium-v2 .votum-proof .proof-note a{display:inline-block;padding-block:5px;text-underline-offset:3px}
+.premium-v2 .brand-partners .brand-partner-card{border-radius:14px;border-color:#c9d3dc;border-top:3px solid #a62c46;background:#fff;box-shadow:0 7px 21px #18334c0d}
+.premium-v2 .brand-partners .brand-partner-mark{background:#fff;border:1px solid #d9e0e5;border-radius:10px}
+.premium-v2 .brand-partners .brand-partner-copy a{display:inline-flex;align-items:center;min-height:44px;line-height:1.4;text-underline-offset:3px}
+.premium-v2 #votum-proof-title{scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+@media(max-width:760px){
+ .premium-v2 .votum-proof .votum-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .premium-v2 .votum-proof .votum-stats>.proof-stat{padding:12px;gap:7px}
+ .premium-v2 .votum-proof .proof-stat strong{font-size:clamp(1.4rem,5.5vw,1.9rem)}
+ .premium-v2 .votum-proof .proof-stat .proof-stat-description{font-size:.79rem}
+ .premium-v2 .brand-partners .brand-partner-mark{min-height:90px}
+ .premium-v2 .brand-partners .brand-partner-mark img{max-width:180px}
+}
+@media(max-width:480px){.premium-v2 #zespol .team-trust-links{grid-template-columns:minmax(0,1fr);gap:8px}}
+@media(max-width:340px){.premium-v2 .votum-proof .votum-stats{grid-template-columns:minmax(0,1fr)}}

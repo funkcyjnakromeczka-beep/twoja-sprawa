@@ -785,3 +785,20 @@ const campaignMobileCSS=await read("lead-persona.css");
 assert.ok(campaignMobileCSS.includes('CAMPAIGN-MOBILE-STABILITY-20261122')===false&&campaignMobileCSS.includes('campaign-mobile-actions{display:none!important}'),
  "Campaign mobile form safety missing from production CSS");
 console.log("MOBILE_LOADING_GUARDS_OK: desktop hero retained, narrow-screen preload gated, three secondary logos deferred.");
+
+/* Form-rendering checks from measured Lighthouse findings (2026-11-22):
+   campaign forms are built before first paint; the default preparation
+   link is a crawlable URL even while the topic picker is unset. */
+const measuredContactScript=await read("contact.js");
+assert.ok(measuredContactScript.includes('document.body.classList.contains("campaign-page")?"h2":"h3"'),
+ "Campaign form must use a sequential h2, preserving h3 on other pages");
+assert.ok(measuredContactScript.includes('guideLink.href="/v2/plan-dzialania.html"'),
+ "Default guide anchor must have a valid href before topic selection");
+for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","skd","renty-powypadkowe"]){
+ const markup=await read("kampanie/"+slug+".html");
+ assert.ok(/<script\b[^>]*src="\/contact\.js"[^>]*><\/script>/.test(markup),
+  "Campaign must build the form at parse end before first paint: "+slug);
+ assert.ok(!/<script\b[^>]*src="\/contact\.js"[^>]*\bdefer\b/.test(markup),
+  "Campaign form should not shift after initial paint: "+slug);
+}
+console.log("MEASURED_LIGHTHOUSE_FIXES_OK: native href, semantic form heading, parse-end campaign forms");

@@ -81,7 +81,7 @@
  for (const host of hosts) {
   const compactHome=document.body.classList.contains("premium-v2");
   const form = document.createElement("form"); form.className = "contact-form";
-  const heading = document.createElement("h3"); heading.textContent = automatic?"Zostaw kontakt — oddzwonimy lub odpiszemy":"Przygotuj zapytanie"; form.append(heading);
+  const heading = document.createElement(document.body.classList.contains("campaign-page")?"h2":"h3"); heading.textContent = automatic?"Zostaw kontakt — oddzwonimy lub odpiszemy":"Przygotuj zapytanie"; form.append(heading);
   const benefits=document.createElement("div");benefits.className="contact-benefits";const benefitNodes=[];for(const item of ["Bez zobowiązania do zawarcia umowy","Bez wysyłania dokumentów na początek","Kontakt w wybranej formie"]){const el=document.createElement("span");el.textContent="✓ "+item;benefitNodes.push(el);benefits.append(el);}form.append(benefits);if(compactHome)benefits.hidden=true;
   const note = document.createElement("p"); note.textContent = automatic ? (compactHome?"Na początek wystarczą dane kontaktowe. Nie wpisuj PESEL ani szczegółowych danych medycznych.":"Na początek wybierz usługę, wpisz imię i podaj telefon lub e-mail. Szczegóły sprawy są opcjonalne. Nie podawaj PESEL ani danych medycznych.") : "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
   // Native browser validation still controls submission. A concise message
@@ -210,7 +210,7 @@
   const guideBox=document.createElement("div");guideBox.className="contact-guide-box";guideBox.setAttribute("aria-live","polite");
   const guideTitle=document.createElement("strong");guideTitle.textContent="Przygotuj się do rozmowy";
   const guideText=document.createElement("span");
-  const guideLink=document.createElement("a");guideLink.textContent="Otwórz listę kontrolną (nowa karta)";guideLink.target="_blank";guideLink.rel="noopener noreferrer";
+  const guideLink=document.createElement("a");guideLink.href="/v2/plan-dzialania.html";guideLink.textContent="Otwórz listę kontrolną (nowa karta)";guideLink.target="_blank";guideLink.rel="noopener noreferrer";
   const guidePlanLink=document.createElement("a");guidePlanLink.className="contact-guide-plan-link";
   guidePlanLink.textContent="Ułóż plan pierwszych kroków (nowa karta)";
   guidePlanLink.target="_blank";guidePlanLink.rel="noopener noreferrer";

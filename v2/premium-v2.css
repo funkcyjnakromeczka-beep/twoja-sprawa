@@ -234,7 +234,7 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-campaign .campaign-copy>.btn{background:linear-gradient(110deg,#d6b47c,#f0d6a8);color:#122e3e;border-radius:999px;font-weight:850;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .premium-campaign .campaign-copy .campaign-disclaimer{color:#c9d8dc}
 .premium-campaign .campaign-form .contact-form{background:#fff;color:#173848;border:1px solid rgba(227,204,169,.7);box-shadow:0 25px 65px rgba(0,0,0,.23);border-radius:22px}
-.premium-campaign .campaign-form .contact-form h3{color:#133849;font-size:clamp(1.45rem,2.1vw,2rem);margin:0 0 6px}
+.premium-campaign .campaign-form .contact-form h2,.premium-campaign .campaign-form .contact-form h3{color:#133849;font-size:clamp(1.45rem,2.1vw,2rem);margin:0 0 6px}
 .premium-campaign .campaign-form .contact-form label{font-weight:750;color:#183b4b}
 .premium-campaign .campaign-form .contact-form input:not([type="checkbox"]),.premium-campaign .campaign-form .contact-form select,.premium-campaign .campaign-form .contact-form textarea{width:100%;max-width:100%;min-height:46px;border:1px solid #c7d7d9;border-radius:11px;background:#fff;color:#153647;padding:12px 13px;font-size:1rem}
 .premium-campaign .campaign-form .contact-form textarea{min-height:110px}

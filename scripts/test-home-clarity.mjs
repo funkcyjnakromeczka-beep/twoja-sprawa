@@ -292,3 +292,9 @@ for(const [slug,guide,label,person] of [["szkody-gornicze","/v2/wiedza/drobne-pe
 const navCSS=await readFile("v2/seo-answers.css","utf8");
 assert.ok(navCSS.includes(".service-section-nav a:focus-visible")&&navCSS.includes("min-height:70px")&&navCSS.includes("@media(max-width:950px)"));
 console.log("SERVICE_SECTION_NAV_OK: six service pages, 24 accessible links, no extra CSS request.");
+
+// Contact topic links remain native and preselect the correct adviser.
+const contactTopic=contactPageHours.match(/<nav[^>]*class="contact-topic-grid"[\s\S]*?<\/nav>/)?.[0]||"";
+for(const [code,label,person] of [["szkody","Szkody górnicze","Wojciech"],["swiadczenie","Świadczenie wspierające","Paulina"],["skd","SKD — kredyty PLN","Wojciech"],["renty","Renty powypadkowe","Paulina"],["franki","Kredyty frankowe","Wojciech"],["przesyl","Służebność przesyłu","Wojciech"]])assert.ok(contactTopic.includes('/v2/kontakt.html?usluga='+code+'#formularz')&&contactTopic.includes('data-person="'+person.toLowerCase()+'"'));
+assert.equal((contactTopic.match(/<a href=/g)||[]).length,6);
+assert.ok(contactPageHours.includes('class="contact-form-steps"'));

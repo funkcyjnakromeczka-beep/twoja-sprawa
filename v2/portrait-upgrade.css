@@ -125,3 +125,9 @@
  .premium-subpage .team-profile-card{grid-template-columns:82px minmax(0,1fr);gap:10px}
  .premium-subpage .team-profile-card h3{font-size:1.09rem}
 }
+
+/* Distinguish the two advisers with quiet, consistent colour cues. */
+.premium-v2 .team-spotlight .team-person[data-persona="support"]{background:linear-gradient(135deg,#16453b,#0d362f);border-color:#a8ccb5}
+.premium-v2 .team-spotlight .team-person[data-persona="support"] .team-avatar{border-color:#b7d7bf}
+.premium-v2 .team-spotlight .team-person[data-persona="support"] :is(h3,.team-caption,a){color:#e1f4e6}
+.premium-v2 .team-spotlight .team-person a[href^="tel:"]{min-height:44px}

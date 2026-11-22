@@ -752,3 +752,24 @@ for(const selector of [".premium-campaign .campaign-reader-path",".premium-campa
  ".premium-campaign .campaign-steps article",".premium-campaign .campaign-form .contact-form"])
  assert.ok(campaignVisualCSS.includes(selector),"Missing campaign visual identity rule: "+selector);
 console.log("CAMPAIGN_VISUAL_IDENTITY_OK: all four categories use local art and consistent reading/lead styles.");
+
+
+// Mobile performance regression: do not force a full hero image download on
+// small screens where the mobile service shortcuts replace the large visual.
+const heroPreload=home.match(/<link rel="preload" as="image"[^>]*>/)?.[0]||"";
+assert.ok(heroPreload.includes('media="(min-width: 421px)"')&&heroPreload.includes('fetchpriority="high"'),
+ "The hero preloader must respect narrow screens while retaining desktop priority");
+const heroImage=home.match(/<img class="hero-metallic-art"[^>]*>/)?.[0]||"";
+assert.ok(heroImage.includes('loading="lazy"')&&heroImage.includes('width="1536"')&&heroImage.includes('height="803"'),
+ "Keep the original hero art and its aspect ratio without unconditional eager loading");
+for(const filename of ["logo_VOTUM_SA_rgb-480x71.png","logo-votum-network-przedstawiciel-400x284-1.jpg","votum-scale-agency-.png"]){
+ const tag=[...home.matchAll(/<img\\b[^>]*>/g)].map(x=>x[0]).find(x=>x.includes(filename)&&x.includes('loading="lazy"')&&x.includes('fetchpriority="low"'));
+ assert.ok(tag,"A secondary homepage logo still competes with the main image: "+filename);
+}
+const homepageMobileCSS=await read("home-bundle.css");
+assert.ok(homepageMobileCSS.includes('max-height:70dvh')&&homepageMobileCSS.includes('orientation:landscape'),
+ "Responsive menu and landscape contact safety must reach the homepage release");
+const campaignMobileCSS=await read("lead-persona.css");
+assert.ok(campaignMobileCSS.includes('CAMPAIGN-MOBILE-STABILITY-20261122')===false&&campaignMobileCSS.includes('campaign-mobile-actions{display:none!important}'),
+ "Campaign mobile form safety missing from production CSS");
+console.log("MOBILE_LOADING_GUARDS_OK: desktop hero retained, narrow-screen preload gated, three secondary logos deferred.");

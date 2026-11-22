@@ -75,3 +75,10 @@ const localCss=await readFile("v2/local-mining.css","utf8");
 assert.ok(localCss.includes(".local-share-actions")&&localCss.includes(".local-share-feedback"),"Local share responsiveness missing");
 console.log("LOCAL_SHARE_OK: two canonical, privacy-safe, no-JS fallback referral panels.");
 console.log("SERVICE_SHARE_TEST_OK: six distinct canonical, privacy-safe share panels and forms intact.");
+
+assert.equal((homeCommunity.match(/<a href="https:\/\/www\.facebook\.com\/w\.bieglo\//g)||[]).length,1,"Public credit/SKD profile should also be reachable from home");
+assert.equal((homeCommunity.match(/<div class="social-community-links">[\s\S]*?<\/div>/)?.[0].match(/<a href=/g)||[]).length,5,"Five distinct home social channels");
+const homeShare=homepage.match(/<div class="footer-share-actions">[\s\S]*?<\/div>/)?.[0]||"";
+assert.ok(homeShare.includes('data-share-url="https://twoja-sprawa.pages.dev/" hidden'));
+assert.ok(homeShare.includes('href="https://twoja-sprawa.pages.dev/"'));
+console.log("HOME_SOCIAL_DIRECTORY_OK: five topic-oriented destinations, canonical share target, static fallback.");

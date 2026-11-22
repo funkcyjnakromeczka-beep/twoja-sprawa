@@ -22,7 +22,7 @@ window.TwojaSprawaSearchPages2=[
     "title": "Szkody górnicze Lubin i Polkowice",
     "description": "Pęknięcia ścian, elewacji lub nierówna kostka w Lubinie i Polkowicach? Sprawdź możliwe roszczenia za szkody górnicze. Kontakt: 796 441 345.",
     "category": "szkody",
-    "keywords": "Szkody górnicze w Lubinie, Polkowicach i okolicach v2 uslugi szkody gornicze html Szkody Gornicze"
+    "keywords": "Szkody górnicze w Lubinie, Polkowicach i okolicach v2 uslugi szkody gornicze html Szkody Gornicze wykup nieruchomości domu poważne uszkodzenia naprawa odszkodowanie ekspertyza odmowa kopalni"
   },
   {
     "id": "page:v2/uslugi/szkody-na-nieruchomosci.html",

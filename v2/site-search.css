@@ -94,3 +94,21 @@
 @media(max-width:670px){.search-page .search-topic-direct{flex-direction:column}.search-page .search-topic-direct a{width:100%}.search-page .search-results{grid-template-columns:1fr}.search-page .search-workspace{padding-top:27px}.search-page .search-hints{gap:6px}.search-page .search-container{width:calc(100% - 28px)}.search-page .search-contact>div,.search-page .search-hero-links{flex-direction:column}.search-page .search-contact a,.search-page .search-hero-links a{width:100%}}
 @media(prefers-reduced-motion:reduce){.search-page .site-search-card{transition:none}.search-page .site-search-card:hover{transform:none}}
 @media print{.search-page .search-filters,.search-page .search-hints,.search-page .search-reset,.search-page #site-search-input,.search-page .search-contact{display:none!important}.search-page .site-search-card{break-inside:avoid;box-shadow:none}}
+
+/* Shared visual language for finding information, without JS changes. */
+.search-page .query-field{position:relative;min-width:0}
+.search-page .query-field-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);display:flex;color:#365f76;pointer-events:none}
+.search-page #site-search-input{box-sizing:border-box;padding-left:53px;font-size:16px;min-height:58px;border-radius:12px;border-color:#819daa}
+.search-page #site-search-input:focus-visible{outline:3px solid #416f87;outline-offset:3px}
+.search-page .query-filter-heading{margin:18px 0 8px;font-weight:750;font-size:.9rem;color:#274c60}
+.search-page .search-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 18px}
+.search-page .search-filters button{min-width:0;min-height:48px;border-radius:9px;text-align:left;white-space:normal;padding:10px 12px;overflow-wrap:anywhere}
+.search-page .search-filters button[aria-pressed="true"]{background:#17384e;color:#fff;border-color:#17384e;box-shadow:inset 4px 0 0 #c89d63}
+.search-page #search-heading{scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+@media(max-width:760px){.search-page .search-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:340px){.search-page .search-filters{grid-template-columns:minmax(0,1fr)}}
+@media print{.search-page :is(.query-field-icon,.query-filter-heading){display:none}}
+
+.search-page .site-search-card{border-top:3px solid #a2bac8;box-shadow:0 4px 15px #082a350b}
+.search-page .site-search-card .site-search-cta{color:#285970}
+.search-page .search-hero-links a:not(:first-child){background:transparent;color:#ffe0ae}

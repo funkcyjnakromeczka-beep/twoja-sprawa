@@ -54,3 +54,6 @@ assert.ok(html.includes('data-faq-reset hidden'));
 assert.ok(js.includes('replaceAll("ł","l")'));
 assert.ok(!/\bfetch\s*\(|localStorage|sessionStorage|XMLHttpRequest/.test(js));
 console.log("FAQ_OK: 29 pytań, 7 kategorii, usuwanie polskich znaków, brak wyników, reset i zero śledzenia.");
+
+assert.ok(html.includes('class="query-field"')&&html.includes('href="#faq-hub-title"'));
+assert.ok(html.includes('aria-hidden="true"><svg'));

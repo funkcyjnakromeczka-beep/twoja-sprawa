@@ -91,3 +91,24 @@
 .faq-page .faq-directory-grid span{color:#425d69;font-size:.9rem;line-height:1.45}
 .faq-page .faq-directory-notice{font-size:.88rem;line-height:1.55;color:#455e68;max-width:80ch}
 @media(max-width:650px){.faq-page .faq-directory-grid{grid-template-columns:1fr}.faq-page .faq-directory-grid a{min-height:77px;padding:14px 16px}}
+
+/* Shared visual language for finding information, without JS changes. */
+.faq-page .query-field{position:relative;min-width:0}
+.faq-page .query-field-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);display:flex;color:#365f76;pointer-events:none}
+.faq-page #faq-search{box-sizing:border-box;padding-left:53px;font-size:16px;min-height:58px;border-radius:12px;border-color:#819daa}
+.faq-page #faq-search:focus-visible{outline:3px solid #416f87;outline-offset:3px}
+.faq-page .query-filter-heading{margin:18px 0 8px;font-weight:750;font-size:.9rem;color:#274c60}
+.faq-page .faq-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 18px}
+.faq-page .faq-filters button{min-width:0;min-height:48px;border-radius:9px;text-align:left;white-space:normal;padding:10px 12px;overflow-wrap:anywhere}
+.faq-page .faq-filters button[aria-pressed="true"]{background:#17384e;color:#fff;border-color:#17384e;box-shadow:inset 4px 0 0 #c89d63}
+.faq-page #faq-hub-title{scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+@media(max-width:760px){.faq-page .faq-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:340px){.faq-page .faq-filters{grid-template-columns:minmax(0,1fr)}}
+@media print{.faq-page :is(.query-field-icon,.query-filter-heading){display:none}}
+
+.faq-page .faq-card{border-left:3px solid #bfced7}
+.faq-page .faq-card[data-faq-category="swiadczenie"],.faq-page .faq-card[data-faq-category="renty"]{border-left-color:#7bae92}
+.faq-page .faq-card:has(details[open]){border-color:#789baa}
+.faq-page .faq-card summary{min-height:48px;box-sizing:border-box}
+.faq-page .faq-next-step{padding-top:0}
+.faq-page .faq-next-step .faq-source{min-height:44px;margin:0;color:#155576}

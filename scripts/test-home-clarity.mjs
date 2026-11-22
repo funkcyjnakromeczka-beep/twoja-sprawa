@@ -272,3 +272,9 @@ await access("v2/assets/paulina-chandrala.jpg");
 console.log("HOME_CLARITY_OK: 6 unique services (2+1+3), SKD third with email and phone CTA.");
 
 assert.ok(css.includes(".hero-reading-shortcuts a{display:inline-flex;align-items:center;min-height:44px"),"Mobile reading links need larger touch targets");
+
+// The primary actions and individual accessible SVG icons do not depend on remote images.
+const heroActions=html.match(/<div class="hero-action-row">([\s\S]*?)<\/div>/)?.[1]||"";
+assert.ok(heroActions.includes('href="#uslugi"')&&heroActions.includes('href="#kontakt"'));
+assert.equal((segment.match(/<span class="project-symbol" aria-hidden="true"><svg /g)||[]).length,6);
+assert.ok(css.includes(".hero-action-row>a:focus-visible")&&css.includes(".primary-card .project-symbol svg"));

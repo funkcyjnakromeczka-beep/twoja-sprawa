@@ -14,6 +14,7 @@ on:
       - 'scripts/related-content.mjs'
       - 'scripts/test-support-2026-guidance.mjs'
       - 'scripts/test-related-content.mjs'
+      - 'scripts/test-home-clarity.mjs'
       - 'scripts/heading-permalinks.mjs'
       - 'scripts/test-heading-permalinks.mjs'
       - 'scripts/test-visible-breadcrumb-schema.mjs'
@@ -75,6 +76,7 @@ jobs:
           node --check scripts/test-content-anchors.mjs
           node --check scripts/related-content.mjs
           node --check scripts/test-related-content.mjs
+          node --check scripts/test-home-clarity.mjs
           node --check scripts/test-support-2026-guidance.mjs
           node --check scripts/heading-permalinks.mjs
           node --check scripts/test-heading-permalinks.mjs
@@ -121,6 +123,7 @@ jobs:
           node scripts/test-media-navigation-quality.mjs
           node scripts/test-content-anchors.mjs
           node scripts/test-related-content.mjs
+          node scripts/test-home-clarity.mjs
           node scripts/test-support-2026-guidance.mjs
           node scripts/test-heading-permalinks.mjs
           node scripts/test-visible-breadcrumb-schema.mjs

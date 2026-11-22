@@ -107,8 +107,8 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/swiadczenie-wspierajace-dokumenty.html",
     "href": "/v2/wiedza/swiadczenie-wspierajace-dokumenty.html",
-    "title": "Świadczenie wspierające — jak przygotować informacje do oceny potrzeby wsparcia?",
-    "description": "Przygotowanie do postępowania dotyczącego potrzeby wsparcia polega przede wszystkim na rzetelnym opisaniu codziennego funkcjonowania.",
+    "title": "Świadczenie wspierające: kwestionariusz samooceny WZON",
+    "description": "Jak opisać codzienne funkcjonowanie przed oceną WZON? Sprawdź, jak przygotować własne notatki, kwestionariusz samooceny i dokumenty.",
     "category": "swiadczenie",
     "keywords": "Świadczenie wspierające — jak przygotować informacje do oceny potrzeby wsparcia? v2 wiedza swiadczenie wspierajace dokumenty html Swiadczenie Wspierajace Dokumenty"
   },

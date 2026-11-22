@@ -118,6 +118,7 @@ const DATA={
    "Sprawdź księgę wieczystą i zachowaj posiadane umowy lub pisma przedsiębiorstwa.",
    "Ustal, kto i od kiedy korzysta z gruntu oraz czy istnieje tytuł prawny do urządzeń."
   ],
+  stages:{"urzadzenia":["Mam urządzenia przesyłowe na działce","Ustal rodzaj urządzeń, ich widoczne położenie i nazwę operatora, jeśli jest znana. Nie wykonuj pomiarów w niebezpiecznych miejscach."],"dokumenty":["Chcę sprawdzić dokumenty lub tytuł prawny operatora","Zachowaj posiadane umowy, decyzje, odpis księgi wieczystej i dokumenty dotyczące nabycia działki."],"propozycja":["Operator przedstawił propozycję umowy","Zachowaj pełny projekt umowy, mapę przebiegu urządzeń oraz informacje o proponowanych warunkach."],"odmowa":["Operator odmówił lub kwestionuje moje roszczenia","Zachowaj zgłoszenie, odpowiedź operatora, daty doręczeń i wcześniejszą korespondencję."]},
   links:"/v2/uslugi/sluzebnosc-przesylu.html"
  }
 };

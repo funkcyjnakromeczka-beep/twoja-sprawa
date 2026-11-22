@@ -563,7 +563,9 @@ for(const [kind,service,stageCode,expectedStage] of [
  ["skd","Kredyt w PLN / SKD","",""],
  ["renty","Renty powypadkowe","",""],
  ["franki","Kredyty frankowe CHF","ugoda","ugoda"],
- ["przesyl","Służebność przesyłu","",""]
+ ["przesyl","Służebność przesyłu","dokumenty","dokumenty"],
+ ["przesyl","Służebność przesyłu","propozycja","propozycja"],
+ ["przesyl","Służebność przesyłu","nieznany",""]
 ]){
  const host=new Node("host");
  const document={

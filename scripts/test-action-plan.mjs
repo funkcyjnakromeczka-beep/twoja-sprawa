@@ -81,6 +81,14 @@ for(const [name,expectedTel] of [["swiadczenie","500 171 531"],["skd","796 441 3
  assert.equal(serviceLink.hidden,false);
  assert.equal(serviceLink.href,"/v2/uslugi/"+({swiadczenie:"swiadczenie-wspierajace",skd:"kredyty-pln",renty:"renty-powypadkowe",franki:"kredyty-frankowe",przesyl:"sluzebnosc-przesylu"}[name])+".html");
 }
+state.click("przesyl");
+const propertyStage=get("[data-plan-stage-select]");
+assert.equal(get("[data-plan-stage-container]").hidden,false,"Property plan should offer stage selection");
+for(const code of ["urzadzenia","dokumenty","propozycja","odmowa"]){
+ propertyStage.value=code;propertyStage.events.change();
+ assert.equal(get("[data-plan-checklist]").children.length,5);
+ assert.equal(new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev").searchParams.get("etap"),code);
+}
 state.click("renty");
 const rentsStageSelect=get("[data-plan-stage-select]");
 assert.equal(get("[data-plan-stage-container]").hidden,false,"Rent plan should offer stage selection");

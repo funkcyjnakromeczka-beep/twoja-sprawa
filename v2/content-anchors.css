@@ -33,3 +33,18 @@ main :is(h2,h3,h4,h5,h6)[id^="tresc-"]:target{outline:2px solid #be9856;outline-
  .guide-article>.content-toc{width:100%}
  .content-toc li>a{min-height:44px}
 }
+
+
+/* CONTENTS-LAYOUT-20261122 — override the common flex nav for article outlines. */
+@media screen{
+ .content-toc>nav{display:block;min-width:0}
+ .content-toc>nav>ol{width:100%;box-sizing:border-box}
+ .content-toc>summary{cursor:pointer;padding:8px 2px;box-sizing:border-box}
+ .content-toc-contact a{line-height:1.45;box-sizing:border-box;max-width:100%;white-space:normal}
+ .content-return-top a{background:#f3f7fa;border-color:#9db3c5;color:#18384e!important}
+}
+@media screen and (max-width:680px){
+ .content-toc>nav>ol{padding-left:20px}
+ .content-toc-contact a{display:flex;width:100%}
+ .content-return-top a{width:100%;justify-content:center;box-sizing:border-box}
+}

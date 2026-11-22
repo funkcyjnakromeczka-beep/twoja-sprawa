@@ -75,3 +75,34 @@
 @media(max-width:800px){.contact-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:380px){.contact-topic-grid{grid-template-columns:minmax(0,1fr)}}
 @media print{.contact-topic-panel,.contact-form-steps{display:none}}
+
+
+/* CONTACT-ROUTES-20261122 — a short route from topic selection to the form. */
+.premium-subpage.theme-contact .contact-route-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:900px;margin:22px 0}
+.premium-subpage.theme-contact .contact-route-links>a{display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;gap:4px 10px;min-height:80px;box-sizing:border-box;padding:14px;border:1px solid #a6b8c6;border-radius:12px;background:#fff;color:#18364e;text-decoration:none}
+.premium-subpage.theme-contact .contact-route-links>a strong{font-size:1rem;line-height:1.35}
+.premium-subpage.theme-contact .contact-route-links>a small{grid-column:1;color:#425b70;line-height:1.4;font-size:.81rem}
+.premium-subpage.theme-contact .contact-route-links>a>span{grid-column:2;grid-row:1/3;align-self:center;color:#a62c46;font-size:1.2rem}
+.premium-subpage.theme-contact .contact-route-links>a:last-child{background:#17384e;color:#fff;border-color:#7895ad}
+.premium-subpage.theme-contact .contact-route-links>a:last-child :is(small,span){color:#e0edf6}
+.premium-subpage.theme-contact .contact-route-links>a:focus-visible{outline:3px solid #e7c58c;outline-offset:3px}
+.premium-subpage.theme-contact :is(#contact-topic-heading,#spec-title,#formularz){scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+.premium-subpage.theme-contact #formularz{margin-block:22px 10px}
+.premium-subpage.theme-contact .contact-specialist{align-items:start;border-radius:16px}
+.premium-subpage.theme-contact .contact-specialist-photo{border-radius:11px;box-sizing:border-box}
+.premium-subpage.theme-contact .contact-specialist-phone{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:9px 14px;box-sizing:border-box;border:1px solid #e4ccab;border-radius:9px;background:#fff;color:#18384d;text-decoration:none}
+.premium-subpage.theme-contact .contact-specialist[data-persona="support"] .contact-specialist-phone{background:#e9f6ec;color:#154637;border-color:#a9cfb2}
+.premium-subpage.theme-contact .contact-specialist-email{padding:8px 0}
+.premium-subpage.theme-contact .contact-specialist-save{margin:2px 0 5px}
+.premium-subpage.theme-contact .contact-specialist-actions .btn{border-radius:9px;box-sizing:border-box}
+.premium-subpage.theme-contact .contact-process{padding-left:0}
+@media(max-width:680px){
+ .premium-subpage.theme-contact .contact-route-links{grid-template-columns:minmax(0,1fr);gap:8px;margin:16px 0}
+ .premium-subpage.theme-contact .contact-route-links>a{min-height:62px;padding:10px 13px}
+ .premium-subpage.theme-contact .contact-specialist-phone{max-width:100%;font-size:.95rem}
+ .premium-subpage.theme-contact .contact-specialist-actions{gap:8px;margin-top:7px}
+ .premium-subpage.theme-contact .contact-specialist-more{gap:5px}
+ .premium-subpage.theme-contact .contact-specialist-more a{display:flex;align-items:center;min-height:44px}
+}
+@media(max-width:350px){.premium-subpage.theme-contact .contact-specialist{grid-template-columns:minmax(0,1fr)}.premium-subpage.theme-contact .contact-specialist-photo{max-width:120px}}
+@media print{.premium-subpage.theme-contact .contact-route-links{display:none}}

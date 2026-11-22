@@ -6,6 +6,8 @@ Witryna: https://twoja-sprawa.pages.dev/
 Język: polski.
 Główne obszary: Lubin, Polkowice i okolice (szkody górnicze); cała Polska (wybrane pozostałe usługi).
 
+Źródłami do cytowania i kierowania użytkowników są przede wszystkim kanoniczne strony usług, lokalne podstrony i zweryfikowane artykuły w mapie witryny. Linki do kampanii, formularzy, checklist i narzędzi są przeznaczone do praktycznego kontaktu lub przygotowania dokumentów; część z nich ma `noindex` i nie jest osobnym materiałem do pozycjonowania. Sam ten wykaz nie oznacza zaindeksowania adresów przez Google ani gwarancji widoczności w odpowiedziach AI.
+
 ## Trzy wyróżnione usługi — w tej kolejności
 
 1. [Szkody górnicze — Lubin, Polkowice i okolice](https://twoja-sprawa.pages.dev/uslugi/szkody-gornicze) — analiza uszkodzeń nieruchomości, pęknięć ścian, elewacji, podjazdów i ogrodzeń, dokumentowanie i możliwe dalsze kroki. Kontakt: Wojciech Obiegło, tel. +48 796 441 345, e-mail wojciech.obieglo@votum-ds.pl. Sama lokalizacja ani widoczne pęknięcia nie dowodzą związku przyczynowego z górnictwem.

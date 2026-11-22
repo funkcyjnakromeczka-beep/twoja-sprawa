@@ -326,6 +326,46 @@ assert.ok(textSitemap.endsWith("\n")&&!textSitemap.includes("<url"),
  "Text sitemap must contain only one absolute URL per line");
 console.log("TEXT_SITEMAP_MATCH_OK: "+textUrls.length+" canonical URLs in identical XML and TXT maps.");
 
+// Public AI-oriented directory is an editorial aide, not a ranking signal.
+// Verify every curated link resolves to an actual release page and valid fragment.
+// No unknown URLs, misspelled anchors, /v2 paths, or accidental indexing claims.
+const aiDirectory=await read("llms.txt");
+assert.equal(aiDirectory,await readFile("v2/llms.txt","utf8"),
+ "Published AI directory must match the reviewed source");
+assert.ok(aiDirectory.includes("nie jest oficjalnym serwisem VOTUM")
+ &&aiDirectory.includes("nie oznacza zaindeksowania")
+ &&aiDirectory.includes("noindex"),
+ "AI directory must preserve agency identity and honest indexing limitations");
+const aiDirectoryLinks=[...aiDirectory.matchAll(/\]\((https:\/\/twoja-sprawa\.pages\.dev\/[^)\s]+)\)/g)]
+ .map(match=>match[1]);
+assert.ok(aiDirectoryLinks.length>=20,"Too few editorial links in AI directory");
+const targetCache=new Map();
+let aiDeepLinks=0;
+for(const href of aiDirectoryLinks){
+ const target=new URL(href);
+ assert.equal(target.origin,origin,"AI directory cannot redirect users to a different domain");
+ assert.ok(!target.search&& !target.pathname.includes("/v2/")&&!target.pathname.endsWith(".html"),
+  "AI directory must use clean canonical site paths: "+href);
+ const path=target.pathname==="/"?"index.html":
+  target.pathname.endsWith("/")?target.pathname.slice(1)+"index.html":target.pathname.slice(1)+".html";
+ let markup=targetCache.get(path);
+ if(markup===undefined){markup=await read(path);targetCache.set(path,markup);}
+ assert.ok(markup.includes("<main")||markup.includes("<body"),
+  "AI directory target must be a published HTML page: "+href);
+ const indexed=textUrls.includes(origin+target.pathname);
+ assert.ok(markup.includes('name="robots" content="'+(indexed?"index,follow":"noindex,follow")+'"'),
+  "AI directory target indexing status disagrees with sitemap: "+href);
+ if(target.hash){
+  const id=decodeURIComponent(target.hash.slice(1));
+  assert.ok(markup.includes('id="'+id+'"')||markup.includes("id='"+id+"'"),
+   "AI directory points to missing section anchor: "+href);
+  aiDeepLinks++;
+ }
+}
+assert.ok(aiDeepLinks>=7,"Keep verified links to high-value explanatory sections");
+console.log("AI_DIRECTORY_OK: "+aiDirectoryLinks.length+" validated links, "
+ +targetCache.size+" existing HTML pages, "+aiDeepLinks+" verified section anchors.");
+
 for(const route of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-frankowe","/wiedza/","/faq","/plan-dzialania"]){
  assert.ok(sitemap.includes("<loc>"+origin+route+"</loc>"),"required SEO route missing: "+route);
 }

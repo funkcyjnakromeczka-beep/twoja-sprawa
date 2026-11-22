@@ -110,3 +110,17 @@ body:has(.network-brand-bar) .skip-link:focus{
  background:#fff;color:#17394b;font:800 clamp(.82rem,1.5vw,1rem)/1.3 system-ui,sans-serif;
  text-align:center;overflow-wrap:anywhere
 }
+
+
+/* PARTNER-STRIP-20261122 — keep both original marks visible without clipping. */
+.network-brand-bar .network-brand-logos a{min-width:0}
+.network-brand-bar .network-brand-logos img{inset:3px;width:calc(100% - 6px);height:calc(100% - 6px);transform:none;object-fit:contain}
+.network-brand-bar .network-brand-fallback{white-space:normal;flex-wrap:wrap;gap:0 .25em;padding:4px 6px}
+@media(max-width:630px){
+ :root{--network-brand-height:66px}
+ .network-brand-bar .network-brand-inner{padding:5px 8px;gap:6px}
+ .network-brand-bar .network-brand-logos{flex:1 1 auto;max-width:430px;gap:8px}
+ .network-brand-bar .network-brand-logos a{width:min(46vw,208px);height:54px;flex:1 1 0;border-radius:7px}
+}
+@media(max-width:370px){:root{--network-brand-height:62px}.network-brand-bar .network-brand-logos a{height:50px}}
+@media(max-width:630px) and (orientation:landscape){.network-brand-bar{position:relative;top:auto}}

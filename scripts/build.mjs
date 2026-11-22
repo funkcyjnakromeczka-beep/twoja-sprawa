@@ -356,6 +356,21 @@ async function bundleHomepageStyles(html){
   return '<link rel="stylesheet" href="/home-bundle.css">';
  });
 }
+
+// A compact common footer on information pages. Campaigns, leaflets and the
+// homepage keep their own tailored conversion or navigation layout.
+function addInformationFooter(html,path){
+ if(path==="index.html"||path==="404.html"||path==="start.html"||path.startsWith("kampanie/")||path.startsWith("narzedzia/")||path==="polityka-prywatnosci.html")return html;
+ if(html.includes('class="information-footer-nav"'))return html;
+ const groups=[
+  ["Najważniejsze usługi", [["/v2/uslugi/szkody-gornicze.html","Szkody górnicze"],["/v2/uslugi/swiadczenie-wspierajace.html","Świadczenie wspierające"],["/v2/uslugi/kredyty-pln.html","Sankcja Kredytu Darmowego"],["/v2/#uslugi","Wszystkie usługi"]]],
+  ["Materiały dla klientów",[["/v2/wiedza/","Poradniki"],["/v2/plan-dzialania.html#brochure-library-heading","Broszury A4"],["/v2/faq.html","Pytania i odpowiedzi"],["/v2/szukaj.html","Szukaj w serwisie"]]],
+  ["Kontakt i współpraca",[["/v2/kontakt.html","Kontakt i formularz"],["/v2/o-nas.html","Poznaj przedstawicieli"],["/v2/","Strona główna"]]]
+ ];
+ const nav='<nav class="information-footer-nav" aria-label="Skróty w stopce">'+groups.map(([title,links])=>'<div class="information-footer-group"><strong>'+title+'</strong>'+links.map(([href,label])=>'<a href="'+href+'">'+label+'</a>').join("")+'</div>').join("")+'</nav>';
+ return html.replace(/<footer\b[^>]*>/i,tag=>tag+nav);
+}
+
 async function walk(dir){
   for(const entry of await readdir(dir,{withFileTypes:true})){
     const absolute=join(dir,entry.name);
@@ -373,6 +388,7 @@ async function walk(dir){
       html=improveContentLinks(html,rel.replaceAll("\\","/")).html;
       html=addSectionPermalinks(html,rel.replaceAll("\\","/")).html;
       html=appendRelatedContent(html,rel.replaceAll("\\","/")).html;
+      html=addInformationFooter(html,rel);
       const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
       const publicRoute=toPublicRoute(route); // Cloudflare Pages maps *.html to extensionless URLs.
       const canonical=origin+publicRoute;

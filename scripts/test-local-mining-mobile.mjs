@@ -105,3 +105,15 @@ assert.ok(printTool.includes("data-checklist-print")&&printTool.includes("data-c
  "The local link must lead to a real printable interactive checklist");
 assert.ok(css.includes(".local-prep-tool")&&css.includes(".local-prep-tool-action:focus-visible"),
  "Responsive and keyboard-visible preparation CTA required");
+
+for(const city of ["lubin","polkowice"]){
+ const html=await readFile("v2/lokalnie/szkody-gornicze-"+city+".html","utf8");
+ const jumps=html.match(/<nav class="local-section-jumps local-container"[\s\S]*?<\/nav>/)?.[0]||"";
+ assert.equal((jumps.match(/<a href="/g)||[]).length,4);
+ for(const [,id] of jumps.matchAll(/href="#([^"]+)"/g))assert.ok(html.includes('id="'+id+'"'));
+}
+for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","skd","renty-powypadkowe"]){
+ const page=await readFile("v2/kampanie/"+slug+".html","utf8");
+ const context=page.match(/<div class="campaign-form-intro">[\s\S]*?<\/div>/)?.[0]||"";
+ assert.ok(context.includes(["swiadczenie-wspierajace","renty-powypadkowe"].includes(slug)?"Paulina Chandrała":"Wojciech Obiegło"));
+}

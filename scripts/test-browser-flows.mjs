@@ -175,7 +175,7 @@ try{
   const noJsOverflow=[];
   for(const [route,advisor] of routes){
    const response=await noJsPage.goto(origin+route,{
-    waitUntil:"load",timeout:40000
+    waitUntil:"domcontentloaded",timeout:40000
    });
    assert.equal(response?.status(),200,"No-JavaScript fallback route unavailable: "+route);
    const host=noJsPage.locator("[data-contact-form]");

@@ -281,7 +281,7 @@ try{
  ]){
   await flyerPage.goto(origin+"/start.html",{waitUntil:"domcontentloaded"});
   await flyerPage.locator(card+" .leaflet-main-btn").click();
-  await flyerPage.waitForURL(new RegExp("/kampanie/"+service+"\\.html"));
+  await flyerPage.waitForURL(url=>url.pathname.replace(/\.html$/,"")==="/kampanie/"+service,{waitUntil:"domcontentloaded"});
   const value=await flyerPage.locator('.contact-form select[id^="cf-service-"]').inputValue();
   if(value!==contact)throw Error("Leaflet handoff must preselect contact form: "+service+" got "+value);
   const url=new URL(flyerPage.url());
@@ -295,7 +295,7 @@ try{
  const contactLinks=await contactHub.locator(".contact-specialists-grid a[href*='#formularz']").evaluateAll(els=>els.map(a=>a.getAttribute("href")));
  const expectedContact=["/kampanie/szkody-gornicze.html#formularz","/kampanie/skd.html#formularz","/uslugi/kredyty-frankowe.html#formularz","/uslugi/sluzebnosc-przesylu.html#formularz","/kampanie/swiadczenie-wspierajace.html#formularz","/uslugi/renty-powypadkowe.html#formularz"];
  for(const target of expectedContact){
-  if(!contactLinks.includes(target))throw Error("Contact hub missing service-specific route: "+target);
+  if(!contactLinks.some(h=>h.replace(/\.html(?=#|$)/,"")===target.replace(/\.html(?=#|$)/,"")))throw Error("Contact hub missing service-specific route: "+target);
   const response=await contactHub.request.get(origin+target.split("#")[0]);
   if(!response.ok()||!(await response.text()).includes('id="formularz"'))throw Error("Contact hub target has no form anchor: "+target);
  }

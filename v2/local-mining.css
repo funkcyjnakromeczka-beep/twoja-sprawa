@@ -269,3 +269,14 @@
 /* Non-hero secondary CTA on the light locality panel must not use white text. */
 .local-mining-page #miejscowosci .local-actions a.local-secondary{background:#fff;color:#12384b;border-color:#527185}
 .local-mining-page #miejscowosci .local-actions a.local-secondary:hover{background:#e7f0f4;color:#12384b}
+
+/* Local landing-page orientation, no extra image or script requests. */
+.local-mining-page .local-section-jumps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding-block:15px;border-bottom:1px solid #d5e0e3}
+.local-mining-page .local-section-jumps a{display:flex;flex-direction:column;justify-content:center;min-height:68px;box-sizing:border-box;padding:12px 14px;border:1px solid #b8cbd3;border-radius:10px;background:#fff;color:#17384e;text-decoration:none;line-height:1.4}
+.local-mining-page .local-section-jumps strong{font-size:.94rem;color:inherit}.local-mining-page .local-section-jumps small{font-size:.8rem;color:inherit;margin-top:3px}
+.local-mining-page .local-section-jumps a:last-child{background:#17384e;color:#fff}
+.local-mining-page .local-section-jumps a:focus-visible{outline:3px solid #aa2c4a;outline-offset:3px}
+.local-mining-page :is(#types-title,#steps-title,#miejscowosci){scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
+@media(max-width:700px){.local-mining-page .local-section-jumps{grid-template-columns:repeat(2,minmax(0,1fr))}.local-mining-page .local-hero{padding-block:26px}.local-mining-page .local-hero h1{font-size:clamp(1.85rem,7.5vw,2.65rem);line-height:1.15}.local-mining-page .local-hero p{font-size:1rem;line-height:1.6}.local-mining-page .local-actions{margin:17px 0}}
+@media(max-width:340px){.local-mining-page .local-section-jumps{grid-template-columns:minmax(0,1fr)}}
+@media print{.local-mining-page .local-section-jumps{display:none}}

@@ -95,3 +95,10 @@
 @media(max-width:570px){
  .premium-campaign.campaign-support .campaign-stage-pick{display:flex;width:100%}
 }
+
+/* Shared contact context on campaign landing pages, independent of form scripts. */
+.premium-campaign .campaign-form-intro{display:grid;gap:4px;margin:0 0 13px;padding:12px 15px;background:#edf3f6;color:#17384e;border:1px solid #b8ccd6;border-left:4px solid #a82442;border-radius:10px;line-height:1.4}
+.premium-campaign .campaign-form-intro strong{font-size:1rem;color:inherit}.premium-campaign .campaign-form-intro small{font-size:.82rem;color:#355568}
+.premium-campaign:is(.campaign-support,.campaign-rents) .campaign-form-intro{border-left-color:#34795a}
+.premium-campaign .campaign-persona-copy a{min-height:44px}
+@media(max-width:600px){.premium-campaign .campaign-copy>.btn{display:flex;justify-content:center;align-items:center;min-height:48px;text-align:center}.premium-campaign .campaign-persona{box-shadow:none}.premium-campaign .campaign-hero{gap:20px;padding-block:25px}.premium-campaign .campaign-copy h1{font-size:clamp(1.9rem,7.7vw,2.8rem);line-height:1.15}}

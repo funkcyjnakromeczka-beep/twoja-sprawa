@@ -333,3 +333,11 @@ assert.ok(html.indexOf('<div class="hero-action-row">')<html.indexOf('<div class
 const brandRow=html.slice(html.indexOf('<div class="brand-line">'),html.indexOf('<nav id="site-main-nav"'));
 assert.ok(brandRow.includes('class="mobile-menu-toggle"')&&brandRow.includes('aria-controls="site-main-nav"'));
 assert.ok(css.includes(".brand-line{flex-wrap:nowrap;min-height:66px}"));
+
+const aboutTeam=await readFile("v2/o-nas.html","utf8");
+const aboutJumps=aboutTeam.match(/<nav class="about-jump-nav"[\s\S]*?<\/nav>/)?.[0]||"";
+assert.equal((aboutJumps.match(/<a href="/g)||[]).length,4);
+for(const [,id] of aboutJumps.matchAll(/href="#([^"]+)"/g))assert.ok(aboutTeam.includes('id="'+id+'"'));
+const aboutProcess=aboutTeam.match(/<ol class="about-contact-process">[\s\S]*?<\/ol>/)?.[0]||"";
+assert.equal((aboutProcess.match(/<li>/g)||[]).length,3);
+assert.ok(html.includes('/v2/o-nas.html#pierwszy-kontakt'));

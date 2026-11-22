@@ -7,3 +7,18 @@
 .partner-identity-bar .partner-identity-logo img{display:block;width:100%;height:100%;object-fit:contain}
 .partner-identity-bar .partner-identity-note{flex-basis:100%;text-align:center;margin:0;font-size:.72rem;color:#53656e;line-height:1.4}
 @media(max-width:620px){.partner-identity-bar{gap:8px;padding:10px 14px}.partner-identity-bar .partner-identity-caption{flex-basis:100%;max-width:none;text-align:center}.partner-identity-bar .partner-identity-logo{flex:1 1 130px;max-width:170px;height:60px;padding:3px}}
+
+/* Team and business identity: concise navigation and transparent contact process. */
+.theme-team .about-jump-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:1120px;margin:20px auto 0;padding:0 16px;gap:10px;box-sizing:border-box}
+.theme-team .about-jump-nav a{display:flex;justify-content:center;align-items:center;min-height:48px;padding:10px;border-radius:9px;border:1px solid #b8ccd5;background:#fff;color:#17384e;font-size:.91rem;font-weight:750;text-align:center;text-decoration:none;line-height:1.4}
+.theme-team .about-jump-nav a:focus-visible{outline:3px solid #b42e50;outline-offset:3px}
+.theme-team .team-profile-card[data-persona="support"]{background:#16453b;border-color:#a8ccb5}
+.theme-team .team-profile-card[data-persona="support"] .team-profile-photo{border-color:#b7d7bf}
+.theme-team .team-profile-card[data-persona="support"] :is(h3,a){color:#e1f4e6}
+.theme-team .about-profile-role{display:block;margin-bottom:7px;color:#e9d7b3;font-size:.76rem;font-weight:750;line-height:1.4}
+.theme-team .about-contact-process{list-style:none;counter-reset:contact-step;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0;margin:18px 0}
+.theme-team .about-contact-process li{counter-increment:contact-step;min-width:0;padding:17px;border:1px solid #c2d1d8;background:#f2f6f7;color:#17384e;border-radius:12px;line-height:1.5}
+.theme-team .about-contact-process li::before{content:counter(contact-step);display:grid;place-items:center;width:34px;height:34px;margin-bottom:9px;border-radius:50%;background:#17384e;color:#fff;font-weight:800}
+.theme-team .about-contact-process li strong,.theme-team .about-contact-process li p{color:#17384e!important}.theme-team .about-contact-process li p{margin:7px 0 0;font-size:.92rem}
+.theme-team :is(#osoby-do-kontaktu,#wspolpraca,#pierwszy-kontakt,#dane-dzialalnosci){scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+@media(max-width:700px){.theme-team .about-jump-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.theme-team .about-contact-process{grid-template-columns:minmax(0,1fr)}}

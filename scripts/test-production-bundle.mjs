@@ -48,6 +48,30 @@ assert.equal(heroGuidePart.split("<a ").length-1,3,"Only verified guide routes a
 assert.ok(!heroGuidePart.includes("/v2/")&&!heroGuidePart.includes(".html"),
  "First-screen guide destinations should be clean canonical URLs");
 console.log("HERO_GUIDE_DISCOVERY_OK: three verified guides reachable from indexed home first screen.");
+// On mobile, the first screen offers two primary actions, while the brochure
+// remains reachable without JavaScript in the existing native details panel.
+const heroActionsStart=home.indexOf('<div class="hero-action-row"');
+const heroActionsEnd=home.indexOf("</div>",heroActionsStart);
+const heroActions=heroActionsStart>=0&&heroActionsEnd>heroActionsStart
+ ?home.slice(heroActionsStart,heroActionsEnd+6):"";
+assert.equal((heroActions.match(/<a\b/g)||[]).length,2,
+ "Exactly two primary first-screen actions; resources belong in a secondary section");
+assert.ok(heroActions.includes('href="#uslugi"')&&heroActions.includes('href="#kontakt"'),
+ "The two primary actions must retain service selection and contact");
+const resourceStart=home.indexOf('<details class="hero-resource-disclosure"');
+const resourceEnd=home.indexOf("</details>",resourceStart);
+const resources=resourceStart>=0&&resourceEnd>resourceStart
+ ?home.slice(resourceStart,resourceEnd+10):"";
+assert.ok(resources.includes('class="hero-resource-brochure"'),
+ "The resource disclosure must link to the printable brochure library");
+assert.ok(resources.includes('href="/plan-dzialania#brochure-library-heading"'),
+ "The brochure link must use its canonical production path");
+assert.ok(!heroActions.includes("brochure-library-heading"),
+ "Brochure must no longer compete with the two primary CTAs");
+assert.ok(home.includes('class="hero-local-shortcuts"'),
+ "Indexable Lubin and Polkowice shortcuts must remain independently visible");
+console.log("HERO_FOCUS_OK: two primary actions, brochure still accessible, local links preserved.");
+
 const heroContactStart=home.indexOf('<nav class="hero-direct-contacts"');
 const heroContactEnd=home.indexOf("</nav>",heroContactStart);
 const heroContact=heroContactStart>=0&&heroContactEnd>heroContactStart?home.slice(heroContactStart,heroContactEnd+6):"";

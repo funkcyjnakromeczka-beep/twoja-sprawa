@@ -1094,3 +1094,17 @@
  .premium-v2 .hero-direct-contacts>a{min-height:58px;padding:9px 12px}
 }
 @media print{.premium-v2 .hero-direct-contacts{display:none!important}}
+
+/* HERO-FOCUS — two main actions in the first screen; supplementary
+   brochure downloads stay in the existing accessible resources disclosure. */
+@media screen{
+ .premium-v2 .hero-action-row>a{flex:1 1 180px}
+ .premium-v2 .hero-resource-brochure{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;margin:10px 4px 2px;padding:10px 13px;border:1px solid rgba(245,214,155,.7);border-radius:9px;background:rgba(12,39,55,.8);color:#ffe5ac!important;font:750 .88rem/1.45 system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px}
+ .premium-v2 .hero-resource-brochure:hover{background:rgba(35,70,82,.9)}
+ .premium-v2 .hero-resource-brochure:focus-visible{outline:3px solid #ffe3a9;outline-offset:3px}
+}
+@media screen and (max-width:650px){
+ .premium-v2 .hero-action-row{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+ .premium-v2 .hero-action-row>a{width:100%;min-height:48px}
+}
+@media print{.premium-v2 .hero-resource-brochure{display:none!important}}

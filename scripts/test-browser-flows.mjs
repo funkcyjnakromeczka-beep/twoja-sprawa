@@ -297,7 +297,10 @@ try{
  });
  try{
   for(const route of ["/lokalnie/szkody-gornicze-lubin","/lokalnie/szkody-gornicze-polkowice"]){
-   await localOverlayPage.goto(origin+route,{waitUntil:"load",timeout:40000});
+   // Chat controls are checked explicitly below; external partner images need not finish downloading.
+   // DOMContentLoaded avoids false 40-second failures caused by slow third-party media.
+   const navigation=await localOverlayPage.goto(origin+route,{waitUntil:"domcontentloaded",timeout:40000});
+   assert.equal(navigation?.status(),200,"Local overlay page unavailable: "+route);
    await localOverlayPage.locator(".chat-assistant .chat-toggle").waitFor({state:"visible"});
    const geometry=await localOverlayPage.evaluate(()=>{
     const bar=document.querySelector(".local-mobile-contact");

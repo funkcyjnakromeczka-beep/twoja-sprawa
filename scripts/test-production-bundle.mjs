@@ -797,6 +797,33 @@ assert.ok(serviceStyles.includes(".service-mining-regions")&&
  serviceStyles.includes("min-height:64px"),"Local nav lacks accessible styles");
 console.log("SERVICE_EARLY_REGIONS_OK: two direct local routes below first steps, no JS required.");
 
+// First-time WZON applicants and people with a decision need different guides.
+// Place both directly after the introductory steps, and validate canonical
+// destinations and the deep link, without introducing duplicate SEO pages.
+const supportServicePage=await read("uslugi/swiadczenie-wspierajace.html");
+const supportIntro=supportServicePage.split('<section class="wrap service-first-steps"')[1]?.split("</section>")[0]||"";
+const supportPaths=supportIntro.split('<nav class="support-stage-paths"')[1]?.split("</nav>")[0]||"";
+assert.ok(supportPaths,"Support service must expose two WZON pathways early");
+assert.equal((supportPaths.match(/<a\b/g)||[]).length,2,"WZON needs exactly two editorial guidance choices");
+for(const [route,label] of [
+ ["/wiedza/swiadczenie-wspierajace-dokumenty","Przygotowuję dokumenty"],
+ ["/wiedza/swiadczenie-wspierajace-2026-wzon-zus#po-decyzji-wzon","Mam decyzję WZON"]
+]){
+ assert.ok(supportPaths.includes('href="'+route+'"')&&supportPaths.includes(label),
+  "WZON pathway must use a real canonical guide: "+route);
+ assert.ok(sitemap.includes("<loc>"+origin+route.split("#")[0]+"</loc>"),
+  "WZON guidance must be indexable and listed in sitemap: "+route);
+}
+assert.ok(supportIntro.indexOf("support-stage-paths")>supportIntro.indexOf("</ol>"),
+ "WZON guidance should follow the introductory three steps");
+const wzDecisionGuide=await read("wiedza/swiadczenie-wspierajace-2026-wzon-zus.html");
+assert.ok(wzDecisionGuide.includes('id="po-decyzji-wzon"'),
+ "Decision guide deep link must target an existing section");
+const wzStyles=await read("seo-answers.css");
+assert.ok(wzStyles.includes(".support-stage-paths>a:focus-visible")&&
+ wzStyles.includes("min-height:72px"),"WZON pathways must support keyboard and touch");
+console.log("SUPPORT_EARLY_PATHS_OK: two verified WZON routes, including decision anchor.");
+
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");
 const urlTags=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);

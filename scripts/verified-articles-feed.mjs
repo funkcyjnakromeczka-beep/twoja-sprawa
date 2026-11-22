@@ -13,7 +13,8 @@ export const feedArticlePaths=Object.freeze([
  "wiedza/renta-powypadkowa-dokumenty.html",
  "wiedza/swiadczenie-wspierajace-dokumenty.html",
  "wiedza/kredyt-pln-dokumenty-skd.html",
- "wiedza/sluzebnosc-przesylu-slup-na-dzialce.html"
+ "wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
+ "wiedza/wypadek-przy-pracy-pierwsze-kroki.html"
 ]);
 const xmlEscape=value=>String(value)
  .replaceAll("&","&amp;").replaceAll("<","&lt;")
@@ -50,7 +51,7 @@ export async function buildVerifiedArticlesFeed({source="v2",origin}){
    throw Error("RSS requires a grounded ISO calendar date: "+relative);
   }
   const canonical=origin+toPublicRoute(path);
-  items.push({title,description,modified,canonical,category:relative.includes("swiadczenie")?"Świadczenie wspierające":relative.includes("renta-powypadkowa")?"Renty powypadkowe":relative.includes("kredyt-pln")?"Kredyt konsumencki / SKD":relative.includes("sluzebnosc-przesylu")?"Służebność przesyłu":"Szkody górnicze"});
+  items.push({title,description,modified,canonical,category:relative.includes("swiadczenie")?"Świadczenie wspierające":relative.includes("renta-powypadkowa")?"Renty powypadkowe":relative.includes("kredyt-pln")?"Kredyt konsumencki / SKD":relative.includes("sluzebnosc-przesylu")?"Służebność przesyłu":relative.includes("wypadek-przy-pracy")?"Wypadki przy pracy":"Szkody górnicze"});
  }
  if(new Set(items.map(item=>item.canonical)).size!==items.length)throw Error("RSS canonical URLs not unique");
  items.sort((a,b)=>b.modified.localeCompare(a.modified)||a.canonical.localeCompare(b.canonical));
@@ -70,7 +71,7 @@ export async function buildVerifiedArticlesFeed({source="v2",origin}){
   '<channel>\n'+
   '  <title>Twoja Sprawa — sprawdzone poradniki</title>\n'+
   '  <link>'+xmlEscape(origin+'/wiedza/')+'</link>\n'+
-  '  <description>Materiały edukacyjne SuccessTree o szkodach górniczych, świadczeniu wspierającym, rentach powypadkowych, SKD i służebności przesyłu. Bez gwarancji wyników spraw.</description>\n'+
+  '  <description>Materiały edukacyjne SuccessTree o szkodach górniczych, świadczeniu wspierającym, rentach powypadkowych, SKD, służebności przesyłu i wypadkach przy pracy. Bez gwarancji wyników spraw.</description>\n'+
   '  <language>pl-PL</language>\n'+
   '  <atom:link href="'+xmlEscape(origin+'/feed.xml')+'" rel="self" type="application/rss+xml"/>\n'+
   body+'\n</channel>\n</rss>\n';

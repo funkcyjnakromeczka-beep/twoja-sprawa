@@ -67,6 +67,6 @@ if(tests.length!==entries.length*16+8)throw Error("Unexpected check count "+test
 let passed=0;
 for(const [i,t] of tests.entries()){
  try{await t.fn();passed++;if((i+1)%50===0)console.log("REGRESSION_1000_PROGRESS "+(i+1)+"/"+tests.length);}
- catch(err){console.error("FAIL "+(i+1)+"/1000 "+t.label+": "+err.message);process.exitCode=1;}
+ catch(err){console.error("FAIL "+(i+1)+"/"+tests.length+" "+t.label+": "+err.message);process.exitCode=1;}
 }
 console.log("REGRESSION_1000_RESULT: "+passed+"/"+tests.length+"; "+entries.length+" entries, 16 distinct checks per entry and eight global checks; no real submissions.");

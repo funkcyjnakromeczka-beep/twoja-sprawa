@@ -126,9 +126,9 @@ if(primary.join(",") !== "mining-featured,support-featured,skd-featured")
 
 const faq = read("v2/faq.html");
 const questions = [...faq.matchAll(/<article class="faq-card" data-faq-category="([^"]+)"/g)].map(m=>m[1]);
-if(questions.length !== 24)warn("FAQ: oczekiwano 24 pytań; znaleziono "+questions.length);
+if(questions.length !== 29)warn("FAQ: oczekiwano 29 pytań; znaleziono "+questions.length);
 const sequence = [...new Set(questions)];
-if(sequence.join(",") !== "szkody,swiadczenie,skd,renty,przesyl,kontakt")
+if(sequence.join(",") !== "szkody,swiadczenie,skd,renty,przesyl,franki,kontakt")
  warn("FAQ: nieprawidłowa kolejność kategorii "+sequence.join(","));
 for(const asset of ["/v2/faq.js","/v2/faq.css","/v2/faq-share-v1.js","/v2/faq-share-v1.css"]){
  if(!faq.includes('="'+asset+'"'))warn("FAQ nie podłącza "+asset);

@@ -173,7 +173,8 @@ const structured = (route,canonical,title,markup) => {
 
   if(route==="/faq.html"){
     const visible=[...markup.matchAll(/<article class="faq-card"[^>]*>[\s\S]*?<summary>([^<]+)<\/summary><div class="faq-answer"><p>([^<]+)<\/p>/g)];
-    if(visible.length!==24)throw new Error("FAQ structured data out of sync with 24 visible questions");
+    const cardCount=(markup.match(/<article class="faq-card"/g)||[]).length;
+    if(!cardCount||visible.length!==cardCount)throw new Error("FAQ structured data out of sync: "+visible.length+" parsed answers / "+cardCount+" visible cards");
     page["@type"]="FAQPage";
     page.mainEntity=visible.map(([,question,answer])=>({
       "@type":"Question",

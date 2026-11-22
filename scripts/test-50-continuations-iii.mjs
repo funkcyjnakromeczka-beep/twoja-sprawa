@@ -64,7 +64,7 @@ add("50. Produkcyjny release wymaga trzech zatwierdzeń",()=>{
  for(const x of ["LEGAL_APPROVED","CONTENT_APPROVED","FORM_APPROVED"])assert.ok(build.includes(x));
  assert.equal(shouldIndexRoute("/404.html"),false);
 });
-assert.equal(checks.length,55,"Need exactly 50 sequential checks");
+assert.equal(checks.length,55,"Need exactly 55 sequential checks");
 let success=0;
 for(const [index,check] of checks.entries()){
  try{await check.test();success++;console.log(String(index+1).padStart(2,"0")+" OK "+check.label);}

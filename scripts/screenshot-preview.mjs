@@ -504,13 +504,16 @@ try{
  await faqPage.locator("#faq-search").fill("brak_odpowiedzi_123");
  if(!await faqPage.locator("[data-faq-empty]").isVisible())throw Error("FAQ missing no-results state");
  await faqPage.locator("[data-faq-reset]").click();
- if(await faqPage.locator(".faq-card:visible").count()!==24)throw Error("FAQ reset must show 24 entries");
+ const faqTotal=await faqPage.locator(".faq-card").count();
+ if(faqTotal!==29||await faqPage.locator(".faq-card:visible").count()!==faqTotal)throw Error("FAQ reset must show all 29 entries");
+ await faqPage.locator('[data-faq-filter="franki"]').click();
+ if(await faqPage.locator(".faq-card:visible").count()!==5)throw Error("CHF category must show five entries");
  await faqPage.locator('[data-faq-filter="swiadczenie"]').click();
  if(await faqPage.locator(".faq-card:visible").count()!==6)throw Error("Support category should show six entries");
  await faqPage.screenshot({path:"screenshots/faq-swiadczenie-telefon.png",fullPage:false,animations:"disabled"});
- console.log("FAQ_UI_OK",JSON.stringify({total:24,mining:faqInitial,search:faqSearch,support:6}));
+ console.log("FAQ_UI_OK",JSON.stringify({total:faqTotal,chf:5,mining:faqInitial,search:faqSearch,support:6}));
  await faqPage.close();
- // Global search — 62 local records and deep linking into the relevant expanded FAQ.
+ // Global search — 67 local records and deep linking into the relevant expanded FAQ.
  const searchPage=await browser.newPage({viewport:{width:390,height:844}});
  await searchPage.goto(origin+"/szukaj.html?q=PEKNIECIE&temat=szkody",{waitUntil:"domcontentloaded"});
  const found=await searchPage.locator(".site-search-card").count();
@@ -552,7 +555,7 @@ try{
  await searchPage.locator("[data-search-reset]").click();
  const afterReset=await searchPage.locator(".site-search-card").count();
  if(afterReset!==6)throw Error("Search reset should restore the six priority service cards: "+afterReset);
- console.log("GLOBAL_SEARCH_OK",JSON.stringify({sourceCount:62,cracks:found,faqDeepLink:true,wzon:true,reset:afterReset}));
+ console.log("GLOBAL_SEARCH_OK",JSON.stringify({sourceCount:67,cracks:found,faqDeepLink:true,wzon:true,reset:afterReset}));
  await searchPage.close();
 
  // Natural Polish questions should provide genuine existing material, not an
@@ -576,7 +579,7 @@ try{
  await naturalSearch.close();
 
  // The ten-card knowledge hub must not trap users when their natural question
- // is absent; it forwards the original phrase and topic to the 62-record search.
+ // is absent; it forwards the original phrase and topic to the 67-record search.
  const knowledgeSearchPage=await browser.newPage({viewport:{width:390,height:844}});
  await knowledgeSearchPage.goto(origin+"/wiedza/",{waitUntil:"domcontentloaded"});
  await knowledgeSearchPage.locator("#hub-search").fill("Jak uzyskać świadczenie wspierające?");

@@ -830,3 +830,23 @@
 }
 @media(max-width:480px){.premium-v2 #zespol .team-trust-links{grid-template-columns:minmax(0,1fr);gap:8px}}
 @media(max-width:340px){.premium-v2 .votum-proof .votum-stats{grid-template-columns:minmax(0,1fr)}}
+
+
+/* FAQ-ACCESS-20261122 — shortcuts to existing filtered answers, no duplicate content. */
+.premium-v2 .home-faq-topics{margin:0 0 22px;padding:16px;border:1px solid #c6d1dd;border-radius:13px;background:#fff;color:#18374e}
+.premium-v2 .home-faq-topics>span{display:block;margin-bottom:10px;font-size:.88rem;font-weight:800}
+.premium-v2 .home-faq-topics>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.premium-v2 .home-faq-topics a{display:flex;align-items:center;justify-content:space-between;gap:9px;min-width:0;min-height:48px;padding:10px 12px;box-sizing:border-box;border:1px solid #b7c7d7;border-left:3px solid #a62c46;border-radius:8px;background:#f5f8fb;color:#17384e;text-decoration:none;font-size:.88rem;line-height:1.4;font-weight:750}
+.premium-v2 .home-faq-topics a:is([data-faq-topic="swiadczenie"],[data-faq-topic="renty"]){background:#f0f8f3;border-left-color:#478466;color:#21543e}
+.premium-v2 .home-faq-topics a[data-faq-topic="przesyl"]{border-left-color:#40838d}
+.premium-v2 .home-faq-topics a>span{flex:none;font-size:1.1rem}
+.premium-v2 .home-faq-topics a:hover{border-color:#a62c46;background:#fff}
+.premium-v2 .home-faq-topics a:focus-visible{outline:3px solid #a62c46;outline-offset:3px}
+.premium-v2 .home-faq .home-faq-grid details{border-radius:12px;box-shadow:0 5px 15px #142b4310}
+.premium-v2 .home-faq .home-faq-grid details>summary{box-sizing:border-box;min-height:62px;padding:15px 55px 15px 18px;background:linear-gradient(120deg,#233d57,#14283d)!important}
+.premium-v2 .home-faq .home-faq-grid details[open]>summary{background:#1d3c55!important}
+.premium-v2 .home-faq .home-faq-grid details>summary::after{border-radius:8px;border-color:#becddd;color:#f1f5fb}
+.premium-v2 .home-faq .home-faq-grid details>p a{color:#164f70!important;overflow-wrap:anywhere}
+.premium-v2 .home-faq .faq-explore-all a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 15px;border:1px solid #aebdcd;border-radius:9px;background:#fff;color:#173a55;text-underline-offset:3px;line-height:1.4}
+@media(max-width:760px){.premium-v2 .home-faq-topics{padding:12px}.premium-v2 .home-faq-topics>div{grid-template-columns:repeat(2,minmax(0,1fr))}.premium-v2 .home-faq-topics a{font-size:.82rem;padding:8px;min-height:52px}.premium-v2 .home-faq .home-faq-grid details>summary{font-size:.96rem;min-height:60px}.premium-v2 .home-faq .home-faq-cta{border-radius:9px}}
+@media(max-width:340px){.premium-v2 .home-faq-topics>div{grid-template-columns:minmax(0,1fr)}}

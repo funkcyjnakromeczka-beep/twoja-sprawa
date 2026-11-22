@@ -41,7 +41,7 @@ try{
    if(await panels.count()!==6)throw Error("Brochure should have two three-panel spreads: "+slug);
    if(await brochurePage.locator(".ts-brochure-rule").count()!==4)throw Error("Brochure requires four short rules: "+slug);
    if(!await brochurePage.locator(".ts-brochure-advisor").innerText().then(x=>x.includes(advisor)))throw Error("Brochure wrong adviser: "+slug);
-   if(!await brochurePage.locator(".ts-brochure-print").isVisible())throw Error("Print control not visible: "+slug);
+   if(!await brochurePage.locator(".ts-brochure-print").first().isVisible())throw Error("Print control not visible: "+slug);
    const over=await brochurePage.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
    if(over>2)throw Error("Brochure mobile overflow "+over+"px for "+slug);
    const qr=brochurePage.locator(".ts-brochure-qr-image");

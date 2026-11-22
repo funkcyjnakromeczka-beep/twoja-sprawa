@@ -927,7 +927,8 @@ try{
  await navDesktop.close();
 
 
- // Two prominent home entry points should lead to SKD contact without the long article.
+ // The mobile shortcut keeps the direct campaign, while the featured card
+ // opens the indexable service page with an immediately accessible callback form.
  const skdQuickEntry=await browser.newPage({viewport:{width:390,height:844}});
  await skdQuickEntry.goto(origin+"/?utm_source=facebook&utm_medium=social&utm_campaign=fb_skd",{waitUntil:"domcontentloaded"});
  await skdQuickEntry.locator(".mobile-quick-nav .mobile-skd-priority").click();
@@ -936,8 +937,14 @@ try{
  if(!await skdQuickEntry.locator('.contact-form input[type="tel"]').evaluate(el=>el.required))throw Error("SKD quick navigation did not require callback");
  await skdQuickEntry.goto(origin+"/",{waitUntil:"domcontentloaded"});
  await skdQuickEntry.locator("#uslugi .skd-featured").click();
- if(!new URL(skdQuickEntry.url()).pathname.includes("/kampanie/skd.html"))throw Error("Third SKD card should open dedicated campaign");
- console.log("SKD_HOME_FASTPATH_OK",JSON.stringify({mobile:true,thirdCard:true,utmPreserved:true,phoneRequired:true,leadsSent:0}));
+ if(!new URL(skdQuickEntry.url()).pathname.includes("/uslugi/kredyty-pln.html"))throw Error("Third SKD card should open indexable service page");
+ const callbackLink=skdQuickEntry.locator(".service-hero-secondary[href='#formularz']");
+ if(!await callbackLink.isVisible())throw Error("SKD service page needs a visible callback CTA");
+ await callbackLink.click();
+ if(new URL(skdQuickEntry.url()).hash!=="#formularz")throw Error("SKD callback CTA must reach the actual form");
+ if(!await skdQuickEntry.locator('.contact-form input[type="tel"]').evaluate(el=>el.required))throw Error("SKD service form did not require callback");
+ if(await skdQuickEntry.locator('.contact-form select[id^="cf-service-"]').inputValue()!=="Kredyt w PLN / SKD")throw Error("SKD service form selected the wrong service");
+ console.log("SKD_HOME_FASTPATH_OK",JSON.stringify({mobileCampaign:true,thirdCardService:true,serviceCallbackCTA:true,utmPreserved:true,phoneRequired:true,leadsSent:0}));
  await skdQuickEntry.close();
 
  // Rent page conversion and both profile pages must route to the assigned advisor.

@@ -80,7 +80,7 @@ add("45. Generator jasno informuje o prywatności",()=>assert.ok(planPage.includ
 add("46. Biblioteka zawiera dziesięć kart",()=>assert.equal((knowledge.match(/class="hub-card/g)||[]).length,10));
 add("47. Biblioteka ma pięć filtrów usług",()=>assert.equal((knowledge.match(/data-hub-filter="(?!all)[^"]+"/g)||[]).length,5));
 add("48. Biblioteka szuka bez polskich znaków",()=>assert.ok(knowledgeJs.includes('normalize("NFD")')&&knowledgeJs.includes('replaceAll("ł","l")')));
-add("49. Aktualna informacja prawna: ZUS i ostateczność decyzji",()=>assert.ok(legalArticle.includes("decyzja WZON stała się ostateczna")&&legalArticle.includes("www.zus.pl/swiadczenia")));
+add("49. Aktualna informacja prawna: rozbieżność terminu ZUS",()=>assert.ok(legalArticle.includes("trzy miesiące od wydania decyzji")&&legalArticle.includes("moment jej ostateczności")&&legalArticle.includes("złóż wniosek niezwłocznie")&&legalArticle.includes("www.zus.pl/swiadczenia")));
 add("50. Bezpieczne wydanie: brak indeksacji podglądu i strony 404",()=>{assert.ok(data["scripts/preview.mjs"].includes("noindex,nofollow"));assert.ok(data["scripts/build.mjs"].includes("LEGAL_APPROVED")&&data["scripts/build.mjs"].includes("FORM_APPROVED"));assert.equal(shouldIndexRoute("/404.html"),false);});
 assert.equal(checks.length,50,"Test must have exactly 50 checks");
 let passed=0;

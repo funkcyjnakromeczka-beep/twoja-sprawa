@@ -10,6 +10,9 @@
   const name = form.querySelector("[name=campaign]");
   const content = form.querySelector("[name=content]");
   const style = form.querySelector("[name=style]");
+  const destinationControl = form.querySelector("[name=destination]");
+  const educationalTopics = Object.freeze({"szkody":{"path":"/wiedza/drobne-pekniecia-szkody-gornicze","hash":"zabezpieczony-dom","variant":"pekniecia_po_remoncie","title":"Pęknięcia wróciły po remoncie?","body":"Zachowaj zdjęcia wcześniejszych i obecnych uszkodzeń oraz dokumenty napraw. Sama rysa nie dowodzi szkody górniczej. Przeczytaj, co przygotować do analizy."},"swiadczenie":{"path":"/wiedza/swiadczenie-wspierajace-2026-wzon-zus","hash":"po-decyzji-wzon","variant":"decyzja_wzon","title":"Masz decyzję WZON?","body":"Sprawdź punktację, pouczenie i daty. Poradnik pomaga uporządkować kolejne kroki bez obietnic wyniku. Wniosek do ZUS i pomoc w jego złożeniu są bezpłatne."},"skd":{"path":"/wiedza/kredyt-pln-dokumenty-skd","hash":"wczesniejsza-splata-skd","variant":"splata_i_skd","title":"Kredyt spłacony wcześniej lub odmowa banku?","body":"SKD i zwrot kosztów wcześniejszej spłaty to różne zagadnienia. Zobacz, jakie dokumenty przygotować i dlaczego trzeba sprawdzić terminy."},"renty":{"path":"/wiedza/renta-powypadkowa-dokumenty","hash":"renta-od-lat","variant":"renta_od_lat","title":"Od lat otrzymujesz tę samą rentę?","body":"Porównaj dawne i obecne koszty opieki, rehabilitacji oraz utracone dochody. Podwyższenie nie jest automatyczne. Zobacz praktyczny poradnik."},"franki":{"path":"/uslugi/kredyty-frankowe","hash":"ugoda-chf","variant":"ugoda_chf","title":"Bank proponuje ugodę frankową?","body":"Sprawdź rozliczenia, saldo, raty i skutki porozumienia. Poradnik wskazuje siedem obszarów do analizy przed podpisaniem."},"przesyl":{"path":"/wiedza/sluzebnosc-przesylu-slup-na-dzialce","hash":"","variant":"slup_na_dzialce","title":"Słup lub sieć na działce?","body":"Przygotuj dokumenty dotyczące nieruchomości i urządzeń. Sama obecność instalacji nie przesądza o prawie do wynagrodzenia."}});
+  const educationalPreviews = Object.freeze({"/wiedza/drobne-pekniecia-szkody-gornicze":{"title":"Drobne pęknięcia a szkody górnicze — Lubin i Polkowice","description":"Niewielkie rysy na ścianie, pęknięcia elewacji lub nierówna kostka? Sprawdź, jak dokumentować uszkodzenia w rejonie Lubina i Polkowic."},"/wiedza/swiadczenie-wspierajace-2026-wzon-zus":{"title":"Świadczenie wspierające 2026 — WZON i ZUS","description":"Świadczenie wspierające w 2026 r.: WZON, decyzja o poziomie potrzeby wsparcia od 70 punktów, wniosek do ZUS i ważne terminy. Poradnik SuccessTree."},"/wiedza/kredyt-pln-dokumenty-skd":{"title":"Sankcja kredytu darmowego (SKD): jakie dokumenty przygotować?","description":"Sprawdź listę dokumentów do analizy SKD: umowa kredytu, aneksy, koszty, harmonogram, spłata i terminy. Praktyczny poradnik SuccessTree."},"/wiedza/renta-powypadkowa-dokumenty":{"title":"Renta powypadkowa: dokumenty i podwyższenie | Twoja Sprawa","description":"Jakie dokumenty przygotować do renty powypadkowej lub jej podwyższenia? Sprawdź dowody kosztów, utraconych dochodów i możliwości kontaktu z Pauliną."},"/uslugi/kredyty-frankowe":{"title":"Pomoc frankowiczom — kredyty CHF | Twoja Sprawa","description":"Sprawdź, jakie dokumenty przygotować i jakie możliwości analizy umowy frankowej istnieją. Wsparcie na terenie Polski."},"/wiedza/sluzebnosc-przesylu-slup-na-dzialce":{"title":"Słup energetyczny na działce — służebność przesyłu","description":"Słup lub sieć na działce? Sprawdź dokumenty, tytuł prawny operatora, zasady wynagrodzenia za służebność przesyłu i ryzyko zasiedzenia."}});
   const urlOutput = document.querySelector("[data-campaign-url]");
   const postOutput = document.querySelector("[data-campaign-post]");
   const message = document.querySelector("[data-campaign-status]");
@@ -130,7 +133,8 @@
     // The website field in Google Business Profile should point to the business home
     // (which is indexable), not to a noindex advertising-funnel landing.
     const isBusinessProfile = selectedChannel === "google_wizytowka";
-    const destination = isBusinessProfile ? "/" : (chosenRegion?.path || chosen.path).replace(/\.html$/, "");
+    const educational = destinationControl?.value === "poradnik" && ["facebook","facebook_strona","facebook_grupa","instagram","tiktok","organiczne","polecenie"].includes(selectedChannel) && !chosenRegion ? educationalTopics[service.value] : null;
+    const destination = isBusinessProfile ? "/" : educational?.path || (chosenRegion?.path || chosen.path).replace(/\.html$/, "");
     const target = new URL(destination, origin);
     const source = selectedChannel.startsWith("facebook_") ? "facebook" : isBusinessProfile ? "google" : selectedChannel;
     target.searchParams.set("utm_source", source);
@@ -138,9 +142,10 @@
     target.searchParams.set("utm_campaign", campaign);
     // A local listing is not an article variant. Preserve optional explicit
     // utm_content, but do not insert the unrelated social-post writing style.
-    const variant = slug(content.value) || (isBusinessProfile ? "" : slug(style.value));
+    const variant = slug(content.value) || (isBusinessProfile ? "" : educational?.variant || slug(style.value));
     if (variant) target.searchParams.set("utm_content", variant);
     if (isBusinessProfile) target.searchParams.set("usluga", service.value);
+    if (educational?.hash) target.hash = educational.hash;
     urlOutput.value = target.href;
     const isReelChannel = selectedChannel === "instagram" || selectedChannel === "tiktok";
     if (profileConfirmed) {
@@ -151,7 +156,7 @@
       if (profileConfirmWrap) profileConfirmWrap.hidden = !isReelChannel;
     }
     const publicationText = chosenRegion?.text || chosen.text;
-    const selectedText = style.value === "short"
+    const selectedText = educational ? educational.title + "\n\n" + educational.body : style.value === "short"
       ? (chosenRegion?.short || shorts[service.value])
       : style.value === "hook"
         ? (chosenRegion?.hook || hooks[service.value]) + "\n\n" + publicationText
@@ -227,7 +232,7 @@
         flyerQr.src = qrImage.src;
       }
     }
-    const preview=Object.prototype.hasOwnProperty.call(previewCards,target.pathname)
+    const preview=educational ? educationalPreviews[target.pathname] : Object.prototype.hasOwnProperty.call(previewCards,target.pathname)
       ? previewCards[target.pathname] : {title:chosen.title,description:publicationText};
     if(previewTitle)previewTitle.textContent=preview.title;
     if(previewDescription)previewDescription.textContent=preview.description;
@@ -235,6 +240,7 @@
     message.textContent = isBusinessProfile
       ? "W Profilu Firmy w Google wklej do pola „Witryna” wyłącznie link z pierwszego pola (nie tekst posta). Link prowadzi na stronę główną, a wybór tematu trafia do formularza. Oznaczenia UTM mogą pomóc rozpoznać źródło przesłanego zgłoszenia, ale Google może usuwać parametry z linku wizytówki. Po zapisaniu sprawdź opublikowany odnośnik; jeśli są problemy, użyj zwykłego adresu strony głównej. Sam link nie liczy wejść ani nie gwarantuje indeksacji."
       : /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "Darmowa domena Cloudflare Pages (pages.dev) nadaje się do publikacji. Przed udostępnieniem sprawdź działanie strony i odbiór formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";
+    if (educational) message.textContent += " Cel: poradnik edukacyjny. Podgląd dotyczy całej strony, nie sekcji wskazanej kotwicą.";
     if (chosenRegion && !isBusinessProfile) {
       message.textContent += " Wybrano lokalną stronę: " + chosenRegion.name + ". Link zachowuje oznaczenia UTM i kieruje do formularza tej lokalizacji.";
     } else if (chosenRegion && isBusinessProfile) {
@@ -279,6 +285,7 @@
       if (!preset) return;
       service.value = preset.service;
       region.value = "ogolnie";
+      if (destinationControl) destinationControl.value = "formularz";
       channel.value = "facebook_grupa";
       name.value = "grupa_swiadczenia_renty";
       content.value = preset.content;
@@ -306,6 +313,7 @@
       if (!preset) return;
       service.value = preset.service;
       region.value = "ogolnie";
+      if (destinationControl) destinationControl.value = "formularz";
       channel.value = preset.channel;
       name.value = preset.campaign;
       content.value = preset.variant;

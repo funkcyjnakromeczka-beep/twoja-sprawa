@@ -11,7 +11,8 @@ const values={
  channel:{value:"facebook"},
  campaign:{value:"Lubiń Polkowice 2026"},
  content:{value:""},
- style:{value:"educational"}
+ style:{value:"educational"},
+ destination:{value:"formularz"}
 };
 const listeners={};
 const regionControl={hidden:true};
@@ -282,3 +283,14 @@ assert.equal(linkConfirmation.checked,false,"Profile verification resets outside
 assert.ok(post.value.includes(link.value),"Facebook retains clickable campaign-link caption");
 assert.equal(Object.keys(platformControls).length,7,"Seven mobile social presets must be covered");
 console.log("LOCAL_CAMPAIGN_LINKS_OK: 6 services, 2 city campaigns, group UTMs, city messages, Google Business Profile and no telemetry.");
+
+// Article campaign links: fixed public anchors, six services, safe fallback for print and GBP.
+values.destination.value="poradnik";values.channel.value="facebook_grupa";values.region.value="ogolnie";values.content.value="";
+for(const [key,path,hash,variant,phone] of [["szkody","/wiedza/drobne-pekniecia-szkody-gornicze","zabezpieczony-dom","pekniecia_po_remoncie","796 441 345"],["swiadczenie","/wiedza/swiadczenie-wspierajace-2026-wzon-zus","po-decyzji-wzon","decyzja_wzon","500 171 531"],["skd","/wiedza/kredyt-pln-dokumenty-skd","wczesniejsza-splata-skd","splata_i_skd","796 441 345"],["renty","/wiedza/renta-powypadkowa-dokumenty","renta-od-lat","renta_od_lat","500 171 531"],["franki","/uslugi/kredyty-frankowe","ugoda-chf","ugoda_chf","796 441 345"],["przesyl","/wiedza/sluzebnosc-przesylu-slup-na-dzialce","","slup_na_dzialce","796 441 345"]]){
+ values.service.value=key;listeners.change();const target=new URL(link.value);
+ assert.equal(target.pathname,path);assert.equal(target.hash,hash?"#"+hash:"");assert.equal(target.searchParams.get("utm_content"),variant);assert.equal(target.searchParams.get("utm_source"),"facebook");assert.ok(post.value.includes(phone)&&post.value.includes(link.value));assert.ok(previewTitle.textContent&&previewDescription.textContent);
+}
+values.service.value="szkody";values.region.value="lubin";listeners.change();assert.equal(new URL(link.value).pathname,"/lokalnie/szkody-gornicze-lubin");
+values.region.value="ogolnie";values.channel.value="ulotka";listeners.change();assert.equal(new URL(link.value).pathname,"/kampanie/szkody-gornicze");assert.equal(new URL(link.value).hash,"");
+values.channel.value="google_wizytowka";listeners.change();assert.equal(new URL(link.value).pathname,"/");
+console.log("EDUCATIONAL_CAMPAIGNS_OK: six verified topic routes and print/local/GBP fallback");

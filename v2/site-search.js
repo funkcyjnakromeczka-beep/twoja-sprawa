@@ -85,11 +85,19 @@
    const card=document.createElement("a");
    card.href=publicHref(item.href);
    card.className="site-search-card";
-   const tag=document.createElement("span");tag.className="site-search-tag";tag.textContent=item.id.startsWith("faq:")?"Pytanie i odpowiedź":labels[item.category]||"Informacje";
+   card.dataset.resultCategory=item.category;
+   const path=String(item.id);
+   const type=path.startsWith("faq:")?"faq":path.includes("/uslugi/")?"service":path.includes("/wiedza/")||path.includes("/poradniki/")?"guide":path.includes("/lokalnie/")?"local":path.includes("/kampanie/")||path.includes("/kontakt.html")?"contact":path.includes("/plan-dzialania.html")?"planner":"info";
+   card.dataset.resultType=type;
+   const typeLabels={faq:"Pytanie i odpowiedź",service:"Usługa",guide:"Poradnik",local:"Informacje lokalne",contact:"Kontakt i zgłoszenie",planner:"Broszury i plan",info:"Informacje"};
+   const meta=document.createElement("div");meta.className="site-search-meta";
+   const tag=document.createElement("span");tag.className="site-search-tag";tag.textContent=typeLabels[type];
+   meta.append(tag);
+   if(item.category!=="inne"){const topic=document.createElement("span");topic.className="site-search-topic";topic.textContent=labels[item.category]||"Informacje";meta.append(topic);}
    const title=document.createElement("h3");title.textContent=item.title;
    const desc=document.createElement("span");desc.className="site-search-description";desc.textContent=item.description;
    const tail=document.createElement("span");tail.className="site-search-cta";tail.textContent="Otwórz materiał ↗";
-   card.append(tag,title,desc,tail);
+   card.append(meta,title,desc,tail);
    results.append(card);
   }
   // No-results messaging is only meaningful after an actual search.

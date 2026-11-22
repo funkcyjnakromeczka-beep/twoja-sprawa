@@ -658,3 +658,38 @@
 .premium-v2 .home-resource-grid>a>small{font-size:.9rem;line-height:1.5}
 .premium-v2 main>.wrap>h2{line-height:1.16;text-wrap:balance}
 @media(max-width:760px){.premium-v2 main>:is(#uslugi,#filmy,#poradniki,#pytania){padding-block:36px}.premium-v2 .home-resource-grid>a{min-height:146px;padding:17px}}
+
+
+/* Mobile service dashboard: four equally sized routes; legible even at 320px. */
+@media(max-width:760px){
+ .premium-v2 .mobile-quick-nav{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  padding:12px clamp(10px,3vw,20px) 14px;
+  gap:8px;background:#0d1b2e;
+ }
+ .premium-v2 .mobile-quick-nav>a:is(.mobile-mining-priority,.mobile-support-priority,.mobile-skd-priority,.mobile-rents-priority){
+  grid-column:auto;min-height:76px;padding:9px 7px;
+  font-size:clamp(.83rem,3.6vw,.98rem);line-height:1.35;
+  gap:6px;overflow-wrap:normal;
+ }
+ .premium-v2 .mobile-quick-nav>a>span{
+  display:grid;place-items:center;flex:none;width:28px;height:28px;
+  border-radius:7px;background:#ffffff14;
+ }
+ .premium-v2 .mobile-quick-nav>a>span svg{display:block;width:21px;height:21px}
+ .premium-v2 .mobile-quick-nav>a.mobile-rents-priority{background:linear-gradient(125deg,#26394e,#152b40)}
+ .premium-v2 .mobile-quick-nav>a:focus-visible{outline-offset:2px;z-index:1}
+ .premium-v2 .services-assist{gap:8px}
+ .premium-v2 .services-assist>a{min-height:44px;align-items:center;line-height:1.4}
+ .premium-v2 .hero-action-row>a{min-height:50px}
+}
+/* Make article links recognizable as actions, not decorative labels. */
+.premium-v2 .home-resource-grid>a>em{
+ display:inline-flex;align-items:center;min-height:44px;margin-top:auto;
+ font-style:normal;font-weight:750;text-decoration:underline;text-underline-offset:3px
+}
+.premium-v2 .home-resource-grid>a{min-width:0;overflow-wrap:anywhere}
+.premium-v2 .home-resource-grid>a:focus-visible{outline:3px solid #b92c4e;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+ .premium-v2 .mobile-quick-nav>a,.premium-v2 .home-resource-grid>a{transition:none;animation:none}
+}

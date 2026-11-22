@@ -45,5 +45,5 @@ for(const city of ["lubin","polkowice"]){
 }
 const hub=await read("v2/wiedza/index.html");
 assert.ok(hub.includes("fundamenty były wzmacniane, a rysy wróciły"),"Knowledge search discovery must include the new topic");
-assert.equal((hub.match(/class="hub-card/g)||[]).length,10,"Editorial hub still has ten reviewed and archival cards");
+assert.equal((hub.match(/<a class="hub-card(?:\s|")/g)||[]).length,10,"Editorial hub still has ten reviewed and archival cards");
 console.log("MINING_PROTECTED_HOME_OK: official statute, 5 practical steps, 3 entry points, 2 local funnels, safe known lead stage and explicit non-guarantee.");

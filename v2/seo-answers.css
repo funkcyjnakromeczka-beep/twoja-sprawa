@@ -30,3 +30,24 @@
 @media(max-width:420px){.premium-subpage .service-section-nav{padding:8px;gap:7px}.premium-subpage .service-section-nav .service-section-link{padding:10px 8px;min-height:76px;gap:7px}.premium-subpage .service-section-link svg{width:20px;height:20px}.service-section-label strong{font-size:.87rem}.service-section-label small{font-size:.74rem}}
 @media(max-width:335px){.premium-subpage .service-section-nav{grid-template-columns:minmax(0,1fr)}}
 @media print{.premium-subpage .service-section-nav{display:none}}
+
+/* Individual service banners: one illustrative motif, not layered watermarks.
+   Keep decoration subordinate to the headline and contact actions. All SVGs inline. */
+body.premium-subpage .subhero:has(>.service-banner-art){--banner-tone:#d5deeb;--banner-edge:#bd3853;background-image:radial-gradient(ellipse at 93% 25%,#2a476264,transparent 50%),linear-gradient(110deg,#081b2b,#18354b);border-bottom-color:var(--banner-edge)}
+body.premium-subpage.theme-mining .subhero:has(>.service-banner-art){--banner-tone:#e8c78e;background-image:radial-gradient(ellipse at 92% 30%,#76533758,transparent 48%),linear-gradient(110deg,#091e31,#1b344a)}
+body.premium-subpage:is(.theme-support,.theme-rents) .subhero:has(>.service-banner-art){--banner-tone:#b9e3c9;--banner-edge:#8cc5a2;background-image:radial-gradient(ellipse at 92% 30%,#4f896351,transparent 48%),linear-gradient(110deg,#0c3028,#18513e)}
+body.premium-subpage.theme-energy .subhero:has(>.service-banner-art){--banner-tone:#b5dddc;background-image:radial-gradient(ellipse at 93% 30%,#33757a45,transparent 48%),linear-gradient(110deg,#0a2537,#1b424d)}
+body.premium-subpage .subhero:has(>.service-banner-art)::before,body.premium-subpage .subhero:has(>.service-banner-art)::after{content:none;background:none;display:none}
+.service-banner-art{display:none;color:var(--banner-tone,#d5deeb);pointer-events:none}
+.service-banner-art svg{width:100%;height:auto;display:block}
+body.premium-subpage .subhero:has(>.service-banner-art)>.eyebrow{display:flex;align-items:center;gap:10px;max-width:100%;color:var(--banner-tone,#d5deeb);line-height:1.4}
+body.premium-subpage .subhero:has(>.service-banner-art)>.eyebrow::before{content:none;display:none}
+.service-banner-kicker-icon{display:inline-flex;flex:none;width:36px;height:36px;align-items:center;justify-content:center;background:#ffffff10;border:1px solid currentColor;border-radius:9px}
+.service-banner-kicker-icon svg{display:block;width:23px;height:23px}
+@media(min-width:1100px){
+ body.premium-subpage .subhero:has(>.service-banner-art){padding-right:32%;min-height:360px}
+ body.premium-subpage .subhero:has(>.service-banner-art)>:is(h1,p){max-width:100%}
+ body.premium-subpage .subhero:has(>.service-banner-art)>.service-banner-art{display:block;position:absolute;right:5%;top:50%;width:clamp(220px,24vw,350px);transform:translateY(-50%);z-index:-1}
+}
+@media(max-width:760px){body.premium-subpage .subhero:has(>.service-banner-art){padding-top:30px;padding-bottom:32px;min-height:0}body.premium-subpage .subhero:has(>.service-banner-art)>h1{font-size:clamp(1.85rem,7.4vw,2.65rem);max-width:100%;line-height:1.12}body.premium-subpage .subhero:has(>.service-banner-art)>p{max-width:100%}}
+@media print{.service-banner-art,.service-banner-kicker-icon{display:none!important}}

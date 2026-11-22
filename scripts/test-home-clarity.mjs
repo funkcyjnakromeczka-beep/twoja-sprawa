@@ -298,3 +298,12 @@ const contactTopic=contactPageHours.match(/<nav[^>]*class="contact-topic-grid"[\
 for(const [code,label,person] of [["szkody","Szkody górnicze","Wojciech"],["swiadczenie","Świadczenie wspierające","Paulina"],["skd","SKD — kredyty PLN","Wojciech"],["renty","Renty powypadkowe","Paulina"],["franki","Kredyty frankowe","Wojciech"],["przesyl","Służebność przesyłu","Wojciech"]])assert.ok(contactTopic.includes('/v2/kontakt.html?usluga='+code+'#formularz')&&contactTopic.includes('data-person="'+person.toLowerCase()+'"'));
 assert.equal((contactTopic.match(/<a href=/g)||[]).length,6);
 assert.ok(contactPageHours.includes('class="contact-form-steps"'));
+
+// Service banner icons deliberately reuse the six homepage motifs, with no images or scripts.
+for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","kredyty-pln","renty-powypadkowe","kredyty-frankowe","sluzebnosc-przesylu"]){
+ const page=await readFile("v2/uslugi/"+slug+".html","utf8");
+ assert.equal((page.match(/class="service-banner-art"/g)||[]).length,1);
+ assert.equal((page.match(/class="service-banner-kicker-icon"/g)||[]).length,1);
+ assert.ok(page.includes('class="service-banner-art" aria-hidden="true"'));
+}
+assert.ok(navCSS.includes(".subhero:has(>.service-banner-art)::before")&&navCSS.includes("@media(min-width:1100px)"));

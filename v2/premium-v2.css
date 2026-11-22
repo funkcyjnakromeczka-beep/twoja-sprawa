@@ -4115,3 +4115,10 @@ html{scroll-padding-top:16px}
 @media print{
   .premium-subpage .subhero{border-top-color:#999}
 }
+
+/* Mobile data budget: keep the approved local hero and portraits; replace only decorative external backgrounds. */
+@media(max-width:760px){
+ .premium-v2 #filmy:before{background:none}
+ .premium-v2 #filmy .video-feature .video-poster:before{background:radial-gradient(ellipse at 80% 15%,#42647b,#132c43 65%,#0a1728);filter:none}
+ .premium-v2 .campaign-home-card:first-child:before{background-image:linear-gradient(135deg,#b2c7d5,#e2e9ee)}
+}

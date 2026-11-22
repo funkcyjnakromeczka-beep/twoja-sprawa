@@ -327,7 +327,7 @@ assert.ok(navCSS.includes(".subhero:has(>.service-banner-art)::before")&&navCSS.
 for(const slug of ["renty-powypadkowe","kredyty-frankowe","sluzebnosc-przesylu"])assert.ok(headerNav.includes('/v2/uslugi/'+slug+'.html'));
 const footerDirectory=html.match(/<nav class="footer-links footer-directory"[\s\S]*?<\/nav>/)?.[0]||"";
 assert.equal((footerDirectory.match(/class="footer-directory-group"/g)||[]).length,3);
-assert.equal((footerDirectory.match(/<a href="/g)||[]).length,10);
+assert.equal((footerDirectory.match(/<a href="/g)||[]).length,12,"Homepage footer must expose 12 useful navigation links, including two regional pages");
 assert.ok(css.includes(".footer-directory a:focus-visible")&&css.includes("@media(max-width:460px)"));
 
 // The five existing videos have consistent topic graphics and still use hosted links.

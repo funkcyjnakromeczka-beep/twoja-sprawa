@@ -139,8 +139,8 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/wypadek-przy-pracy-pierwsze-kroki.html",
     "href": "/v2/wiedza/wypadek-przy-pracy-pierwsze-kroki.html",
-    "title": "Wypadek przy pracy — jakie dokumenty przygotować?",
-    "description": "Po wypadku przy pracy warto uporządkować dowody dotyczące przebiegu zdarzenia, jego następstw i dotychczasowych decyzji. Dostępne świadczenia zależą od stanu faktycznego.",
+    "title": "Wypadek przy pracy — dokumenty, ZUS i pierwsze kroki",
+    "description": "Co zrobić po wypadku przy pracy? Zgłoszenie, protokół lub karta wypadku, dokumenty dla ZUS oraz możliwe roszczenia cywilne.",
     "category": "renty",
     "keywords": "Wypadek przy pracy — jakie dokumenty przygotować? v2 wiedza wypadek przy pracy pierwsze kroki html Wypadek Przy Pracy Pierwsze Kroki"
   },

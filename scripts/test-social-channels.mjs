@@ -34,8 +34,8 @@ for(const [path,expected,id] of cases){
    "Accessible name must contain visible text and announce new tab on "+path);
   assert.ok(!m[0].includes("aria-label="),"Do not override the visible label; WCAG 2.5.3 on "+path);
   const brand=m[1].includes("tiktok.com")?"tiktok":"facebook";
-  assert.ok(m[2].includes('<img class="social-brand-icon" src="/v2/assets/icon-'+brand+'.svg" alt="" width="27" height="27" decoding="async">'),
-   "Missing or mismatched platform brand mark on "+path);
+  const iconPattern=new RegExp('<img class="social-brand-icon" src="/v2/assets/icon-'+brand+'\\.svg" alt="" width="27" height="27"(?: loading="lazy")? decoding="async">');
+  assert.match(m[2],iconPattern,"Missing or mismatched platform brand mark on "+path);
   assert.ok(m[1].startsWith("https://"),"Social destination must be HTTPS");
   assert.ok(!m[1].includes("?"),"Keep social links free of campaign/tracking query strings");
  }

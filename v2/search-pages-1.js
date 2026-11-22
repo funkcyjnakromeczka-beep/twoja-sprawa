@@ -107,7 +107,7 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/uslugi/kredyty-pln.html",
     "href": "/v2/uslugi/kredyty-pln.html",
-    "title": "Sankcja Kredytu Darmowego: analiza umowy",
+    "title": "SKD: Sankcja Kredytu Darmowego — analiza",
     "description": "Sankcja Kredytu Darmowego (SKD): analiza umowy kredytu PLN, kosztów i RRSO. Skontaktuj się w sprawie wstępnej oceny, bez gwarancji wyniku.",
     "category": "skd",
     "keywords": "Kredyty w PLN — Sankcja Kredytu Darmowego i rozliczenie kosztów v2 uslugi kredyty pln html Kredyty PLN"

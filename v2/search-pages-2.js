@@ -11,7 +11,7 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/uslugi/swiadczenie-wspierajace.html",
     "href": "/v2/uslugi/swiadczenie-wspierajace.html",
-    "title": "Świadczenie wspierające: WZON, ZUS, odwołania",
+    "title": "Świadczenie wspierające — WZON i ZUS",
     "description": "Świadczenie wspierające: decyzja WZON, wniosek do ZUS lub odwołanie? Sprawdź etapy, dokumenty i kontakt do Pauliny: 500 171 531.",
     "category": "swiadczenie",
     "keywords": "Świadczenie wspierające — pomoc od pierwszego zgłoszenia v2 uslugi swiadczenie wspierajace html Swiadczenie Wspierajace"

@@ -280,3 +280,9 @@
 @media(max-width:700px){.local-mining-page .local-section-jumps{grid-template-columns:repeat(2,minmax(0,1fr))}.local-mining-page .local-hero{padding-block:26px}.local-mining-page .local-hero h1{font-size:clamp(1.85rem,7.5vw,2.65rem);line-height:1.15}.local-mining-page .local-hero p{font-size:1rem;line-height:1.6}.local-mining-page .local-actions{margin:17px 0}}
 @media(max-width:340px){.local-mining-page .local-section-jumps{grid-template-columns:minmax(0,1fr)}}
 @media print{.local-mining-page .local-section-jumps{display:none}}
+
+/* Illustrative, non-photographic damage motifs using local inline vectors. */
+.local-mining-page .local-damage-icon{display:grid;place-items:center;width:54px;height:54px;margin:0 0 13px;border-radius:12px;border:1px solid #d1dee3;background:#edf3f6;color:#254e64}
+.local-mining-page .local-damage-icon svg{display:block;max-width:100%}
+.local-mining-page .local-card:has(.local-damage-icon){border-top:3px solid #b69460}
+@media(max-width:600px){.local-mining-page .local-damage-icon{width:46px;height:46px;margin-bottom:9px}.local-mining-page .local-damage-icon svg{width:30px;height:30px}.local-mining-page .local-card:has(.local-damage-icon){padding:16px}}

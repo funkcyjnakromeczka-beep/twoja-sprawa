@@ -195,8 +195,8 @@ try{
     requirePerson("wojciech.obieglo@votum-ds.pl","+48796441345");
    if(advisor==="both"||advisor==="paulina")
     requirePerson("paulina.chandrala@votum-ds.pl","+48500171531");
-   // Without JS, DOMContentLoaded can precede the responsive stylesheet.
-   // The load event above is required before measuring widths.
+   // Wait for every actual stylesheet, not slow third-party decorative images.
+   await noJsPage.waitForFunction(()=>[...document.querySelectorAll('link[rel="stylesheet"]')].every(link=>link.sheet!==null),null,{timeout:30000});
    const geometry=await noJsPage.evaluate(()=>{
     const overflow=document.documentElement.scrollWidth-window.innerWidth;
     const offenders=[...document.querySelectorAll("body *")].filter(el=>{

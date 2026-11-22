@@ -117,3 +117,9 @@ for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","skd","renty-powy
  const context=page.match(/<div class="campaign-form-intro">[\s\S]*?<\/div>/)?.[0]||"";
  assert.ok(context.includes(["swiadczenie-wspierajace","renty-powypadkowe"].includes(slug)?"Paulina Chandrała":"Wojciech Obiegło"));
 }
+
+for(const city of ["lubin","polkowice"]){
+ const html=await readFile("v2/lokalnie/szkody-gornicze-"+city+".html","utf8");
+ assert.equal((html.match(/class="local-damage-icon" aria-hidden="true"><svg/g)||[]).length,3);
+}
+assert.ok(css.includes(".local-damage-icon svg"));

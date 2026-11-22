@@ -10,7 +10,7 @@ const facebookGroup="https://www.facebook.com/groups/4385749378342889/";
 const supportGroup="https://www.facebook.com/groups/twojasprawa.swiadczenia.renty";
 const skdProfile="https://www.facebook.com/w.bieglo/";
 const cases=[
- ["v2/index.html",[facebookGroup,supportGroup,facebookMining,tiktokMining],"social-home-community"],
+ ["v2/index.html",[facebookGroup,supportGroup,facebookMining,tiktokMining,skdProfile],"social-home-community"],
  ["v2/uslugi/szkody-gornicze.html",[tiktokMining,facebookMining],"social-szkody"],
  ["v2/kampanie/szkody-gornicze.html",[tiktokMining,facebookMining],"social-szkody"],
  ["v2/uslugi/swiadczenie-wspierajace.html",[supportGroup],"social-swiadczenie"],
@@ -88,5 +88,5 @@ for(const brand of ["facebook","tiktok"]){
  const logo=await readFile("v2/assets/icon-"+brand+".svg","utf8");
  assert.ok(logo.startsWith("<svg")&&logo.includes("<path")&&logo.includes("</svg>"),"Malformed local brand SVG for "+brand);
 }
-console.log("SOCIAL_BRAND_ICONS_OK: 10 correctly matched Facebook/TikTok icons, all served locally.");
+console.log("SOCIAL_BRAND_ICONS_OK: 11 correctly matched Facebook/TikTok icons, all served locally.");
 console.log("SOCIAL_CHANNELS_OK: 9 page placements, five destinations, accessible external links, private on-site hand-off, data safety and no tracking.");

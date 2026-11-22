@@ -683,6 +683,22 @@
     // advisor_email jest metadana w tresci zgłoszenia, nie zmienia odbiorcy.
     const payload={access_key:accessKey,reference_code:ref,subject:"Nowe zgłoszenie Twoja Sprawa ["+ref+"] — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,reported_source:reportedSource(),campaign_medium:safeMedium||(!campaignSource&&inferredAIReferrer?"referral":"brak"),campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
     try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");synchronizeFailureLinks=()=>{};confirmedRef=ref;refValue.textContent=ref;refPanel.hidden=false;status.className="contact-status-success";const resultBody=document.createElement("p");resultBody.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Osoba wskazana do kontaktu: "+advisorName+". Nie jest to potwierdzenie doręczenia e-maila ani odpowiedzi przedstawiciela. W pilnej sprawie skorzystaj z telefonu.";status.replaceChildren(resultHeading("Zgłoszenie przyjęte przez operatora"),resultBody);
+// Only after a confirmed response, show a public, service-specific checklist.
+// Never include submitted personal data, reference IDs or UTM in this link.
+const preparation=guidePaths[select.value];
+if(preparation){
+ const next=document.createElement("p");next.className="contact-success-preparation";
+ const lead=document.createElement("span");
+ lead.textContent="Co dalej? Zachowaj kod zgłoszenia. Jeśli chcesz przygotować się do rozmowy: ";
+ const checklist=document.createElement("a");
+ checklist.href=preparation[0];
+ checklist.target="_blank";checklist.rel="noopener noreferrer";
+ checklist.textContent="otwórz listę kontrolną (nowa karta)";
+ const warning=document.createElement("span");
+ warning.textContent=". Nie przesyłaj dokumentów zawierających dane wrażliwe przez formularz.";
+ next.append(lead,checklist,warning);
+ status.append(next);
+}
 // This local event is fired only after Web3Forms confirms acceptance.
 // It contains no name, phone, health information, service category, source or reference.
 // No analytics vendor is invoked: future consent-aware integration can listen here.

@@ -215,6 +215,8 @@ const run=async(error=false)=>{
   assert.equal(refCode.textContent,"","No success code after a network error");
   assert.equal(copied.length,0,"A failed submission must not copy anything");
   assert.equal(status.className,"contact-status-error");
+  assert.equal(visit(status,n=>n.className==="contact-success-preparation"),null,
+   "No successful next-step guidance after unconfirmed delivery");
    assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
   const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
   assert.ok(fallback);
@@ -254,6 +256,18 @@ const run=async(error=false)=>{
   assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"));
  }else{
   assert.equal(status.className,"contact-status-success");
+  const preparation=visit(status,n=>n.className==="contact-success-preparation");
+  assert.ok(preparation,"Confirmed receipt should show a voluntary next step");
+  const checklist=visit(preparation,n=>n.tag==="a");
+  assert.equal(checklist?.href,"/v2/poradniki/swiadczenie-wspierajace-pierwsze-kroki.html",
+   "Benefit inquiry requires the correct public checklist");
+  assert.equal(checklist?.target,"_blank","Checklist must not replace confirmation");
+  assert.equal(checklist?.rel,"noopener noreferrer","Safe new tab for preparation");
+  assert.ok(!checklist.href.includes("?")&&!checklist.href.includes("#")&&
+   !checklist.href.includes(requestBody.reference_code),
+   "Checklist URL must not include personal data or lead metadata");
+  assert.ok(preparation.children.some(n=>n.textContent?.includes("dane wrażliwe")),
+   "Sensitive information warning required");
   assert.ok(status.children.some(n=>n.className==="contact-result-heading"&&n.textContent.includes("Zgłoszenie przyjęte")),"Confirmation must explain operator acknowledgement");
   assert.equal(refPanel.hidden,false,"Confirmed submission reveals the reference");
   assert.equal(refCode.textContent,requestBody.reference_code,"Only the anonymous reference is displayed separately");

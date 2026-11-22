@@ -1000,3 +1000,14 @@ for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","skd","renty-powy
   "Campaign form should not shift after initial paint: "+slug);
 }
 console.log("MEASURED_LIGHTHOUSE_FIXES_OK: native href, semantic form heading, parse-end campaign forms");
+
+// Confirmed callback information is public and never adds lead PII to the URL.
+assert.ok(measuredContactScript.includes("const preparation=guidePaths[select.value]")&&
+ measuredContactScript.includes('next.className="contact-success-preparation"')&&
+ measuredContactScript.includes("checklist.href=preparation[0]")&&
+ measuredContactScript.includes('checklist.rel="noopener noreferrer"'),
+ "Successful submissions need a safe service-specific preparation route");
+const confirmedStyles=await read("styles.css");
+assert.ok(confirmedStyles.includes(".contact-success-preparation a:focus-visible"),
+ "Preparation link must have focus visibility");
+console.log("CONTACT_CONFIRMATION_GUIDE_OK: public checklist only after success.");

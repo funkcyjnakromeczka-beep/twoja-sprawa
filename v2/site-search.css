@@ -112,3 +112,32 @@
 .search-page .site-search-card{border-top:3px solid #a2bac8;box-shadow:0 4px 15px #082a350b}
 .search-page .site-search-card .site-search-cta{color:#285970}
 .search-page .search-hero-links a:not(:first-child){background:transparent;color:#ffe0ae}
+
+
+/* SEARCH-RESULTS-20261122: material type and subject have distinct visual roles. */
+.search-page .site-search-card{--result-accent:#a62c46;border-radius:12px;border-top:3px solid var(--result-accent);gap:10px}
+.search-page .site-search-card:is([data-result-category="swiadczenie"],[data-result-category="renty"]){--result-accent:#397d58}
+.search-page .site-search-card[data-result-category="przesyl"]{--result-accent:#33747c}
+.search-page .site-search-card:is([data-result-category="skd"],[data-result-category="franki"],[data-result-category="inne"]){--result-accent:#466787}
+.search-page .site-search-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 9px;min-width:0}
+.search-page .site-search-card .site-search-tag{align-self:center;border-radius:6px;background:#eaf0f5;color:#23445c;letter-spacing:0;text-transform:none;font-size:.75rem;line-height:1.4}
+.search-page .site-search-topic{color:var(--result-accent);font-size:.76rem;line-height:1.4;font-weight:750;overflow-wrap:anywhere}
+.search-page .site-search-card h3{font-family:system-ui,sans-serif;font-weight:750;letter-spacing:-.015em;line-height:1.4}
+.search-page .site-search-card .site-search-description{color:#435b6b;line-height:1.65}
+.search-page .site-search-card .site-search-cta{display:flex;align-items:center;min-height:44px;border-top:1px solid #e0e7ed;padding-top:5px;text-decoration:underline;text-underline-offset:3px}
+.search-page .site-search-card:hover{border-color:var(--result-accent)}
+.search-page .search-hints>span{flex:0 0 100%;font-weight:750;color:#385364}
+.search-page .search-hints a{border-radius:8px;padding:8px 10px}
+.search-page .search-filters button:is([data-search-category="swiadczenie"],[data-search-category="renty"]):not([aria-pressed="true"]){border-left:3px solid #397d58;background:#f3faf5}
+.search-page .search-hero-links a{box-sizing:border-box;text-align:center}
+@media(max-width:670px){
+ .search-page .search-hero{padding:30px 0 35px}
+ .search-page .search-hero h1{font-size:clamp(1.9rem,7.5vw,2.7rem);margin:12px 0}
+ .search-page .search-hero-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+ .search-page .search-hero-links a:first-child{grid-column:1/-1}
+ .search-page .search-hero-links a{padding:10px;font-size:.86rem}
+ .search-page .site-search-card{padding:15px;gap:8px}
+ .search-page .search-hints a{font-size:.79rem}
+ .search-page .search-workspace-top{margin-bottom:15px}
+}
+@media(max-width:340px){.search-page .search-hero-links{grid-template-columns:1fr}}

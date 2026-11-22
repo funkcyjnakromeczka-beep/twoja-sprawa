@@ -91,8 +91,8 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
     "href": "/v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
-    "title": "Słup energetyczny na działce — co sprawdzić przed zgłoszeniem sprawy?",
-    "description": "Obecność słupa, linii energetycznej lub innego urządzenia przesyłowego może uzasadniać analizę stanu prawnego nieruchomości, ale nie oznacza automatycznie prawa do wynagrodzenia.",
+    "title": "Słup energetyczny na działce — służebność przesyłu",
+    "description": "Słup lub sieć na działce? Sprawdź dokumenty, tytuł prawny operatora, zasady wynagrodzenia za służebność przesyłu i ryzyko zasiedzenia.",
     "category": "przesyl",
     "keywords": "Słup energetyczny na działce — co sprawdzić przed zgłoszeniem sprawy? v2 wiedza sluzebnosc przesylu slup na dzialce html Sluzebnosc Przesylu Slup Na Dzialce"
   },

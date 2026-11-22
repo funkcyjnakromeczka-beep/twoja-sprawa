@@ -17,3 +17,19 @@ main :is(h2,h3,h4,h5,h6)[id^="tresc-"]:target{outline:2px solid #be9856;outline-
 .content-return-top a:focus-visible,.content-toc-contact a:focus-visible{outline:3px solid #a8762b;outline-offset:3px}
 @media(max-width:680px){.content-toc{margin:10px 12px 16px;padding:11px 12px}.content-toc ol{grid-template-columns:1fr;gap:7px}}
 @media print{.content-toc,.content-return-top{display:none!important}main :is(h2,h3,h4,h5,h6)[id^="tresc-"]:target{outline:none}}
+
+
+/* ARTICLE-CONTENTS-20261122 — editorial table of contents with readable tap targets. */
+.content-toc{width:min(1100px,calc(100% - 32px));border-color:#b5c5d2;border-radius:12px;background:#f5f8fb}
+.content-toc>summary{min-height:44px;line-height:1.45;color:#18384e}
+.content-toc[open]>summary{border-bottom:1px solid #c4d1dc;padding-bottom:8px}
+.content-toc ol{gap:8px 24px}
+.content-toc li>a{display:inline-flex;align-items:center;padding-block:6px;min-height:36px;box-sizing:border-box;line-height:1.45}
+.content-toc-contact a{border-radius:8px;background:#18384e}
+.guide-article>.content-toc{width:100%;margin:18px 0 24px}
+.knowledge-article main :is(h2,h3)[id]{scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+@media(max-width:680px){
+ .content-toc{width:calc(100% - 24px);margin:12px auto 18px}
+ .guide-article>.content-toc{width:100%}
+ .content-toc li>a{min-height:44px}
+}

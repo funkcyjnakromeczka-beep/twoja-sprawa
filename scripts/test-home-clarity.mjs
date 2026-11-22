@@ -349,3 +349,9 @@ for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","kredyty-pln","re
  const film=page.match(/class="service-video-direct" href="#(film-[^"]+)"/);
  if(slug!=="kredyty-frankowe")assert.ok(film&&page.includes('id="'+film[1]+'"'));
 }
+
+const navigatedIcons=html.match(/<div class="navigator-options"[\s\S]*?<\/div>/)?.[0]||"";
+assert.equal((navigatedIcons.match(/<span aria-hidden="true"><svg/g)||[]).length,6);
+const planIconsPage=await readFile("v2/plan-dzialania.html","utf8");
+const planIcons=planIconsPage.match(/<div class="plan-kind-grid"[\s\S]*?<\/div>/)?.[0]||"";
+assert.equal((planIcons.match(/<span aria-hidden="true"><svg/g)||[]).length,6);

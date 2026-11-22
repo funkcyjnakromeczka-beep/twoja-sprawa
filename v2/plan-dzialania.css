@@ -99,3 +99,10 @@
 .plan-page .plan-stage select{font-size:16px}
 .plan-page .plan-checklist li label{min-height:54px;box-sizing:border-box}
 .plan-page .plan-checklist li:focus-within{outline:3px solid #d0a668;outline-offset:2px}
+
+/* Match the main service pictograms in the plan builder. */
+.plan-page .plan-kind-grid button>span svg{display:block;width:26px;height:26px}
+.plan-page .plan-kind-grid button[data-plan-service="swiadczenie"]>span,.plan-page .plan-kind-grid button[data-plan-service="renty"]>span{background:#dfede4;color:#255b43}
+.plan-page .plan-kind-grid button[aria-pressed="true"]>span{background:#17384e;color:#fff}
+@media(max-width:590px){.plan-page .plan-hero{padding-block:30px}.plan-page .plan-hero h1{font-size:clamp(1.95rem,8vw,2.8rem)}.plan-page .plan-kind-grid button{padding:11px 13px;min-height:64px}}
+@media print{.plan-page:not(.brochure-active) .plan-brochure-library{display:none!important}}

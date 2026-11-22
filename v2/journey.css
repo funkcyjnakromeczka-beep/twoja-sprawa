@@ -17,17 +17,13 @@
 .premium-v2 .navigator-disclosure .navigator-head h2{color:#fff}
 .premium-v2 .navigator-disclosure .navigator-head .section-lead{color:#cbdbe1}
 .premium-v2 .navigator-disclosure .navigator-step{
- display:inline-flex;align-items:center;padding:9px 14px;border-radius:30px;
+ display:inline-flex;align-items:center;padding:9px 14px;border-radius:10px;white-space:normal;
  background:rgba(211,172,110,.12);border:1px solid rgba(211,172,110,.48);
  font:700 .79rem/1.4 system-ui,sans-serif;color:#f4d9ab;
 }
 .premium-v2 .navigator-disclosure .navigator-option{
- border:1px solid rgba(208,178,132,.4);border-radius:16px;
- background:linear-gradient(130deg,rgba(247,244,233,.96),rgba(227,240,237,.95));
- color:#173946;min-width:0;box-shadow:0 7px 22px rgba(0,0,0,.10);
+ min-width:0;
 }
-.premium-v2 .navigator-disclosure .navigator-option strong{color:#143744}
-.premium-v2 .navigator-disclosure .navigator-option small{color:#475f64}
 .premium-v2 .navigator-disclosure .navigator-option:hover{
  border-color:#d8b17b;transform:translateY(-2px);box-shadow:0 14px 24px rgba(0,0,0,.18);
 }
@@ -78,6 +74,8 @@
  .premium-v2 .navigator-result-actions .btn{width:100%;min-width:0}
  .premium-v2 .navigator-disclosure .service-navigator{padding:19px 13px 24px}
  .premium-v2 .navigator-stage-choice{min-height:49px}
+ .premium-v2 .navigator-disclosure .navigator-option{display:grid;grid-template-columns:40px 1fr;gap:4px 12px;padding:12px;text-align:left;align-items:center;min-height:84px}
+ .premium-v2 .navigator-option>span{grid-row:span 2}
 }
 @media(prefers-reduced-motion:reduce){
  .premium-v2 .navigator-disclosure .navigator-option:hover,

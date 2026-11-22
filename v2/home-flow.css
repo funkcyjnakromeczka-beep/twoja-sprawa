@@ -906,3 +906,26 @@
  .premium-v2 .hero-resource-disclosure>summary{min-height:54px;padding:10px 12px}
  .premium-v2 .hero-resource-content :is(.hero-reading-shortcuts,.hero-local-shortcuts) a{min-height:44px}
 }
+
+
+/* HEADER-ACCESS-20261122 — compact mobile brand row and visible site search. */
+.premium-v2 .site-header .main-nav>a.nav-search-direct{display:inline-flex;align-items:center;gap:7px;border:1px solid #8296af;border-radius:9px;background:#ffffff09;color:#e8f0fa}
+.premium-v2 .site-header .main-nav>a.nav-search-direct svg{flex:none}
+.premium-v2 .site-header .main-nav>a.nav-search-direct:hover{background:#2a435e;color:#fff}
+.premium-v2 .site-header .mobile-menu-toggle .menu-close-icon{display:none}
+.premium-v2 .site-header .mobile-menu-toggle[aria-expanded="true"] .menu-open-icon{display:none}
+.premium-v2 .site-header .mobile-menu-toggle[aria-expanded="true"] .menu-close-icon{display:block}
+@media(max-width:760px){
+ .premium-v2 .site-header .brand-line{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-block:10px}
+ .premium-v2 .site-header .brand-line>.logo{flex:1 1 150px;min-width:0}
+ .premium-v2 .site-header .brand-name{font-size:clamp(1.4rem,5.2vw,1.8rem);line-height:1.15}
+ .premium-v2 .site-header .brand-caption{font-size:.7rem;line-height:1.35}
+ .premium-v2 .site-header .mobile-menu-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;min-width:86px;border-radius:9px}
+ .premium-v2 .site-header .mobile-menu-toggle svg{flex:none}
+ .premium-v2 .site-header .header-contact{flex:0 1 auto}
+ .premium-v2 .site-header .main-nav.nav-open>a.nav-search-direct{justify-content:flex-start}
+}
+@media(max-width:500px){
+ .premium-v2 .site-header .brand-line>.header-contact{display:none}
+ .premium-v2 .site-header .brand-line>.partner-logo{display:none}
+}

@@ -33,7 +33,8 @@ try{
   const brochurePage=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
   try{
    const route=origin+"/plan-dzialania.html?broszura="+slug+"#broszura";
-   const res=await brochurePage.goto(route,{waitUntil:"load",timeout:30000});
+   // Remote partner logos must not block the local brochure readiness test.
+   const res=await brochurePage.goto(route,{waitUntil:"domcontentloaded",timeout:30000});
    if(!res?.ok())throw Error("Brochure route failed: "+slug);
    await brochurePage.locator("body.ts-brochure-ready").waitFor({state:"attached",timeout:10000});
    const panels=brochurePage.locator(".ts-brochure-panel");
@@ -45,6 +46,7 @@ try{
    if(over>2)throw Error("Brochure mobile overflow "+over+"px for "+slug);
    const qr=brochurePage.locator(".ts-brochure-qr-image");
    if(await qr.count()!==1)throw Error("One offline QR per brochure required: "+slug);
+   await brochurePage.waitForFunction(()=>{const img=document.querySelector(".ts-brochure-qr-image");return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
    const qrLoaded=await qr.evaluate(img=>img.complete&&img.naturalWidth>0);
    if(!qrLoaded)throw Error("Brochure QR SVG is missing or unloadable: "+slug);
    await brochurePage.screenshot({path:"screenshots/broszura-"+slug+"-telefon.png",fullPage:true,animations:"disabled"});

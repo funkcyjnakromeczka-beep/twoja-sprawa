@@ -9,6 +9,7 @@ const title=root.querySelector("[data-plan-title]");
 const intro=root.querySelector("[data-plan-intro]");
 const checklist=root.querySelector("[data-plan-checklist]");
 const progress=root.querySelector("[data-plan-progress]");
+const meter=root.querySelector("[data-plan-meter]");
 const printButton=root.querySelector("[data-plan-print]");
 const shareButton=root.querySelector("[data-plan-share]");
 const shareStatus=root.querySelector("[data-plan-share-status]");
@@ -217,6 +218,7 @@ const resetProgress=()=>{
  const checks=[...checklist.querySelectorAll('input[type="checkbox"]')];
  const completed=checks.filter(input=>input.checked).length;
  progress.textContent=completed+" z "+checks.length;
+ if(meter){meter.max=Math.max(1,checks.length);meter.value=completed;meter.hidden=!checks.length;}
  checklist.classList.toggle("plan-complete",checks.length>0&&completed===checks.length);
 };
 const makeLink=(type,selectedStage)=>{
@@ -232,11 +234,11 @@ const render=()=>{
  const data=DATA[key];
  kinds.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.planService===key)));
  if(!data){
-  title.textContent="Wybierz temat po lewej stronie";
+  title.textContent="Wybierz rodzaj sprawy";
   intro.textContent="Przygotujemy praktyczną listę pierwszych kroków do rozmowy. Nie oceniamy tutaj uprawnienia do świadczenia ani podstaw roszczenia.";
   const empty=document.createElement("li");empty.className="plan-placeholder";empty.textContent="Po wybraniu tematu pojawi się tutaj lista czynności.";
   checklist.replaceChildren(empty);stageContainer.hidden=true;
-  progress.textContent="0 z 0";printButton.disabled=true;resetButton.disabled=true;
+  progress.textContent="0 z 0";if(meter){meter.value=0;meter.max=1;meter.hidden=true;}printButton.disabled=true;resetButton.disabled=true;
   if(shareButton)shareButton.disabled=true;resetShare();
   contact.href="/v2/kontakt.html";contact.textContent="Przejdź do formularza →";if(phoneLink)phoneLink.hidden=true;if(detailsLink)detailsLink.hidden=true;if(emailLink)emailLink.hidden=true;if(emailHint)emailHint.hidden=true;return;
  }

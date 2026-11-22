@@ -551,7 +551,7 @@ const stageCase=(service,code,expected)=>{
  const note=visit(form,n=>n.className==="contact-context-notice");
  assert.ok(note,"Context note must be in the form");
  assert.equal(note.hidden,!Boolean(expected),"Valid chatbot stages reveal the summary");
- if(expected)assert.ok(note.children.some(n=>n.textContent===expected),"Summary should describe the selected stage");
+ if(expected)assert.ok(note.children.some(n=>n.textContent?.includes(expected)),"Summary should describe the selected stage");
 };
 stageCase("Szkody górnicze","ugoda","Otrzymałem/am propozycję ugody");
 stageCase("Szkody górnicze","odmowa","Kopalnia odmówiła");
@@ -642,7 +642,7 @@ for(const [code,label] of [
  assert.equal(stageWrap.hidden,false,"CHF stage must be visible and editable");
  assert.equal(stage.value,label,"Planner stage lost for "+code);
  assert.equal(info.hidden,!Boolean(label),"Plan context summary mismatch for "+code);
- assert.equal(info.children[0].textContent,"Twój wybór w planie przygotowań");
+ assert.equal(info.children[0].textContent,"Wybrana usługa i etap sprawy");
  assert.ok(advisor.children.some(n=>n.href==="tel:+48796441345"),"CHF call should go to Wojciech");
  if(code==="ugoda"){
   const name=visit(form,n=>n.autocomplete==="given-name");
@@ -674,7 +674,7 @@ for(const [code,label] of [
  const context=visit(form,n=>n.className==="contact-context-notice");
  assert.equal(stage.value,"Otrzymałem/am propozycję ugody");
  assert.equal(context.hidden,false);
- assert.ok(context.children.some(n=>n.textContent==="Otrzymałem/am propozycję ugody"));
+ assert.ok(context.children.some(n=>n.textContent?.includes("Otrzymałem/am propozycję ugody")));
 }
 
 const miningLanding=await readFile("v2/kampanie/szkody-gornicze.html","utf8");

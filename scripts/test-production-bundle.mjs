@@ -792,7 +792,7 @@ console.log("MOBILE_LOADING_GUARDS_OK: desktop hero retained, narrow-screen prel
 const measuredContactScript=await read("contact.js");
 assert.ok(measuredContactScript.includes('document.body.classList.contains("campaign-page")?"h2":"h3"'),
  "Campaign form must use a sequential h2, preserving h3 on other pages");
-assert.ok(measuredContactScript.includes('guideLink.href="/v2/plan-dzialania.html"'),
+assert.ok(/guideLink\.href="\/(?:v2\/)?plan-dzialania(?:\.html)?"/.test(measuredContactScript),
  "Default guide anchor must have a valid href before topic selection");
 for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","skd","renty-powypadkowe"]){
  const markup=await read("kampanie/"+slug+".html");

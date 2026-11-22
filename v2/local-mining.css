@@ -346,3 +346,27 @@
 
 /* WCAG: avoid inherited white input-field backgrounds inside navy adviser card. */
 .local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor .contact-routing-note{background-color:transparent!important}
+
+/* Lokalna nawigacja między miejscowościami pod głównymi akcjami:
+   widoczna bez JavaScript, bez tworzenia kolejnych niepotrzebnych stron. */
+.local-mining-page .local-area-switch{
+ display:flex;align-items:center;flex-wrap:wrap;gap:7px 10px;
+ margin-top:16px;max-width:970px;
+}
+.local-mining-page .local-area-switch>span{
+ color:#f1d4a2;font:750 .84rem/1.4 system-ui,sans-serif;
+}
+.local-mining-page .local-area-switch>a{
+ display:inline-flex;align-items:center;min-height:44px;
+ padding:8px 12px;border:1px solid #94bbc4;border-radius:9px;
+ background:rgba(9,37,51,.56);color:#fff!important;
+ font:700 .84rem/1.4 system-ui,sans-serif;
+ text-decoration:underline;text-underline-offset:3px;
+}
+.local-mining-page .local-area-switch>a:hover{background:#205467;border-color:#f1d4a2}
+.local-mining-page .local-area-switch>a:focus-visible{outline:3px solid #f1d4a2;outline-offset:3px}
+@media(max-width:540px){
+ .local-mining-page .local-area-switch>span{flex-basis:100%}
+ .local-mining-page .local-area-switch>a{flex:1 1 100%;justify-content:center;text-align:center}
+}
+@media print{.local-mining-page .local-area-switch{display:none!important}}

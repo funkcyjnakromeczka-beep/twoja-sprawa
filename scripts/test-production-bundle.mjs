@@ -366,6 +366,35 @@ assert.ok(aiDeepLinks>=7,"Keep verified links to high-value explanatory sections
 console.log("AI_DIRECTORY_OK: "+aiDirectoryLinks.length+" validated links, "
  +targetCache.size+" existing HTML pages, "+aiDeepLinks+" verified section anchors.");
 
+// Local landing page visitors must be able to switch towns immediately,
+// without searching through the article or sending a form to the wrong route.
+for(const [route,neighbor] of [
+ ["lokalnie/szkody-gornicze-lubin.html","polkowice"],
+ ["lokalnie/szkody-gornicze-polkowice.html","lubin"]
+]){
+ const page=await read(route);
+ const hero=page.split('<section class="local-hero"')[1]?.split("</section>")[0]||"";
+ const nav=hero.split('<nav class="local-area-switch"')[1]?.split("</nav>")[0]||"";
+ assert.ok(nav,"Local hero needs a visible no-JS area switcher: "+route);
+ assert.ok(nav.includes('href="/lokalnie/szkody-gornicze-'+neighbor+'"'),
+  "Switch link must use the canonical nearby-city URL: "+route);
+ assert.ok(nav.includes('href="/uslugi/szkody-gornicze"'),
+  "Local page must link back to the main canonical mining service: "+route);
+ assert.equal((nav.match(/<a\b/g)||[]).length,2,
+  "Local hero must contain two unambiguous nearby links: "+route);
+ assert.ok(hero.indexOf("local-area-switch")>hero.indexOf("local-disclaimer"),
+  "Caution about mine attribution must remain immediately after contact actions: "+route);
+ assert.ok(hero.includes('href="#formularz"')&&hero.includes('href="tel:+48796441345"'),
+  "Early local lead paths and Wojciech contact must remain intact: "+route);
+}
+const localAreaCSS=await read("local-mining.css");
+assert.ok(localAreaCSS.includes(".local-mining-page .local-area-switch")
+ &&localAreaCSS.includes(".local-area-switch>a:focus-visible")
+ &&localAreaCSS.includes("min-height:44px"),
+ "Published local CSS must style keyboard and touch area switching");
+console.log("LOCAL_AREA_SWITCH_OK: Lubin ↔ Polkowice and main service reachable without JS.");
+
+
 for(const route of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-frankowe","/wiedza/","/faq","/plan-dzialania"]){
  assert.ok(sitemap.includes("<loc>"+origin+route+"</loc>"),"required SEO route missing: "+route);
 }

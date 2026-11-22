@@ -946,3 +946,18 @@
 }
 @media(max-width:335px){.premium-v2 #filmy .film-topic-index{grid-template-columns:1fr}}
 @media print{.premium-v2 #filmy .film-topic-index{display:none}}
+
+
+/* MOBILE-CONTACT-20261122 — low-profile contact strip, accessible text labels. */
+@media screen and (max-width:650px){
+ .premium-v2 .mobile-contact-bar{background:#142b40;border-top-color:#a5b5c4;gap:6px;padding:7px 8px calc(7px + env(safe-area-inset-bottom,0px))}
+ .premium-v2 .mobile-contact-bar>a{box-sizing:border-box;min-height:52px;border:1px solid #a3b5c5;border-radius:8px;background:#f3f6fa;color:#17384e}
+ .premium-v2 .mobile-contact-bar>a[href="tel:+48500171531"]{background:#e5f2e9;border-color:#9dbca8;color:#204b38}
+ .premium-v2 .mobile-contact-bar>a.mobile-form-link{background:#f5e9eb;border-color:#c59ba6;color:#6f2638}
+ .premium-v2 .mobile-action-label{display:flex;align-items:center;justify-content:center;gap:4px;line-height:1.2}
+ .premium-v2 .mobile-action-label svg{flex:none}
+ .premium-v2 .mobile-contact-bar>a strong{font-variant-numeric:tabular-nums}
+ body.premium-v2 .chat-assistant.is-open{bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:130}
+ body.premium-v2 .chat-assistant.is-open .chat-panel{max-height:min(76dvh,640px)}
+}
+@media screen and (max-width:350px){.premium-v2 .mobile-action-label svg{width:12px;height:12px}}

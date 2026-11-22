@@ -78,7 +78,7 @@ window.TwojaSprawaSearchPages2=[
     "title": "Sankcja kredytu darmowego (SKD): jakie dokumenty przygotować?",
     "description": "Sprawdź listę dokumentów do analizy SKD: umowa kredytu, aneksy, koszty, harmonogram, spłata i terminy. Praktyczny poradnik SuccessTree.",
     "category": "skd",
-    "keywords": "Kredyt w PLN i sankcja kredytu darmowego — jakie dokumenty przygotować? v2 wiedza kredyt pln dokumenty skd html Kredyt PLN Dokumenty SKD"
+    "keywords": "Kredyt w PLN i sankcja kredytu darmowego — jakie dokumenty przygotować? v2 wiedza kredyt pln dokumenty skd html Kredyt PLN Dokumenty SKD wcześniejsza spłata zwrot prowizji odmowa banku rozliczenie kosztów 14 dni art 49 art 52"
   },
   {
     "id": "page:v2/wiedza/renta-powypadkowa-dokumenty.html",

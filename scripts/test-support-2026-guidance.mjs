@@ -13,7 +13,7 @@ const article=strip(guide),offer=strip(service),ad=strip(campaign);
 const assertions=[
  ["Date-specific initial WZON decision",()=>assert.ok(article.includes("1 stycznia 2026 r.")&&article.includes("pierwszego wniosku")&&article.includes("od dnia wydania decyzji"))],
  ["No automatic retroactive effective date",()=>assert.ok(article.includes("nie automatycznie od dnia złożenia wniosku"))],
- ["Three months from final decision",()=>assert.ok(article.includes("3 miesięcy od dnia, w którym decyzja WZON stała się ostateczna"))],
+ ["Three-month deadline discrepancy and safe prompt filing",()=>assert.ok(article.includes("trzy miesiące od wydania decyzji")&&article.includes("moment jej ostateczności")&&article.includes("złóż wniosek niezwłocznie"))],
  ["Official ZUS source present",()=>assert.ok(guide.includes('href="https://www.zus.pl/')&&guide.includes("ZUS —"))],
  ["Explicit free ZUS filing",()=>assert.ok(article.includes("bez opłaty")&&article.includes("pomagają bezpłatnie"))],
  ["Paid intermediary not mandatory",()=>assert.ok(article.includes("odpłatnego pośrednika nie jest obowiązkowe"))],

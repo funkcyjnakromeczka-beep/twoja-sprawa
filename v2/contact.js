@@ -839,6 +839,8 @@
      if(chosen&&event.isPrimary&&(event.pointerType==="touch"||event.pointerType==="pen"))activateShortcut(chosen);
     });
     link.addEventListener("click",event=>{
+     // Modified clicks retain native new-tab navigation and the preselected service.
+     if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey||(typeof event.button==="number"&&event.button!==0))return;
      const chosen=getChosen();
      if(!chosen)return;
      event.preventDefault();

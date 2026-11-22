@@ -899,7 +899,9 @@ assert.ok(contactMarkup.includes('class="contact-shortcuts-actions contact-short
  assert.ok(segment.includes('aria-label="Szybkie zgłoszenie wybranej usługi"'),"Direct contact nav must be labeled");
  assert.ok(segment.includes("Nie wysyła zgłoszenia bez Twojego zatwierdzenia"),"Visitors must know selection does not submit");
  const codes=["szkody","swiadczenie","skd","renty","franki","przesyl"];
- const matches=[...segment.matchAll(/<a href="#kontakt" data-contact-shortcut="([^"]+)"/g)].map(m=>m[1]);
+ const matches=[...segment.matchAll(/<a href="\/v2\/kontakt\.html\?usluga=([^"#]+)#formularz" data-contact-shortcut="([^"]+)"/g)].map(m=>{assert.equal(m[1],m[2],"Native fallback must select the same topic");return m[2];});
+ assert.equal((segment.match(/Kontakt: Paulina/g)||[]).length,2);
+ assert.equal((segment.match(/Kontakt: Wojciech/g)||[]).length,4);
  assert.equal(matches.join("|"),codes.join("|"),"Every one of the six services needs a direct contact path");
  for(const path of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","kredyty-frankowe","sluzebnosc-przesylu"]){
   assert.ok(home.includes('href="/v2/uslugi/'+path+'.html"'),"Educational card must remain intact: "+path);

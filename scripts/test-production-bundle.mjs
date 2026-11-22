@@ -774,7 +774,7 @@ const heroImage=home.match(/<img class="hero-metallic-art"[^>]*>/)?.[0]||"";
 assert.ok(heroImage.includes('loading="lazy"')&&heroImage.includes('width="1536"')&&heroImage.includes('height="803"'),
  "Keep the original hero art and its aspect ratio without unconditional eager loading");
 for(const filename of ["logo_VOTUM_SA_rgb-480x71.png","logo-votum-network-przedstawiciel-400x284-1.jpg","votum-scale-agency-.png"]){
- const tag=[...home.matchAll(/<img\\b[^>]*>/g)].map(x=>x[0]).find(x=>x.includes(filename)&&x.includes('loading="lazy"')&&x.includes('fetchpriority="low"'));
+ const tag=[...home.matchAll(/<img\b[^>]*>/g)].map(x=>x[0]).find(x=>x.includes(filename)&&x.includes('loading="lazy"')&&x.includes('fetchpriority="low"'));
  assert.ok(tag,"A secondary homepage logo still competes with the main image: "+filename);
 }
 const homepageMobileCSS=await read("home-bundle.css");

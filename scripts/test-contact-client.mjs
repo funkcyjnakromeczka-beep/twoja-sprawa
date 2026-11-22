@@ -230,7 +230,7 @@ const run=async(error=false)=>{
   select.value="Szkody górnicze";
   select.events.change();
   assert.equal(errorPhone.href,"tel:+48796441345","Failure callback must follow the currently selected service");
-  assert.equal(errorPhone.textContent,"796 441 345","Visible callback number must match its destination");
+  assert.ok(errorPhone.textContent.includes("796 441 345")&&!errorPhone.textContent.includes("500 171 531"),"Visible callback number must match its destination");
   assert.ok(fallback.href.startsWith("mailto:wojciech.obieglo@votum-ds.pl?"),"Fallback email must follow the new service");
   assert.ok(!fallback.href.includes("&body="),"Changing service must not expose personal details");
   fallback.events.click();

@@ -10,7 +10,8 @@ export const feedArticlePaths=Object.freeze([
  "wiedza/drobne-pekniecia-szkody-gornicze.html",
  "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
  "wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
- "wiedza/renta-powypadkowa-dokumenty.html"
+ "wiedza/renta-powypadkowa-dokumenty.html",
+ "wiedza/swiadczenie-wspierajace-dokumenty.html"
 ]);
 const xmlEscape=value=>String(value)
  .replaceAll("&","&amp;").replaceAll("<","&lt;")

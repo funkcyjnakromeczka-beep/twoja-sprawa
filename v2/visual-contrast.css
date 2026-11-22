@@ -341,3 +341,19 @@ body:is(.theme-support,.theme-rents,.campaign-support,.campaign-rents) .contact-
 }
 @media screen and (max-width:350px){.general-service-page .general-service-shortcuts{grid-template-columns:minmax(0,1fr)}}
 @media print{.general-service-page .general-service-art,.general-service-page .general-service-shortcuts{display:none!important}}
+
+
+/* KEYBOARD-ACCESS-20261122 — visible focus across existing native controls. */
+@media screen{
+ :is(main,header,footer) :is(a[href],button,summary,input:not([type="hidden"]),textarea,select):focus-visible{outline:3px solid #a62c46;outline-offset:3px}
+ :is(.hero,.subhero,.local-hero,.hub-hero,.plan-hero,.network-brand-bar,.chat-assistant,footer) :is(a[href],button,summary):focus-visible{outline:3px solid #f4d6a7;outline-offset:3px}
+ :is(main,footer) details>summary{cursor:pointer}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ .motion-section,.motion-section.motion-ready,.motion-section.motion-visible{opacity:1!important;transform:none!important;transition:none!important;animation:none!important}
+}
+@media(forced-colors:active){
+ :is(main,header,footer) :is(a[href],button,summary,input,textarea,select):focus-visible{outline:3px solid Highlight!important;outline-offset:3px}
+ :is(main,header,footer) :is(button,summary,.btn){border:1px solid ButtonText}
+}

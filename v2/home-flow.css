@@ -1019,3 +1019,35 @@
  .premium-v2 #uslugi .services-assist{grid-template-columns:minmax(0,1fr)}
 }
 @media print{.premium-v2 #uslugi .services-contact-disclosure{display:none!important}}
+
+
+/* MATERIALS-OVERVIEW-20261122 — identify each resource type and unify topic colours. */
+@media screen{
+ .premium-v2 #poradniki .home-material-types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0 28px}
+ .premium-v2 #poradniki .home-material-types>a{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:76px;min-width:0;padding:12px;border:1px solid #aebfcd;border-radius:10px;background:#f3f7fa;color:#18384e;text-decoration:none}
+ .premium-v2 #poradniki .home-material-types>a>span:nth-child(2){display:grid;gap:3px;min-width:0}
+ .premium-v2 #poradniki .home-material-types strong{font-weight:800;line-height:1.4;color:#18384e}
+ .premium-v2 #poradniki .home-material-types small{font-size:.79rem;line-height:1.4;color:#435e71}
+ .premium-v2 #poradniki .home-material-types>a:hover{background:#e0ebf3}
+ .premium-v2 #poradniki .home-material-types>a:focus-visible{outline:3px solid #a62c46;outline-offset:3px}
+ .premium-v2 #poradniki .home-material-heading{color:#18384e;font:750 clamp(1.15rem,2vw,1.4rem)/1.35 var(--ui-font,system-ui,sans-serif);margin:24px 0 12px;scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+ .premium-v2 #poradniki .home-resource-grid,.premium-v2 #poradniki .editorial-reading{margin-top:0}
+ .premium-v2 #poradniki .home-resource-grid>a{border-radius:11px;min-height:162px;padding:17px;background:linear-gradient(135deg,#203e56,#183248);border-color:#9cb0c1}
+ .premium-v2 #poradniki .home-resource-grid>a[data-guide-topic="mining"]{background:linear-gradient(135deg,#29374c,#172d42);border-color:#b9a2ac}
+ .premium-v2 #poradniki .home-resource-grid>a:is([data-guide-topic="support"],[data-guide-topic="rents"]){background:linear-gradient(135deg,#205b48,#153c34);border-color:#99bba7}
+ .premium-v2 #poradniki .home-resource-grid>a:is([data-guide-topic="skd"],[data-guide-topic="chf"]){background:linear-gradient(135deg,#2d4662,#1b3048);border-color:#a1b4cb}
+ .premium-v2 #poradniki .home-resource-grid>a[data-guide-topic="utility"]{background:linear-gradient(135deg,#28505a,#193b45);border-color:#8bb1b8}
+ .premium-v2 #poradniki .home-resource-grid>a>span{color:#edf4f9}
+ .premium-v2 #poradniki .home-resource-grid>a>em{color:#e7f0f8}
+ .premium-v2 #poradniki .editorial-reading a{border-radius:10px;border-color:#b2c3d1;background:#f6f8fa;color:#18384e;min-height:150px;box-shadow:none}
+ .premium-v2 #poradniki .editorial-reading strong{color:#18384e;line-height:1.35}
+ .premium-v2 #poradniki .editorial-reading small{color:#445e70;line-height:1.55}
+ .premium-v2 #poradniki .editorial-reading em{color:#244e6a;text-decoration:underline;text-underline-offset:3px}
+}
+@media screen and (max-width:700px){
+ .premium-v2 #poradniki .home-material-types{grid-template-columns:minmax(0,1fr);gap:8px}
+ .premium-v2 #poradniki .home-material-types>a{min-height:60px}
+ .premium-v2 #poradniki .home-resource-grid>a{min-height:130px}
+ .premium-v2 #poradniki .editorial-reading a{padding:16px;min-height:0}
+}
+@media(prefers-reduced-motion:reduce){.premium-v2 #poradniki .editorial-reading a:hover{transform:none}}

@@ -677,3 +677,17 @@ for(const name of ["wojciech-obieglo.jpg","paulina-chandrala.jpg","og-broszura-s
 assert.ok(!homeBundle.includes("images.unsplash.com"),"No optional remote decorative photography in homepage CSS");
 assert.ok(!(await read("premium-v2.css")).includes("images.unsplash.com"),"No optional remote decorative photography on service pages");
 console.log("LOCAL_MEDIA_CACHE_OK: eight existing photographs and brochure preview assets keep their original files with one-day cache policy.");
+
+
+// Legacy shared brochure URLs must resolve to the canonical production planner.
+const brochureRedirects=await read("_redirects");
+for(const route of ["/v2/plan-dzialania.html","/v2/plan-dzialania","/v2/plan-dzialania/","/broszury","/broszury/","/broszury-graficzne"]){
+ assert.ok(brochureRedirects.split(/\r?\n/).includes(route+" /plan-dzialania 301"),"Missing legacy brochure redirect: "+route);
+}
+const brochurePlanner=await read("plan-dzialania.html");
+assert.ok(brochurePlanner.includes('id="brochure-library-heading"'));
+for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","skd","kredyty-frankowe","sluzebnosc-przesylu"]){
+ assert.ok(brochurePlanner.includes('?broszura='+slug+'#broszura'),"Missing brochure: "+slug);
+}
+assert.ok((await read("404.html")).includes('href="/plan-dzialania#brochure-library-heading"'),"Missing 404 brochure recovery");
+console.log("BROCHURE_ROUTES_OK: six brochure topics, legacy redirects and recovery link.");

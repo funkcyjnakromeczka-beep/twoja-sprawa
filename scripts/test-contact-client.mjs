@@ -8,8 +8,8 @@ class Node {
  constructor(tag="node"){this.tag=tag;this.children=[];this.events={};this.attributes={};this._value=undefined;this.textContent="";this.checked=false;this.style={cssText:""};}
  get value(){return this._value!==undefined?this._value:(this.tag==="select"?this.children.find(n=>n.selected)?.value??"":"");}
  set value(next){this._value=next;}
- append(...children){this.children.push(...children);}
- replaceChildren(...children){this.children=[...children];}
+ append(...children){for(const child of children)if(child&&typeof child==="object")child.parentNode=this;this.children.push(...children);}
+ replaceChildren(...children){this.children=[];this.append(...children);}
  setAttribute(key,value){this.attributes[key]=value;}
  getAttribute(key){return this.attributes[key]??null;}
  querySelector(selector){
@@ -18,7 +18,7 @@ class Node {
   return visit(this,node=>node.tag==="label"&&node.htmlFor===id);
  }
  addEventListener(key,cb){const previous=this.events[key];this.events[key]=previous?(...args)=>{previous(...args);cb(...args);}:cb;}
- insertAdjacentElement(){}
+ insertAdjacentElement(position,node){if(position!=="afterend"||!this.parentNode)return;const siblings=this.parentNode.children;const index=siblings.indexOf(this);if(index<0)return;node.parentNode=this.parentNode;siblings.splice(index+1,0,node);}
  setCustomValidity(message){this.validationMessage=message;}
  reportValidity(){return true;}
  focus(){this.focused=true;}

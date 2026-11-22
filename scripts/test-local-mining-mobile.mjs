@@ -109,7 +109,7 @@ assert.ok(css.includes(".local-prep-tool")&&css.includes(".local-prep-tool-actio
 for(const city of ["lubin","polkowice"]){
  const html=await readFile("v2/lokalnie/szkody-gornicze-"+city+".html","utf8");
  const jumps=html.match(/<nav class="local-section-jumps local-container"[\s\S]*?<\/nav>/)?.[0]||"";
- assert.equal((jumps.match(/<a href="/g)||[]).length,4);
+ assert.equal((jumps.match(/<a href="/g)||[]).length,5,"Five local shortcuts should include the new settlement/denial guide");
  for(const [,id] of jumps.matchAll(/href="#([^"]+)"/g))assert.ok(html.includes('id="'+id+'"'));
 }
 for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","skd","renty-powypadkowe"]){

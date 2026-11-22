@@ -348,7 +348,7 @@ try{
   throw Error("Local shortcut touch targets broken: "+JSON.stringify(localQuickLinks));
  // Source previews use /name.html; Cloudflare publishes extensionless /name.
  // Accept either representation while checking both destinations precisely.
- const localPaths=localQuickLinks.map(link=>link.href.replace(/\\.html(?=$|[?#])/,""));
+ const localPaths=localQuickLinks.map(link=>link.href.replace(/\.html(?=$|[?#])/,""));
  if(localPaths[0]!=="/lokalnie/szkody-gornicze-lubin"||
     localPaths[1]!=="/lokalnie/szkody-gornicze-polkowice")
   throw Error("Local home links target the wrong cities: "+JSON.stringify(localQuickLinks));

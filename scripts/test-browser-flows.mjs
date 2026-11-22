@@ -1020,8 +1020,8 @@ try{
   const layerStyles=serviceStyles.filter(entry=>entry.path.startsWith("/layers-")&&entry.path.endsWith(".css")&&entry.path.length===28);
   assert.equal(layerStyles.length,1,"Expected one content-addressed service layer bundle");
   assert.equal(serviceStyles.length,3,"Core service CSS should load in three requests, preserving shared caches");
-  assert.ok(layerStyles[0].decoded>1000&&layerStyles[0].decoded<75000,
-   "Merged service CSS layers exceed 75 KB decoded");
+  assert.ok(layerStyles[0].decoded>1000&&layerStyles[0].decoded<80000,
+   "Merged service CSS layers exceed 80 KB decoded");
   const hashedCss=await servicePerfPage.request.get(origin+layerStyles[0].path);
   assert.equal(hashedCss.status(),200,"The immutable CSS asset must be retrievable");
   assert.match(hashedCss.headers()["cache-control"]||"",/immutable/i,

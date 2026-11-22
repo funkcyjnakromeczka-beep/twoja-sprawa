@@ -265,3 +265,7 @@
 @media print{
   .local-mining-page .local-hero{border-top-color:#999}
 }
+
+/* Non-hero secondary CTA on the light locality panel must not use white text. */
+.local-mining-page #miejscowosci .local-actions a.local-secondary{background:#fff;color:#12384b;border-color:#527185}
+.local-mining-page #miejscowosci .local-actions a.local-secondary:hover{background:#e7f0f4;color:#12384b}

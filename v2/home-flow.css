@@ -438,7 +438,7 @@
 
 .hero-reading-shortcuts{display:flex;flex-wrap:wrap;gap:6px}
 .hero-reading-shortcuts>span{width:100%}
-.hero-reading-shortcuts a{padding:10px 4px;color:#ffe5ac!important}
+.hero-reading-shortcuts a{display:inline-flex;align-items:center;min-height:44px;padding:8px 8px;color:#ffe5ac!important;text-underline-offset:3px}
 .hero-reading-shortcuts a:focus-visible{outline:3px solid}
 /* Two source-backed, indexable mining routes remain visible on the indexed homepage, no JS. */
 .premium-v2 .hero-local-shortcuts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:12px}

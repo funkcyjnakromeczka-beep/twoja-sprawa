@@ -270,3 +270,5 @@ await access("v2/assets/wojciech-obieglo.jpg");
 await access("v2/assets/paulina-chandrala.jpg");
 
 console.log("HOME_CLARITY_OK: 6 unique services (2+1+3), SKD third with email and phone CTA.");
+
+assert.ok(css.includes(".hero-reading-shortcuts a{display:inline-flex;align-items:center;min-height:44px"),"Mobile reading links need larger touch targets");

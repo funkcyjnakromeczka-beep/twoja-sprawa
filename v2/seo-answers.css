@@ -128,3 +128,25 @@ body.premium-subpage .subhero:has(>.service-banner-art)>.service-banner-art svg{
 }
 @media(max-width:335px){body.premium-subpage:has(.service-section-brochure) .service-section-nav{grid-template-columns:minmax(0,1fr)}}
 @media print{body.premium-subpage .service-banner-art{display:none!important}}
+
+
+/* SERVICE-EXAMPLES-20261122 — concise illustrated examples beside the complete text. */
+@media screen{
+ body.premium-subpage .article .service-scan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style:none;padding:0;margin:22px 0 4px;max-width:100%}
+ body.premium-subpage .article .service-scan-grid>li{display:flex;align-items:flex-start;gap:12px;min-width:0;min-height:96px;box-sizing:border-box;padding:15px;margin:0;background:var(--service-paper,#f4f6fa);border:1px solid var(--service-edge,#bac7d7);border-top:3px solid var(--service-accent,#a62a43);border-radius:10px;line-height:1.4}
+ body.premium-subpage .article .service-scan-grid>li::before{content:none}
+ body.premium-subpage .article .service-scan-icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:9px;background:var(--service-ink,#172e48);color:#fff!important}
+ body.premium-subpage .article .service-scan-icon svg{display:block;width:23px;height:23px;color:#fff!important}
+ body.premium-subpage .article .service-scan-copy{display:grid;gap:6px;min-width:0;overflow-wrap:anywhere}
+ body.premium-subpage .article .service-scan-grid .service-scan-copy strong{color:var(--service-ink,#172e48)!important;font:750 .95rem/1.35 system-ui,sans-serif}
+ body.premium-subpage .article .service-scan-grid .service-scan-copy small{color:#41586a!important;font:500 .84rem/1.5 system-ui,sans-serif}
+}
+@media screen and (max-width:760px){
+ body.premium-subpage .article .service-scan-grid{grid-template-columns:minmax(0,1fr);gap:8px;margin-top:16px}
+ body.premium-subpage .article .service-scan-grid>li{min-height:66px;padding:12px;align-items:center;border-top-width:1px;border-left:3px solid var(--service-accent,#a62a43)}
+}
+@media print{
+ body.premium-subpage .article .service-scan-grid{list-style:disc;padding-inline-start:18px}
+ body.premium-subpage .article .service-scan-icon{display:none}
+ body.premium-subpage .article .service-scan-copy small::before{content:" — "}
+}

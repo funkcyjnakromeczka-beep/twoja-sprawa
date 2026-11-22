@@ -231,3 +231,19 @@ body.recruitment-page .subhero h1{
  font-size:clamp(2.3rem,4.1vw,4.25rem);
  line-height:1.12;
 }
+
+
+/* INFORMATION-FOOTER-20261122: shared shortcuts, compact on narrow screens. */
+footer .information-footer-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(1150px,100%);gap:22px;margin:0 auto 22px;padding:0 0 22px;border-bottom:1px solid #8190a14d;text-align:left}
+footer .information-footer-group{display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0}
+footer .information-footer-group>strong{display:block;color:#f6f8fc;font-size:.94rem;font-weight:800;line-height:1.4;margin-bottom:8px}
+footer .information-footer-group>a{display:flex;align-items:center;min-height:44px;color:#dce7f2!important;text-decoration:none;font-size:.88rem;line-height:1.45;overflow-wrap:anywhere}
+footer .information-footer-group>a:hover{text-decoration:underline;text-underline-offset:3px;color:#fff!important}
+footer .information-footer-group>a:focus-visible{outline:2px solid #edca96;outline-offset:2px;border-radius:4px}
+@media(max-width:680px){
+ footer .information-footer-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding-bottom:16px;margin-bottom:16px}
+ footer .information-footer-group:last-child{grid-column:1/-1;border-top:1px solid #8190a14d;padding-top:13px}
+ footer .information-footer-group>a{font-size:.82rem}
+}
+@media(max-width:350px){footer .information-footer-nav{grid-template-columns:minmax(0,1fr)}footer .information-footer-group:last-child{grid-column:auto}}
+@media print{footer .information-footer-nav{display:none!important}}

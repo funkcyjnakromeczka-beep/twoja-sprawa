@@ -427,6 +427,15 @@ await walk(source);
 await fetchPortraits();
 // Google Search Central explicitly allows multiple sitemap directives.
 // Advertise both identical canonical URL lists: XML is primary, TXT is fallback.
+// Restore visitors following the old Google Business Profile URL. The address
+// was accidentally saved with U+2060 WORD JOINER after its final slash.
+// Google Search Console recorded the malformed path; redirect it permanently
+// to the existing canonical homepage. Do not change normal unknown-page 404s.
+await writeFile(join(dest,"_redirects"),[
+  "# Google Business Profile: remove an accidentally appended invisible U+2060.",
+  "/%E2%81%A0 / 301",
+  "/%E2%81%A0/ / 301"
+].join("\n")+"\n");
 await writeFile(join(dest,"robots.txt"),"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: "+origin+"/sitemap.xml\nSitemap: "+origin+"/sitemap.txt\n");
 const xml=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll('"',"&quot;");
 await writeFile(join(dest,"sitemap.xml"),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+pages.sort().map(p=>'  <url><loc>'+xml(origin+p)+'</loc>'+(pageLastmod.has(p)?'<lastmod>'+pageLastmod.get(p)+'</lastmod>':'')+'</url>').join("\n")+'\n</urlset>\n');

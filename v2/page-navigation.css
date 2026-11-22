@@ -9,3 +9,17 @@
 .page-nav-skip:focus,.page-nav-skip:focus-visible{transform:none;outline:3px solid #a3702b;outline-offset:3px}
 @media(max-width:600px){.site-breadcrumbs{margin:10px 12px;padding:9px 12px;font-size:.8rem;gap:.3rem}.page-nav-skip{max-width:calc(100vw - 16px)}}
 @media print{.site-breadcrumbs,.page-nav-skip{display:none!important}}
+
+
+/* BREADCRUMB-CLARITY-20261122 — stable, wrapped navigation and distinct active page. */
+@media screen{
+ .site-breadcrumbs{width:min(1100px,calc(100% - 32px));margin:10px auto;min-width:0;gap:4px 9px;background:#f3f7fa;border-color:#b6c7d4;border-radius:8px}
+ .site-breadcrumbs>a{display:inline-flex;align-items:center;min-height:44px;padding:4px 2px;font-weight:750;line-height:1.4}
+ .site-breadcrumbs>a:focus-visible{outline:3px solid #a62c46;outline-offset:2px}
+ .site-breadcrumbs [aria-current="page"]{min-width:0;line-height:1.5;color:#18384e}
+ .site-breadcrumbs .site-breadcrumb-separator{flex:none;color:#526b7c}
+}
+@media screen and (max-width:600px){
+ .site-breadcrumbs{width:calc(100% - 24px);padding:4px 10px;gap:1px 7px}
+ .site-breadcrumbs [aria-current="page"]{font-size:.79rem}
+}

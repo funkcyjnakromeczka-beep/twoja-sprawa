@@ -65,3 +65,41 @@ body.leaflet-start{margin:0;background:var(--paper);color:var(--ink);font:400 16
  .leaflet-confidence>div{padding:8px 2px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+
+/* QR-ENTRY-20261122 — compact reading order and consistent service identity. */
+@media screen{
+ .leaflet-start{--paper:#f3f6f9;--navy:#18384e}
+ .leaflet-start .leaflet-logo span{color:#a62c46}
+ .leaflet-start .leaflet-hero{text-align:left;max-width:760px;margin-inline:auto}
+ .leaflet-start .leaflet-hero h1{margin-inline:0}
+ .leaflet-start .leaflet-hero p{margin-left:0}
+ .leaflet-start .leaflet-eyebrow{color:#6b3041;letter-spacing:.035em}
+ .leaflet-start .leaflet-option{border-radius:14px;padding:clamp(18px,2.3vw,26px);border:1px solid #9daebd;background:linear-gradient(145deg,#193b52,#142b40)}
+ .leaflet-start .leaflet-option-support{background:linear-gradient(145deg,#205b48,#153d34);border-color:#a1c2ad}
+ .leaflet-start .leaflet-option-skd{background:linear-gradient(145deg,#2c4662,#1a3047);border-color:#a5b6cd}
+ .leaflet-start .leaflet-option .leaflet-label{line-height:1.45;text-transform:none;font-size:.79rem;color:#e4edf5;letter-spacing:.015em}
+ .leaflet-start .leaflet-symbol{position:static;display:grid;place-items:center;align-self:flex-start;order:-1;width:52px;height:52px;background:#ffffff12;border:1px solid #ffffff42;border-radius:10px;opacity:1;color:#fff;margin-bottom:12px}
+ .leaflet-start .leaflet-symbol svg{width:31px;height:31px}
+ .leaflet-start .leaflet-option h2{font-size:clamp(1.4rem,2.6vw,2rem);margin:12px 0 8px;line-height:1.2}
+ .leaflet-start .leaflet-option p{line-height:1.6;margin-bottom:14px}
+ .leaflet-start .leaflet-option .leaflet-advisor{font-size:.83rem;color:#e3ecf4;margin-bottom:12px}
+ .leaflet-start .leaflet-main-btn{background:#fff;color:#18384e;min-height:48px;border-radius:8px;padding:12px 13px}
+ .leaflet-start .leaflet-option-support .leaflet-main-btn{background:#e2f2e8;color:#204b38}
+ .leaflet-start .leaflet-phone{border-radius:8px;flex-wrap:wrap;line-height:1.4}
+ .leaflet-start .leaflet-read-more{display:flex;min-height:44px;align-items:center;justify-content:space-between;gap:8px;color:#e7f1fa;font-size:.83rem;text-decoration:underline}
+ .leaflet-start .leaflet-other{border-radius:12px}
+ .leaflet-start .leaflet-other-links{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .leaflet-start .leaflet-other-links a{gap:10px;min-width:0;border-radius:8px;line-height:1.4}
+ .leaflet-start .leaflet-other-links svg{flex:none}
+ .leaflet-start .leaflet-other-links span:not(.leaflet-other-arrow){min-width:0;overflow-wrap:anywhere}
+ .leaflet-start .leaflet-other-arrow{margin-left:auto}
+}
+@media screen and (max-width:730px){
+ .leaflet-start .leaflet-hero{padding:19px 0}
+ .leaflet-start .leaflet-hero h1{font-size:clamp(1.8rem,7vw,2.4rem)}
+ .leaflet-start .leaflet-option{padding:18px}
+ .leaflet-start .leaflet-symbol{width:43px;height:43px;margin-bottom:8px}
+ .leaflet-start .leaflet-symbol svg{width:25px;height:25px}
+ .leaflet-start .leaflet-other-links{grid-template-columns:minmax(0,1fr)}
+}

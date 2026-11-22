@@ -226,3 +226,29 @@
 @media screen and (max-width:700px){.ts-brochure-quick-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.plan-page .plan-mode-links{grid-template-columns:minmax(0,1fr)}}
 @media screen and (max-width:350px){.ts-brochure-quick-nav{grid-template-columns:minmax(0,1fr)}}
 @media print{.ts-brochure-quick-nav,.plan-mode-links{display:none!important}}
+
+
+/* BROCHURE-GALLERY-20261122: screen-only cards, untouched A4 print layouts. */
+@media screen{
+ .plan-page .plan-brochure-links{gap:14px}
+ .plan-page .plan-brochure-links>a{background:#fff;border-color:#c5d0da;border-radius:14px;box-shadow:0 7px 21px #182c4210;transition:border-color .18s ease,box-shadow .18s ease}
+ .plan-page .plan-brochure-links>a:hover{border-color:#9e3047;box-shadow:0 8px 22px #182c4220}
+ .plan-page .plan-brochure-links>a>img{object-fit:contain;aspect-ratio:1200/630;background:#142638}
+ .plan-page .plan-brochure-link-copy{border-color:#a62c46;min-height:94px;padding:13px 15px;align-content:center}
+ .plan-page .plan-brochure-link-copy strong{font-size:1.01rem;color:#19354b}
+ .plan-page .plan-brochure-link-copy small{font-size:.86rem;line-height:1.45}
+ .plan-page .plan-brochure-link-copy>span{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:#eaf0f6;color:#21435e}
+ .plan-page .plan-brochure-links>a:is([href*="swiadczenie-wspierajace"],[href*="renty-powypadkowe"]) .plan-brochure-link-copy{border-color:#48866a}
+ .plan-page .plan-brochure-links>a:is([href*="swiadczenie-wspierajace"],[href*="renty-powypadkowe"]) .plan-brochure-link-copy>span{color:#215740;background:#e6f2eb}
+ .plan-page .plan-brochure-links>a:focus-visible{outline-color:#96354c}
+ .plan-page .plan-brochure-print-help summary,.plan-page .plan-brochure-promo summary{min-height:44px;display:list-item;align-content:center}
+}
+@media screen and (min-width:360px) and (max-width:520px){
+ .plan-page .plan-brochure-links>a{display:grid;grid-template-columns:minmax(100px,37%) minmax(0,1fr);align-items:stretch}
+ .plan-page .plan-brochure-links>a>img{height:100%;width:100%;aspect-ratio:auto;object-fit:contain}
+ .plan-page .plan-brochure-link-copy{border-top:0;border-left:3px solid #a62c46;padding:11px 9px;gap:5px;min-height:100px}
+ .plan-page .plan-brochure-link-copy strong{font-size:.92rem;overflow-wrap:anywhere}
+ .plan-page .plan-brochure-link-copy small{font-size:.77rem;overflow-wrap:anywhere}
+ .plan-page .plan-brochure-link-copy>span{width:24px;height:28px;font-size:1rem}
+}
+@media screen and (prefers-reduced-motion:reduce){.plan-page .plan-brochure-links>a{transition:none}}

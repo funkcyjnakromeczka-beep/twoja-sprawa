@@ -618,7 +618,7 @@ const faqScripts=[...faqPage.matchAll(/<script type="application\/ld\+json">([\s
 const faqGraphs=faqScripts.map(([,raw])=>JSON.parse(raw));
 const faqSchema=faqGraphs.flatMap(g=>g["@graph"]||[]).find(item=>item["@type"]==="FAQPage");
 assert.ok(faqSchema,"missing structured FAQPage on published FAQ");
-assert.equal(faqSchema.mainEntity.length,24,"FAQ schema must cover 24 visible questions");
+assert.equal(faqSchema.mainEntity.length,29,"FAQ schema must cover 29 visible questions");
 for(const item of faqSchema.mainEntity){
  assert.equal(item["@type"],"Question");
  assert.equal(item.acceptedAnswer?.["@type"],"Answer");

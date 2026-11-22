@@ -26,5 +26,5 @@ for(const route of urls){
 const css=await readFile("dist/faq.css","utf8");
 assert.ok(css.includes(".faq-directory-grid"),"FAQ directory needs mobile layout");
 assert.ok(css.includes("@media(max-width:650px)"),"FAQ directory needs single-column layout on phones");
-assert.equal((faq.match(/class="faq-card"/g)||[]).length,24,"All FAQ items must remain available");
+assert.equal((faq.match(/class="faq-card"/g)||[]).length,29,"All FAQ items must remain available");
 console.log("FAQ_DISCOVERY_LINKS_OK: eight indexable canonical service/city pages linked visibly from FAQ.");

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** One thousand sequential regression checks for the real 62-item local site index.
+/** Extended sequential regression checks for the real 67-item local site index.
  * All checks are deterministic, local, read-only and free. No lead data or network.
  * This is NOT a claim of 1000 independently deployed website improvements.
  */
@@ -47,10 +47,10 @@ for(const [idx,e] of entries.entries()){
  add(prefix+" exclude another category",()=>assert.ok(!engine.search(e.title,alternate,100).some(x=>x.id===e.id)));
  add(prefix+" two-word lookup",()=>assert.ok(found(tokens.slice(0,2).join(" "))));
 }
-add("G01 62 real search records",()=>assert.equal(entries.length,62));
+add("G01 67 real search records",()=>assert.equal(entries.length,67));
 add("G02 38 indexed pages",()=>assert.equal(entries.filter(e=>e.id.startsWith("page:")).length,38));
-add("G03 24 anchored FAQ answers",()=>assert.equal(entries.filter(e=>e.id.startsWith("faq:")).length,24));
-add("G04 62 unique URLs",()=>assert.equal(new Set(entries.map(e=>e.href)).size,62));
+add("G03 29 anchored FAQ answers",()=>assert.equal(entries.filter(e=>e.id.startsWith("faq:")).length,29));
+add("G04 67 unique URLs",()=>assert.equal(new Set(entries.map(e=>e.href)).size,67));
 add("G05 service grid precedes team",()=>assert.ok(homepage.indexOf('<section id="uslugi"')<homepage.indexOf('class="wrap team-spotlight')));
 add("G06 six featured service links",()=>{
  const x=homepage.indexOf('class="grid primary-services"');
@@ -63,10 +63,10 @@ add("G08 search scripts without tracking",()=>{
  assert.ok(source&&indexHtml.includes('src="/v2/search-core.js"'));
  assert.ok(!/google-analytics|gtag\(|fbq\(/i.test(indexHtml));
 });
-if(tests.length!==1000)throw Error("Exactly 1000 checks expected, generated "+tests.length);
+if(tests.length!==entries.length*16+8)throw Error("Unexpected check count "+tests.length);
 let passed=0;
 for(const [i,t] of tests.entries()){
- try{await t.fn();passed++;if((i+1)%50===0)console.log("REGRESSION_1000_PROGRESS "+(i+1)+"/1000");}
+ try{await t.fn();passed++;if((i+1)%50===0)console.log("REGRESSION_1000_PROGRESS "+(i+1)+"/"+tests.length);}
  catch(err){console.error("FAIL "+(i+1)+"/1000 "+t.label+": "+err.message);process.exitCode=1;}
 }
-console.log("REGRESSION_1000_RESULT: "+passed+"/1000; 62 entries, 16 distinct checks per entry and eight global checks; no real submissions.");
+console.log("REGRESSION_1000_RESULT: "+passed+"/"+tests.length+"; "+entries.length+" entries, 16 distinct checks per entry and eight global checks; no real submissions.");

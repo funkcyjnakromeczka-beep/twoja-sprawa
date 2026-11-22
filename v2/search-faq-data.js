@@ -1,4 +1,4 @@
-/* 24 istniejące pytania FAQ; indeks zgodny z opublikowanymi odpowiedziami. */
+/* 29 istniejących pytań FAQ; indeks zgodny z opublikowanymi odpowiedziami. */
 window.TwojaSprawaSearchFaq=[
   {
     "id": "faq:pytanie-1-czy-male-pekniecie-elewacji-moze-byc-szkoda-gornicza",
@@ -191,5 +191,45 @@ window.TwojaSprawaSearchFaq=[
     "description": "Możesz telefonicznie skontaktować się z Wojciechem pod numerem 796 441 345 (szkody górnicze) lub Pauliną pod numerem 500 171 531 (świadczenie wspierające i renty). Podczas pierwszej rozmowy ustalicie dalszy sposób przekazania dokumentów.",
     "category": "inne",
     "keywords": "Kontakt i bezpieczeństwo pytanie odpowiedź pomoc"
+  },
+  {
+    "id": "faq:pytanie-25-splata-kredytu-chf",
+    "href": "/v2/faq.html#pytanie-25-splata-kredytu-chf",
+    "title": "Czy spłacony kredyt frankowy nadal warto przeanalizować?",
+    "description": "Tak. Spłata kredytu nie wyklucza samej analizy umowy i rozliczeń. Możliwość dalszego działania zależy od dokumentów, rodzaju roszczeń, terminów oraz ewentualnych wcześniejszych ugód lub orzeczeń.",
+    "category": "franki",
+    "keywords": "Kredyty frankowe CHF pytanie odpowiedź pomoc"
+  },
+  {
+    "id": "faq:pytanie-26-waznosc-umowy-chf",
+    "href": "/v2/faq.html#pytanie-26-waznosc-umowy-chf",
+    "title": "Czy każda umowa kredytu frankowego jest nieważna?",
+    "description": "Nie można tego ustalić na podstawie samej waluty kredytu. Znaczenie mają konkretne postanowienia umowy, okoliczności jej zawarcia oraz indywidualna ocena prawna. Wynik sprawy nie jest gwarantowany.",
+    "category": "franki",
+    "keywords": "Kredyty frankowe CHF pytanie odpowiedź pomoc"
+  },
+  {
+    "id": "faq:pytanie-27-ugoda-z-bankiem-chf",
+    "href": "/v2/faq.html#pytanie-27-ugoda-z-bankiem-chf",
+    "title": "Bank proponuje ugodę frankową — co warto sprawdzić?",
+    "description": "Porównaj rozliczenie dotychczasowych wpłat, saldo po ugodzie, całkowite koszty i postanowienia dotyczące zrzeczenia się roszczeń. Przed decyzją warto omówić dokumenty i skutki proponowanego rozwiązania.",
+    "category": "franki",
+    "keywords": "Kredyty frankowe CHF pytanie odpowiedź pomoc"
+  },
+  {
+    "id": "faq:pytanie-28-dokumenty-kredytu-chf",
+    "href": "/v2/faq.html#pytanie-28-dokumenty-kredytu-chf",
+    "title": "Jakie dokumenty przygotować do analizy kredytu CHF?",
+    "description": "Umowę, regulamin z dnia zawarcia, aneksy, historię wypłat i spłat, korespondencję z bankiem oraz ewentualną propozycję ugody. Nie zamieszczaj pełnej dokumentacji ani PESEL w otwartym formularzu; najpierw uzgodnij sposób przekazania.",
+    "category": "franki",
+    "keywords": "Kredyty frankowe CHF pytanie odpowiedź pomoc"
+  },
+  {
+    "id": "faq:pytanie-29-chf-czy-skd",
+    "href": "/v2/faq.html#pytanie-29-chf-czy-skd",
+    "title": "Czy kredyt frankowy i Sankcja Kredytu Darmowego (SKD) to ten sam rodzaj sprawy?",
+    "description": "Nie. To odrębne obszary analizy. Spory frankowe dotyczą m.in. zapisów umów powiązanych z CHF, natomiast SKD dotyczy określonych naruszeń w umowach kredytu konsumenckiego. Wybór ścieżki zależy od rodzaju umowy.",
+    "category": "franki",
+    "keywords": "Kredyty frankowe CHF pytanie odpowiedź pomoc"
   }
 ];

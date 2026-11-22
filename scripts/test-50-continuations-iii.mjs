@@ -15,9 +15,9 @@ const library=contents["v2/wiedza/index.html"],mining=contents["v2/uslugi/szkody
 const support=contents["v2/uslugi/swiadczenie-wspierajace.html"];
 const pattern=/<article class="faq-card" data-faq-category="([^"]+)" id="([^"]+)"><span class="faq-tag">([^<]+)<\/span><details><summary>([^<]+)<\/summary><div class="faq-answer"><p>([^<]+)<\/p>([\s\S]*?)<\/div><\/details><\/article>/g;
 const entries=[...faq.matchAll(pattern)].map(match=>({category:match[1],id:match[2],tag:match[3],question:match[4],answer:match[5],sources:match[6]}));
-assert.equal(entries.length,24,"Expected 24 real FAQ entries");
-assert.equal(new Set(entries.map(item=>item.id)).size,24,"Question anchors must be unique across reordered categories");
-const allowed=new Set(["szkody","swiadczenie","renty","skd","przesyl","kontakt"]);
+assert.equal(entries.length,29,"Expected 29 real FAQ entries");
+assert.equal(new Set(entries.map(item=>item.id)).size,29,"Question anchors must be unique across reordered categories");
+const allowed=new Set(["szkody","swiadczenie","renty","skd","przesyl","franki","kontakt"]);
 const checks=[];
 const add=(label,test)=>checks.push({label,test});
 entries.forEach((item,index)=>{
@@ -37,8 +37,8 @@ add("28. Link do FAQ świadczenia z właściwej podstrony",()=>assert.ok(support
 add("29. Pojedynczy nagłówek H1",()=>assert.equal((faq.match(/<h1\b/g)||[]).length,1));
 add("30. Stan wyników dostępny dla czytnika ekranu",()=>assert.ok(faq.includes('data-faq-count role="status" aria-live="polite"')));
 add("31. Filtry o poprawnym stanie aktywności",()=>assert.ok(faq.includes('data-faq-filter="all" type="button" aria-pressed="true"')));
-add("32. Dokładnie sześć kategorii pytań",()=>assert.equal(new Set(entries.map(x=>x.category)).size,6));
-add("33. Siedem przycisków filtrowania",()=>assert.equal((faq.match(/data-faq-filter="/g)||[]).length,7));
+add("32. Dokładnie siedem kategorii pytań",()=>assert.equal(new Set(entries.map(x=>x.category)).size,7));
+add("33. Osiem przycisków filtrowania",()=>assert.equal((faq.match(/data-faq-filter="/g)||[]).length,8));
 add("34. Ograniczona długość wyszukiwanej frazy",()=>assert.ok(faq.includes('maxlength="100"')));
 add("35. Domyślnie ukryty przycisk resetu",()=>assert.ok(faq.includes("data-faq-reset hidden")));
 add("36. Układ mobilny jest jednokolumnowy",()=>assert.ok(css.includes("@media(max-width:760px)")&&css.includes("grid-template-columns:1fr")));
@@ -64,10 +64,10 @@ add("50. Produkcyjny release wymaga trzech zatwierdzeń",()=>{
  for(const x of ["LEGAL_APPROVED","CONTENT_APPROVED","FORM_APPROVED"])assert.ok(build.includes(x));
  assert.equal(shouldIndexRoute("/404.html"),false);
 });
-assert.equal(checks.length,50,"Need exactly 50 sequential checks");
+assert.equal(checks.length,55,"Need exactly 50 sequential checks");
 let success=0;
 for(const [index,check] of checks.entries()){
  try{await check.test();success++;console.log(String(index+1).padStart(2,"0")+" OK "+check.label);}
  catch(e){process.exitCode=1;console.error(String(index+1).padStart(2,"0")+" FAIL "+check.label+": "+e.message);}
 }
-console.log("SERIA_III: "+success+"/50. Kontrole nie wysłały leadów, nie włączyły indeksacji ani nie wdrożyły zmian na Cloudflare.");
+console.log("SERIA_III: "+success+"/55. Kontrole nie wysłały leadów, nie włączyły indeksacji ani nie wdrożyły zmian na Cloudflare.");

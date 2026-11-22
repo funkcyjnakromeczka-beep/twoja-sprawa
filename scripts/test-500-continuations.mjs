@@ -57,7 +57,7 @@ const sourceCount=(name,expected)=>{const content=sources[name];assert.ok(conten
 add("G01. Co najmniej 60 źródeł w indeksie",()=>assert.ok(entries.length>=60));
 add("G02. Pierwsza część ma 18 stron",()=>sourceCount("v2/search-pages-1.js",18));
 add("G03. Druga część ma 20 stron, w tym frankowicze",()=>sourceCount("v2/search-pages-2.js",20));
-add("G04. Indeks obejmuje 24 pytania",()=>sourceCount("v2/search-faq-data.js",24));
+add("G04. Indeks obejmuje 29 pytań",()=>sourceCount("v2/search-faq-data.js",29));
 add("G05. Każdy wpis ma niepowtarzalny ID",()=>assert.equal(new Set(ids).size,entries.length));
 add("G06. Brak dwóch wyników z tym samym URL",()=>assert.equal(new Set(hrefs).size,entries.length));
 add("G07. Strona główna jest w wynikach",()=>assert.ok(has("page:v2/index.html")));

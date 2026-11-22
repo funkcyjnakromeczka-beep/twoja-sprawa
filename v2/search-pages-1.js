@@ -3,8 +3,8 @@ window.TwojaSprawaSearchPages1=[
   {
     "id": "page:v2/faq.html",
     "href": "/v2/faq.html",
-    "title": "FAQ: szkody górnicze, WZON, ZUS i SKD",
-    "description": "24 odpowiedzi na pytania o szkody górnicze, świadczenie wspierające, SKD, renty i służebność przesyłu. Informacje bez gwarancji wyniku.",
+    "title": "FAQ: szkody górnicze, WZON, ZUS, SKD i CHF",
+    "description": "29 odpowiedzi o szkodach górniczych, świadczeniu wspierającym, SKD, rentach, kredytach frankowych i służebności przesyłu. Informacje bez gwarancji wyniku.",
     "category": "inne",
     "keywords": "Masz pytanie? Znajdź konkretną odpowiedź. v2 faq html Najczęstsze pytania i odpowiedzi"
   },

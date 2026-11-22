@@ -10,7 +10,7 @@ for(const file of ["v2/search-pages-1.js","v2/search-pages-2.js","v2/search-faq-
 const pages=[...(window.TwojaSprawaSearchPages1||[]),...(window.TwojaSprawaSearchPages2||[])];
 const faq=window.TwojaSprawaSearchFaq||[];
 assert.equal(pages.length,38);
-assert.equal(faq.length,24);
+assert.equal(faq.length,29);
 let verifiedDescriptions=0;
 for(const entry of pages){
  const source=entry.id.slice(5);
@@ -53,7 +53,7 @@ for(const [input,want] of [
 assert.ok(siteSearch.includes("card.href=publicHref(item.href)"),"Search cards need public routes");
 assert.ok(siteSearch.includes("emptyContact.href=publicHref("),"No-result contact needs a public route");
 console.log("SEARCH_CANONICAL_ROUTES_OK: service cards, FAQ anchors and contact routes.");
-console.log("SEARCH_INDEX_FRESHNESS_OK: 38 stron, "+verifiedDescriptions+" opisów SEO oraz 24 pytania FAQ odpowiadają aktualnemu kodowi.");
+console.log("SEARCH_INDEX_FRESHNESS_OK: 38 stron, "+verifiedDescriptions+" opisów SEO oraz 29 pytań FAQ odpowiadają aktualnemu kodowi.");
 
 // Real questions from potential clients used to return zero results because every
 // word (including question words and inflected verb forms) was mandatory.

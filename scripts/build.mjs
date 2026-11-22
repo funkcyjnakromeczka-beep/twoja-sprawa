@@ -88,7 +88,8 @@ const publishedArticleRoutes=new Set([
  "/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
  "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
  "/wiedza/renta-powypadkowa-dokumenty.html",
- "/wiedza/swiadczenie-wspierajace-dokumenty.html"
+ "/wiedza/swiadczenie-wspierajace-dokumenty.html",
+ "/wiedza/kredyt-pln-dokumenty-skd.html"
 ]);
 function reconcilePublishedArticle(markup,route,canonical){
  if(!publishedArticleRoutes.has(route))return markup;

@@ -75,8 +75,8 @@ window.TwojaSprawaSearchPages2=[
   {
     "id": "page:v2/wiedza/kredyt-pln-dokumenty-skd.html",
     "href": "/v2/wiedza/kredyt-pln-dokumenty-skd.html",
-    "title": "Kredyt w PLN i sankcja kredytu darmowego — jakie dokumenty przygotować?",
-    "description": "Sankcja kredytu darmowego dotyczy określonych umów kredytu konsumenckiego i naruszeń obowiązków kredytodawcy. Nie każda umowa w złotych kwalifikuje się do jej zastosowania.",
+    "title": "Sankcja kredytu darmowego (SKD): jakie dokumenty przygotować?",
+    "description": "Sprawdź listę dokumentów do analizy SKD: umowa kredytu, aneksy, koszty, harmonogram, spłata i terminy. Praktyczny poradnik SuccessTree.",
     "category": "skd",
     "keywords": "Kredyt w PLN i sankcja kredytu darmowego — jakie dokumenty przygotować? v2 wiedza kredyt pln dokumenty skd html Kredyt PLN Dokumenty SKD"
   },

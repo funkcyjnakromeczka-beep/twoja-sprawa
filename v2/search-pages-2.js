@@ -86,7 +86,7 @@ window.TwojaSprawaSearchPages2=[
     "title": "Renta powypadkowa: dokumenty i podwyższenie",
     "description": "Jakie dokumenty przygotować do renty powypadkowej lub jej podwyższenia? Sprawdź dowody kosztów, utraconych dochodów i możliwości kontaktu z Pauliną.",
     "category": "renty",
-    "keywords": "Renta powypadkowa dokumenty podwyższenie waloryzacja art 444 art 907 koszty utracone dochody v2 wiedza renta powypadkowa dokumenty html"
+    "keywords": "Renta powypadkowa dokumenty podwyższenie waloryzacja art 444 art 907 koszty utracone dochody v2 wiedza renta powypadkowa dokumenty html renta od lat niezmieniona ubezpieczyciel inflacja siła nabywcza wyrównanie zaległe raty odmowa ugoda"
   },
   {
     "id": "page:v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",

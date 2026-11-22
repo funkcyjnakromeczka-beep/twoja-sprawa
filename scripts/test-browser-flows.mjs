@@ -1042,7 +1042,11 @@ try{
     "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
     "/uslugi/kredyty-pln","/uslugi/renty-powypadkowe",
     "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu","/szukaj"]){
-   await accessibilityPage.goto(origin+route,{waitUntil:"load",timeout:40000});
+   // WCAG needs the parsed DOM and deferred scripts, not the final byte of
+   // off-site logo/media downloads. Slow third-party images must not turn an
+   // otherwise valid accessible page into a false 40-second audit failure.
+   const response=await accessibilityPage.goto(origin+route,{waitUntil:"domcontentloaded",timeout:40000});
+   assert.equal(response?.status(),200,"WCAG page unavailable: "+route);
    await accessibilityPage.waitForTimeout(250);
    await accessibilityPage.addScriptTag({content:axe.source});
    const findings=await accessibilityPage.evaluate(async()=>{

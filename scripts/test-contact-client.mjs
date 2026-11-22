@@ -351,7 +351,7 @@ assert.ok(!/localStorage|sessionStorage|document\.cookie|sendBeacon/.test(source
  assert.ok(!decodeURIComponent(fallback.href).includes("796 441 345"),"SKD callback phone must stay out of DOM links until click");
  fallback.events.click();
  assert.ok(decodeURIComponent(fallback.href).includes("Telefon: 796 441 345"),"SKD clicked email draft must retain the callback number");
- assert.ok(status.children.some(n=>n.href==="tel:+48796441345"),"Fallback call number for SKD differs from Wojciech");
+ assert.ok(visit(status,n=>n.href==="tel:+48796441345"),"Fallback call number for SKD differs from Wojciech");
 }
 
 // Qualification of an observed property issue, without inferring a mining cause.

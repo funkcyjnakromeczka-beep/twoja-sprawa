@@ -126,3 +126,23 @@
 @media(max-width:800px){.premium-campaign .campaign-resource-cards nav{grid-template-columns:1fr;gap:9px}.premium-campaign .campaign-resource-cards nav>a{min-height:80px;padding:12px}}
 @media(max-width:600px){.premium-campaign .campaign-copy h1{font-size:clamp(1.85rem,7vw,2.6rem);line-height:1.15}.premium-campaign .campaign-facts{gap:6px}.premium-campaign .campaign-facts span{font-size:.79rem}.premium-campaign .campaign-form .contact-form{border-radius:14px}.premium-campaign .campaign-form-intro{padding:11px 12px}.premium-campaign .campaign-persona{margin-block:14px 6px}}
 @media print{.premium-campaign .campaign-resource-cards nav>a{box-shadow:none;break-inside:avoid}}
+
+
+/* SERVICE-PERSONA-20261122 — consistent adviser cards on all six core offers. */
+@media screen{
+ .premium-subpage .subhero .service-persona{background:#18384e;border-color:#a0b3c3;border-radius:12px;box-sizing:border-box;max-width:100%;width:min(100%,560px);position:relative;z-index:1}
+ .premium-subpage:is(.theme-support,.theme-rents) .subhero .service-persona{background:#194b3d;border-color:#9cbca9}
+ .premium-subpage .subhero .service-persona-photo{border-color:#b5c6d4;border-radius:9px}
+ .premium-subpage:is(.theme-support,.theme-rents) .subhero .service-persona-photo{border-color:#b5d4c1}
+ .premium-subpage .subhero .service-persona-copy small{color:#e1eaf2;letter-spacing:.015em;text-transform:none;font-size:.78rem}
+ .premium-subpage .subhero .service-persona-copy strong{color:#fff;line-height:1.4}
+ .premium-subpage .subhero .service-persona-copy a[href^="tel:"]{min-height:44px;box-sizing:border-box;padding:8px 12px;color:#18384e!important;background:#fff;border-radius:7px;text-decoration:none;font-variant-numeric:tabular-nums}
+ .premium-subpage:is(.theme-support,.theme-rents) .subhero .service-persona-copy a[href^="tel:"]{background:#e3f2e8;color:#204b38!important}
+ .premium-subpage .subhero .service-persona-copy .persona-about{min-height:44px;color:#e4eef5!important;line-height:1.4}
+ .premium-subpage .subhero .service-persona-copy a:focus-visible{outline:3px solid #f5d7a9;outline-offset:3px}
+}
+@media screen and (max-width:420px){
+ .premium-subpage .subhero .service-persona{padding:11px;gap:10px;margin-top:16px;align-items:flex-start}
+ .premium-subpage .subhero .service-persona-copy a[href^="tel:"]{padding:8px 10px;white-space:normal}
+}
+@media print{.premium-subpage .service-persona{box-shadow:none;break-inside:avoid}}

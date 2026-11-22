@@ -247,3 +247,34 @@ footer .information-footer-group>a:focus-visible{outline:2px solid #edca96;outli
 }
 @media(max-width:350px){footer .information-footer-nav{grid-template-columns:minmax(0,1fr)}footer .information-footer-group:last-child{grid-column:auto}}
 @media print{footer .information-footer-nav{display:none!important}}
+
+
+/* CONTACT-FORM-UI-20261122 — visual hierarchy only; no changes to data processing. */
+.contact-form{--form-ink:#17384e;--form-accent:#a62c46;--form-edge:#9aafc0;--form-paper:#f3f7fa}
+body:is(.theme-support,.theme-rents,.campaign-support,.campaign-rents) .contact-form{--form-accent:#397d58;--form-edge:#97b7a6;--form-paper:#f0f7f2}
+.contact-form :is(input:not([type=checkbox]):not([name=botcheck]),select,textarea){box-sizing:border-box;min-width:0;max-width:100%;font-size:16px;line-height:1.45;border-radius:9px;border-color:var(--form-edge)!important}
+.contact-form :is(input:not([type=checkbox]):not([name=botcheck]),select){min-height:48px}
+.contact-form :is(input,textarea)::placeholder{color:#5c6d7c!important;opacity:1}
+.contact-form :is(input,select,textarea):focus-visible{outline:3px solid #426c85!important;outline-offset:2px}
+.contact-form .contact-advisor{border:1px solid #9fb7c9;border-radius:12px;background:#18384e;color:#fff}
+.contact-form .contact-advisor :is(strong,span,small,p){color:#f2f7fb!important}
+.contact-form .contact-advisor a{color:#fff1cb!important;text-decoration:underline;text-underline-offset:3px}
+.contact-form .contact-advisor-direct-email{overflow-wrap:anywhere}
+.contact-form .contact-guide-box:not([hidden]){border:1px solid var(--form-edge);border-left:4px solid var(--form-accent);background:var(--form-paper);border-radius:10px}
+.contact-form .contact-guide-box a{color:#184e6c!important;text-underline-offset:3px;overflow-wrap:anywhere}
+.contact-form :is(.contact-optional-details,.contact-direct-alternatives){background:var(--form-paper);border:1px solid var(--form-edge);border-radius:10px}
+.contact-form :is(.contact-optional-details,.contact-direct-alternatives)>summary{min-height:44px;line-height:1.5;font-size:.92rem}
+.contact-form .check{display:flex;align-items:flex-start;gap:10px;padding:13px;border:1px solid #c4d0da;border-radius:10px;background:#f8fafc;line-height:1.55;box-sizing:border-box}
+.contact-form .check input[type=checkbox]{flex:none;width:20px;height:20px;min-width:20px;margin:3px 0 0;accent-color:var(--form-accent)}
+.contact-form .contact-validation-notice:not([hidden]),.contact-form .contact-status-error{background:#fff0f2;color:#681c30!important;border:1px solid #be6578;border-left:4px solid #a62c46;border-radius:10px;padding:13px;line-height:1.6}
+.contact-form .contact-status-success{background:#edf7ef;color:#204c37!important;border:1px solid #95bca2;border-left:4px solid #397d58;border-radius:10px;padding:13px;line-height:1.6}
+.contact-form .contact-ref-panel:not([hidden]){border-radius:10px;line-height:1.5}
+.contact-form .contact-ref-code{font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.contact-form :is(.contact-ref-copy,.contact-advisor-copy-button,.contact-message-example,.contact-draft-copy){min-height:44px;white-space:normal;line-height:1.4}
+.contact-form .contact-next-steps{font-size:.86rem;line-height:1.6}
+@media(max-width:600px){
+ .contact-form .contact-optional-details>summary{padding:12px;font-size:.88rem}
+ .contact-form .check{padding:11px;font-size:.88rem}
+ .contact-form .contact-advisor{padding:12px 14px}
+ .contact-form .contact-ref-panel:not([hidden]){padding:11px;gap:8px}
+}

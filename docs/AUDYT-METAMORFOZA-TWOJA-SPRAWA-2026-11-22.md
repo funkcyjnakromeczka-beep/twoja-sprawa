@@ -24,14 +24,10 @@ Nie przebudowywać działającej strony od zera. Pomiary wskazują dobrą wydajn
 | OpenSEO, audyt `2c69d367-17a6-4a1a-b9fe-9824fc910b30` | 50 podstron, Lighthouse 10 × 2 urządzenia | Główna mobile: performance 98, SEO 92, accessibility 100; Lubin mobile: 99/100/100 | Próbka laboratoryjna, nie dane terenowe wszystkich użytkowników |
 | OpenSEO, kampania świadczenia desktop, przed naprawą | 22.11.2026 | CLS 0.2844035, performance 86, accessibility 99 | Istotne przesuwanie układu, część spowodowana późnym zbudowaniem formularza |
 | OpenSEO, audyt `6ef9d85c-b0cb-498f-baba-cdaaac9ed17f`, po naprawie | 22.11.2026 | Kampania desktop: CLS 0.046721227, performance 100, accessibility 100 | Spadek CLS ok. 84% między dwoma pomiarami, bez obietnicy utrzymania wyniku |
-| Google Search Console via OpenSEO | 23.10–19.11.2026 | 0 kliknięć, 1 wyświetlenie (URL zakończony `%E2%81%A0`) | Bardzo mało danych; nie utożsamiać z brakiem wszystkich wizyt |
-| Google Search Console URL Inspection | 22.11.2026 | Homepage: zaindeksowany; Lubin, Polkowice, główna strona szkód i świadczeń: „Adres URL jest Google nieznany” | Nie jest diagnozą przyczyny; użyć kontroli na żywo i prośby o indeksację |
-| OpenSEO Analytics Integrations | 22.11.2026 | Brak wykazanych podłączonych właściwości GA4 | Nie ma wiarygodnego wielokanałowego mianownika konwersji |
-| Google Business Profile via Windsor.ai | 17–22.11.2026 | 7 wyświetleń, 0 kliknięć witryny, 0 kliknięć telefonu, 0 tras | Nowa wizytówka; nieduża próbka; zweryfikowany link do witryny |
-| Facebook Organic via Windsor.ai | 01–22.11.2026 | 5539 odsłon, 65 interakcji z treściami, 0 działań na stronie | Metryka „page_total_actions” obejmuje kontakt/CTA na samej stronie FB; nie pokazuje wszystkich możliwych leadów |
-| Instagram via Windsor.ai | Odczyt 22.11.2026 | 161 obserwujących, `website=null` | Priorytet: sprawdzić i uzupełnić link profilu, bez automatycznej zmiany |
+| Search Console i analityka kont | Dane prywatne | Nie publikujemy niepublicznych odczytów kont marketingowych w repozytorium | Wnioski i dokładne wyniki przekazano właścicielowi w rozmowie; stan indeksacji i pomiar konwersji badać osobno |
+| Facebook, Instagram, Wizytówka Google | Dane prywatne | W repozytorium zapisujemy wyłącznie zadania integracyjne i metodologię | Odczyty prowadzić w podłączonym narzędziu, bez udostępniania statystyk kont |
 
-Źródła danych z kont użytkownika: OpenSEO i Windsor.ai, bez publikowania poufnych identyfikatorów. Nie przedstawiać stanu archiwalnego jako bieżącego przy ponownej diagnozie.
+Ważne: publiczne repozytorium jest przeznaczone dla kodu i planu technicznego. Szczegółowe wyniki z podłączonych kont (w tym profile, zasięgi, kliknięcia i stan integracji) pozostają w prywatnej analizie rozmowy.
 
 ## Co już wprowadzono 22.11.2026
 - `v2/contact.js`: każdy generowany link do listy kontrolnej otrzymuje początkowy poprawny `href`, potem jest podmieniany na poradnik wybranej usługi.
@@ -41,12 +37,16 @@ Nie przebudowywać działającej strony od zera. Pomiary wskazują dobrą wydajn
 - `scripts/test-production-bundle.mjs`: kontrola domyślnego `href`, nagłówków i synchronicznego budowania formularzy. Build zmienia źródłowe `/v2/plan-dzialania.html` na `/plan-dzialania`, a test uwzględnia obie formy.
 - CI `45070933476` kandydat produkcyjny: sukces; `45070933459` test przeglądarkowy: sukces i potwierdzenie wdrożenia commita `220472a856779aab40b4d74f0d0f5e09bfa06ba0`.
 
+## Wynik ponownego audytu po wdrożeniu
+
+Powtórny audyt Lighthouse po release (audit `51d3deab-9e0e-42a6-b6a3-b04996aec560`) wykazał na stronie głównej i kontakcie 100/100 dla wydajności, SEO i automatycznej kontroli dostępności na komputerze i telefonie. Nie jest to gwarancja stabilnego wyniku dla wszystkich użytkowników ani potwierdzenie indeksacji w Google.
+
 ## P0 — odnajdywalność w Google
 
 **Kroki:**
 1. W Google Search Console wykonać Inspekcja URL dla `/uslugi/szkody-gornicze`, `/uslugi/swiadczenie-wspierajace`, `/lokalnie/szkody-gornicze-lubin`, `/lokalnie/szkody-gornicze-polkowice`; sprawdzić wyniki testu na żywo, kanoniczny URL i ewentualnie zgłosić do indeksacji. Connector `inspect_urls` sprawdza **istniejący** stan, ale nie zleca indeksacji.
 2. Sprawdzić sitemap, poprawną indeksowalność tych czterech stron, widoczny tekst i linki bez JS; unikać tworzenia 20 podobnych podstron dla sąsiadujących wsi bez rzeczywistej wartości.
-3. Zbadać nietypowy adres zawierający Unicode WORD JOINER (`%E2%81%A0`) z GSC: sprawdzić skąd pochodzi, nie interpretować jednego wyświetlenia jako rankingu całej witryny.
+3. Zbadać nietypowy zakodowany adres raportowany w GSC: sprawdzić jego pochodzenie i nie wyciągać wniosków o rankingu całej witryny na podstawie pojedynczych zdarzeń.
 4. Utrzymywać odnośniki z wizytówki SuccessTree, lokalnych publikacji i realnych partnerów; nie kupować nienaturalnych linków i nie generować fałszywych opinii.
 
 **Odbiór:** podane cztery URL mają powtarzalnie potwierdzoną indeksowalność techniczną i znany stan GSC; liczba zaindeksowanych stron i wyświetleń raportowana tygodniowo z datą. Samo zgłoszenie nie gwarantuje indeksacji.
@@ -65,7 +65,7 @@ Nie przebudowywać działającej strony od zera. Pomiary wskazują dobrą wydajn
 
 ## P0 — organiczny lejek Facebook/Instagram/Wizytówka Google
 
-1. Instagram: uzupełnić link do `https://twoja-sprawa.pages.dev/` lub do rzeczywistej odpowiedniej strony (pole `website` w odczycie jest puste). Zmiana wymaga pracy na właściwym profilu.
+1. Instagram: sprawdzić i w razie potrzeby uzupełnić link do `https://twoja-sprawa.pages.dev/` lub odpowiedniej strony usługi; zatwierdzić zmianę na właściwym profilu.
 2. Facebook szkody górnicze: uprościć CTA i pinned post, np. `Masz pęknięcia domu w Lubinie lub Polkowicach? Zobacz, co warto sfotografować` prowadzące do lokalnego poradnika, z wyraźnym telefonem Wojciecha.
 3. Świadczenia/renty: kierować do Pauliny, nie na numer Wojciecha; oznaczać reklamowy/agencyjny charakter komunikacji, nie obiecywać przyznania świadczenia.
 4. Google Business: potwierdzić kategorię działalności, obszar obsługi, godziny, aktualny URL, spójność nazwy i zdjęć, wyłącznie prawdziwe opinie klientów.
@@ -126,12 +126,12 @@ Nie przebudowywać działającej strony od zera. Pomiary wskazują dobrą wydajn
 ## Narzędzia — wynik tej sesji
 
 - GitHub: odczyt źródeł, poprawki kodu, CI i potwierdzony release.
-- OpenSEO / Search Console: testy indeksowania, Lighthouse before/after, status GA4.
+- OpenSEO / Search Console: testy indeksowania i Lighthouse before/after; nie publikować w repozytorium prywatnych wyników konta.
 - Grow My Website: dwie podstawowe kontrole 100/100.
-- Windsor.ai: dane zagregowane Facebook, Instagram, GBP; nie pomijać luk.
+- Windsor.ai: analiza zagregowana kanałów; raportowanie niepublicznych liczb wyłącznie właścicielowi.
 - Exa: porównanie konkurencji i oficjalnych zasad Google; lokalne oferty konkurencyjne weryfikować aktualnie przed wykorzystaniem.
 - Canva: odnaleziony projekt strony, ale brak możliwej do oceny treści w wyniku odczytu; nie publikowano nowej grafiki.
-- Metricool: nie zwraca statystyk, bo nie ma skonfigurowanej sieci społecznościowej w aktualnie dostępnym brandzie.
+- Metricool: przed planowaniem automatyzacji zweryfikować dostępność połączenia i zgodę właściciela.
 - Browser/Opera: odczyt kart nie był dostępny w tej sesji; produkcję weryfikowano w GitHub CI.
 - Pozostałe wtyczki (ads, wideo, głosy, narzędzia do slajdów, PDF, kalendarz) nie mają uzasadnionej operacji do wykonania bez ustalonego materiału, zgód i kosztów; nie uruchamiać ich „dla liczby użytych pluginów”.
 

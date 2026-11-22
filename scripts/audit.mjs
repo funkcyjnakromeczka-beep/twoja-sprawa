@@ -100,7 +100,7 @@ try {
  const part=start>=0&&end>start?home.slice(start,end):"";
  if((part.match(/class="hero-support-spotlight/g)||[]).length!==2)errors.push("Homepage: expected two flagship hero cards");
  for(const slug of ["swiadczenie-wspierajace","szkody-gornicze"])
-  if(!part.includes("/v2/kampanie/"+slug+".html"))errors.push("Homepage: missing priority path "+slug);
+  if(!part.includes("/v2/uslugi/"+slug+".html"))errors.push("Homepage: missing indexable priority path "+slug);
  if(!home.includes("nav-mining-priority")||!home.includes("nav-support-priority"))errors.push("Homepage: two priority menu choices missing");
  if(!home.includes('id="pytania"')||!home.includes('class="home-faq-grid"'))errors.push("Homepage: compact FAQ missing");
 } catch(e){errors.push("Homepage priority audit failed: "+e.message);}
@@ -165,7 +165,7 @@ try {
  if(!part.includes('class="grid primary-services"')||(part.match(/class="card primary-card/g)||[]).length!==6)errors.push("Service cards: expected exactly six");
  for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","renty-powypadkowe","sluzebnosc-przesylu"])
   if(!part.includes("/v2/uslugi/"+slug+".html"))errors.push("Service card link missing: "+slug);
- if(!part.includes('class="card primary-card skd-featured" href="/v2/kampanie/skd.html"')) errors.push("SKD third flagship must lead to dedicated agreement and callback landing");
+ if(!part.includes('class="card primary-card skd-featured" href="/v2/uslugi/kredyty-pln.html"')) errors.push("SKD third flagship must lead to the indexable service description");
  if(!part.includes("support-featured")||!part.includes("mining-featured"))errors.push("Service cards: dual priority missing");
  if(!css.includes(".premium-v2 #uslugi .primary-services")||!css.includes("DUAL-PRIORITY-CHAT-20261110"))errors.push("Service card styling missing");
 } catch(e){errors.push("Service card audit failed: "+e.message);}

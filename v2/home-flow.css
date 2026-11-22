@@ -693,3 +693,62 @@
 @media(prefers-reduced-motion:reduce){
  .premium-v2 .mobile-quick-nav>a,.premium-v2 .home-resource-grid>a{transition:none;animation:none}
 }
+
+
+/* Team and contact visual refresh: explicit palettes avoid the older white-card
+   override colliding with portrait-upgrade's light typography. */
+.premium-v2 #zespol.team-spotlight .team-grid{align-items:stretch}
+.premium-v2 #zespol.team-spotlight .team-person{
+ background:linear-gradient(138deg,#172a43,#0c182b);
+ color:#f5f7fb;border:1px solid #8192ac;border-top:4px solid #c43c58;
+ border-radius:18px;padding:clamp(16px,2.6vw,28px);align-items:start;
+ box-shadow:0 12px 28px #13253b1c;
+}
+.premium-v2 #zespol.team-spotlight .team-person[data-persona="support"]{
+ background:linear-gradient(138deg,#19483d,#102e29);
+ border-color:#90b7a2;border-top-color:#88c3a2;
+}
+.premium-v2 #zespol.team-spotlight .team-avatar{border-width:2px;border-color:#c7d1e0;border-radius:13px;align-self:start}
+.premium-v2 #zespol.team-spotlight .team-avatar img{border-radius:10px}
+.premium-v2 #zespol.team-spotlight .team-person[data-persona="support"] .team-avatar{border-color:#add9c0}
+.premium-v2 #zespol.team-spotlight .team-person h3{color:#fff;font:750 clamp(1.2rem,2.3vw,1.65rem)/1.25 system-ui,sans-serif;margin:0 0 9px}
+.premium-v2 #zespol.team-spotlight .team-person .team-caption{color:#d3e0f0;font-size:.79rem;letter-spacing:.015em;line-height:1.5;text-transform:none}
+.premium-v2 #zespol.team-spotlight .team-person[data-persona="support"] .team-caption{color:#d4eee0}
+.premium-v2 #zespol.team-spotlight .team-person p{color:#e4edf5;font-size:.95rem;line-height:1.55}
+.premium-v2 #zespol.team-spotlight .team-person a[href^="tel:"]{
+ display:inline-flex;align-items:center;justify-content:center;min-height:46px;
+ padding:10px 13px;margin:5px 0 3px;border-radius:9px;background:#f4f6fa;
+ color:#13283e;text-decoration:none;font-size:1rem;line-height:1.3;font-weight:800;
+ max-width:100%;box-sizing:border-box;
+}
+.premium-v2 #zespol.team-spotlight .team-person[data-persona="support"] a[href^="tel:"]{background:#e6f5eb;color:#133e30}
+.premium-v2 #zespol.team-spotlight .team-person a.team-email{
+ color:#edf2fa;min-height:44px;font-size:.84rem;line-height:1.5;
+ text-decoration:underline;text-underline-offset:3px;
+}
+.premium-v2 #zespol.team-spotlight .team-person a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(max-width:510px){
+ .premium-v2 #zespol.team-spotlight .team-person{
+  grid-template-columns:clamp(84px,25vw,114px) minmax(0,1fr);
+  gap:13px;padding:15px;min-height:0;
+ }
+ .premium-v2 #zespol.team-spotlight .team-person a[href^="tel:"]{padding-inline:8px;font-size:.9rem;width:100%}
+ .premium-v2 #zespol.team-spotlight .team-person a.team-email{font-size:.81rem}
+}
+@media(max-width:350px){
+ .premium-v2 #zespol.team-spotlight .team-person{grid-template-columns:1fr}
+ .premium-v2 #zespol.team-spotlight .team-avatar{max-width:120px}
+}
+/* Consistent topic selection: 2 x 2 on phones/tablets; one column at 320px. */
+.premium-v2 #kontakt .contact-shortcuts-actions a{min-height:54px;overflow-wrap:normal}
+.premium-v2 #kontakt .contact-shortcuts-actions a[data-contact-shortcut="swiadczenie"]:not([data-selected="true"]),
+.premium-v2 #kontakt .contact-shortcuts-actions a[data-contact-shortcut="renty"]:not([data-selected="true"]){border-color:#80af96;background:#f1f8f3;color:#174735}
+.premium-v2 #kontakt .contact-shortcuts-actions a[data-selected="true"]{box-shadow:inset 0 0 0 2px #ffffff80}
+@media(min-width:360px) and (max-width:850px){
+ .premium-v2 #kontakt .contact-shortcuts-actions:not(.contact-shortcuts-secondary){grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .premium-v2 #kontakt .contact-shortcuts-actions a{padding:10px 8px;font-size:.89rem}
+}
+@media(prefers-reduced-motion:reduce){
+ .premium-v2 #zespol.team-spotlight .team-person{transition:none}
+ .premium-v2 #zespol.team-spotlight .team-person:hover{transform:none}
+}

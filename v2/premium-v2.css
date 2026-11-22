@@ -4108,3 +4108,23 @@ html{scroll-padding-top:16px}
  
  .premium-v2 .campaign-home-card:first-child:before{background-image:linear-gradient(135deg,#b2c7d5,#e2e9ee)}
 }
+
+
+/* SOCIAL-CHANNELS-20261122 — recognizable, compact contact-independent cards. */
+.social-community{border-radius:14px;align-items:start;gap:clamp(16px,2.5vw,26px)}
+.social-community .social-community-links>a{position:relative;box-sizing:border-box;min-height:104px;padding:14px 15px;border:1px solid #c0ccda;border-left:4px solid #3067b2;border-radius:10px;background:#f5f8fc;gap:7px}
+.social-community .social-community-links>a[href*="tiktok.com/"]{border-left-color:#213e52;background:#f3f7f8}
+.social-community .social-community-links>a:hover{background:#fff;border-color:#8ca7c4}
+.social-community .social-community-platform{color:#355b83;font-size:.79rem}
+.social-community .social-community-platform .social-brand-icon{width:30px;height:30px;flex-basis:30px;object-fit:contain}
+.social-community .social-community-links strong{font-size:.94rem;overflow-wrap:anywhere}
+.social-community .social-community-arrow{display:inline-block;color:#245581;text-decoration:underline;text-underline-offset:3px}
+.social-community .social-community-links>a[href*="tiktok.com/"] .social-community-arrow{color:#284d5b}
+.social-community .social-community-privacy{border-radius:8px;font-size:.83rem}
+@media(max-width:750px){
+ .social-community .social-community-links{grid-template-columns:minmax(0,1fr);gap:9px}
+ .social-community .social-community-links>a{min-height:88px;padding:11px 13px}
+ .social-community .social-community-links strong{font-size:.9rem}
+ .social-community .social-community-platform{font-size:.76rem}
+}
+@media(prefers-reduced-motion:reduce){.social-community .social-community-links>a{transition:none;transform:none}}

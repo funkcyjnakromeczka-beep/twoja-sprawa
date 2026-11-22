@@ -582,7 +582,7 @@ try{
   await naturalSearch.locator("#site-search-input").fill(query);
   const state=await naturalSearch.locator("[data-search-count]").innerText();
   if(!state.startsWith("Podobne materiały: "))throw Error("Natural question should disclose relaxed search: "+query+" / "+state);
-  const tags=await naturalSearch.locator(".site-search-tag").allTextContents();
+  const tags=await naturalSearch.locator(".site-search-topic").allTextContents();
   if(!tags.some(tag=>tag.trim()===category))throw Error("Natural question omitted relevant topic: "+query);
  }
  await naturalSearch.locator("#site-search-input").fill("zupelnie-nieistniejace xxyzzq xxxpq");

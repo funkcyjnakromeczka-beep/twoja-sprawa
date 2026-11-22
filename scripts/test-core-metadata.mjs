@@ -11,6 +11,8 @@ const cases = [
   ["rekrutacja.html", "Współpraca i rekrutacja przedstawicieli | Twoja Sprawa", true],
   ["plan-dzialania.html", "Plan pierwszych kroków — 6 rodzajów spraw | Twoja Sprawa", true],
   ["szukaj.html", "Wyszukiwarka informacji | Twoja Sprawa", false],
+  ["uslugi/kredyty-pln.html", "SKD: Sankcja Kredytu Darmowego — analiza | Twoja Sprawa", true],
+  ["uslugi/swiadczenie-wspierajace.html", "Świadczenie wspierające — WZON i ZUS | Twoja Sprawa", true],
   ["uslugi/renty-powypadkowe.html", "Renty powypadkowe — analiza i podwyższenie | Twoja Sprawa", true],
   ["uslugi/sluzebnosc-przesylu.html", "Służebność przesyłu — słup na działce | Twoja Sprawa", true],
   ["lokalnie/szkody-gornicze-lubin.html", "Szkody górnicze Lubin — pęknięcia ścian | Twoja Sprawa", true],

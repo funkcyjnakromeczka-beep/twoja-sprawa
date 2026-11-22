@@ -190,6 +190,16 @@ const structured = (route,canonical,title,markup) => {
   }
 
   const graph=[owner,colleague,organization,site,page];
+  // Local landing pages cover both the named town and its municipality.
+  // Explicit Place types make this unambiguous to crawlers without inventing
+  // a physical office or claiming SuccessTree is a mine operator.
+  const localCity=route.startsWith("/lokalnie/")?
+    (route.includes("polkowice")?"Polkowice":"Lubin"):null;
+  const localAreaServed=localCity?[
+    {"@type":"City",name:localCity},
+    {"@type":"AdministrativeArea",name:"gmina "+localCity,
+      containedInPlace:{"@type":"AdministrativeArea",name:"województwo dolnośląskie"}}
+  ]:null;
   if(route.startsWith("/uslugi/")||route.startsWith("/lokalnie/")){
     const visibleDescription=markup.match(/<meta\s+name="description"\s+content="([^"]+)"/i)?.[1]||"";
     page.mainEntity={"@id":canonical+"#service"};
@@ -198,7 +208,7 @@ const structured = (route,canonical,title,markup) => {
       ...(visibleDescription?{description:decodeEntities(visibleDescription)}:{}),
       name:title.split("|")[0].trim().replace(/\\s*[—–-]\\s*Twoja Sprawa.*$/,""),
       provider:{"@id":organization["@id"]},
-      areaServed:route.startsWith("/lokalnie/")?(route.includes("polkowice")?"Polkowice i okolice":"Lubin i okolice"):route.includes("szkody-gornicze")?"Lubin, Polkowice i okolice":"Polska",
+      areaServed:localAreaServed||(route.includes("szkody-gornicze")?"Lubin, Polkowice i okolice":"Polska"),
       url:canonical,
       serviceType:route.includes("swiadczenie")?"Wsparcie w sprawach świadczenia wspierającego":route.includes("szkody-gornicze")?"Wstępna analiza szkód górniczych":route.includes("kredyty-frankowe")?"Analiza umów kredytów CHF i możliwych rozliczeń z bankiem":route.includes("kredyty-pln")?"Analiza kredytu konsumenckiego pod kątem Sankcji Kredytu Darmowego":"Wstępny kontakt i analiza sprawy"
     });

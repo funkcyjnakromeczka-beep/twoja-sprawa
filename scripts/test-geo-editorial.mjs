@@ -116,6 +116,19 @@ console.log("HUB_INDEXABLE_LINKS_OK: 8 public, sitemap-listed service/local dest
 for(const city of ["lubin","polkowice"]){
  const path="dist/lokalnie/szkody-gornicze-"+city+".html";
  const content=await readFile(path,"utf8");
+ const canonical=origin+"/lokalnie/szkody-gornicze-"+city;
+ const schemaNodes=[...content.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .flatMap(match=>{const data=JSON.parse(match[1]);return data["@graph"]||[data]});
+ const localService=schemaNodes.find(node=>node["@id"]===canonical+"#service");
+ const cityName=city==="lubin"?"Lubin":"Polkowice";
+ assert.ok(localService,"Local service schema missing: "+city);
+ assert.deepEqual(localService.areaServed,[
+  {"@type":"City",name:cityName},
+  {"@type":"AdministrativeArea",name:"gmina "+cityName,
+   containedInPlace:{"@type":"AdministrativeArea",name:"województwo dolnośląskie"}}
+ ],"Structured locality must describe the city and municipality distinctly: "+city);
+ assert.equal(schemaNodes.find(node=>node["@id"]===canonical+"#webpage")?.mainEntity?.["@id"],
+  localService["@id"],"Local WebPage schema does not reference its service: "+city);
  const guide="/wiedza/drobne-pekniecia-szkody-gornicze";
  const destinations=[...content.matchAll(/href="([^"]+)"/g)].map(x=>x[1]);
  assert.equal(destinations.filter(href=>href===guide).length,1,

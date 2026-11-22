@@ -757,7 +757,7 @@ console.log("CAMPAIGN_VISUAL_IDENTITY_OK: all four categories use local art and 
 // Mobile performance regression: do not force a full hero image download on
 // small screens where the mobile service shortcuts replace the large visual.
 const heroPreload=home.match(/<link rel="preload" as="image"[^>]*>/)?.[0]||"";
-assert.ok(heroPreload.includes('media="(min-width: 421px)"')&&heroPreload.includes('fetchpriority="high"'),
+assert.ok(heroPreload.includes('media="(min-width: 961px)"')&&heroPreload.includes('fetchpriority="high"'),
  "The hero preloader must respect narrow screens while retaining desktop priority");
 const heroImage=home.match(/<img class="hero-metallic-art"[^>]*>/)?.[0]||"";
 assert.ok(heroImage.includes('loading="lazy"')&&heroImage.includes('width="1536"')&&heroImage.includes('height="803"'),

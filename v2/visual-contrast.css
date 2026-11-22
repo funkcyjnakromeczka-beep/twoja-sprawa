@@ -304,3 +304,40 @@ body:is(.theme-support,.theme-rents,.campaign-support,.campaign-rents) .contact-
  .theme-team .team-profile-photo{width:min(38vw,130px);justify-self:start}
  body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card h3{font-size:1.25rem}
 }
+
+
+/* GENERAL-SERVICES-20261122 — consistent overview for seven additional services. */
+@media screen{
+ .general-service-page .subhero{position:relative;isolation:isolate;overflow:hidden}
+ .general-service-page .subhero> :not(.general-service-art){position:relative;z-index:1}
+ .general-service-page .subhero .general-service-art{display:none}
+ .general-service-page .general-service-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:1120px;margin:0 auto;padding:24px 20px 10px}
+ .general-service-page .general-service-shortcuts>a{display:flex;align-items:center;gap:10px;min-width:0;min-height:65px;padding:11px 13px;border:1px solid #afc1d1;border-radius:10px;background:#f3f7fa;color:#18384e!important;text-decoration:none;line-height:1.4;font-size:.91rem}
+ .general-service-page .general-service-shortcuts>a>span{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:7px;background:#18384e;color:#fff;font-size:.78rem;font-weight:800}
+ .general-service-page .general-service-shortcuts>a:last-child{background:#18384e;color:#fff!important;border-color:#91a9bc}
+ .general-service-page .general-service-shortcuts>a:last-child>span{background:#f3f7fa;color:#18384e}
+ .general-service-page .general-service-shortcuts>a:focus-visible{outline:3px solid #be5870;outline-offset:3px}
+ .general-service-page .general-service-preparation{max-width:1080px;margin:20px auto 12px;padding:24px 20px;background:#fff;color:#17384e;border:1px solid #bac9d5;border-radius:12px}
+ .general-service-page .general-service-preparation h2{color:#17384e;margin:0 0 12px;font-size:clamp(1.45rem,2.8vw,2rem)}
+ .general-service-page .general-service-preparation p{color:#344e61;line-height:1.65;margin:0 0 17px}
+ .general-service-page .general-service-preparation ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;list-style:none;counter-reset:prep;padding:0;margin:0}
+ .general-service-page .general-service-preparation li{counter-increment:prep;display:flex;flex-direction:column;gap:9px;min-width:0;padding:15px;border:1px solid #b8c9d5;border-radius:9px;background:#f1f5f8;color:#213f53;line-height:1.6;overflow-wrap:anywhere}
+ .general-service-page .general-service-preparation li::before{content:counter(prep,decimal-leading-zero);color:#18384e;font-size:1.1rem;font-weight:800}
+ .general-service-page :is(#przygotowanie,#zakres-analizy,#pytania-usluga,#formularz){scroll-margin-top:calc(var(--network-brand-height,84px) + 28px)}
+ .general-service-page .general-service-anchor{display:block}
+}
+@media screen and (min-width:1100px){
+ .general-service-page .subhero .general-service-art{display:grid;place-items:center;position:absolute;right:7%;top:50%;transform:translateY(-50%);width:clamp(135px,16vw,230px);aspect-ratio:1;background:#ffffff0a;border:1px solid #ffffff36;border-radius:30px;color:#d7e3ef;opacity:.85;z-index:0}
+ .general-service-page .general-service-art svg{width:60%;height:auto}
+ .general-service-page .subhero h1,.general-service-page .subhero>p{max-width:70%}
+}
+@media screen and (max-width:700px){
+ .general-service-page .general-service-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));padding:18px 12px 8px;gap:8px}
+ .general-service-page .general-service-shortcuts>a{padding:10px;font-size:.83rem;gap:8px}
+ .general-service-page .general-service-preparation{margin:12px;padding:18px 15px}
+ .general-service-page .general-service-preparation ol{grid-template-columns:minmax(0,1fr)}
+ .general-service-page .general-service-preparation li{flex-direction:row;gap:12px;padding:12px}
+ .general-service-page .general-service-preparation li::before{flex:none}
+}
+@media screen and (max-width:350px){.general-service-page .general-service-shortcuts{grid-template-columns:minmax(0,1fr)}}
+@media print{.general-service-page .general-service-art,.general-service-page .general-service-shortcuts{display:none!important}}

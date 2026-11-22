@@ -773,3 +773,9 @@
 .premium-v2 #filmy .video-library-more[open]>summary{background:#223d57}
 @media(max-width:760px){.premium-v2 #filmy .video-library-condensed>.video-feature .video-poster,.premium-v2 #filmy .video-library-extra .video-feature .video-poster{min-height:168px;aspect-ratio:16/9}.premium-v2 #filmy .video-library-extra .video-feature .video-feature-details{padding:17px}.premium-v2 #filmy .video-library-extra .video-feature .video-feature-details h3{font-size:1.35rem}.premium-v2 #filmy .video-library-more>summary{padding:14px}}
 @media(prefers-reduced-motion:reduce){.premium-v2 #filmy .video-library .video-poster .video-feature-play{transition:none}.premium-v2 #filmy .video-library .video-poster:hover .video-feature-play{transform:none}}
+
+
+/* Immediate access to print materials alongside the two primary actions. */
+.premium-v2 .hero-action-row>a.hero-brochure-direct{background:#162b44;color:#edf4fd!important;border-color:#9aabc1}
+.premium-v2 .hero-action-row>a.hero-brochure-direct:hover{background:#263d59}
+@media(max-width:760px){.premium-v2 .hero-action-row>a.hero-brochure-direct{flex:1 1 100%;min-height:46px}}

@@ -150,3 +150,27 @@ body.premium-subpage .subhero:has(>.service-banner-art)>.service-banner-art svg{
  body.premium-subpage .article .service-scan-icon{display:none}
  body.premium-subpage .article .service-scan-copy small::before{content:" — "}
 }
+
+
+/* SERVICE-STAGES-20261122 — visible entry points into the existing stage-aware contact form. */
+@media screen{
+ body.premium-subpage .service-stage-selector{box-sizing:border-box;max-width:1050px;margin:22px auto 28px;padding:clamp(16px,3vw,28px);border:1px solid var(--service-edge,#bac7d7);border-radius:12px;background:var(--service-paper,#f4f6fa);color:var(--service-ink,#172e48);scroll-margin-top:calc(var(--network-brand-height,84px) + 24px)}
+ body.premium-subpage .service-stage-selector>h2{margin:0 0 12px;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.3;color:var(--service-ink,#172e48)!important}
+ body.premium-subpage .service-stage-selector>p{color:#344e61!important;line-height:1.65;max-width:78ch}
+ body.premium-subpage .service-stage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0}
+ body.premium-subpage .service-stage-grid>.service-stage-card{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:11px;box-sizing:border-box;min-width:0;min-height:86px;padding:13px;border:1px solid var(--service-edge,#bac7d7);border-radius:9px;background:#fff;color:var(--service-ink,#172e48)!important;text-decoration:none}
+ body.premium-subpage .service-stage-number{display:grid;place-items:center;width:34px;height:34px;border-radius:7px;background:var(--service-ink,#172e48);color:#fff!important;font:800 .85rem/1 system-ui,sans-serif}
+ body.premium-subpage .service-stage-copy{display:grid;gap:5px;min-width:0;overflow-wrap:anywhere}
+ body.premium-subpage .service-stage-copy strong{font:750 .96rem/1.4 system-ui,sans-serif;color:var(--service-ink,#172e48)!important}
+ body.premium-subpage .service-stage-copy small{font:500 .83rem/1.5 system-ui,sans-serif;color:#405b6d!important}
+ body.premium-subpage .service-stage-arrow{color:var(--service-ink,#172e48)!important;font-weight:800}
+ body.premium-subpage .service-stage-grid>.service-stage-card:hover{border-color:var(--service-accent,#a62a43);background:#f9fbfc}
+ body.premium-subpage .service-stage-grid>.service-stage-card:focus-visible{outline:3px solid var(--service-accent,#a62a43);outline-offset:3px}
+ body.premium-subpage .service-stage-selector .service-stage-privacy{font-size:.86rem;border-top:1px solid var(--service-edge,#bac7d7);padding-top:12px;margin-bottom:0}
+}
+@media screen and (max-width:650px){
+ body.premium-subpage .service-stage-selector{margin:16px 12px 24px;width:auto}
+ body.premium-subpage .service-stage-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+ body.premium-subpage .service-stage-grid>.service-stage-card{min-height:72px;padding:11px}
+}
+@media print{.service-stage-grid{break-inside:avoid}.service-stage-card{display:block;margin:6pt 0}.service-stage-copy small::before{content:" — "}}

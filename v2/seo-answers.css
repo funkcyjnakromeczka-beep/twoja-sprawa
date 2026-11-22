@@ -13,3 +13,20 @@
 @media(max-width:900px){.service-answers-grid{grid-template-columns:1fr}}
 @media(max-width:550px){.service-answers{padding:16px;margin-block:24px}.service-answer{padding:15px}}
 @media print{.service-answers{border-color:#ccc;background:#fff;box-shadow:none}.service-answer{break-inside:avoid;box-shadow:none}}
+
+/* Service navigation: one compact, reusable section index, no extra image requests. */
+.premium-subpage .service-section-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;box-sizing:border-box;margin:18px auto 26px;padding:12px;background:#f5f7f9;border:1px solid #cbd5df;border-radius:16px;box-shadow:0 6px 20px #102b3a0d}
+.premium-subpage .service-section-nav .service-section-link{display:flex;align-items:center;gap:10px;min-width:0;min-height:70px;padding:12px;border:1px solid #bfcdd8;border-radius:10px;background:#fff;color:#17384e;text-decoration:none;box-sizing:border-box;line-height:1.35}
+.premium-subpage .service-section-link svg{flex:none;color:#355b72}
+.service-section-label{display:grid;gap:3px;min-width:0;overflow-wrap:anywhere}
+.service-section-label strong{font-size:.94rem;color:inherit}
+.service-section-label small{font-size:.78rem;color:#425d70;font-weight:500}
+.premium-subpage .service-section-nav .service-section-contact{background:#15384d;color:#fff;border-color:#15384d}
+.premium-subpage .service-section-contact :is(svg,small){color:#e4eaf0}
+.premium-subpage .service-section-nav a:hover{border-color:#97683b;box-shadow:0 3px 10px #102b3a12}
+.premium-subpage .service-section-nav a:focus-visible{outline:3px solid #a16a28;outline-offset:3px}
+.premium-subpage #jak-pomagamy{scroll-margin-top:calc(var(--network-brand-height,84px) + 16px)}
+@media(max-width:950px){.premium-subpage .service-section-nav{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.premium-subpage .service-section-nav{padding:8px;gap:7px}.premium-subpage .service-section-nav .service-section-link{padding:10px 8px;min-height:76px;gap:7px}.premium-subpage .service-section-link svg{width:20px;height:20px}.service-section-label strong{font-size:.87rem}.service-section-label small{font-size:.74rem}}
+@media(max-width:335px){.premium-subpage .service-section-nav{grid-template-columns:minmax(0,1fr)}}
+@media print{.premium-subpage .service-section-nav{display:none}}

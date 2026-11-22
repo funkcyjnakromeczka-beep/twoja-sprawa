@@ -278,3 +278,17 @@ const heroActions=html.match(/<div class="hero-action-row">([\s\S]*?)<\/div>/)?.
 assert.ok(heroActions.includes('href="#uslugi"')&&heroActions.includes('href="#kontakt"'));
 assert.equal((segment.match(/<span class="project-symbol" aria-hidden="true"><svg /g)||[]).length,6);
 assert.ok(css.includes(".hero-action-row>a:focus-visible")&&css.includes(".primary-card .project-symbol svg"));
+
+// Compact native section navigation on all six service pages. No script required.
+for(const [slug,guide,label,person] of [["szkody-gornicze","/v2/wiedza/drobne-pekniecia-szkody-gornicze.html","Dokumentacja szkody","Wojciech"],["swiadczenie-wspierajace","/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","Poradnik WZON i ZUS","Paulina"],["kredyty-pln","/v2/wiedza/kredyt-pln-dokumenty-skd.html","Dokumenty do SKD","Wojciech"],["renty-powypadkowe","/v2/wiedza/renta-powypadkowa-dokumenty.html","Dokumenty do renty","Paulina"],["kredyty-frankowe","/v2/poradniki/frankowicze-lista-kontrolna.html","Dokumenty kredytu CHF","Wojciech"],["sluzebnosc-przesylu","/v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html","Poradnik właściciela","Wojciech"]]){
+ const source=await readFile("v2/uslugi/"+slug+".html","utf8");
+ const navigation=source.match(/<nav class="service-section-nav wrap"[\s\S]*?<\/nav>/)?.[0]||"";
+ assert.ok(navigation.includes('aria-label="Szybka nawigacja po usłudze"'));
+ assert.equal((navigation.match(/<a href="/g)||[]).length,4);
+ assert.ok(navigation.includes('href="'+guide+'"')&&navigation.includes("Opiekun: "+person));
+ await access(guide.slice(1));
+ for(const [,id] of navigation.matchAll(/href="#([^"]+)"/g))assert.ok(source.includes('id="'+id+'"'),"Missing service navigation target: "+slug+"#"+id);
+}
+const navCSS=await readFile("v2/seo-answers.css","utf8");
+assert.ok(navCSS.includes(".service-section-nav a:focus-visible")&&navCSS.includes("min-height:70px")&&navCSS.includes("@media(max-width:950px)"));
+console.log("SERVICE_SECTION_NAV_OK: six service pages, 24 accessible links, no extra CSS request.");

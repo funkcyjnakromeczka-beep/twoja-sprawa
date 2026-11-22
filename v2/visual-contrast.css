@@ -406,3 +406,6 @@ body:is(.theme-support,.theme-rents,.campaign-support,.campaign-rents) .contact-
  :where(main h1[tabindex="-1"],main h2[tabindex="-1"],main h3[tabindex="-1"],main h4[tabindex="-1"],main h5[tabindex="-1"],main h6[tabindex="-1"]):focus-visible{outline:3px solid #a62c46;outline-offset:5px;border-radius:3px}
 }
 @media(forced-colors:active){:where(main [tabindex="-1"]):focus-visible{outline:3px solid Highlight}}
+
+/* WCAG 2.2 AA: delivery-routing note must be readable on dark adviser panels. */
+.contact-form .contact-advisor .contact-routing-note{color:#f2f7fb!important;border-top-color:rgba(255,255,255,.36)}

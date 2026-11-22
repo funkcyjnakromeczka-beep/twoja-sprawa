@@ -338,3 +338,8 @@
  .local-mining-page .chat-assistant.is-open{bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:130}
  .local-mining-page .chat-assistant.is-open .chat-panel{max-height:min(76dvh,640px)}
 }
+
+/* WCAG: local light-form text must not override text inside the dark adviser panel. */
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor > strong,
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor .contact-routing-note{color:#f2f7fb!important}
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor .contact-routing-note{border-top-color:rgba(255,255,255,.36)!important}

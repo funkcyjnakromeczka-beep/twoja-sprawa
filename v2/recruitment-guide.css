@@ -81,3 +81,6 @@ body.recruitment-page .article .recruitment-steps>li p{margin:.5rem 0 0;line-hei
 }
 @media screen and (max-width:350px){.recruitment-page .recruitment-jump-nav{grid-template-columns:minmax(0,1fr)}}
 @media print{.recruitment-page .recruitment-jump-nav{display:none!important}}
+
+/* WCAG: recruitment card sublabels stay dark on pastel card backgrounds. */
+body.recruitment-page .recruitment-project-cards>a>span>small{color:#344b5c!important}

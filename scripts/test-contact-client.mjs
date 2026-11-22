@@ -44,9 +44,12 @@ const run=async(error=false)=>{
   createTextNode:text=>({tag:"text",textContent:text})
  };
  const scheduled=[];
+ const telemetryEvents=[];
  const window={
   location:{search:"?utm_source=facebook&utm_medium=social&utm_campaign=grupa_lubin&utm_content=post_2"},
-  setTimeout:callback=>{scheduled.push(callback);return scheduled.length;},clearTimeout:()=>{}
+  setTimeout:callback=>{scheduled.push(callback);return scheduled.length;},clearTimeout:()=>{},
+  Event:class {constructor(type){this.type=type;}},
+  dispatchEvent:event=>{telemetryEvents.push(event);return true;}
  };
  let requestBody=null;
  const copied=[];
@@ -195,6 +198,13 @@ const run=async(error=false)=>{
  assert.equal(requestBody.lead_path,"formularz");
  const status=visit(form,n=>n.tag==="div"&&n.attributes?.role==="status"&&n.tabIndex===-1);
  assert.ok(status);
+ assert.equal(telemetryEvents.length,error?0:1,
+  "Only a confirmed Web3Forms success may emit one local lead event");
+ if(!error){
+  assert.equal(telemetryEvents[0].type,"twoja-sprawa:lead-confirmed");
+  assert.equal(telemetryEvents[0].detail,undefined,"Do not put user data into the event");
+  assert.deepEqual(Object.keys(telemetryEvents[0]),["type"],"No private lead metadata in the event");
+ }
  const refPanel=visit(form,n=>n.className==="contact-ref-panel");
  const refCode=visit(refPanel,n=>n.className==="contact-ref-code");
  const refCopy=visit(refPanel,n=>n.className==="contact-ref-copy");

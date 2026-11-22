@@ -1077,3 +1077,20 @@
   .premium-v2:has(.contact-form :is(input,textarea,select):focus) .mobile-contact-bar{display:none!important}
  }
 }
+
+/* Direct, service-specific telephone contact in the first screen.
+   Uses plain tel: links, no personal data, tracking or script dependency. */
+@media screen{
+ .premium-v2 .hero-direct-contacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 12px}
+ .premium-v2 .hero-direct-contacts>a{display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0;min-height:66px;padding:10px 13px;box-sizing:border-box;border:1px solid rgba(242,213,164,.65);border-radius:11px;background:rgba(8,30,43,.68);color:#fff!important;text-decoration:none}
+ .premium-v2 .hero-direct-contacts>a:hover{background:rgba(31,67,82,.9);border-color:#ffe1a8}
+ .premium-v2 .hero-direct-contacts>a:focus-visible{outline:3px solid #ffe1a8;outline-offset:3px}
+ .premium-v2 .hero-direct-contacts small{font:650 .78rem/1.35 system-ui,sans-serif;color:#e8edf0;overflow-wrap:anywhere}
+ .premium-v2 .hero-direct-contacts strong{font:800 1rem/1.4 system-ui,sans-serif;color:#fff;overflow-wrap:anywhere}
+ .premium-v2 .hero-direct-contacts strong span{color:#ffe1a8}
+}
+@media screen and (max-width:650px){
+ .premium-v2 .hero-direct-contacts{grid-template-columns:minmax(0,1fr);gap:8px}
+ .premium-v2 .hero-direct-contacts>a{min-height:58px;padding:9px 12px}
+}
+@media print{.premium-v2 .hero-direct-contacts{display:none!important}}

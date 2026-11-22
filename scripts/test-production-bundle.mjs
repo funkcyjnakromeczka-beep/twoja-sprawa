@@ -48,6 +48,22 @@ assert.equal(heroGuidePart.split("<a ").length-1,3,"Only verified guide routes a
 assert.ok(!heroGuidePart.includes("/v2/")&&!heroGuidePart.includes(".html"),
  "First-screen guide destinations should be clean canonical URLs");
 console.log("HERO_GUIDE_DISCOVERY_OK: three verified guides reachable from indexed home first screen.");
+const heroContactStart=home.indexOf('<nav class="hero-direct-contacts"');
+const heroContactEnd=home.indexOf("</nav>",heroContactStart);
+const heroContact=heroContactStart>=0&&heroContactEnd>heroContactStart?home.slice(heroContactStart,heroContactEnd+6):"";
+assert.ok(heroContactStart>0&&heroContactStart<home.indexOf('class="hero-skd-third"'),
+ "Service-specific telephone contact must be available early on the home page");
+assert.equal((heroContact.match(/<a\b/g)||[]).length,2,"Exactly two first-screen adviser shortcuts");
+for(const [number,name,context] of [
+ ["+48796441345","Wojciech","Szkody górnicze"],
+ ["+48500171531","Paulina","Świadczenie wspierające"]
+]){
+ assert.ok(heroContact.includes('href="tel:'+number+'"'),"Missing direct adviser dial link: "+name);
+ assert.ok(heroContact.includes(name)&&heroContact.includes(context),"Wrong adviser or service label: "+name);
+}
+const heroStyles=await read("home-bundle.css");
+assert.ok(heroStyles.includes(".hero-direct-contacts"),"Home CSS must style the new phone shortcuts");
+console.log("HERO_DIRECT_CONTACT_OK: two tappable, service-specific phone links, no JS required.");
 
 
 // Two public business contacts can be saved without submitting personal data.

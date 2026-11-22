@@ -29,7 +29,7 @@ function verifyBalanced(html,path){
  const stack=[];
  for(const m of openTags(tags(html))){
   const name=m[2].toLowerCase();
-  if(voidTags.has(name))continue;
+  if(voidTags.has(name)||m[0].endsWith("/>"))continue;
   if(!m[1])stack.push(name);
   else{
    const top=stack.pop();

@@ -120,4 +120,25 @@ for(const [name, sources] of [["links",allowedSources(attribution,"allowedSource
  }
 }
 
+// Google can supply only an origin referrer. Classify it generically; do not guess Maps/Search or paid/organic.
+for(const domain of ["google.com","www.google.com","google.pl","www.google.pl","maps.google.com","maps.google.pl"]){
+ for(const [name,code] of [["links",attribution],["form",form],["chatbot",chatbot],["navigator",navigator],["plan",plan]]){
+  assert.ok(code.includes('"'+domain+'":"google"'),name+" must recognize exact Google host "+domain);
+ }
+ const entry=new URL(navigate("","/kontakt#formularz","https://"+domain+"/?q=private"),origin);
+ assert.equal(entry.searchParams.get("utm_source"),"google");
+ assert.equal(entry.searchParams.get("utm_medium"),"referral");
+ assert.equal(entry.searchParams.get("q"),null,"Do not pass a searcher's query into the form");
+ assert.equal(entry.hash,"#formularz");
+ const hop=new URL(navigate(entry.search,"/uslugi/kredyty-pln"),origin);
+ assert.equal(hop.searchParams.get("utm_source"),"google");
+}
+for(const domain of ["google.pl.evil.example","notgoogle.com","maps.google.com.evil.example"]){
+ assert.equal(navigate("","/kontakt","https://"+domain+"/"),"/kontakt");
+}
+assert.equal(new URL(navigate("?utm_source=facebook","/kontakt","https://www.google.pl/"),origin).searchParams.get("utm_source"),"facebook");
+const explicitMaps=new URL(navigate("?utm_source=google&utm_medium=local","/kontakt","https://www.google.pl/"),origin);
+assert.equal(explicitMaps.searchParams.get("utm_medium"),"local","Explicit Maps UTM must stay distinct from generic referrer");
+console.log("GOOGLE_REFERRAL_OK: exact allowlist, five client modules, two hops, no query leakage, explicit UTM retained.");
+
 console.log("OK: tagged and untagged ChatGPT referrals preserve safe attribution; no cookies or test submissions.");

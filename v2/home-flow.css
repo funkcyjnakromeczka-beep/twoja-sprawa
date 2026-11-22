@@ -779,3 +779,22 @@
 .premium-v2 .hero-action-row>a.hero-brochure-direct{background:#162b44;color:#edf4fd!important;border-color:#9aabc1}
 .premium-v2 .hero-action-row>a.hero-brochure-direct:hover{background:#263d59}
 @media(max-width:760px){.premium-v2 .hero-action-row>a.hero-brochure-direct{flex:1 1 100%;min-height:46px}}
+
+
+/* Primary navigation — explicit print/read destinations and stable mobile layout. */
+.premium-v2 .site-header .main-nav>a:is(.nav-knowledge-direct,.nav-brochures-direct){gap:7px;color:#e8f0fa;border:1px solid #8296af;border-radius:9px;background:#ffffff09;font-weight:750}
+.premium-v2 .site-header .main-nav>a:is(.nav-knowledge-direct,.nav-brochures-direct) svg{flex:none;color:#d5e1ef}
+.premium-v2 .site-header .main-nav>a.nav-brochures-direct{border-color:#d4ad84}
+.premium-v2 .site-header .main-nav>a:is(.nav-knowledge-direct,.nav-brochures-direct):hover{background:#2a435e;color:#fff}
+.premium-v2 .site-header .mobile-menu-toggle[aria-expanded="true"]{background:#e7edf7;color:#142638;border-color:#e7edf7}
+.premium-v2 .site-header .main-nav>.nav-more:not([open]) .nav-more-links{display:none}
+@media(min-width:761px){.premium-v2 .site-header .main-nav{gap:6px 9px;padding:9px 0}.premium-v2 .site-header .main-nav>a{padding:9px 12px}.premium-v2 .site-header .main-nav .nav-contact-link{margin-left:0}}
+@media(max-width:760px){
+ .premium-v2 .site-header .main-nav.nav-open{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:8px;padding:12px 0 15px}
+ .premium-v2 .site-header .main-nav.nav-open>a{min-width:0;box-sizing:border-box;white-space:normal;line-height:1.4;min-height:48px;font-size:.9rem;padding:10px 12px;border-radius:9px}
+ .premium-v2 .site-header .main-nav.nav-open>a:is(.nav-mining-priority,.nav-support-priority,.nav-skd-priority){border-radius:9px}
+ .premium-v2 .site-header .main-nav.nav-open>a.nav-contact-link,.premium-v2 .site-header .main-nav.nav-open>.nav-more{grid-column:1/-1;margin:0}
+ .premium-v2 .site-header .main-nav.nav-open>.nav-more>summary{border:1px solid #8296af;line-height:1.4;padding:12px}
+ .premium-v2 .site-header .main-nav.nav-open>.nav-more .nav-more-links{margin-top:7px}
+}
+@media(max-width:340px){.premium-v2 .site-header .main-nav.nav-open{grid-template-columns:minmax(0,1fr)}}

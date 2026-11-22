@@ -317,7 +317,7 @@ assert.ok(css.includes(".footer-directory a:focus-visible")&&css.includes("@medi
 
 // The five existing videos have consistent topic graphics and still use hosted links.
 const filmBlock=html.match(/<section class="wrap motion-section" id="filmy"[\s\S]*?<\/section>/)?.[0]||"";
-assert.equal((filmBlock.match(/class="video-poster" data-film=/g)||[]).length,5);
+assert.equal((filmBlock.match(/class="video-poster"[^>]*data-film=/g)||[]).length,5);
 assert.equal((filmBlock.match(/class="video-poster-number" aria-hidden="true"><svg/g)||[]).length,5);
 assert.equal((filmBlock.match(/class="video-feature-play" aria-hidden="true"/g)||[]).length,5);
 assert.ok(!filmBlock.includes("<iframe")&&!filmBlock.includes("images.unsplash.com"));

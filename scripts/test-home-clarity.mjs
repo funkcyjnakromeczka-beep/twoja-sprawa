@@ -327,3 +327,9 @@ assert.equal((resourceGrid.match(/href="\/v2\/poradniki\//g)||[]).length,6);
 assert.equal((resourceGrid.match(/<span aria-hidden="true"><svg/g)||[]).length,6);
 assert.ok(resourceGrid.includes('/v2/poradniki/frankowicze-lista-kontrolna.html'));
 assert.ok(css.includes(".home-resource-grid>a>span svg")&&css.includes("padding-block:36px"));
+
+// Mobile navigation is in the existing brand row, and contact actions precede the detailed projects.
+assert.ok(html.indexOf('<div class="hero-action-row">')<html.indexOf('<div class="hero-priority-grid"'));
+const brandRow=html.slice(html.indexOf('<div class="brand-line">'),html.indexOf('<nav id="site-main-nav"'));
+assert.ok(brandRow.includes('class="mobile-menu-toggle"')&&brandRow.includes('aria-controls="site-main-nav"'));
+assert.ok(css.includes(".brand-line{flex-wrap:nowrap;min-height:66px}"));

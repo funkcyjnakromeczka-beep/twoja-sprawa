@@ -70,6 +70,11 @@ const run=async(error=false)=>{
  const reported=visit(form,n=>n.id?.startsWith("cf-discovery-"));
  const reportedWrap=visit(form,n=>n.className==="contact-optional-details contact-source-details");
  assert.ok(firstName&&location&&phone&&email&&method&&callback&&select&&reported&&reportedWrap);
+ const advisorPosition=form.children.findIndex(n=>n.className==="contact-advisor");
+ assert.ok(form.children.indexOf(select)<form.children.indexOf(firstName)&&form.children.indexOf(firstName)<form.children.indexOf(phone)&&form.children.indexOf(phone)<form.children.indexOf(email)&&form.children.indexOf(email)<advisorPosition,"Contact fields appear before adviser and optional preparation");
+ const nextSteps=visit(form,n=>n.className==="contact-next-steps");
+ assert.ok(nextSteps&&nextSteps.textContent.includes("jeśli operacja się powiedzie"));
+ assert.ok(form.children.indexOf(nextSteps)<form.children.findIndex(n=>n.type==="submit"));
  const fastTrack=visit(form,n=>n.className==="contact-fast-track");
  assert.ok(fastTrack,"Full service forms must allow skipping optional preparation");
  assert.equal(fastTrack.href,"#"+firstName.id,"Shortcut points to the actual contact input");

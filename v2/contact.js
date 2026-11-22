@@ -83,7 +83,7 @@
   const form = document.createElement("form"); form.className = "contact-form";
   const heading = document.createElement("h3"); heading.textContent = automatic?"Zostaw kontakt — oddzwonimy lub odpiszemy":"Przygotuj zapytanie"; form.append(heading);
   const benefits=document.createElement("div");benefits.className="contact-benefits";const benefitNodes=[];for(const item of ["Bez zobowiązania do zawarcia umowy","Bez wysyłania dokumentów na początek","Kontakt w wybranej formie"]){const el=document.createElement("span");el.textContent="✓ "+item;benefitNodes.push(el);benefits.append(el);}form.append(benefits);if(compactHome)benefits.hidden=true;
-  const note = document.createElement("p"); note.textContent = automatic ? (compactHome?"Na początek wystarczą dane kontaktowe. Nie wpisuj PESEL ani szczegółowych danych medycznych.":"Wyślij zgłoszenie bezpośrednio z tej strony. Nie podawaj PESEL, informacji medycznych ani danych dokumentów.") : "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
+  const note = document.createElement("p"); note.textContent = automatic ? (compactHome?"Na początek wystarczą dane kontaktowe. Nie wpisuj PESEL ani szczegółowych danych medycznych.":"Na początek wybierz usługę, wpisz imię i podaj telefon lub e-mail. Szczegóły sprawy są opcjonalne. Nie podawaj PESEL ani danych medycznych.") : "Formularz przygotuje wiadomość w Twojej aplikacji e-mail. Aby zgłoszenie dotarło, musisz ją następnie wysłać. Nie wpisuj danych wrażliwych."; form.append(note);
   // Native browser validation still controls submission. A concise message
   // also makes failures discoverable to screen readers on small devices.
   const validationNotice=document.createElement("p");
@@ -112,6 +112,17 @@
    jumpToContact.textContent="Przejdź do danych kontaktowych";
    form.append(jumpToContact);
   }
+  const name=field("Imię","text",true,80,"given-name");name.enterKeyHint="next";
+  if(jumpToContact){
+   jumpToContact.href="#"+name.id;
+   jumpToContact.addEventListener("click",event=>{
+    event.preventDefault();
+    name.focus();
+    name.scrollIntoView?.({block:"nearest",behavior:"auto"});
+   });
+  }
+  const phone=field("Telefon kontaktowy","tel",false,30,"tel");phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";phone.enterKeyHint="next";
+  const email=field("Adres e-mail (opcjonalnie, jeśli podasz telefon)","email",false,150,"email");email.inputMode="email";email.enterKeyHint="next";
   const people=document.createElement("p");people.className="contact-people";if(compactHome)people.hidden=true;form.append(people);
   const updatePeople=()=>{
    people.replaceChildren();
@@ -344,15 +355,6 @@
     stage.focus();stage.scrollIntoView({block:"nearest",behavior:"auto"});
   });
   updateContextNotice();
-  const name=field("Imię","text",true,80,"given-name");name.enterKeyHint="next";
-  if(jumpToContact){
-   jumpToContact.href="#"+name.id;
-   jumpToContact.addEventListener("click",event=>{
-    event.preventDefault();
-    name.focus();
-    name.scrollIntoView?.({block:"nearest",behavior:"auto"});
-   });
-  }
   const checkName=()=>{const valid=Boolean(name.value.trim());name.setCustomValidity(valid?"":"Wpisz imię, abyśmy mogli się do Ciebie zwrócić.");return valid;};
   name.addEventListener("input",()=>{if(name.value.trim())name.setCustomValidity("");});
   const city=field("Miejscowość (opcjonalnie)","text",false,100,"address-level2");city.enterKeyHint="next";
@@ -387,8 +389,6 @@
   const cityHint=document.createElement("small");cityHint.textContent="Wpisz dowolną miejscowość w okolicy. Lokalizacja nie przesądza o przyczynie uszkodzeń.";
   cityQuick.append(cityQuickTitle,cityOptions,cityOther,cityHint);form.append(cityQuick);
   city.addEventListener("input",syncCityQuick);select.addEventListener("change",syncCityQuick);syncCityQuick();
-  const phone=field("Telefon kontaktowy","tel",false,30,"tel");phone.title="Podaj numer telefonu zawierający od 7 do 15 cyfr";phone.inputMode="tel";phone.enterKeyHint="next";
-  const email=field("Adres e-mail (opcjonalnie, jeśli podasz telefon)","email",false,150,"email");email.inputMode="email";email.enterKeyHint="next";
   const phoneFieldLabel=form.querySelector('label[for="'+phone.id+'"]');
   const emailFieldLabel=form.querySelector('label[for="'+email.id+'"]');
   const phoneHint=document.createElement("small");phoneHint.className="contact-field-hint";phoneHint.textContent="Wystarczy telefon lub e-mail. Numer telefonu powinien zawierać 7–15 cyfr (spacje i myślniki są dozwolone). Nie wpisuj numeru PESEL ani danych dokumentów.";phoneHint.id="cf-phone-help-"+Math.random().toString(36).slice(2,8);phone.setAttribute("aria-describedby",phoneHint.id);phone.insertAdjacentElement("afterend",phoneHint);
@@ -568,6 +568,7 @@
   };
   msg.setAttribute("aria-describedby",sensitiveWarning.id);
   city.setAttribute("aria-describedby",sensitiveWarning.id);
+  const nextSteps=document.createElement("p");nextSteps.className="contact-next-steps";nextSteps.style.cssText="font-size:.86rem;line-height:1.5;margin:6px 0 0;color:#355568";nextSteps.textContent=automatic?"Po wysłaniu formularza otrzymasz na ekranie potwierdzenie przyjęcia przez operatora i kod zgłoszenia, jeśli operacja się powiedzie. W pilnej sprawie zadzwoń bezpośrednio.":"Sprawdź przygotowany e-mail i wyślij go samodzielnie w swojej poczcie.";form.append(nextSteps);
   const button=document.createElement("button");button.className="btn";button.type="submit";button.textContent=automatic?"Wyślij zgłoszenie":"Przygotuj wiadomość e-mail";form.append(button);
   const status=document.createElement("p");status.setAttribute("role","status");status.setAttribute("aria-live","polite");form.append(status);
   // After a confirmed Web3Forms acknowledgement, show only the anonymous

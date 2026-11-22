@@ -106,3 +106,33 @@
 .plan-page .plan-kind-grid button[aria-pressed="true"]>span{background:#17384e;color:#fff}
 @media(max-width:590px){.plan-page .plan-hero{padding-block:30px}.plan-page .plan-hero h1{font-size:clamp(1.95rem,8vw,2.8rem)}.plan-page .plan-kind-grid button{padding:11px 13px;min-height:64px}}
 @media print{.plan-page:not(.brochure-active) .plan-brochure-library{display:none!important}}
+
+
+/* PLAN-UI-20261122 — screen-only orientation and progress; preserve print layouts. */
+@media screen{
+ .plan-page .plan-hero{background:radial-gradient(ellipse at 92% 8%,#493344,transparent 58%),linear-gradient(120deg,#101f34,#193c53);border-bottom-color:#a62c46}
+ .plan-page .plan-builder,.plan-page .plan-output{border-radius:14px}
+ .plan-page .plan-kind-grid button{border-radius:10px;min-width:0;box-sizing:border-box}
+ .plan-page .plan-kind-grid button>strong,.plan-page .plan-kind-grid button>small{min-width:0;overflow-wrap:anywhere;line-height:1.45}
+ .plan-page .plan-kind-grid button[data-plan-service]:is([data-plan-service="swiadczenie"],[data-plan-service="renty"])[aria-pressed="true"]{background:#eaf5ed;border-color:#397d58;box-shadow:inset 4px 0 0 #397d58}
+ .plan-page .plan-output{background:linear-gradient(145deg,#19384e,#101f34);border-color:#9fb3c3}
+ .plan-page .plan-progress{border-color:#aabed0;color:#e9f1f8;border-radius:8px}
+ .plan-page .plan-progress-meter{display:block;width:100%;height:12px;margin:10px 0 18px;border:0;border-radius:8px;overflow:hidden;background:#43596b;accent-color:#afd7bc}
+ .plan-page .plan-progress-meter[hidden]{display:none!important}
+ .plan-page .plan-progress-meter::-webkit-progress-bar{background:#43596b;border-radius:8px}
+ .plan-page .plan-progress-meter::-webkit-progress-value{background:#afd7bc;border-radius:8px}
+ .plan-page .plan-progress-meter::-moz-progress-bar{background:#afd7bc;border-radius:8px}
+ .plan-page .plan-view-result{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;box-sizing:border-box;padding:10px 14px;margin-top:12px;border-radius:8px;background:#18384e;color:#fff;text-decoration:none;font-weight:750;line-height:1.4}
+ .plan-page .plan-view-result:focus-visible{outline:3px solid #a62c46;outline-offset:3px}
+ .plan-page #plan-output-title{scroll-margin-top:calc(var(--network-brand-height,84px) + 18px)}
+ .plan-page .plan-checklist li input:checked+span{text-decoration:none;color:#28513c}
+ .plan-page .plan-actions>:is(button,a){box-sizing:border-box;border-radius:8px;white-space:normal}
+}
+@media screen and (max-width:590px){
+ .plan-page .plan-kind-grid button{min-height:68px}
+ .plan-page .plan-view-result{display:flex;width:100%}
+ .plan-page .plan-output-top{flex-wrap:wrap;gap:5px}
+ .plan-page .plan-checklist li label{padding:12px;gap:10px}
+ .plan-page .plan-actions{gap:8px}
+}
+@media print{.plan-page .plan-progress-meter,.plan-page .plan-view-result{display:none!important}}

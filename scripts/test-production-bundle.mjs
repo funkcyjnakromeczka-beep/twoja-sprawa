@@ -54,6 +54,8 @@ const heroContact=heroContactStart>=0&&heroContactEnd>heroContactStart?home.slic
 assert.ok(heroContactStart>0&&heroContactStart<home.indexOf('class="hero-skd-third"'),
  "Service-specific telephone contact must be available early on the home page");
 assert.equal((heroContact.match(/<a\b/g)||[]).length,2,"Exactly two first-screen adviser shortcuts");
+assert.ok(!/<a\b[^>]*\baria-label\s*=/.test(heroContact),
+ "Visible adviser names and numbers must also form the accessible link names");
 for(const [number,name,context] of [
  ["+48796441345","Wojciech","Szkody górnicze"],
  ["+48500171531","Paulina","Świadczenie wspierające"]

@@ -252,3 +252,21 @@
  .premium-campaign .campaign-facts span{font-size:.78rem}
 }
 @media print{.premium-campaign .campaign-hero:before{display:none!important}}
+
+
+/* CAMPAIGN-MOBILE-STABILITY-20261122 — protect forms on small/landscape devices. */
+@media screen and (max-width:650px){
+ .premium-campaign :is(.campaign-copy,.campaign-form,.campaign-persona,.campaign-process,.campaign-resource-cards){min-width:0}
+ .premium-campaign .campaign-copy :is(h1,p,.campaign-facts),
+ .premium-campaign .campaign-persona-copy :is(strong,small,a){overflow-wrap:anywhere}
+ .premium-campaign .campaign-form .contact-form :is(input,textarea,select){font-size:16px;max-width:100%}
+ .premium-campaign .campaign-mobile-actions a{min-width:0;overflow-wrap:anywhere}
+}
+@media screen and (max-height:480px) and (orientation:landscape){
+ .premium-campaign .campaign-mobile-actions{display:none!important}
+}
+@supports selector(:has(*)){
+ @media screen and (max-width:900px){
+  .premium-campaign:has(.campaign-form :is(input,textarea,select):focus) .campaign-mobile-actions{display:none!important}
+ }
+}

@@ -117,7 +117,7 @@ const links=[...segment.matchAll(/class="card primary-card[^"]*" href="([^"]+)"/
 assert.equal(links.length,6,"Should show six distinct service cards");
 assert.equal(new Set(links).size,6,"Duplicated service links");
 for(const [index,link] of links.entries()){
- const valid=index===2?link==="/v2/kampanie/skd.html":link.startsWith("/v2/uslugi/")&&link.endsWith(".html");
+ const valid=index===2?link==="/v2/uslugi/kredyty-pln.html":link.startsWith("/v2/uslugi/")&&link.endsWith(".html");
  assert.ok(valid,"Incorrect service destination "+link);
  await access(link.slice(1));
 }
@@ -127,7 +127,7 @@ const priorityNav=[...headerNav.matchAll(/class="nav-(support|mining|skd)-priori
 assert.deepEqual(priorityNav,["mining","support","skd"],"Main navigation must expose mining, WZON, SKD as the top three projects");
 assert.ok(headerNav.includes('class="nav-skd-priority" href="/v2/uslugi/kredyty-pln.html"'),"SKD navigation route missing");
 assert.ok(css.includes(".nav-skd-priority"),"SKD main navigation contrast styles missing");
-assert.ok(links[2]==="/v2/kampanie/skd.html"&&links[3].endsWith("/renty-powypadkowe.html"),"Third flagship SKD must lead to the shorter full-contract campaign before rents");
+assert.ok(links[2]==="/v2/uslugi/kredyty-pln.html"&&links[3].endsWith("/renty-powypadkowe.html"),"Third flagship SKD must lead to the indexable service description before rents");
 assert.ok(segment.includes("Trzecia wyróżniona usługa • SKD")&&segment.includes("wojciech.obieglo@votum-ds.pl")&&segment.includes("numer telefonu"),"Homepage SKD lacks prominent contract and callback instructions");
 assert.ok(segment.includes("Sankcja Kredytu Darmowego")&&segment.includes("Pomoc frankowiczom"),"Financial areas not shown explicitly");
 assert.ok(html.includes("Trzy wyróżnione usługi:"),"Homepage description must name three featured services");

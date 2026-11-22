@@ -1009,6 +1009,7 @@ try{
     .filter(entry=>entry.name.startsWith(location.origin)&&entry.name.endsWith(".css"))
     .map(entry=>({path:new URL(entry.name).pathname,
       decoded:entry.decodedBodySize,transfer:entry.transferSize})));
+  console.log("SERVICE_RESOURCE_PRECHECK "+JSON.stringify(serviceStyles));
   const byPath=new Map(serviceStyles.map(entry=>[entry.path,entry.decoded]));
   // Keep base CSS under 78 KB after privacy guidance and WCAG contrast fixes.
   // A single extra stylesheet request would be worse than these small accessibility fixes.

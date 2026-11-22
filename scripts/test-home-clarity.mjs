@@ -284,14 +284,14 @@ for(const [slug,guide,label,person] of [["szkody-gornicze","/v2/wiedza/drobne-pe
  const source=await readFile("v2/uslugi/"+slug+".html","utf8");
  const navigation=source.match(/<nav class="service-section-nav wrap"[\s\S]*?<\/nav>/)?.[0]||"";
  assert.ok(navigation.includes('aria-label="Szybka nawigacja po usłudze"'));
- assert.equal((navigation.match(/<a href="/g)||[]).length,4);
+ assert.equal((navigation.match(/<a href="/g)||[]).length,6,"Service navigation includes six verified reading, brochure and contact links");
  assert.ok(navigation.includes('href="'+guide+'"')&&navigation.includes("Opiekun: "+person));
  await access(guide.slice(1));
  for(const [,id] of navigation.matchAll(/href="#([^"]+)"/g))assert.ok(source.includes('id="'+id+'"'),"Missing service navigation target: "+slug+"#"+id);
 }
 const navCSS=await readFile("v2/seo-answers.css","utf8");
 assert.ok(navCSS.includes(".service-section-nav a:focus-visible")&&navCSS.includes("min-height:70px")&&navCSS.includes("@media(max-width:950px)"));
-console.log("SERVICE_SECTION_NAV_OK: six service pages, 24 accessible links, no extra CSS request.");
+console.log("SERVICE_SECTION_NAV_OK: six service pages, 36 accessible links, no extra CSS request.");
 
 // Contact topic links remain native and preselect the correct adviser.
 const contactTopic=contactPageHours.match(/<nav[^>]*class="contact-topic-grid"[\s\S]*?<\/nav>/)?.[0]||"";

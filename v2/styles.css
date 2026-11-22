@@ -747,3 +747,23 @@ h3{line-height:1.25}
 }
 @media screen and (max-width:350px){.campaign-workflow-nav{grid-template-columns:minmax(0,1fr)}}
 @media print{.campaign-workflow-nav,.campaign-jump-result{display:none!important}}
+
+
+/* GUIDE-CHAT-20261122: compact service navigation, with no live chat or data collection. */
+.chat-assistant .chat-choices[hidden],.chat-assistant .chat-choose-label[hidden]{display:none!important}
+.chat-assistant .chat-choice-caption{display:block;font-size:.74rem;line-height:1.4;font-weight:400;margin-top:5px;color:inherit;opacity:.92}
+.chat-assistant .chat-header{position:sticky;top:0;z-index:3;background:#18384e;color:#fff}
+.chat-assistant .chat-close{min-width:44px;min-height:44px;border-radius:8px}
+.chat-assistant .chat-panel{border:1px solid #aabccc;border-radius:14px;overscroll-behavior:contain;scroll-padding-top:76px}
+.chat-assistant .chat-choices button{min-height:72px;overflow-wrap:anywhere}
+.chat-assistant .chat-choices button[data-topic="szkody"]{background:#392c3d;color:#fff;border-color:#b8a0b0}
+.chat-assistant .chat-choices button[data-topic="swiadczenie"],.chat-assistant .chat-choices button[data-topic="renty"]{background:#1c5040;color:#fff;border-color:#8fb49e}
+.chat-assistant .chat-choices button[data-topic="skd"]{background:#263e5b;color:#fff;border-color:#a3b6ce}
+.chat-assistant .chat-choices button[data-topic]:hover{box-shadow:inset 0 0 0 2px #b79667}
+.chat-assistant .chat-advisor-note{font-size:.82rem;font-weight:750;color:#214c63;background:#edf4f8;border-radius:8px;padding:9px 11px}
+.chat-assistant .chat-change-topic{min-height:44px;padding:9px 13px;background:#f2f6fa;color:#17384e;border:1px solid #a6bac9;border-radius:8px;cursor:pointer}
+.chat-assistant .chat-reply-links a.chat-reply-brochure{display:flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;padding:10px 12px;background:#edf3f7;color:#18384e!important;border:1px solid #a8bdcc;border-radius:9px;text-decoration:underline;text-underline-offset:3px}
+.chat-assistant .chat-reply-links a.chat-reply-brochure:hover{background:#dce9f2;filter:none}
+@media(max-width:450px){.chat-assistant .chat-choices button{min-height:66px;font-size:.83rem}.chat-assistant .chat-choice-caption{font-size:.72rem}}
+@media(max-width:350px){.chat-assistant .chat-choices{grid-template-columns:minmax(0,1fr)}}
+@media print{.chat-assistant{display:none!important}}

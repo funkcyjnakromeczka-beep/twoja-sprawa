@@ -385,7 +385,7 @@ try{
  console.log("MOBILE_SERVICE_DENSITY_OK",JSON.stringify(cardDensity));
  // SKD must remain the third distinguished service and retain its full mobile summary.
  const ordered=await serviceDensityPage.locator("#uslugi .primary-services>.primary-card").evaluateAll(nodes=>nodes.map(node=>({href:node.getAttribute("href"),featured:node.classList.contains("skd-featured")})));
- if(!ordered[2]?.featured||!ordered[2].href.includes("/kampanie/skd.html"))throw Error("SKD third featured card must lead straight to the contact campaign: "+JSON.stringify(ordered));
+ if(!ordered[2]?.featured||!ordered[2].href.includes("/uslugi/kredyty-pln.html"))throw Error("SKD third featured card must lead to the indexable service page: "+JSON.stringify(ordered));
  if(cardDensity[2].height<215)throw Error("SKD promoted card is too compact to display its full CTA");
 
  await serviceDensityPage.close();

@@ -1,33 +1,38 @@
-/* Homepage mobile shortcuts: do not cover the contact form while it is in view.
-   Native call and #kontakt links work without JS. No storage, tracking or network. */
+/* Mobile contact shortcuts: avoid covering forms, films and the open guide.
+   Native telephone and section links work without JS. No storage or network. */
 (()=>{
  "use strict";
- const bar=document.querySelector(".mobile-contact-bar");
- const contact=document.getElementById("kontakt");
+ const bar=document.querySelector(".mobile-contact-bar")||document.querySelector(".local-mobile-contact");
+ const contact=document.getElementById("kontakt")||document.getElementById("formularz");
+ const video=document.getElementById("filmy");
  if(!bar||!contact)return;
- let inView=false;
+ const targets=[contact,video].filter(Boolean);
+ const visible=new Set();
  let chatOpen=false;
  const sync=()=>{
-  bar.hidden=inView||chatOpen||contact.contains(document.activeElement);
+  const formFocused=contact.contains(document.activeElement);
+  bar.hidden=visible.size>0||chatOpen||formFocused;
  };
- // The assistant explicitly notifies the homepage when it opens or closes.
- // This avoids relying on CSS :has(), unsupported in some older Android browsers.
  document.addEventListener("twoja-sprawa:chat-visibility",event=>{
   chatOpen=event.detail?.open===true;
   sync();
  });
  const checkPosition=()=>{
-  const rect=contact.getBoundingClientRect();
   const height=window.visualViewport?.height||window.innerHeight;
-  inView=rect.top<height-88&&rect.bottom>0;
+  for(const target of targets){
+   const rect=target.getBoundingClientRect();
+   if(rect.top<height-88&&rect.bottom>0)visible.add(target);else visible.delete(target);
+  }
   sync();
  };
  if("IntersectionObserver" in window){
   const observer=new IntersectionObserver(entries=>{
-   inView=Boolean(entries[0]?.isIntersecting);
+   for(const entry of entries){
+    if(entry.isIntersecting)visible.add(entry.target);else visible.delete(entry.target);
+   }
    sync();
   },{threshold:0,rootMargin:"0px 0px -88px 0px"});
-  observer.observe(contact);
+  targets.forEach(target=>observer.observe(target));
  }else{
   window.addEventListener("scroll",checkPosition,{passive:true});
   window.addEventListener("resize",checkPosition,{passive:true});

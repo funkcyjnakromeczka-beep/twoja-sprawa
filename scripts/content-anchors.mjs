@@ -114,7 +114,17 @@ export function improveContentLinks(markup,path){
   const toc='<details class="content-toc"><summary>Spis treści — przejdź do sekcji</summary>'+
     '<nav aria-label="Spis treści strony"><ol>'+entries.map(h=>'<li><a href="#'+safe(h.id)+'">'+safe(h.text)+'</a></li>').join("")+
     '</ol><p class="content-toc-contact"><a href="'+safe(contactHref)+'">Zostaw kontakt w swojej sprawie →</a></p></nav></details>';
-  body=toc+body;
+  // On editorial pages the headline must precede secondary navigation.
+  // Keep all original heading IDs and every existing TOC entry.
+  if(path.startsWith("wiedza/")&&path!=="wiedza/index.html"){
+   const hero=/<section\b[^>]*class="[^"]*\bsubhero\b[^"]*"[^>]*>[\s\S]*?<\/section>/i.exec(body);
+   if(hero){const end=hero.index+hero[0].length;body=body.slice(0,end)+toc+body.slice(end);}
+   else body=toc+body;
+  }else if(path.startsWith("poradniki/")){
+   const intro=/<p\b[^>]*class="[^"]*\bguide-lead\b[^"]*"[^>]*>[\s\S]*?<\/p>/i.exec(body);
+   if(intro){const end=intro.index+intro[0].length;body=body.slice(0,end)+toc+body.slice(end);}
+   else body=toc+body;
+  }else body=toc+body;
   for(const [i,h] of entries.entries())changes.push({kind:"content-toc-shortcut",detail:"item "+(i+1)+" #"+h.id});
   changes.push({kind:"content-toc-panel",detail:"section navigation ("+entries.length+" entries)"});
   changes.push({kind:"content-toc-contact",detail:"existing form: "+contactHref});

@@ -346,9 +346,12 @@ try{
  }));
  if(localQuickLinks.length!==2||localQuickLinks.some(item=>item.height<44||item.width<44))
   throw Error("Local shortcut touch targets broken: "+JSON.stringify(localQuickLinks));
- if(localQuickLinks[0].href!=="/lokalnie/szkody-gornicze-lubin"||
-    localQuickLinks[1].href!=="/lokalnie/szkody-gornicze-polkowice")
-  throw Error("Local home links not canonical: "+JSON.stringify(localQuickLinks));
+ // Source previews use /name.html; Cloudflare publishes extensionless /name.
+ // Accept either representation while checking both destinations precisely.
+ const localPaths=localQuickLinks.map(link=>link.href.replace(/\\.html(?=$|[?#])/,""));
+ if(localPaths[0]!=="/lokalnie/szkody-gornicze-lubin"||
+    localPaths[1]!=="/lokalnie/szkody-gornicze-polkowice")
+  throw Error("Local home links target the wrong cities: "+JSON.stringify(localQuickLinks));
  await localQuick.screenshot({path:"screenshots/home-hero-linki-lubin-polkowice-mobile.png",animations:"disabled"});
  console.log("VISIBLE_LOCAL_HERO_OK "+JSON.stringify(localQuickLinks));
  const positions=await clarityMobile.evaluate(()=>{

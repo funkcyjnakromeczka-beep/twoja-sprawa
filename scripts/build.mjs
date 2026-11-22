@@ -451,7 +451,16 @@ await fetchPortraits();
 await writeFile(join(dest,"_redirects"),[
   "# Google Business Profile: remove an accidentally appended invisible U+2060.",
   "/%E2%81%A0 / 301",
-  "/%E2%81%A0/ / 301"
+  "/%E2%81%A0/ / 301",
+  "# Brochure URLs copied from source paths or older shared links.",
+  "/v2/plan-dzialania.html /plan-dzialania 301",
+  "/v2/plan-dzialania /plan-dzialania 301",
+  "/v2/plan-dzialania/ /plan-dzialania 301",
+  "/broszury /plan-dzialania 301",
+  "/broszury/ /plan-dzialania 301",
+  "/broszury-graficzne /plan-dzialania 301",
+  "/v2/wiedza/ /wiedza/ 301",
+  "/v2/wiedza /wiedza/ 301"
 ].join("\n")+"\n");
 await writeFile(join(dest,"robots.txt"),"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: "+origin+"/sitemap.xml\nSitemap: "+origin+"/sitemap.txt\n");
 const xml=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll('"',"&quot;");

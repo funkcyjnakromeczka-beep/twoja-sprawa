@@ -192,7 +192,7 @@
  contactGroup.setAttribute("role","group");
  contactGroup.setAttribute("aria-label","Kontakt i szczegóły usługi");
  contactGroup.append(contactAction,phoneAction,link);
- actions.append(toolsGroup,contactGroup);head.append(info,actions);
+ actions.append(contactGroup,toolsGroup);head.append(info,actions);
  head.append(shareFeedback);
  const quickNav=make("nav","ts-brochure-quick-nav");quickNav.setAttribute("aria-label","Przejdź do części broszury");
  for(const [href,label] of [["#broszura-dokumenty","Lista dokumentów"],["#broszura-zasady","Cztery zasady"],["#broszura-kontakt","Dane kontaktowe"],["/plan-dzialania#brochure-library-heading","Wszystkie broszury"]]){

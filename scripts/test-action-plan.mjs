@@ -133,7 +133,7 @@ assert.equal(get("[data-plan-checklist]").children.length,5);
 u=new URL(get("[data-plan-contact]").href,"https://twoja-sprawa.pages.dev");
 assert.equal(u.searchParams.get("etap"),"odwolanie");
 get("[data-plan-reset]").events.click();
-assert.equal(get("[data-plan-title]").textContent,"Wybierz temat po lewej stronie");
+assert.equal(get("[data-plan-title]").textContent,"Wybierz rodzaj sprawy");
 assert.equal(get("[data-plan-print]").disabled,true);
 assert.equal(get("[data-plan-share]").disabled,true);
 assert.equal(get("[data-plan-call]").hidden,true);

@@ -131,8 +131,11 @@ for(const [service,topic,advisor] of brochurePages){
  assert.equal(phone.attributes["aria-label"],"Zadzwoń do "+advisor+" — "+(advisor==="Paulina Chandrała"?"500 171 531":"796 441 345"));
  const actions=nodes.find(n=>n.className==="ts-brochure-actions");
  assert.ok(actions,"Brochure action toolbar must exist: "+topic);
- assert.equal(actions.children[0],contact,"Contact CTA must precede printing and social utilities: "+topic);
- assert.equal(actions.children[1],phone,"Direct phone CTA must be second: "+topic);
+ const leadGroup=actions.children[0],toolsGroup=actions.children[1];
+  assert.equal(leadGroup?.className,"ts-brochure-lead-group","Contact group must precede printing and social utilities: "+topic);
+  assert.equal(toolsGroup?.className,"ts-brochure-tool-group","Separate printing tools must remain available: "+topic);
+  assert.equal(leadGroup.children[0],contact,"Contact CTA must be first: "+topic);
+  assert.equal(leadGroup.children[1],phone,"Direct phone CTA must be second: "+topic);
  const contactURL=new URL(contact.href,"https://twoja-sprawa.pages.dev");
  const alias={ "szkody-gornicze":"szkody","swiadczenie-wspierajace":"swiadczenie",
   "renty-powypadkowe":"renty","skd":"skd","kredyty-frankowe":"franki",

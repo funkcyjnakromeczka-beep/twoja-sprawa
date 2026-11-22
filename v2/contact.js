@@ -573,7 +573,8 @@
   city.setAttribute("aria-describedby",sensitiveWarning.id);
   const nextSteps=document.createElement("p");nextSteps.className="contact-next-steps";nextSteps.style.cssText="font-size:.86rem;line-height:1.5;margin:6px 0 0;color:#355568";nextSteps.textContent=automatic?"Po wysłaniu formularza otrzymasz na ekranie potwierdzenie przyjęcia przez operatora i kod zgłoszenia, jeśli operacja się powiedzie. W pilnej sprawie zadzwoń bezpośrednio.":"Sprawdź przygotowany e-mail i wyślij go samodzielnie w swojej poczcie.";form.append(nextSteps);
   const button=document.createElement("button");button.className="btn";button.type="submit";button.textContent=automatic?"Wyślij zgłoszenie":"Przygotuj wiadomość e-mail";form.append(button);
-  const status=document.createElement("p");status.setAttribute("role","status");status.setAttribute("aria-live","polite");form.append(status);
+  const status=document.createElement("div");status.setAttribute("role","status");status.setAttribute("aria-live","polite");status.tabIndex=-1;form.append(status);
+  const resultHeading=text=>{const title=document.createElement("strong");title.className="contact-result-heading";title.textContent=text;return title;};
   // After a confirmed Web3Forms acknowledgement, show only the anonymous
   // reference code. No name, phone, email, case details or UTM in clipboard.
   const refPanel=document.createElement("div");refPanel.className="contact-ref-panel";refPanel.hidden=true;
@@ -582,7 +583,8 @@
   const refButton=document.createElement("button");refButton.type="button";refButton.className="contact-ref-copy";refButton.textContent="Skopiuj kod";
   const refFeedback=document.createElement("small");refFeedback.className="contact-ref-feedback";
   refFeedback.setAttribute("role","status");refFeedback.setAttribute("aria-live","polite");
-  refPanel.append(refLabel,refValue,refButton,refFeedback);form.append(refPanel);
+  const refHint=document.createElement("small");refHint.className="contact-ref-hint";refHint.textContent="Zachowaj kod, aby ułatwić odszukanie zgłoszenia podczas rozmowy.";
+  refPanel.append(refLabel,refValue,refButton,refHint,refFeedback);form.append(refPanel);
   let confirmedRef="";
   refButton.hidden=!navigator.clipboard?.writeText;
   refButton.addEventListener("click",async()=>{
@@ -680,7 +682,7 @@
     // Web3Forms kieruje wiadomosc do odbiorcy przypisanego do access_key.
     // advisor_email jest metadana w tresci zgłoszenia, nie zmienia odbiorcy.
     const payload={access_key:accessKey,reference_code:ref,subject:"Nowe zgłoszenie Twoja Sprawa ["+ref+"] — "+(advisorIsPaulina?"Paulina":"Wojciech")+" — "+select.value,from_name:"Formularz Twoja Sprawa",advisor:advisorName,advisor_email:mailRecipient,name:name.value.trim(),...(email.value.trim()?{email:email.value.trim()}:{}),phone:phone.value.trim(),location:city.value.trim(),service:select.value,contact_preference:method.value,preferred_time:callback.value,case_stage:stageWrap.hidden?"nie dotyczy":stage.value||"nie podano",...(select.value==="Szkody górnicze"&&damageArea.value?{damage_area:damageArea.value}:{}),campaign_source:source,reported_source:reportedSource(),campaign_medium:safeMedium||(!campaignSource&&inferredAIReferrer?"referral":"brak"),campaign_name:safeCampaign||"brak",campaign_variant:safeCreative||"brak",lead_path:leadPath,message:msg.value.trim()||"Prośba o kontakt.",...(email.value.trim()?{replyto:email.value.trim()}:{}),botcheck:""};
-    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");synchronizeFailureLinks=()=>{};confirmedRef=ref;refValue.textContent=ref;refPanel.hidden=false;status.className="contact-status-success";status.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Zgłoszenie zawiera informację o wybranej osobie do kontaktu, ale to nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy ani potwierdzenia dostarczenia e-maila. Kod zgłoszenia: "+ref+". Zachowaj kod, aby móc odszukać wiadomość. W pilnej sprawie skorzystaj z telefonu lub bezpośredniej wiadomości e-mail.";pendingRef="";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();updateSensitiveWarning();name.setCustomValidity("");refreshShortcutState();}catch{
+    try{const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),12000);let response;try{response=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:controller.signal});}finally{window.clearTimeout(timeout);}const result=await response.json();if(!response.ok||result.success!==true)throw Error("delivery");synchronizeFailureLinks=()=>{};confirmedRef=ref;refValue.textContent=ref;refPanel.hidden=false;status.className="contact-status-success";const resultBody=document.createElement("p");resultBody.textContent="Operator formularza potwierdził przyjęcie zgłoszenia. Osoba wskazana do kontaktu: "+advisorName+". Nie jest to potwierdzenie doręczenia e-maila ani odpowiedzi przedstawiciela. W pilnej sprawie skorzystaj z telefonu.";status.replaceChildren(resultHeading("Zgłoszenie przyjęte przez operatora"),resultBody);pendingRef="";form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage();updateDamageArea();updateContextNotice();syncContactPreference();syncCityQuick();updateSensitiveWarning();name.setCustomValidity("");refreshShortcutState();}catch{
      status.className="contact-status-error";
      status.replaceChildren();
      const errorText=document.createElement("span");
@@ -693,7 +695,7 @@
      const updateErrorCall=()=>{
       const support=currentRecipient().startsWith("paulina.");
       errorCall.href="tel:"+(support?"+48500171531":"+48796441345");
-      errorCall.textContent=support?"500 171 531":"796 441 345";
+      errorCall.textContent="Zadzwoń: "+(support?"500 171 531":"796 441 345");
      };
      updateErrorCall();
      const makeDraft=()=>[
@@ -718,7 +720,11 @@
      ].join("\n");
      const refNotice=document.createElement("span");
      refNotice.textContent=" Kod próby: "+ref+" (nie jest potwierdzeniem dostarczenia). ";
-     status.append(refNotice,errorText,errorCall);
+     refNotice.className="contact-attempt-code";
+     errorText.className="contact-result-explanation";
+     status.append(resultHeading("Brak potwierdzenia przyjęcia zgłoszenia"),errorText,refNotice);
+     const recoveryActions=document.createElement("div");recoveryActions.className="contact-recovery-actions";
+     errorCall.className="contact-recovery-call";recoveryActions.append(errorCall);status.append(recoveryActions);
      const fallback=document.createElement("a");
      fallback.className="contact-fallback-link";
      fallback.textContent="Otwórz gotową wiadomość e-mail";
@@ -739,7 +745,7 @@
       window.setTimeout(updateFallback,0);
      });
      synchronizeFailureLinks=()=>{updateErrorCall();updateFallback();};
-     status.append(document.createTextNode(" · "),fallback);
+     recoveryActions.append(fallback);
      // The request body is only copied following a deliberate user click.
      // No local storage, automatic background transmission or PII in page URLs.
      if(navigator.clipboard?.writeText){
@@ -757,9 +763,9 @@
         copyFeedback.textContent="Nie udało się skopiować treści. Skorzystaj z linku e-mail lub telefonu.";
        }
       });
-      status.append(copyDraft,copyFeedback);
+      recoveryActions.append(copyDraft);status.append(copyFeedback);
      }
-    }finally{sending=false;button.disabled=false;button.textContent="Wyślij zgłoszenie";}return;
+    }finally{sending=false;button.disabled=false;button.textContent="Wyślij zgłoszenie";status.focus?.({preventScroll:true});status.scrollIntoView?.({block:"nearest",behavior:"auto"});}return;
    }
    const subject="Zapytanie Twoja Sprawa: "+select.value;
    const body=["Dzień dobry,","", "Usługa: "+select.value,"Imię: "+name.value.trim(),"Miejscowość: "+city.value.trim(),"Telefon: "+phone.value.trim(),"E-mail: "+email.value.trim(),"Preferowany kontakt: "+method.value,"Dogodna pora: "+callback.value,"Etap sprawy: "+(stageWrap.hidden?"nie dotyczy":stage.value||"nie podano"),...(select.value==="Szkody górnicze"?["Obszar uszkodzeń: "+(damageArea.value||"nie podano")]:[]),"Źródło zgłoszenia z linku: "+source,"Źródło wskazane przez klienta: "+(reportedSource()),"Kanał: "+(safeMedium||"brak"),"Kampania: "+(safeCampaign||"brak"),"Wariant: "+(safeCreative||"brak"),"Sposób przejścia: "+leadPath,"","Opis sprawy:",""+(msg.value.trim()||"Proszę o kontakt."),"","Proszę o odpowiedź na wskazany adres e-mail lub telefon."].join("\n");

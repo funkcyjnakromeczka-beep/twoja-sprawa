@@ -343,3 +343,6 @@
 .local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor > strong,
 .local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor .contact-routing-note{color:#f2f7fb!important}
 .local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor .contact-routing-note{border-top-color:rgba(255,255,255,.36)!important}
+
+/* WCAG: avoid inherited white input-field backgrounds inside navy adviser card. */
+.local-mining-page .local-contact .lead-panel form.contact-form .contact-advisor .contact-routing-note{background-color:transparent!important}

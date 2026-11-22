@@ -767,3 +767,8 @@ h3{line-height:1.25}
 @media(max-width:450px){.chat-assistant .chat-choices button{min-height:66px;font-size:.83rem}.chat-assistant .chat-choice-caption{font-size:.72rem}}
 @media(max-width:350px){.chat-assistant .chat-choices{grid-template-columns:minmax(0,1fr)}}
 @media print{.chat-assistant{display:none!important}}
+
+/* WCAG 2.2 AA: readable submission-routing note on dark adviser panel.
+   Specificity must exceed the premium-subpage #formularz small-text rule. */
+.contact-form .contact-advisor .contact-routing-note,
+body.premium-subpage #formularz .contact-form .contact-advisor .contact-routing-note{color:#f2f7fb!important;background-color:transparent!important;border-top-color:rgba(255,255,255,.36)!important}

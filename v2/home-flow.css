@@ -992,3 +992,30 @@
  .premium-v2 #uslugi .service-extra .directory-group .other-links a{min-height:70px;padding:10px}
  .premium-v2 #uslugi .service-extra-summary small{font-size:.76rem}
 }
+
+
+/* HOME-FOCUS-20261122 — reduce repeated actions without hiding service information. */
+@media screen{
+ .premium-v2 #uslugi .services-assist{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px;margin:16px 0 22px;background:#f3f7fa;border-color:#b8c9d6;border-radius:10px}
+ .premium-v2 #uslugi .services-assist>span{grid-column:1/-1;color:#18384e;font-weight:800;line-height:1.4}
+ .premium-v2 #uslugi .services-assist>a{justify-content:center;min-width:0;min-height:44px;padding:9px 10px;background:#fff;border:1px solid #a8bdcc;border-radius:8px;color:#18384e!important;text-align:center;line-height:1.4;overflow-wrap:anywhere}
+ .premium-v2 #uslugi .services-assist>a:hover{background:#e0ebf3;color:#153349!important}
+ .premium-v2 #uslugi .services-contact-disclosure{margin:18px 0 28px}
+ .premium-v2 #uslugi .services-contact-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:62px;list-style:none;cursor:pointer;background:#f0f5f9;color:#18384e;border:1px solid #a6bdce;border-left:4px solid #a62c46;border-radius:10px;padding:12px 15px}
+ .premium-v2 #uslugi .services-contact-disclosure>summary::-webkit-details-marker{display:none}
+ .premium-v2 #uslugi .services-contact-disclosure>summary>span:first-child{display:grid;gap:3px;min-width:0}
+ .premium-v2 #uslugi .services-contact-disclosure>summary strong{color:#18384e;font-size:1rem;line-height:1.4}
+ .premium-v2 #uslugi .services-contact-disclosure>summary small{color:#415c6e;font-size:.8rem;line-height:1.45}
+ .premium-v2 #uslugi .services-contact-indicator{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:7px;background:#18384e;color:#fff;font-size:1.3rem}
+ .premium-v2 #uslugi .services-contact-disclosure[open] .services-contact-indicator{transform:rotate(45deg)}
+ .premium-v2 #uslugi .services-contact-disclosure>summary:focus-visible{outline:3px solid #a62c46;outline-offset:3px}
+ .premium-v2 #uslugi .services-contact-disclosure>.services-direct-contact{margin:8px 0 0;border-top:1px solid #b7c9d8;border-radius:10px}
+ .premium-v2 #uslugi .services-contact-disclosure>.services-direct-contact>p{margin:0 0 12px}
+}
+@media screen and (max-width:700px){
+ .premium-v2 #uslugi .services-assist{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media screen and (max-width:350px){
+ .premium-v2 #uslugi .services-assist{grid-template-columns:minmax(0,1fr)}
+}
+@media print{.premium-v2 #uslugi .services-contact-disclosure{display:none!important}}

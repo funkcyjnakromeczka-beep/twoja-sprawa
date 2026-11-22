@@ -34,6 +34,9 @@ assert.equal(cards[1].hidden,true);
 input.value="PEKNIECIA";
 input.events.input();
 assert.equal(cards[0].hidden,false,"Searching without Polish accents should match");
+input.value="elewacji pekniecia";
+input.events.input();
+assert.equal(cards[0].hidden,false,"Search should match reversed words without accents");
 input.value="NIE MA";
 input.events.input();
 assert.equal(cards.every(x=>x.hidden),true);
@@ -83,10 +86,10 @@ assert.ok(html.indexOf('class="hub-services-index"')<html.indexOf('data-knowledg
 
 const readingPaths=html.match(/<section class="hub-reading-paths"[\s\S]*?<\/section>/)?.[0]||"";
 assert.ok(readingPaths.includes('aria-labelledby="hub-reading-paths-title"'),"Reading paths need an accessible heading");
-assert.equal((readingPaths.match(/class="hub-reading-card"/g)||[]).length,4,"Four thematic reading paths required");
-assert.equal((readingPaths.match(/<ol>/g)||[]).length,4,"Each path needs an ordered, practical checklist");
+assert.equal((readingPaths.match(/class="hub-reading-card"/g)||[]).length,6,"Six thematic reading paths required");
+assert.equal((readingPaths.match(/<ol>/g)||[]).length,6,"Each path needs an ordered, practical checklist");
 const readingHrefs=[...readingPaths.matchAll(/href="([^"]+)"/g)].map(([,url])=>url.replaceAll("&amp;","&"));
-assert.equal(readingHrefs.length,8,"Each path should offer two working destinations");
+assert.equal(readingHrefs.length,12,"Each path should offer two working destinations");
 for(const dest of [
 "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
 "/v2/uslugi/szkody-gornicze.html",
@@ -95,7 +98,11 @@ for(const dest of [
 "/v2/uslugi/kredyty-pln.html",
 "/v2/plan-dzialania.html?usluga=skd",
 "/v2/wiedza/renta-powypadkowa-dokumenty.html",
-"/v2/uslugi/renty-powypadkowe.html"
+"/v2/uslugi/renty-powypadkowe.html",
+"/v2/poradniki/frankowicze-lista-kontrolna.html",
+"/v2/uslugi/kredyty-frankowe.html",
+"/v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
+"/v2/uslugi/sluzebnosc-przesylu.html"
 ])assert.equal(readingHrefs.filter(x=>x===dest).length,1,"Missing or duplicate first-step link: "+dest);
 assert.ok(html.indexOf('class="hub-services-index"')<html.indexOf('class="hub-reading-paths"')&&
  html.indexOf('class="hub-reading-paths"')<html.indexOf('data-knowledge-hub'),

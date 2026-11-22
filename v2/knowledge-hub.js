@@ -14,11 +14,12 @@
  let category="all";
  const normalize=value=>String(value||"").toLocaleLowerCase("pl-PL").normalize("NFD").replace(/\p{M}/gu,"").replaceAll("ł","l");
  const update=()=>{
-  const q=normalize(input.value.trim());
+  const terms=normalize(input.value.trim()).split(/\s+/).filter(Boolean);
   let shown=0;
   for(const card of cards){
    const matchCategory=category==="all"||card.dataset.hubCategory===category;
-   const matchText=!q||normalize(card.textContent).includes(q);
+   const searchable=normalize(card.textContent);
+   const matchText=terms.every(term=>searchable.includes(term));
    card.hidden=!(matchCategory&&matchText);
    if(!card.hidden)shown++;
   }

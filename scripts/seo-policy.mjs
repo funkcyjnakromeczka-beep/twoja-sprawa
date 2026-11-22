@@ -8,7 +8,7 @@ export function shouldIndexRoute(route) {
   if (route.startsWith("/kampanie/")) return false; // paid/organic campaign lead funnels, duplicate content
   if (route === "/polityka-prywatnosci.html") return false;
   // Materiały kontrolne dla klienta nie są odrębnymi stronami SEO.
-  // Indeksujemy bazę wiedzy i siedem artykułów ze źródłami. Pozostałe poradniki
+  // Indeksujemy bazę wiedzy i osiem artykułów ze źródłami. Pozostałe poradniki
   // wymagają kontroli merytorycznej przed świadomym otwarciem indeksacji.
   if (route.startsWith("/poradniki/")) return false;
   if (route.startsWith("/wiedza/")) {
@@ -20,7 +20,8 @@ export function shouldIndexRoute(route) {
       "/wiedza/renta-powypadkowa-dokumenty.html",
       "/wiedza/swiadczenie-wspierajace-dokumenty.html",
       "/wiedza/kredyt-pln-dokumenty-skd.html",
-      "/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html"
+      "/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
+      "/wiedza/wypadek-przy-pracy-pierwsze-kroki.html"
     ]).has(route);
   }
   return true;

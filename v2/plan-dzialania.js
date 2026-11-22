@@ -128,6 +128,8 @@ const incoming=new URLSearchParams(window.location.search);
     const host=new URL(document.referrer).hostname.toLowerCase();
     // Exact hostname matching: never infer visits from lookalikes or arbitrary URLs.
     const trusted={
+      // Google references are a generic source, not proof of Search vs Maps or paid vs organic.
+      "google.com":"google","www.google.com":"google","google.pl":"google","www.google.pl":"google","maps.google.com":"google","maps.google.pl":"google",
       "chatgpt.com":"chatgpt.com","www.chatgpt.com":"chatgpt.com","chat.openai.com":"chatgpt.com",
       "perplexity.ai":"perplexity.ai","www.perplexity.ai":"perplexity.ai",
       "claude.ai":"claude.ai","www.claude.ai":"claude.ai",

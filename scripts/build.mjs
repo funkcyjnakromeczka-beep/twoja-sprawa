@@ -11,6 +11,8 @@ import {toPublicRoute} from "./public-routes.mjs";
 import { shouldIndexRoute } from "./seo-policy.mjs";
 import {buildVerifiedArticlesFeed} from "./verified-articles-feed.mjs";
 import { enhancePageNavigation } from "./page-navigation.mjs";
+import {enhanceKeyboardNavigation} from "./keyboard-navigation.mjs";
+import {legacyPageRedirects} from "./legacy-page-redirects.mjs";
 import {improveMediaAndNavigation} from "./media-navigation-quality.mjs";
 import {improveContentLinks} from "./content-anchors.mjs";
 import {addSectionPermalinks} from "./heading-permalinks.mjs";
@@ -67,6 +69,8 @@ async function fetchPortraits(){
  }
 }
 const pages=[];
+const actualSourcePages=[];
+const navigationChanges=[];
 const pageLastmod=new Map();
 // Real source commit date only. Never stamp every sitemap URL with build time:
 // false freshness signals can weaken indexing trust. Omit if Git metadata is absent.
@@ -379,6 +383,7 @@ async function walk(dir){
     const target=join(dest,rel);
     await mkdir(dirname(target),{recursive:true});
     if(entry.name.endsWith(".html")){
+      actualSourcePages.push(rel);
       let html=stripSourceHomeAgencySchema(withNetworkBrand(await readFile(absolute,"utf8")),rel);
       // 100 verifiable improvements across 47 pages: main labels, breadcrumbs,
       // missing keyboard skip links and shared focus treatment.
@@ -389,6 +394,8 @@ async function walk(dir){
       html=addSectionPermalinks(html,rel.replaceAll("\\","/")).html;
       html=appendRelatedContent(html,rel.replaceAll("\\","/")).html;
       html=addInformationFooter(html,rel);
+      const keyboard=enhanceKeyboardNavigation(html,rel);html=keyboard.html;
+      navigationChanges.push(...keyboard.changes);
       const route=rel==="index.html"?"/":rel.endsWith("/index.html")?"/"+rel.slice(0,-"index.html".length):"/"+rel;
       const publicRoute=toPublicRoute(route); // Cloudflare Pages maps *.html to extensionless URLs.
       const canonical=origin+publicRoute;
@@ -469,14 +476,10 @@ await writeFile(join(dest,"_redirects"),[
   "/%E2%81%A0 / 301",
   "/%E2%81%A0/ / 301",
   "# Brochure URLs copied from source paths or older shared links.",
-  "/v2/plan-dzialania.html /plan-dzialania 301",
-  "/v2/plan-dzialania /plan-dzialania 301",
-  "/v2/plan-dzialania/ /plan-dzialania 301",
   "/broszury /plan-dzialania 301",
   "/broszury/ /plan-dzialania 301",
   "/broszury-graficzne /plan-dzialania 301",
-  "/v2/wiedza/ /wiedza/ 301",
-  "/v2/wiedza /wiedza/ 301"
+  ...legacyPageRedirects(actualSourcePages)
 ].join("\n")+"\n");
 await writeFile(join(dest,"robots.txt"),"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: "+origin+"/sitemap.xml\nSitemap: "+origin+"/sitemap.txt\n");
 const xml=s=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll('"',"&quot;");
@@ -501,5 +504,9 @@ const releaseInfo={
 };
 await writeFile(join(dest,"release-info.json"),JSON.stringify(releaseInfo,null,2)+"\n");
 await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n\n/feed.xml\n  Content-Type: application/rss+xml; charset=utf-8\n  Cache-Control: public, max-age=1800\n\n/kontakty/wojciech-obieglo.vcf\n  Content-Type: text/vcard; charset=utf-8\n  Cache-Control: public, max-age=3600\n\n/kontakty/paulina-chandrala.vcf\n  Content-Type: text/vcard; charset=utf-8\n  Cache-Control: public, max-age=3600\n\n/assets/og-twoja-sprawa-metallic-v1.jpg\n  Cache-Control: public, max-age=604800\n\n/assets/wojciech-obieglo.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/paulina-chandrala.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-szkody-gornicze.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-swiadczenie-wspierajace.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-renty-powypadkowe.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-skd.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-kredyty-frankowe.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-sluzebnosc-przesylu.jpg\n  Cache-Control: public, max-age=86400\n\n/layers-*.css\n  Cache-Control: public, max-age=31536000, immutable\n");
+const newRedirects=legacyPageRedirects(actualSourcePages);
+const navigationKinds=Object.create(null);
+for(const change of navigationChanges)navigationKinds[change.kind]=(navigationKinds[change.kind]||0)+1;
+console.log("SITEWIDE_NAVIGATION_REPORT "+JSON.stringify({pages:actualSourcePages.length,legacyRedirects:newRedirects.length,keyboardChanges:navigationChanges.length,kinds:navigationKinds}));
 console.log("CSS_LAYER_BUILD "+JSON.stringify({pages:cssLayerReport.pages,requestsSavedPerFullSiteVisit:cssLayerReport.requestsSaved,uniqueBundles:cssLayerReport.unique.size}));
 console.log("Built "+pages.length+" pages in dist/ for "+origin+". This command does not publish.");

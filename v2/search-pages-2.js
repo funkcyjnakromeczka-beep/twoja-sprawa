@@ -150,7 +150,7 @@ window.TwojaSprawaSearchPages2=[
     "title": "Kredyty CHF — analiza umowy frankowej",
     "description": "Analiza aktywnych i spłaconych kredytów CHF, zapisów umowy, rozliczeń z bankiem i możliwych roszczeń. Pierwszy kontakt bezpłatny.",
     "category": "franki",
-    "keywords": "Frankowicze CHF umowa kredytu frankowego bank ugoda indeksowany denominowany rozliczenie sprawa sądowa"
+    "keywords": "Frankowicze CHF umowa kredytu frankowego bank ugoda indeksowany denominowany rozliczenie sprawa sądowa mediacja propozycja ugody saldo umorzenie raty hipoteka koszty podatkowe co sprawdzić przed podpisaniem"
   },
   {
     "id": "page:v2/poradniki/frankowicze-lista-kontrolna.html",

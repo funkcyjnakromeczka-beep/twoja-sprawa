@@ -100,7 +100,7 @@ for(const dest of [
 "/v2/wiedza/renta-powypadkowa-dokumenty.html",
 "/v2/uslugi/renty-powypadkowe.html",
 "/v2/poradniki/frankowicze-lista-kontrolna.html",
-"/v2/uslugi/kredyty-frankowe.html",
+"/v2/uslugi/kredyty-frankowe.html#ugoda-chf",
 "/v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html",
 "/v2/uslugi/sluzebnosc-przesylu.html"
 ])assert.equal(readingHrefs.filter(x=>x===dest).length,1,"Missing or duplicate first-step link: "+dest);

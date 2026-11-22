@@ -128,9 +128,9 @@ assert.deepEqual(priorityNav,["mining","support","skd"],"Main navigation must ex
 assert.ok(headerNav.includes('class="nav-skd-priority" href="/v2/uslugi/kredyty-pln.html"'),"SKD navigation route missing");
 assert.ok(css.includes(".nav-skd-priority"),"SKD main navigation contrast styles missing");
 assert.ok(links[2]==="/v2/uslugi/kredyty-pln.html"&&links[3].endsWith("/renty-powypadkowe.html"),"Third flagship SKD must lead to the indexable service description before rents");
-assert.ok(segment.includes("Trzecia wyróżniona usługa • SKD")&&segment.includes("wojciech.obieglo@votum-ds.pl")&&segment.includes("numer telefonu"),"Homepage SKD lacks prominent contract and callback instructions");
+assert.ok(segment.includes('class="card primary-card skd-featured"')&&segment.includes("wojciech.obieglo@votum-ds.pl")&&segment.includes("numer telefonu"),"Homepage SKD lacks prominent contract and callback instructions");
 assert.ok(segment.includes("Sankcja Kredytu Darmowego")&&segment.includes("Pomoc frankowiczom"),"Financial areas not shown explicitly");
-assert.ok(html.includes("Trzy wyróżnione usługi:"),"Homepage description must name three featured services");
+assert.ok(html.includes("Szkody górnicze")&&html.includes("Świadczenie wspierające")&&html.includes("Sankcja Kredytu Darmowego (SKD)"),"Homepage must name its priority services");
 assert.ok(html.includes('href="/v2/home-flow.css"'),"Balanced layout CSS missing");
 assert.ok(css.includes("grid-template-columns:repeat(12,minmax(0,1fr))"),"Desktop balanced grid missing");
 assert.ok(css.includes("grid-column:span 12!important")&&css.includes("grid-column:span 4"),"Desktop grid must support featured SKD and three other areas");

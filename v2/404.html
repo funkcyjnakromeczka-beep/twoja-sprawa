@@ -30,6 +30,8 @@
 @media(max-width:950px){.notfound-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.notfound-grid{grid-template-columns:1fr}.notfound-grid>a{min-height:145px}.notfound-actions{display:grid}.notfound-actions a{justify-content:center}}
 @media(prefers-reduced-motion:reduce){.notfound-grid>a:hover{transform:none}}
+.notfound-quick{margin:18px 0 22px}.notfound-quick a:first-child{background:#a62c46;border-color:#a62c46}.notfound-quick a{box-sizing:border-box;text-align:center;line-height:1.4}
+@media(max-width:680px){.notfound{padding:28px 18px 36px;min-height:unset}.notfound h1{font-size:clamp(1.8rem,8vw,2.6rem)}.notfound-grid{gap:10px;margin:18px 0}.notfound-grid>a{min-height:0;padding:18px}.notfound-quick{gap:8px}}
 </style>
 </head>
 <body>
@@ -37,13 +39,13 @@
 <main id="main" class="notfound">
 <div class="notfound-kicker">Twoja Sprawa • 404</div>
 <h1>Nie udało się znaleźć tej strony.</h1>
-<p>Adres mógł się zmienić. Najprościej wrócić do strony głównej albo wybrać jeden z trzech najważniejszych obszarów pomocy.</p>
-<div class="notfound-grid" aria-label="Wybierz temat">
+<p>Adres mógł się zmienić. Jeśli szukasz broszur, poradników lub formularza, skorzystaj z aktualnych odnośników poniżej.</p>
+<nav class="notfound-actions notfound-quick" aria-label="Szybki powrót do materiałów"><a href="/v2/plan-dzialania.html#brochure-library-heading">Otwórz broszury graficzne ↗</a><a href="/v2/">Strona główna</a></nav><div class="notfound-grid" aria-label="Wybierz temat">
 <a href="/v2/kampanie/swiadczenie-wspierajace.html"><strong>Świadczenie wspierające</strong><span>Wniosek, decyzja WZON, ZUS i dalsze kroki</span><em>Przejdź do formularza ↗</em></a>
 <a href="/v2/kampanie/szkody-gornicze.html"><strong>Szkody górnicze</strong><span>Pęknięcia, kostka brukowa, Lubin i Polkowice</span><em>Przejdź do formularza ↗</em></a>
 <a href="/v2/kampanie/skd.html"><strong>Sankcja Kredytu Darmowego (SKD)</strong><span>Umowa kredytu konsumenckiego w PLN, analiza dokumentów i kontakt</span><em>Przejdź do SKD ↗</em></a>
 </div>
-<div class="notfound-actions"><a href="/v2/">Wróć do strony głównej</a><a href="/v2/szukaj.html">Wyszukaj odpowiedź</a><a href="/v2/kontakt.html">Inna sprawa? Zostaw kontakt</a></div>
+<div class="notfound-actions"><a href="/v2/">Wróć do strony głównej</a><a href="/v2/plan-dzialania.html#brochure-library-heading">Broszury graficzne — wszystkie 6 tematów</a><a href="/v2/wiedza/">Centrum wiedzy</a><a href="/v2/szukaj.html">Wyszukaj odpowiedź</a><a href="/v2/kontakt.html">Inna sprawa? Zostaw kontakt</a></div>
 <p class="notfound-footer">Serwis SuccessTree OBIEGŁO WOJCIECH, przedstawiciela współpracującego z VOTUM. Ta witryna nie jest oficjalną stroną VOTUM ani kancelarią prawną. <a href="/v2/polityka-prywatnosci.html">Informacje o prywatności</a>.</p>
 </main>
 </body>

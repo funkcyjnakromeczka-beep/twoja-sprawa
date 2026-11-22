@@ -62,3 +62,34 @@
  .article-brochure-cta>a{display:flex;justify-content:center;text-align:center}
 }
 @media print{.article-brochure-cta{break-inside:avoid;box-shadow:none}}
+
+
+/* ARTICLE-EDITORIAL-20261122 — visual reading rhythm, preserved subject matter. */
+.knowledge-article{--editorial-accent:#a62c46;--editorial-art:url("/v2/assets/project-mining.svg")}
+.knowledge-article:is(.theme-support,.theme-rents){--editorial-accent:#397d58}
+.knowledge-article.theme-support{--editorial-art:url("/v2/assets/project-support.svg")}
+.knowledge-article.theme-rents{--editorial-art:url("/v2/assets/project-rents.svg")}
+.knowledge-article.theme-skd{--editorial-accent:#466787;--editorial-art:url("/v2/assets/project-credit.svg")}
+.knowledge-article.theme-energy{--editorial-accent:#33747c;--editorial-art:url("/v2/assets/project-utility.svg")}
+.knowledge-article .subhero{border-top-color:var(--editorial-accent)}
+.knowledge-article .subhero h1{max-width:25ch;line-height:1.12;letter-spacing:-.025em}
+.knowledge-article .subhero .article-publisher{max-width:72ch;line-height:1.6}
+.knowledge-article .knowledge-body{padding-top:24px}
+.knowledge-article .knowledge-body>section{border-radius:12px;border-top:3px solid var(--editorial-accent);box-shadow:0 5px 16px #17384e09}
+.knowledge-article .knowledge-body h2{line-height:1.3}
+.knowledge-article .knowledge-body p{max-width:76ch}
+.knowledge-article .knowledge-body ol>li::marker{color:var(--editorial-accent);font-weight:800}
+.knowledge-article .article-brochure-cta{border-left-color:var(--editorial-accent);background:#f5f8fb}
+.knowledge-article .article-brochure-cta>a{background:#18384e;border-color:#18384e}
+.knowledge-article .article-brochure-cta>a:hover{background:#294e68;border-color:#294e68}
+@media(min-width:1120px){
+ .knowledge-article .subhero:before{background:var(--editorial-art) no-repeat 95% center/min(26vw,300px) auto;opacity:.16}
+}
+@media(max-width:700px){
+ .knowledge-article .subhero{padding-block:28px 32px}
+ .knowledge-article .subhero h1{font-size:clamp(1.8rem,7vw,2.65rem)}
+ .knowledge-article .knowledge-body{padding-top:16px;padding-bottom:22px}
+ .knowledge-article .knowledge-body>section{padding:17px}
+ .knowledge-article .knowledge-body :is(p,li){line-height:1.7}
+}
+@media print{.knowledge-article .knowledge-body>section{box-shadow:none;border:1px solid #bbb}.knowledge-article .subhero:before{display:none}}

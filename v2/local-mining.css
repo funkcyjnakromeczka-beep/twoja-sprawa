@@ -325,3 +325,16 @@
 }
 @media(max-width:340px){.local-mining-page .local-section-jumps:has(.local-jump-brochure){grid-template-columns:minmax(0,1fr)}}
 @media print{.local-mining-page .local-hero[data-local-area]::after{display:none}.local-mining-page .local-steps li{break-inside:avoid}.local-mining-page .local-steps li::before{background:#fff;color:#14384a;border:1px solid #aaa}}
+
+
+/* LOCAL-MOBILE-CONTACT-20261122 — use same obstruction rules as the homepage. */
+.local-mining-page .local-mobile-contact[hidden]{display:none!important}
+@media screen and (max-width:680px){
+ .local-mining-page .local-mobile-contact{background:#142b40;border-top-color:#a5b5c4}
+ .local-mining-page .local-mobile-contact .local-mobile-call{background:#f3f6fa;color:#17384e;border:1px solid #a3b5c5}
+ .local-mining-page .local-mobile-contact .local-mobile-form{background:#f5e9eb;color:#6f2638;border:1px solid #c59ba6}
+ .local-mining-page .local-mobile-contact a{box-sizing:border-box;border-radius:8px}
+ .local-mining-page .local-mobile-contact a strong{font-variant-numeric:tabular-nums}
+ .local-mining-page .chat-assistant.is-open{bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:130}
+ .local-mining-page .chat-assistant.is-open .chat-panel{max-height:min(76dvh,640px)}
+}

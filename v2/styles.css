@@ -684,3 +684,35 @@ h3{line-height:1.25}
 
 /* WCAG: prevent generic gold lead-panel links from overriding the light fast-track button. */
 .lead-panel .contact-form a.contact-fast-track{color:#173c54!important}
+
+
+/* GUIDE-READING-20261122 — accessible preparation tools and consistent reading order. */
+.guide-article h1{max-width:26ch;line-height:1.15}
+.guide-article .guide-lead{font-size:clamp(1rem,1.8vw,1.15rem);line-height:1.7}
+.guide-article .guide-tools{gap:8px;margin:12px 0 20px}
+.guide-article .guide-tools button{min-height:44px;white-space:normal;line-height:1.4;border-radius:9px}
+.guide-article .interactive-checklist{box-sizing:border-box;border:1px solid #b6c7d3;border-top:4px solid #a62c46;border-radius:14px;background:#f5f8fa}
+.guide-article .interactive-checklist h2{line-height:1.3}
+.guide-article .interactive-checklist .checklist-progress{margin:14px 0 6px}
+.guide-article .checklist-meter{display:block;width:100%;height:12px;border:0;border-radius:8px;overflow:hidden;accent-color:#286b50;background:#dbe4e8}
+.guide-article .checklist-meter::-webkit-progress-bar{background:#dbe4e8;border-radius:8px}
+.guide-article .checklist-meter::-webkit-progress-value{background:#286b50;border-radius:8px}
+.guide-article .checklist-meter::-moz-progress-bar{background:#286b50;border-radius:8px}
+.guide-article .checklist-item{min-height:48px;box-sizing:border-box;border-radius:9px;padding:13px 15px;color:#203e51}
+.guide-article .checklist-item input{width:20px;height:20px;accent-color:#286b50}
+.guide-article .checklist-item:focus-within{outline:3px solid #426c85;outline-offset:2px}
+.guide-article .checklist-item:has(input:checked){background:#edf7ef;border-color:#8eb49c}
+.guide-article .checklist-item input:checked+span{text-decoration:none;color:#28513c!important}
+.guide-article .checklist-actions .btn{min-height:44px;white-space:normal;border-radius:9px}
+.guide-article .guide-checklist li{line-height:1.7}
+@media(max-width:600px){
+ .guide-article{padding-top:24px;padding-bottom:40px}
+ .guide-article h1{font-size:clamp(1.8rem,7vw,2.5rem);margin-block:12px}
+ .guide-article .guide-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+ .guide-article .guide-tools .guide-copy-status:empty{display:none}
+ .guide-article .interactive-checklist{padding:15px;margin:18px 0 25px}
+ .guide-article .checklist-item{padding:12px;gap:10px}
+ .guide-article .checklist-actions{gap:8px}
+ .guide-article .checklist-actions .btn{flex:1 1 135px}
+}
+@media print{.guide-article .checklist-meter{display:none!important}.guide-article .checklist-item{break-inside:avoid}.guide-article .interactive-checklist{background:#fff;border:1px solid #888}}

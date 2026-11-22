@@ -1051,3 +1051,29 @@
  .premium-v2 #poradniki .editorial-reading a{padding:16px;min-height:0}
 }
 @media(prefers-reduced-motion:reduce){.premium-v2 #poradniki .editorial-reading a:hover{transform:none}}
+
+
+/* MOBILE-STABILITY-20261122 — keep long menus usable on short screens. */
+@media screen and (max-width:760px){
+ .premium-v2 .site-header .main-nav.nav-open{
+  max-height:70vh;max-height:70dvh;overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-gutter:stable;scroll-padding-bottom:16px;
+ }
+ .premium-v2 .site-header .main-nav.nav-open :is(a,summary){min-height:44px}
+ .premium-v2 :is(.hero-content,.hero-resource-disclosure,.hero-resource-content,.hero-action-row,.mobile-quick-nav,#uslugi,#poradniki){min-width:0}
+ .premium-v2 .hero-resource-disclosure>summary>span:first-child,
+ .premium-v2 .mobile-quick-nav>a{overflow-wrap:anywhere}
+}
+@media screen and (max-width:360px){
+ .premium-v2 .hero-action-row>a{flex:1 1 100%;padding:10px 12px}
+ .premium-v2 .mobile-quick-nav>a{font-size:.83rem;line-height:1.4}
+}
+@media screen and (max-height:480px) and (orientation:landscape){
+ .premium-v2 .mobile-contact-bar{display:none!important}
+ .premium-v2 .site-header .main-nav.nav-open{max-height:60vh;max-height:60dvh}
+}
+@supports selector(:has(*)){
+ @media screen and (max-width:760px){
+  .premium-v2:has(.contact-form :is(input,textarea,select):focus) .mobile-contact-bar{display:none!important}
+ }
+}

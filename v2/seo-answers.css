@@ -61,3 +61,31 @@ body:is(.theme-support,.theme-rents) .service-answer-topic{color:#286347}
 .service-answers :is(.service-answers-sources,.service-answers-note) a{display:inline-block;padding-block:7px}
 .premium-subpage [id^="film-"]{scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
 @media(min-width:601px) and (max-width:900px){.service-answers-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.service-answer:last-child{grid-column:1/-1}}
+
+
+/* Service-page reading rhythm and first-contact roadmap (no JS). */
+body.premium-subpage:has(.service-section-nav){--service-accent:#a62a43;--service-ink:#172e48;--service-paper:#f4f6fa;--service-edge:#bac7d7}
+body.premium-subpage:is(.theme-support,.theme-rents):has(.service-section-nav){--service-accent:#287652;--service-ink:#174735;--service-paper:#f0f8f3;--service-edge:#b6d1c0}
+body.premium-subpage.theme-energy:has(.service-section-nav){--service-accent:#286b73;--service-ink:#174550;--service-paper:#f1f8f8;--service-edge:#b4d0d3}
+body.premium-subpage:has(.service-section-nav) .service-section-nav{gap:10px;background:var(--service-paper);border-color:var(--service-edge);max-width:1050px}
+body.premium-subpage:has(.service-section-nav) .service-section-link{min-height:76px;border-color:var(--service-edge);color:var(--service-ink)}
+body.premium-subpage:has(.service-section-nav) .service-section-link svg{color:var(--service-ink)}
+body.premium-subpage:has(.service-section-nav) .service-section-contact{background:var(--service-ink);color:#fff;border-color:var(--service-ink)}
+body.premium-subpage:has(.service-section-nav) .service-section-contact svg{color:#fff}
+body.premium-subpage:has(.service-section-nav) .service-section-nav a:focus-visible{outline-color:var(--service-accent)}
+body.premium-subpage:has(.service-section-nav) .subhero .service-hero-actions>.btn{border-radius:11px;min-height:52px}
+body.premium-subpage:has(.service-section-nav) .subhero .service-hero-actions>a:not(.btn){display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 14px;border:1px solid #ffffff65;border-radius:11px;text-align:center;box-sizing:border-box;text-underline-offset:3px}
+body.premium-subpage:has(.service-section-nav) .subhero .service-hero-actions>a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+body.premium-subpage:has(.service-section-nav) .article>section:not(.service-cta):not(.focus-detail)>h2{max-width:32ch;text-wrap:balance}
+body.premium-subpage:has(.service-section-nav) .article>section:not(.service-cta):not(.focus-detail)>p{max-width:76ch;line-height:1.72}
+body.premium-subpage:has(.service-section-nav) .article details summary{min-height:44px;line-height:1.5}
+.service-first-steps{box-sizing:border-box;max-width:1050px;margin:20px auto 26px;padding:clamp(17px,3vw,30px);border:1px solid var(--service-edge);border-radius:18px;background:var(--service-paper);color:var(--service-ink)}
+.service-first-steps h2{margin:0 0 7px;color:var(--service-ink);font-size:clamp(1.35rem,2.8vw,1.95rem);line-height:1.25}
+.service-first-steps>p{margin:0 0 18px;color:var(--service-ink);line-height:1.6}
+.service-first-steps ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style:none;counter-reset:service-step;padding:0;margin:0}
+.service-first-steps li{counter-increment:service-step;min-width:0;display:grid;grid-template-columns:35px minmax(0,1fr);align-content:start;gap:4px 10px;padding:16px;border:1px solid var(--service-edge);border-radius:12px;background:#fff;color:var(--service-ink)}
+.service-first-steps li:before{content:counter(service-step,decimal-leading-zero);grid-row:1/3;display:grid;place-items:center;width:35px;height:35px;border-radius:9px;background:var(--service-ink);color:#fff;font-size:.86rem;font-weight:800}
+.service-first-steps li strong{font-size:1rem;line-height:1.4}
+.service-first-steps li span{grid-column:2;line-height:1.55;font-size:.9rem}
+@media(max-width:760px){.service-first-steps ol{grid-template-columns:minmax(0,1fr);gap:8px}.service-first-steps li{padding:13px}.service-first-steps{margin-block:16px}.premium-subpage .service-section-nav .service-section-link{padding:10px 8px}}
+@media print{.service-first-steps{break-inside:avoid;background:#fff}.service-first-steps li:before{color:#111;background:#fff;border:1px solid #777}}

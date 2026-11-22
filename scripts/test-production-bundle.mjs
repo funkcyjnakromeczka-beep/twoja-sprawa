@@ -797,6 +797,42 @@ assert.ok(serviceStyles.includes(".service-mining-regions")&&
  serviceStyles.includes("min-height:64px"),"Local nav lacks accessible styles");
 console.log("SERVICE_EARLY_REGIONS_OK: two direct local routes below first steps, no JS required.");
 
+// Rent conversion path must be reachable before lengthy legal explanation.
+// Keep all four defined stages and provide an information-only option.
+const rentLanding=await read("uslugi/renty-powypadkowe.html");
+const rentStepsStart=rentLanding.indexOf('<section class="wrap service-first-steps"');
+const rentChooserStart=rentLanding.indexOf('<section class="rent-journey wrap"');
+const rentArticleStart=rentLanding.indexOf('<article class="wrap article"');
+assert.ok(rentStepsStart>=0&&rentStepsStart<rentChooserStart&&rentChooserStart<rentArticleStart,
+ "Visitors must see the existing four-option rent chooser before the lengthy article");
+assert.equal((rentLanding.match(/class="rent-journey wrap"/g)||[]).length,1,
+ "Moving rent chooser must not duplicate it");
+const rentChooser=rentLanding.slice(rentChooserStart,rentLanding.indexOf("</section>",rentChooserStart)+10);
+const rentStages=["nowa","podwyzszenie","odmowa","ugoda"];
+assert.equal((rentChooser.match(/class="rent-journey-card"/g)||[]).length,4,
+ "Rent guidance must retain the four existing case choices");
+for(const stageName of rentStages){
+ assert.ok(rentChooser.includes('/uslugi/renty-powypadkowe?etap='+stageName+'#formularz'),
+  "Rent chooser has an invalid canonical stage route: "+stageName);
+}
+assert.ok(rentLanding.includes('href="#wybierz-sytuacje-renty"'),
+ "The rent hero should provide an immediate route to its stage chooser");
+assert.ok(rentChooser.includes('href="/wiedza/renta-powypadkowa-dokumenty#renta-lista"'),
+ "Offer a no-contact document checklist before form selection");
+const rentDocumentGuide=await read("wiedza/renta-powypadkowa-dokumenty.html");
+assert.ok(rentDocumentGuide.includes('id="renta-lista"'),
+ "Rent document guide target does not exist");
+const rentFormScript=await read("contact.js");
+for(const stageName of rentStages){
+ assert.ok(rentFormScript.includes(stageName+':"'),
+  "Rent contact form must recognize journey stage: "+stageName);
+}
+const rentJourneyCSS=await read("rent-journey.css");
+assert.ok(rentJourneyCSS.includes(".rent-journey-guide a:focus-visible"),
+ "Document checklist link needs visible keyboard focus");
+console.log("RENT_EARLY_CHOOSER_OK: four existing case stages and privacy-safe checklist before article.");
+
+
 // First-time WZON applicants and people with a decision need different guides.
 // Place both directly after the introductory steps, and validate canonical
 // destinations and the deep link, without introducing duplicate SEO pages.

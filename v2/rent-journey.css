@@ -15,3 +15,8 @@
 .rent-journey-safe a{font-weight:700;color:#145f52}
 @media(max-width:660px){.rent-journey{margin:22px 12px;padding:19px}.rent-journey-grid{grid-template-columns:1fr;gap:11px}.rent-journey-card{min-height:unset;padding:17px}}
 @media(prefers-reduced-motion:no-preference){.rent-journey-card{transition:border-color .15s,box-shadow .15s}}
+/* Przegląd etapu renty pozostaje przed długim artykułem.
+   Opcjonalny poradnik umożliwia przygotowanie się bez kontaktu i bez przesyłania danych. */
+.rent-journey-guide{max-width:74ch;margin:4px 0 15px;color:#234752;line-height:1.6;font-size:.94rem}
+.rent-journey-guide a{color:#155b52;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.rent-journey-guide a:focus-visible{outline:3px solid #166580;outline-offset:3px}

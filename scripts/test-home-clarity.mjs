@@ -109,7 +109,7 @@ assert.deepEqual([...heroLocal.matchAll(/href="([^"]+)"/g)].map(x=>x[1]),cityURL
  "Hero must link to the exact two public local service pages, no tracking");
 for(const slug of ["szkody-gornicze-lubin","szkody-gornicze-polkowice"]){
  const href='/v2/lokalnie/'+slug+'.html';
- assert.equal(html.split('href="'+href+'"').length-1,2,"Keep one hero and one service-area link for "+slug);
+ assert.equal(html.split('href="'+href+'"').length-1,3,"Keep one hero, one service-area and one footer link for "+slug);
  assert.ok(localBlock.includes('href="'+href+'"'),"Service-area URL must remain visible for "+slug);
  assert.ok(heroLocal.includes('href="'+href+'"'),"First-screen local URL must be visible for "+slug);
  await access('v2/lokalnie/'+slug+'.html');

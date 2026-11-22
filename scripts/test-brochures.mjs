@@ -9,7 +9,7 @@ const brochureCss=await readFile("v2/brochure-view.css","utf8");
 const planHtml=await readFile("v2/plan-dzialania.html","utf8");
 const hubHtml=await readFile("v2/wiedza/index.html","utf8");
 const homeHtml=await readFile("v2/index.html","utf8");
-assert.ok(homeHtml.includes('Broszury dokumentów do wydruku'),"Homepage must surface printed brochures near service choices");
+assert.ok(homeHtml.includes('/v2/plan-dzialania.html#brochure-library-heading')&&homeHtml.includes("Broszury"),"Homepage must surface printed brochures near service choices");
 assert.ok(homeHtml.includes('/v2/plan-dzialania.html#brochure-library-heading'),"Homepage brochure entry must open gallery directly");
 assert.ok(hubHtml.includes('aria-label="Broszury do druku dla sześciu usług"'),"Editorial hub must expose brochure topic navigation");
 assert.ok(hubHtml.includes('Broszury dokumentów — do druku i udostępniania'),"Knowledge hub section heading missing");

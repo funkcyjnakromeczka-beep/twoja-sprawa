@@ -184,3 +184,17 @@ for(const [service,topic,advisor] of brochurePages){
  }
 }
 console.log("BROCHURES_6_OK: 6 brochure flows, 24 social-to-form routes, correct adviser calling, 2x3 A4 printing and safe metadata.");
+
+// Native section jumps do not modify the print layout or require another request.
+assert.ok(planHtml.includes('class="brochure-hero-note plan-mode-links"')&&planHtml.includes('href="#plan-setup-title"'));
+assert.equal((planHtml.match(/class="plan-brochure-link-copy">[\s\S]*?<small>/g)||[]).length,6);
+for(const [,topic] of brochurePages){
+ const {document,root}=fake();
+ runInNewContext(brochureJs,{document,location:{search:"?broszura="+topic},URL,URLSearchParams,window:{print(){}},navigator:{},Object,String});
+ const nodes=allNodes(root),nav=nodes.find(n=>n.className==="ts-brochure-quick-nav");
+ assert.ok(nav);assert.equal(nav.children.length,4);
+ for(const a of nav.children.filter(n=>n.href.startsWith("#")))assert.ok(nodes.some(n=>n.attributes.id===a.href.slice(1)));
+ assert.equal(nav.children[3].href,"/plan-dzialania#brochure-library-heading");
+}
+assert.ok(brochureCss.includes("@media print{.ts-brochure-quick-nav,.plan-mode-links{display:none!important}}"));
+console.log("BROCHURE_READING_NAV_OK: six topics, four reading links, gallery return and preserved print layout.");

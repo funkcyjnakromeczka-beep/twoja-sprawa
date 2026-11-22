@@ -92,3 +92,10 @@
 
 .plan-page .plan-share-privacy{margin:-8px 0 16px;color:#d7e7e6;font-size:.8rem;line-height:1.65}
 @media print{.plan-page .plan-share-privacy{display:none!important}}
+
+/* Visible selection, calmer list surface and consistent 16px mobile input. */
+.plan-page .plan-kind-grid button[aria-pressed="true"]{background:#e5f0f5;border-color:#365e77;box-shadow:inset 4px 0 0 #365e77}
+.plan-page .plan-kind-grid button[aria-pressed="true"]>span{background:#17384e;color:#fff}
+.plan-page .plan-stage select{font-size:16px}
+.plan-page .plan-checklist li label{min-height:54px;box-sizing:border-box}
+.plan-page .plan-checklist li:focus-within{outline:3px solid #d0a668;outline-offset:2px}

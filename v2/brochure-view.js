@@ -86,7 +86,7 @@
  document.title=d.title+" — broszura do druku | Twoja Sprawa";
  const make=(tag,cls,content)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(content!==undefined)e.textContent=content;return e;};
  const front=make("div","ts-brochure-spread ts-brochure-front");
- const rules=make("article","ts-brochure-panel ts-brochure-rules");
+ const rules=make("article","ts-brochure-panel ts-brochure-rules");rules.setAttribute("id","broszura-zasady");
  rules.append(make("span","ts-brochure-overline","ZANIM ZACZNIESZ"),make("h3","", "Cztery zasady"));
  d.rules.forEach(([head,body],i)=>{
   const row=make("div","ts-brochure-rule");
@@ -95,7 +95,7 @@
   copy.append(make("h4","",head),make("p","",body));row.append(copy);rules.append(row);
  });
  rules.append(make("p","ts-brochure-signature","TWOJA SPRAWA  •  SuccessTree"));
- const contacts=make("article","ts-brochure-panel ts-brochure-contact");
+ const contacts=make("article","ts-brochure-panel ts-brochure-contact");contacts.setAttribute("id","broszura-kontakt");
  contacts.append(make("span","ts-brochure-overline","JAK PRZEKAZAĆ MATERIAŁY"),make("h3","", "Prześlij to, co już masz"),make("p","ts-brochure-intro",d.transfer),make("span","ts-brochure-overline","TWÓJ KONTAKT"),make("h4","ts-brochure-advisor",d.advisor.name),make("p","ts-brochure-agent","Przedstawiciel współpracujący z VOTUM • "+d.advisor.agent));
  const details=[["TELEFON",d.advisor.phone,"tel:"+d.advisor.dial],["E-MAIL",d.advisor.email,"mailto:"+d.advisor.email],["STRONA WWW","twoja-sprawa.pages.dev","https://twoja-sprawa.pages.dev/"]];
  if(d.social)details.push(["KANAŁ SPOŁECZNOŚCIOWY",d.social,"https://"+d.social]);
@@ -118,7 +118,7 @@
  const bottom=make("div","ts-brochure-cover-bottom");
  bottom.append(make("strong","","Nie musisz mieć wszystkiego."),make("p","","Wystarczy zacząć od tego, co już posiadasz."),make("small","","Twoja Sprawa — SuccessTree, niezależna działalność współpracująca z VOTUM. Materiał informacyjny."));
  cover.append(coverTop,emblem,bottom);front.append(rules,contacts,cover);
- const back=make("div","ts-brochure-spread ts-brochure-back");
+ const back=make("div","ts-brochure-spread ts-brochure-back");back.setAttribute("id","broszura-dokumenty");
  d.panels.forEach(([kicker,title,groups,note],i)=>{
   const panel=make("article","ts-brochure-panel ts-brochure-document");
   panel.append(make("span","ts-brochure-overline",String(i+1)+"  •  "+kicker),make("h3","",title));
@@ -129,7 +129,7 @@
   panel.append(make("p","ts-brochure-footnote",note));back.append(panel);
  });
  const head=make("div","ts-brochure-control");
- const info=make("div","");info.append(make("span","ts-brochure-overline","DOKUMENT DLA KLIENTA"),make("h2","",d.title+" — wersja graficzna"),make("p","", "Dwie strony w formacie A4 poziomo. Drukuj lub wybierz w oknie wydruku „Zapisz jako PDF”. Pola do odhaczania nie są potrzebne."));
+ const info=make("div","");info.append(make("span","ts-brochure-overline","DOKUMENT DLA KLIENTA"),make("h2","",d.title+" — wersja graficzna"),make("p","", "Dwie strony A4 poziomo. Otwórz listę dokumentów albo zapisz broszurę jako PDF w oknie drukowania."));
  const actions=make("div","ts-brochure-actions");
  const print=make("button","ts-brochure-print","Drukuj / Zapisz PDF");print.type="button";print.addEventListener("click",()=>window.print());
  const link=make("a","ts-brochure-service-link","Przejdź do usługi");link.href=d.service;
@@ -185,6 +185,11 @@
  });
  actions.append(contactAction,phoneAction,print,share,socialGraphic,link);head.append(info,actions);
  head.append(shareFeedback);
+ const quickNav=make("nav","ts-brochure-quick-nav");quickNav.setAttribute("aria-label","Przejdź do części broszury");
+ for(const [href,label] of [["#broszura-dokumenty","Lista dokumentów"],["#broszura-zasady","Cztery zasady"],["#broszura-kontakt","Dane kontaktowe"],["/plan-dzialania#brochure-library-heading","Wszystkie broszury"]]){
+  const a=make("a","",label);a.href=href;quickNav.append(a);
+ }
+ head.append(quickNav);
  const note=make("p","ts-brochure-caveat",d.note+" Materiał informacyjny; nie zastępuje indywidualnej analizy. Dalsza współpraca jest dobrowolna i na zasadach przedstawionych przed podpisaniem umowy.");
  root.replaceChildren(head,front,back,note);
  document.body.classList.add("ts-brochure-ready");

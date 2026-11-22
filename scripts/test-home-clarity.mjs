@@ -90,9 +90,16 @@ assert.ok(beg<html.indexOf('id="szkody-lokalnie"')&&html.indexOf('id="szkody-lok
 const collapsedSection=html.slice(end,html.indexOf("</details>",end));
 assert.ok(!collapsedSection.includes('href="/v2/lokalnie/'),
  "Do not hide primary local discovery URLs in collapsed sections");
+const disclosureOpen=html.indexOf('<details class="hero-resource-disclosure">');
+const disclosureClose=html.indexOf("</details>",disclosureOpen);
+assert.ok(disclosureOpen>=0&&disclosureClose>disclosureOpen,"Home reading disclosure should be valid");
+assert.ok(!html.slice(disclosureOpen,disclosureClose).includes("/v2/lokalnie/"),
+ "Local routes must not be hidden inside a closed disclosure");
 const heroLocalBegin=html.indexOf('<nav class="hero-local-shortcuts"');
 const heroLocalEnd=html.indexOf("</nav>",heroLocalBegin);
 const heroLocal=heroLocalBegin>=0&&heroLocalEnd>heroLocalBegin?html.slice(heroLocalBegin,heroLocalEnd+6):"";
+assert.ok(heroLocalBegin>disclosureClose,
+ "Region selector must appear after the closed resource disclosure, without an extra tap");
 assert.ok(heroLocalBegin>heroGuidesEnd&&heroLocalEnd<html.indexOf('<nav class="mobile-quick-nav"'),
  "Both local discovery URLs must appear visibly in the indexed first-screen hero");
 assert.ok(heroLocal.includes('aria-label="Szkody górnicze — poradniki lokalne"'),

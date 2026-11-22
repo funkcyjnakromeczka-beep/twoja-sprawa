@@ -334,6 +334,23 @@ try{
  // New homepage information architecture: services first, real disclosure after CTA.
  const clarityMobile=await browser.newPage({viewport:{width:390,height:844}});
  await clarityMobile.goto(origin+"/",{waitUntil:"domcontentloaded"});
+ // Visitors should see the local city choices immediately, without opening
+ // the resource disclosure. Keep the two 44px targets accessible on mobile.
+ const localQuick=clarityMobile.locator(".hero-local-shortcuts");
+ if(!await localQuick.isVisible())throw Error("Local Lubin/Polkowice shortcuts not visible on mobile");
+ if(await clarityMobile.locator(".hero-resource-disclosure").evaluate(el=>el.open))
+  throw Error("Resource disclosure should start closed");
+ const localQuickLinks=await localQuick.locator("a").evaluateAll(items=>items.map(item=>{
+  const rect=item.getBoundingClientRect();
+  return {href:item.getAttribute("href"),height:Math.round(rect.height),width:Math.round(rect.width)};
+ }));
+ if(localQuickLinks.length!==2||localQuickLinks.some(item=>item.height<44||item.width<44))
+  throw Error("Local shortcut touch targets broken: "+JSON.stringify(localQuickLinks));
+ if(localQuickLinks[0].href!=="/lokalnie/szkody-gornicze-lubin"||
+    localQuickLinks[1].href!=="/lokalnie/szkody-gornicze-polkowice")
+  throw Error("Local home links not canonical: "+JSON.stringify(localQuickLinks));
+ await localQuick.screenshot({path:"screenshots/home-hero-linki-lubin-polkowice-mobile.png",animations:"disabled"});
+ console.log("VISIBLE_LOCAL_HERO_OK "+JSON.stringify(localQuickLinks));
  const positions=await clarityMobile.evaluate(()=>{
   const top=id=>{const el=document.querySelector(id);return el?.getBoundingClientRect().top+window.scrollY;};
   return {services:top("#uslugi"),team:top("#zespol"),contact:top("#kontakt")};

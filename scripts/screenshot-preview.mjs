@@ -1,15 +1,25 @@
 #!/usr/bin/env node
 /** Free local-site Chromium QA and screenshots; no lead submissions, no TinyFish. */
 import {spawn} from "node:child_process";
+import {connect} from "node:net";
 import {mkdir} from "node:fs/promises";
 import {chromium} from "playwright";
 const origin="http://127.0.0.1:4173";
 // The preview uses Python http.server, which does not rewrite extensionless Cloudflare routes.
 const localPreviewUrl=(pathname,search="",hash="")=>origin+(pathname==="/"||pathname.endsWith("/")||/\.[a-z0-9]+$/i.test(pathname)?pathname:pathname+".html")+search+hash;
 const server=spawn("python3",["-m","http.server","4173","--bind","127.0.0.1","--directory","dist-preview"],{stdio:"ignore"});
+// Use TCP readiness rather than an early aborted Undici HTTP fetch,
+// which can trigger a Node 22 parser assertion against Python http.server.
 const wait=async()=>{
  for(let i=0;i<70;i++){
-  try{const response=await fetch(origin+"/");if(response.ok)return;}catch{}
+  const ready=await new Promise(resolve=>{
+   const socket=connect({host:"127.0.0.1",port:4173});
+   socket.setTimeout(500);
+   socket.once("connect",()=>{socket.destroy();resolve(true);});
+   socket.once("error",()=>resolve(false));
+   socket.once("timeout",()=>{socket.destroy();resolve(false);});
+  });
+  if(ready)return;
   await new Promise(resolve=>setTimeout(resolve,200));
  }
  throw Error("Preview server unavailable");

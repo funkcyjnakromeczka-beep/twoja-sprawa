@@ -706,7 +706,9 @@ try{
   assert.equal(await toggle.getAttribute("aria-expanded"),"true","Assistant should expand");
   const chatChoices=guided.locator(".chat-choices button[data-topic]");
   assert.equal(await chatChoices.count(),6,"Chatbot must provide six service topics");
-  for(const [key,route,number] of choices){
+  for(const [index,[key,route,number]] of choices.entries()){
+   // Topic buttons are intentionally hidden after a choice; use "Zmień temat".
+   if(index>0)await guided.locator(".chat-change-topic").click();
    await guided.locator('.chat-choices button[data-topic="'+key+'"]').click();
    assert.equal(await guided.locator(".chat-actions a").first().getAttribute("href"),
     "tel:"+number,"Wrong assistant phone for "+key);
@@ -725,6 +727,7 @@ try{
     "paulina.chandrala@votum-ds.pl":"wojciech.obieglo@votum-ds.pl";
    assert.ok(emailHref.startsWith("mailto:"+advisor+"?"),"Assistant email wrong: "+key);
   }
+  await guided.locator(".chat-change-topic").click();
   await guided.locator('.chat-choices button[data-topic="szkody"]').click();
   await guided.locator(".chat-stage-choice").first().click();
   const stageUrl=new URL(await guided.locator(".chat-reply-contact").getAttribute("href"),origin);

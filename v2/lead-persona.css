@@ -146,3 +146,42 @@
  .premium-subpage .subhero .service-persona-copy a[href^="tel:"]{padding:8px 10px;white-space:normal}
 }
 @media print{.premium-subpage .service-persona{box-shadow:none;break-inside:avoid}}
+
+
+/* CAMPAIGN-READING-PATH-20261122 — a secondary, unobtrusive path below the lead form. */
+@media screen{
+ .premium-campaign .campaign-reader-path{
+  box-sizing:border-box;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;
+  width:min(100% - 32px,1140px);margin:14px auto 8px;padding:0;
+ }
+ .premium-campaign .campaign-reader-path>a{
+  display:flex;align-items:center;gap:11px;box-sizing:border-box;min-width:0;min-height:58px;
+  padding:12px 14px;border:1px solid #b8c8d4;border-radius:10px;background:#f4f7fa;
+  color:#19394f!important;text-decoration:none;font:750 .9rem/1.35 system-ui,sans-serif;
+ }
+ .premium-campaign .campaign-reader-path-index{
+  flex:0 0 31px;display:grid;place-items:center;height:31px;border:1px solid #b8c8d4;
+  background:#fff;border-radius:8px;color:#284860;font:800 .82rem/1 system-ui,sans-serif;
+ }
+ .premium-campaign:is(.campaign-support,.campaign-rents) .campaign-reader-path>a{
+  border-color:#aecbb8;background:#f3f9f5;color:#174535!important;
+ }
+ .premium-campaign:is(.campaign-support,.campaign-rents) .campaign-reader-path-index{
+  color:#174535;border-color:#b6d3c1;
+ }
+ .premium-campaign .campaign-reader-path>a:hover{border-color:#315b73;background:#e9f0f5}
+ .premium-campaign:is(.campaign-support,.campaign-rents) .campaign-reader-path>a:hover{
+  background:#e8f3eb;border-color:#397d58;
+ }
+ .premium-campaign .campaign-reader-path>a:focus-visible{
+  outline:3px solid #a62c46;outline-offset:3px;
+ }
+ .premium-campaign :is(#campaign-topics,#campaign-faq-title,#campaign-resources-title,#skd-steps-title,#skd-faq-title,#renty-etapy,#renty-faq){
+  scroll-margin-top:calc(var(--network-brand-height,84px) + 26px);
+ }
+}
+@media screen and (max-width:720px){
+ .premium-campaign .campaign-reader-path{grid-template-columns:minmax(0,1fr);gap:7px;margin:10px auto}
+ .premium-campaign .campaign-reader-path>a{min-height:49px;padding:9px 12px}
+}
+@media print{.premium-campaign .campaign-reader-path{display:none!important}}

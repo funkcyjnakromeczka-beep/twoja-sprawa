@@ -116,7 +116,7 @@ try {
 try {
  const contact=await readFile(join(root,"contact.js"),"utf8");
  const css=await readFile(join(root,"premium-v2.css"),"utf8");
- if(!contact.includes("Operator formularza potwierdził przyjęcie zgłoszenia.")||!contact.includes("ani potwierdzenia dostarczenia e-maila")) errors.push("Contact premium: delivery caveat missing");
+ if(!contact.includes("Operator formularza potwierdził przyjęcie zgłoszenia.")||!contact.includes("Nie jest to potwierdzenie doręczenia e-maila ani odpowiedzi przedstawiciela.")) errors.push("Contact premium: delivery caveat missing");
  if(!contact.includes("form.reset();updateAdvisor();updatePeople();refreshDirectContact();updateGuide();updateStage()")) errors.push("Contact premium: guide or responsible phone state not reset");
  for(const token of [".contact-status-success",".contact-status-error",".contact-advisor",".contact-guide-box"]){
   if(!css.includes(token)) errors.push("Contact premium: missing CSS "+token);
@@ -175,7 +175,7 @@ try {
  const premium=await readFile(join(root,"premium-v2.css"),"utf8");
  const posterCount=homepage.split('class="video-poster"').length-1;
  if(posterCount!==5) errors.push("Premium V2: expected five visual video posters, got "+posterCount);
- if((homepage.match(/<a class="video-poster" data-film="(?:swiadczenie|szkody|renty|skd|przesyl)" href="https:\/\/scrimba\.com\/explain\//g)||[]).length!==5) errors.push("Premium V2: five poster video links missing");
+ if((homepage.match(/<a class="video-poster"[^>]*data-film="(?:swiadczenie|szkody|renty|skd|przesyl)"[^>]*href="https:\/\/scrimba\.com\/explain\//g)||[]).length!==5) errors.push("Premium V2: five poster video links missing");
  if(!homepage.includes('href="#uslugi"')||!homepage.includes('id="filmy"')) errors.push("Premium V2: services or video section missing");
  if(!homepage.includes('class="premium-v2"')||!homepage.includes('href="/v2/premium-v2.css"')) errors.push("Premium V2: homepage style layer missing");
  if(!homepage.includes('votum-sa.pl/wp-content/uploads/2024/06/logo_VOTUM_SA_rgb-480x71.png')) errors.push("Premium V2: official VOTUM logo missing");

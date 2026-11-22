@@ -203,7 +203,7 @@
    }
    const routingNote=document.createElement("small");
    routingNote.className="contact-routing-note";
-   routingNote.textContent="Wiadomość z formularza trafia do skrzynki obsługiwanej przez Web3Forms — wybór doradcy nie powoduje automatycznego wysłania wiadomości bezpośrednio na jego adres. Aby napisać wprost do tej osoby, użyj odnośnika „Napisz…” lub skopiuj adres e-mail powyżej.";
+   routingNote.textContent="Formularz korzysta z operatora Web3Forms. Wybór doradcy nie oznacza automatycznego doręczenia wiadomości bezpośrednio do doradcy. Aby skontaktować się wprost z wybraną osobą, użyj odnośnika „Napisz…” lub skopiuj jej adres e-mail powyżej.";
    advisor.append(routingNote);
   };
   select.addEventListener("change",updateAdvisor);updateAdvisor();

@@ -491,7 +491,7 @@ try{
    assert.equal(data.advisor_email,advisor);
    assert.match(data.reference_code,/^TS-\d{8}-[A-F0-9]{12}$/);
    assert.ok(data.subject.includes("["+data.reference_code+"]"));
-   assert.ok((await form.locator(".contact-status-success").textContent()).includes(data.reference_code));
+   assert.equal((await form.locator(".contact-ref-code").textContent()).trim(),data.reference_code,"Confirmed reference belongs in the separate anonymous code panel");
   }
   assert.equal(new Set(requests.map(d=>d.reference_code)).size,6);
   console.log("PASS: six mocked service submissions have correct adviser metadata and anonymous IDs.");

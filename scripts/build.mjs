@@ -18,7 +18,7 @@ import {improveContentLinks} from "./content-anchors.mjs";
 import {addSectionPermalinks} from "./heading-permalinks.mjs";
 import {appendRelatedContent} from "./related-content.mjs";
 import {bundleSubpageCss} from "./subpage-css-bundles.mjs";
-import {pruneHomepageRules} from "./homepage-css-prune.mjs";
+import {pruneHomepageRules,pruneSubpageRules} from "./homepage-css-prune.mjs";
 let homepageClassOutsideHome=false;
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
@@ -345,14 +345,20 @@ async function bundleHomepageStyles(html){
   throw new Error("Unexpected homepage stylesheet order: "+found.join(", "));
  }
  const chunks=[];
+ let subpageRulesRemoved=0;
  for(const filename of found){
   const css=await readFile(join(source,filename),"utf8");
   if(/^\s*@(import|charset)\b/im.test(css)){
    throw new Error("Cannot safely bundle CSS with import/charset: "+filename);
   }
-  chunks.push(stripCssComments(pruneReplacedPartnerStripCss(css,filename).replaceAll("/v2/assets/","/assets/")));
+  // Retain cascade and shared selectors; drop exclusively subpage rules.
+  const stripped=stripCssComments(pruneReplacedPartnerStripCss(css,filename).replaceAll("/v2/assets/","/assets/"));
+  const optimized=pruneSubpageRules(stripped);
+  subpageRulesRemoved+=optimized.removed;
+  chunks.push(optimized.css);
  }
  await writeFile(join(dest,"home-bundle.css"),chunks.join("\n"));
+ console.log("HOME_SUBPAGE_CSS_PRUNED "+JSON.stringify({rules:subpageRulesRemoved}));
  let inserted=false;
  return html.replace(linkPattern,()=>{
   if(inserted)return "";

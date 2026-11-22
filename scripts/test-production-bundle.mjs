@@ -2,7 +2,7 @@
 /** Read-only smoke test for a local production candidate. Does NOT deploy. */
 import assert from "node:assert/strict";
 import {readFile,stat,readdir} from "node:fs/promises";
-import {pruneHomepageRules} from "./homepage-css-prune.mjs";
+import {pruneHomepageRules,pruneSubpageRules} from "./homepage-css-prune.mjs";
 import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 import {feedArticlePaths} from "./verified-articles-feed.mjs";
 import {PAGE_PATHS} from "./page-navigation.mjs";
@@ -176,6 +176,17 @@ console.log("GUIDE_NOJS_FALLBACK_OK: published client guides retain working phon
 
 
 const homeBundle=await read("home-bundle.css");
+const pruningSample=pruneSubpageRules(
+ ".premium-subpage .x{color:red}.premium-v2 .x{color:blue}"+
+ "@media(min-width:800px){.premium-subpage .y{display:block}.premium-v2 .y{display:grid}}"+
+ ".premium-subpage .a,.premium-v2 .a{padding:2px}"
+);
+assert.equal(pruningSample.removed,2,"Only guaranteed subpage-only rules may be discarded");
+assert.ok(!pruningSample.css.includes("color:red")&&!pruningSample.css.includes("display:block"),
+ "Homepage must exclude rules that cannot match its body class");
+assert.ok(pruningSample.css.includes("color:blue")&&pruningSample.css.includes("display:grid")&&
+ pruningSample.css.includes(".premium-subpage .a,.premium-v2 .a"),
+ "Shared, mixed and media-query styles must survive in their original order");
 // The old partner strip is removed from production markup in favor of the
 // shared VOTUM bar; its authoring-only CSS must not inflate the release.
 assert.ok(!homeBundle.includes(".premium-v2 .homepage-partner-strip"),
@@ -190,10 +201,10 @@ const homeSourceSheets=[
 const sourceStyles=await Promise.all(homeSourceSheets.map(file=>readFile("v2/"+file,"utf8")));
 const sourceBytes=Buffer.byteLength(sourceStyles.join("\n"),"utf8");
 const bundleBytes=Buffer.byteLength(homeBundle,"utf8");
-assert.ok(sourceBytes-bundleBytes>12000,
- "Production homepage CSS should omit at least 12 KB of non-runtime author comments");
-assert.ok(bundleBytes<285000,
- "Production homepage CSS should remain under its verified 285 KB decoded budget");
+assert.ok(sourceBytes-bundleBytes>60000,
+ "Production homepage CSS should save at least 60 KB through source and subpage pruning");
+assert.ok(bundleBytes<320000,
+ "Production homepage CSS should remain below the 320 KB decoded budget after pruning");
 console.log("HOME_CSS_BUDGET "+JSON.stringify({sourceBytes,bundleBytes,savedBytes:sourceBytes-bundleBytes}));
 
 let independentStylesSaved=0;

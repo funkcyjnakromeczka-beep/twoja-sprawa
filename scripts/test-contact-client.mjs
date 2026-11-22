@@ -193,7 +193,7 @@ const run=async(error=false)=>{
  assert.equal(requestBody.campaign_name,"grupa_lubin");
  assert.equal(requestBody.campaign_variant,"post_2");
  assert.equal(requestBody.lead_path,"formularz");
- const status=visit(form,n=>n.tag==="p"&&n.attributes?.role==="status");
+ const status=visit(form,n=>n.tag==="div"&&n.attributes?.role==="status"&&n.tabIndex===-1);
  assert.ok(status);
  const refPanel=visit(form,n=>n.className==="contact-ref-panel");
  const refCode=visit(refPanel,n=>n.className==="contact-ref-code");
@@ -205,8 +205,7 @@ const run=async(error=false)=>{
   assert.equal(refCode.textContent,"","No success code after a network error");
   assert.equal(copied.length,0,"A failed submission must not copy anything");
   assert.equal(status.className,"contact-status-error");
- assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
-  assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
+   assert.ok(status.children.some(n=>n.textContent?.includes("nie klikaj wielokrotnie")),"Network error must warn against accidental duplicate submissions");
   const fallback=visit(status,n=>n.tag==="a"&&n.className==="contact-fallback-link");
   assert.ok(fallback);
   assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"),"Support fallback must route directly to Paulina");
@@ -245,7 +244,7 @@ const run=async(error=false)=>{
   assert.ok(fallback.href.startsWith("mailto:paulina.chandrala@votum-ds.pl?"));
  }else{
   assert.equal(status.className,"contact-status-success");
-  assert.ok(status.textContent.includes(requestBody.reference_code),"Confirmation must display reference");
+  assert.ok(status.children.some(n=>n.className==="contact-result-heading"&&n.textContent.includes("Zgłoszenie przyjęte")),"Confirmation must explain operator acknowledgement");
   assert.equal(refPanel.hidden,false,"Confirmed submission reveals the reference");
   assert.equal(refCode.textContent,requestBody.reference_code,"Only the anonymous reference is displayed separately");
   assert.equal(refCopy.hidden,false,"Clipboard button is available on HTTPS-capable browsers");

@@ -307,7 +307,7 @@ try{
  // not an unqualified generic mailbox that obscures specialist routing.
  const contactHero=await browser.newPage({viewport:{width:390,height:844}});
  await contactHero.goto(origin+"/kontakt.html",{waitUntil:"domcontentloaded"});
- const heroAction=contactHero.locator(".subhero .actions a").filter({hasText:"Zostaw zapytanie"});
+ const heroAction=contactHero.locator(".subhero .contact-route-links a").filter({hasText:"Zostaw kontakt"});
  if(await heroAction.count()!==1||await heroAction.getAttribute("href")!=="#formularz")throw Error("Contact hero CTA must open own form");
  await heroAction.click();
  if(new URL(contactHero.url()).hash!=="#formularz")throw Error("Contact hero CTA does not reach form");

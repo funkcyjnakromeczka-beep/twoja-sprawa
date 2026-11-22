@@ -103,3 +103,28 @@ body.premium-subpage .focus-detail[aria-labelledby^="film-"] .btn{border-radius:
 body.premium-subpage .focus-detail[aria-labelledby^="film-"] .btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
 @media(max-width:760px){body.premium-subpage .focus-detail[aria-labelledby^="film-"]::before{min-height:160px;aspect-ratio:16/9;max-height:280px;background-size:56% auto,cover}body.premium-subpage .focus-detail[aria-labelledby^="film-"] .btn{width:100%;box-sizing:border-box}}
 @media print{body.premium-subpage .focus-detail[aria-labelledby^="film-"]::before{display:none}body.premium-subpage .focus-detail[aria-labelledby^="film-"]{display:block}}
+
+
+/* SERVICE-OVERVIEW-20261122: a consistent six-slot service directory and readable hero. */
+body.premium-subpage:has(.service-section-brochure) .service-section-nav{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+body.premium-subpage:has(.service-section-brochure) .service-section-nav .service-section-brochure{background:var(--service-paper);border-left:4px solid var(--service-accent)}
+body.premium-subpage:has(.service-section-brochure) .service-section-nav .service-section-link svg{width:24px;height:24px}
+body.premium-subpage:has(.service-section-brochure) #first-steps-title{scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+body.premium-subpage .subhero:has(>.service-banner-art){isolation:isolate;position:relative}
+body.premium-subpage .subhero:has(>.service-banner-art)>h1{font-weight:750;letter-spacing:-.025em;line-height:1.13;text-wrap:balance}
+body.premium-subpage .subhero:has(>.service-banner-art)>p:not(.service-hero-note){line-height:1.65}
+body.premium-subpage .subhero:has(>.service-banner-art)>.eyebrow{margin-block:12px;letter-spacing:.055em}
+body.premium-subpage .subhero:has(>.service-banner-art)>.service-banner-art svg{filter:drop-shadow(0 12px 18px #0003)}
+@media(min-width:1100px){
+ body.premium-subpage .subhero:has(>.service-banner-art)>.service-banner-art{right:5%;width:clamp(230px,26vw,370px);padding:16px;box-sizing:border-box;border:1px solid #ffffff26;border-radius:24px;background:radial-gradient(ellipse at 50% 30%,#ffffff10,transparent 74%);opacity:.95}
+}
+@media(max-width:950px){body.premium-subpage:has(.service-section-brochure) .service-section-nav{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+ body.premium-subpage .subhero:has(>.service-banner-art)>h1{font-size:clamp(1.85rem,7vw,2.6rem);margin-block:12px}
+ body.premium-subpage .subhero:has(>.service-banner-art)>p:not(.service-hero-note){font-size:1rem}
+ body.premium-subpage .subhero:has(>.service-banner-art) .service-hero-actions{gap:9px}
+ body.premium-subpage .subhero:has(>.service-banner-art) .service-hero-actions>a{white-space:normal;line-height:1.4}
+ body.premium-subpage:has(.service-section-brochure) .service-section-nav .service-section-link{min-height:72px}
+}
+@media(max-width:335px){body.premium-subpage:has(.service-section-brochure) .service-section-nav{grid-template-columns:minmax(0,1fr)}}
+@media print{body.premium-subpage .service-banner-art{display:none!important}}

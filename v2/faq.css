@@ -112,3 +112,20 @@
 .faq-page .faq-card summary{min-height:48px;box-sizing:border-box}
 .faq-page .faq-next-step{padding-top:0}
 .faq-page .faq-next-step .faq-source{min-height:44px;margin:0;color:#155576}
+
+
+/* FAQ-READABILITY-20261122 — category cues, clear expand controls and readable answers. */
+.faq-page .faq-card{--faq-accent:#a62c46;border-left:4px solid var(--faq-accent);border-radius:12px}
+.faq-page .faq-card:is([data-faq-category="swiadczenie"],[data-faq-category="renty"]){--faq-accent:#397d58;border-left-color:var(--faq-accent)}
+.faq-page .faq-card[data-faq-category="przesyl"]{--faq-accent:#33747c}
+.faq-page .faq-card:is([data-faq-category="skd"],[data-faq-category="franki"]){--faq-accent:#466787}
+.faq-page .faq-tag{color:var(--faq-accent);letter-spacing:.035em;font-size:.73rem;text-transform:none}
+.faq-page .faq-card summary{padding-right:57px}
+.faq-page .faq-card summary::after{display:grid;place-items:center;width:30px;height:30px;border:1px solid #b9c9d4;border-radius:8px;background:#edf3f7;color:#23445c;right:14px;top:9px;font-size:1.2rem}
+.faq-page .faq-card details[open] summary::after{background:#23445c;color:white;border-color:#23445c}
+.faq-page .faq-card:has(details[open]){border-left-color:var(--faq-accent)}
+.faq-page .faq-card details[open] summary{background:#f5f8fa}
+.faq-page .faq-answer p{font-size:1rem;line-height:1.7;color:#324d60;overflow-wrap:anywhere}
+.faq-page .faq-hero-actions a{box-sizing:border-box;text-align:center}
+@media(max-width:510px){.faq-page .faq-hero{padding:30px 0 35px}.faq-page .faq-hero h1{font-size:clamp(1.85rem,7.3vw,2.5rem)}.faq-page .faq-hero-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.faq-page .faq-hero-actions a{padding:10px;font-size:.85rem;min-width:0;white-space:normal}.faq-page .faq-card summary{padding-left:15px}.faq-page .faq-tag{padding-left:15px}.faq-page .faq-answer{padding:14px 15px 18px}.faq-page .faq-answer.faq-next-step{padding-top:0}}
+@media(max-width:340px){.faq-page .faq-hero-actions{grid-template-columns:1fr}}

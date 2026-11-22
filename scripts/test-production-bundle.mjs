@@ -669,3 +669,11 @@ const standalonePremium=await read("premium-v2.css");
 assert.ok(homeBundle.includes(".premium-v2 .hero-glamour")&&homeBundle.includes(".premium-v2 .hero-priority-grid"));
 assert.ok(standalonePremium.includes(".premium-subpage")&&standalonePremium.includes(".chat-assistant .chat-panel"));
 console.log("PREMIUM_SUBPAGE_CSS_BYTES "+Buffer.byteLength(standalonePremium));
+
+// Keep original local photographs and preview graphics cacheable without immutable claims.
+for(const name of ["wojciech-obieglo.jpg","paulina-chandrala.jpg","og-broszura-szkody-gornicze.jpg","og-broszura-swiadczenie-wspierajace.jpg","og-broszura-renty-powypadkowe.jpg","og-broszura-skd.jpg","og-broszura-kredyty-frankowe.jpg","og-broszura-sluzebnosc-przesylu.jpg"]){
+ assert.ok(headers.includes("/assets/"+name+"\n  Cache-Control: public, max-age=86400"),"Missing one-day cache policy: "+name);
+}
+assert.ok(!homeBundle.includes("images.unsplash.com"),"No optional remote decorative photography in homepage CSS");
+assert.ok(!(await read("premium-v2.css")).includes("images.unsplash.com"),"No optional remote decorative photography on service pages");
+console.log("LOCAL_MEDIA_CACHE_OK: eight existing photographs and brochure preview assets keep their original files with one-day cache policy.");

@@ -1,5 +1,5 @@
 /* Twoja Sprawa — premium V2 design layer. Preserve functionality and noindex previews.
-   Photos: Unsplash / Marija Zaric (wall), Alexandru Boicu (electricity lines).
+   Decorative backgrounds use local vector artwork and CSS gradients.
    These images are illustrative and do not document individual clients' damages. */
 :root{--premium-ink:#102b3a;--premium-navy:#071923;--premium-blue:#163e50;--premium-gold:#d2ac71;--premium-cream:#f8f5ef;--premium-border:#dae2e3;--premium-shadow:0 22px 58px rgba(8,28,39,.12)}
 body{font-synthesis:none;text-rendering:optimizeLegibility}
@@ -14,7 +14,7 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .partner-logo img{display:block;width:min(164px,22vw);height:auto;object-fit:contain}
 .partner-logo span{display:block;max-width:98px;font-size:.63rem;line-height:1.25;font-weight:750;letter-spacing:.02em}
 .premium-v2 .header-contact .header-cta{background:rgba(210,172,113,.13);border-color:var(--premium-gold)}
-.premium-v2 .hero-glamour{position:relative;isolation:isolate;overflow:hidden;min-height:670px;gap:clamp(26px,4vw,68px);background:linear-gradient(113deg,rgba(5,18,28,.98) 7%,rgba(7,28,42,.96) 44%,rgba(13,43,59,.78) 74%,rgba(14,42,57,.68) 100%),url("https://images.unsplash.com/photo-1670078763002-59f7982d493e?auto=format&fit=crop&w=1800&q=72") center/cover no-repeat}
+.premium-v2 .hero-glamour{position:relative;isolation:isolate;overflow:hidden;min-height:670px;gap:clamp(26px,4vw,68px);background:linear-gradient(113deg,rgba(5,18,28,.98) 7%,rgba(7,28,42,.96) 44%,rgba(13,43,59,.78) 74%,rgba(14,42,57,.68) 100%),linear-gradient(135deg,#627a8b,#c5d1d9) center/cover no-repeat}
 .premium-v2 .hero-glamour:before{content:"";pointer-events:none;position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 80% 30%,rgba(240,208,147,.17),transparent 35%),linear-gradient(0deg,rgba(6,20,31,.18),transparent 48%)}
 .premium-v2 .hero-glamour:after{content:"";pointer-events:none;position:absolute;inset:auto -9vw -11vw auto;width:38vw;height:38vw;border:1px solid rgba(211,173,107,.25);border-radius:50%;box-shadow:0 0 0 58px rgba(211,173,107,.035),0 0 0 116px rgba(211,173,107,.025)}
 .premium-v2 .hero-content{position:relative;z-index:2;max-width:860px}
@@ -36,7 +36,7 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 .wrap>h2{font-size:clamp(2.05rem,4vw,3.45rem);color:#122f3d}
 .premium-v2 .section-lead{max-width:72ch;color:#4c6470;font-size:1.02rem}
 .premium-v2 #uslugi{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(118deg,rgba(6,21,32,.97),rgba(11,35,47,.97)),#061c28}
-.premium-v2 #uslugi:before{content:"";pointer-events:none;position:absolute;inset:0;z-index:-1;opacity:.27;background:url("https://images.unsplash.com/photo-1572211281255-bb9fd6f3ca0e?auto=format&fit=crop&w=1600&q=70") center right/cover no-repeat;mask-image:linear-gradient(90deg,transparent 5%,#000 100%)}
+.premium-v2 #uslugi:before{content:"";pointer-events:none;position:absolute;inset:0;z-index:-1;opacity:.27;background:linear-gradient(125deg,#16404f,#77999d) center right/cover no-repeat;mask-image:linear-gradient(90deg,transparent 5%,#000 100%)}
 .premium-v2 #uslugi h2{color:#faf9f5}
 .premium-v2 #uslugi .primary-services{gap:17px}
 .premium-v2 #uslugi .primary-card{position:relative;overflow:hidden;border:1px solid rgba(232,216,188,.22);border-radius:19px;padding:clamp(23px,2.8vw,34px);min-height:275px;background:linear-gradient(155deg,rgba(24,55,71,.94),rgba(7,23,34,.92));box-shadow:0 19px 32px rgba(0,0,0,.14);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
@@ -82,8 +82,8 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-subpage{background:#fbfaf7}
 .premium-subpage .subhero{position:relative;isolation:isolate;overflow:hidden;padding-top:clamp(65px,8vw,118px);padding-bottom:clamp(65px,8vw,118px);background:linear-gradient(102deg,rgba(6,24,35,.98),rgba(10,39,53,.93) 73%,rgba(25,67,82,.79))}
 .premium-subpage .subhero:after{content:"";pointer-events:none;position:absolute;inset:0;z-index:-1;background:var(--service-photo,radial-gradient(circle at 85% 10%,rgba(226,184,116,.18),transparent 40%));background-position:center;background-size:cover;opacity:.2;mask-image:linear-gradient(90deg,transparent 2%,#000 70%)}
-.premium-subpage.theme-mining{--service-photo:url("https://images.unsplash.com/photo-1670078763002-59f7982d493e?auto=format&fit=crop&w=1600&q=72")}
-.premium-subpage.theme-energy{--service-photo:url("https://images.unsplash.com/photo-1572211281255-bb9fd6f3ca0e?auto=format&fit=crop&w=1500&q=72")}
+.premium-subpage.theme-mining{--service-photo:linear-gradient(135deg,#627a8b,#c5d1d9)}
+.premium-subpage.theme-energy{--service-photo:linear-gradient(125deg,#16404f,#77999d)}
 .premium-subpage .subhero h1{max-width:970px;font-size:clamp(2.7rem,5.1vw,4.8rem);color:#fff}
 .premium-subpage .subhero p{font-size:clamp(1rem,1.3vw,1.14rem);max-width:74ch;color:#e0e9ed;line-height:1.78}
 .premium-subpage .article{max-width:1010px}
@@ -156,7 +156,7 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 .premium-v2 .quick-path{padding-top:35px}
 .premium-v2 .campaign-home-card{position:relative;isolation:isolate;overflow:hidden;border-radius:21px;border:1px solid #e1e5e2;box-shadow:0 16px 40px rgba(7,31,43,.07);background:linear-gradient(145deg,#fff,#f7f6f1)}
 .premium-v2 .campaign-home-card:before{content:"";position:absolute;inset:0 0 auto auto;width:58%;height:100%;z-index:-1;opacity:.085;pointer-events:none;background-size:cover;background-position:center;mask-image:linear-gradient(90deg,transparent,#000)}
-.premium-v2 .campaign-home-card:first-child:before{background-image:url("https://images.unsplash.com/photo-1670078763002-59f7982d493e?auto=format&fit=crop&w=900&q=70")}
+.premium-v2 .campaign-home-card:first-child:before{background-image:linear-gradient(135deg,#627a8b,#c5d1d9)}
 .premium-v2 .campaign-home-card:nth-child(2):before{background:radial-gradient(circle at 65% 35%,#7198a9,#e8f0f1 70%)}
 .premium-v2 .campaign-home-card h3{color:#123445;font-size:clamp(1.55rem,2.3vw,2.3rem)}
 .premium-v2 .campaign-home-card .btn{border-radius:999px}
@@ -363,7 +363,7 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
 @media(max-width:520px){.premium-v2 #uslugi:before{width:230px;height:300px;right:-115px;opacity:.045}.premium-subpage .article:after{display:none}}
 
 /* Hero visual: integrated Themis silhouette, not a separate content image. */
-.premium-v2 .hero-glamour{background:linear-gradient(110deg,rgba(5,18,29,.99) 0%,rgba(7,27,42,.97) 48%,rgba(10,34,49,.86) 100%),url("https://images.unsplash.com/photo-1670078763002-59f7982d493e?auto=format&fit=crop&w=1800&q=72") center/cover no-repeat}
+.premium-v2 .hero-glamour{background:linear-gradient(110deg,rgba(5,18,29,.99) 0%,rgba(7,27,42,.97) 48%,rgba(10,34,49,.86) 100%),linear-gradient(135deg,#627a8b,#c5d1d9) center/cover no-repeat}
 .premium-v2 .hero-glamour:before{background:radial-gradient(ellipse at 77% 38%,rgba(215,172,104,.19),transparent 38%),url("/v2/assets/temida-outline.svg") no-repeat 93% 50%/auto 90%;opacity:.68}
 .premium-v2 .hero-glamour:after{opacity:.5}
 .premium-v2 .hero-glamour .hero-content{position:relative;z-index:2}
@@ -523,7 +523,7 @@ body{font-synthesis:none;text-rendering:optimizeLegibility}
   background-image:
     radial-gradient(circle at 85% 18%,rgba(202,165,106,.19),transparent 33%),
     linear-gradient(106deg,rgba(4,18,29,.98) 0%,rgba(9,32,47,.96) 49%,rgba(15,49,67,.79) 100%),
-    url("https://images.unsplash.com/photo-1670078763002-59f7982d493e?auto=format&fit=crop&w=1800&q=72");
+    linear-gradient(135deg,#627a8b,#c5d1d9);
 }
 .premium-v2 .hero-glamour .eyebrow{
   display:inline-flex;

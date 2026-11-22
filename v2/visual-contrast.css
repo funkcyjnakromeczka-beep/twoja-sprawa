@@ -373,3 +373,28 @@ body:is(.theme-support,.theme-rents,.campaign-support,.campaign-rents) .contact-
  .contact-form .contact-context-notice:not([hidden]){grid-template-columns:minmax(0,1fr)}
  .contact-form .contact-context-notice>button{grid-column:1;grid-row:auto;justify-self:start}
 }
+
+
+/* CONTACT-RESULT-20261122 — distinct confirmation and recovery layouts. */
+@media screen{
+ .contact-form :is(.contact-status-success,.contact-status-error){display:grid;gap:10px;padding:16px;min-width:0;overflow-wrap:anywhere}
+ .contact-form .contact-result-heading{font:800 1.08rem/1.4 system-ui,sans-serif;color:inherit!important}
+ .contact-form .contact-status-success>p{color:#204c37!important;margin:0;line-height:1.55}
+ .contact-form .contact-status-error>.contact-result-explanation{color:#681c30!important;line-height:1.55}
+ .contact-form .contact-attempt-code{display:block;background:#fff;border:1px solid #d9a4ad;border-radius:7px;padding:9px 11px;font-size:.84rem;color:#681c30!important;font-variant-numeric:tabular-nums}
+ .contact-form .contact-recovery-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .contact-form .contact-recovery-actions>:is(a,button){display:flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:0;min-height:48px;padding:10px 12px;margin:0;border:1px solid #ad6575;border-radius:8px;background:#fff;color:#681c30!important;font:750 .86rem/1.4 system-ui,sans-serif;text-decoration:none;text-align:center;white-space:normal}
+ .contact-form .contact-recovery-actions>.contact-recovery-call{background:#18384e;border-color:#18384e;color:#fff!important}
+ .contact-form .contact-recovery-actions>.contact-draft-copy{grid-column:1/-1}
+ .contact-form .contact-recovery-actions>:is(a,button):focus-visible{outline:3px solid #18384e;outline-offset:3px}
+ .contact-form .contact-ref-panel:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 12px;background:#f2f7f4;border:1px solid #a4c4af;padding:14px;border-radius:10px}
+ .contact-form .contact-ref-panel>strong{grid-column:1/-1;color:#204c37!important}
+ .contact-form .contact-ref-code{font:750 clamp(.76rem,2.5vw,1rem)/1.45 ui-monospace,monospace;color:#18384e!important;user-select:all}
+ .contact-form .contact-ref-hint,.contact-form .contact-ref-feedback{grid-column:1/-1;color:#385b49!important;font-size:.8rem;line-height:1.5}
+ .contact-form .contact-ref-feedback:empty{display:none}
+ .contact-form [role="status"]:focus{outline-offset:3px}
+}
+@media screen and (max-width:480px){
+ .contact-form .contact-recovery-actions,.contact-form .contact-ref-panel:not([hidden]){grid-template-columns:minmax(0,1fr)}
+ .contact-form .contact-ref-copy{justify-self:start}
+}

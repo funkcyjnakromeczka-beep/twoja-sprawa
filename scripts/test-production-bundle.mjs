@@ -743,3 +743,12 @@ for(const [campaign,service,person,resource] of [
   "Missing topic FAQ: "+campaign);
 }
 console.log("CAMPAIGN_READING_PATHS_OK: four landings, 12 validated reading anchors, four brochures and unchanged advisers.");
+
+
+const campaignVisualCSS=await read("lead-persona.css");
+for(const asset of ["project-mining.svg","project-support.svg","project-rents.svg","project-credit.svg"])
+ assert.ok(campaignVisualCSS.includes("/assets/"+asset),"Campaign visual motif missing from production style: "+asset);
+for(const selector of [".premium-campaign .campaign-reader-path",".premium-campaign .campaign-copy h1",
+ ".premium-campaign .campaign-steps article",".premium-campaign .campaign-form .contact-form"])
+ assert.ok(campaignVisualCSS.includes(selector),"Missing campaign visual identity rule: "+selector);
+console.log("CAMPAIGN_VISUAL_IDENTITY_OK: all four categories use local art and consistent reading/lead styles.");

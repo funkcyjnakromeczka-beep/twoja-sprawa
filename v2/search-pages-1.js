@@ -30,7 +30,7 @@ window.TwojaSprawaSearchPages1=[
     "title": "Szkody górnicze Lubin — pęknięcia ścian",
     "description": "Lubin i gmina Lubin: zauważyłeś pęknięcia ścian, rysy elewacji lub uszkodzone płytki? Sprawdź, jak udokumentować szkodę i zgłosić ją do analizy.",
     "category": "szkody",
-    "keywords": "Szkody górnicze — Lubin i okolice v2 lokalnie szkody gornicze lubin html Szkody Gornicze Lubin"
+    "keywords": "Szkody górnicze — Lubin i okolice v2 lokalnie szkody gornicze lubin html Szkody Gornicze Lubin Buczynka Bukowna Chróstnik Czerniec Dąbrowa Górna Gogołowice Gola Gorzelin Gorzyca Karczowiska Kłopotów Krzeczyn Mały Krzeczyn Wielki Księginice Lisiec Miłoradzice Miłosna Miroszowice Niemstów Obora Osiek Pieszków Raszowa Raszowa Mała Raszówka Siedlce Składowice Szklary Górne Ustronie Wiercień Zimna Woda"
   },
   {
     "id": "page:v2/lokalnie/szkody-gornicze-polkowice.html",
@@ -38,7 +38,7 @@ window.TwojaSprawaSearchPages1=[
     "title": "Szkody górnicze Polkowice — szkody posesji",
     "description": "Polkowice i gmina Polkowice: nierówna kostka brukowa, spękania elewacji i uszkodzenia posesji? Dowiedz się, jak przygotować dokumentację szkody do analizy.",
     "category": "szkody",
-    "keywords": "Szkody górnicze — Polkowice i okolice v2 lokalnie szkody gornicze polkowice html Szkody Gornicze Polkowice"
+    "keywords": "Szkody górnicze — Polkowice i okolice v2 lokalnie szkody gornicze polkowice html Szkody Gornicze Polkowice Biedrzychowa Dąbrowa Guzice Jędrzychów Kaźmierzów Komorniki Moskorzyn Nowa Wieś Lubińska Pieszkowice Sobin Sucha Górna Tarnówek Trzebcz Żelazny Most Żuków"
   },
   {
     "id": "page:v2/o-nas.html",

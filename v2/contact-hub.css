@@ -57,8 +57,8 @@
 
 /* Compact topic picker before the longer adviser profiles. */
 .premium-subpage.theme-contact .contact-topic-panel{padding-top:clamp(22px,4vw,40px);padding-bottom:10px}
-.contact-topic-heading h2{margin:0 0 8px;color:#17384e;font-size:clamp(1.4rem,3vw,1.95rem)}
-.contact-topic-heading p{max-width:65ch;color:#425867;margin:0 0 15px}
+.premium-subpage.theme-contact .contact-topic-heading h2{margin:0 0 8px;color:#f5f7fa;font-size:clamp(1.4rem,3vw,1.95rem)}
+.premium-subpage.theme-contact .contact-topic-heading p{max-width:65ch;color:#d5e2eb;margin:0 0 15px}
 .contact-topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .contact-topic-grid a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;min-height:72px;padding:13px 16px;border:1px solid #b8c9d5;border-left:4px solid #a82442;border-radius:12px;background:#fff;color:#17384e;text-decoration:none;box-sizing:border-box}
 .contact-topic-grid a[data-person="paulina"]{border-left-color:#237054}

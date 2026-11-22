@@ -183,14 +183,28 @@
   }catch{}
   shareFeedback.textContent="Skopiuj ten adres: "+cleanBrochureUrl;
  });
- actions.append(contactAction,phoneAction,print,share,socialGraphic,link);head.append(info,actions);
+ // Separate reading/print controls from lead actions without moving printed panels.
+ const toolsGroup=make("div","ts-brochure-tool-group");
+ toolsGroup.setAttribute("role","group");
+ toolsGroup.setAttribute("aria-label","Drukowanie i udostępnianie broszury");
+ toolsGroup.append(print,share,socialGraphic);
+ const contactGroup=make("div","ts-brochure-lead-group");
+ contactGroup.setAttribute("role","group");
+ contactGroup.setAttribute("aria-label","Kontakt i szczegóły usługi");
+ contactGroup.append(contactAction,phoneAction,link);
+ actions.append(toolsGroup,contactGroup);head.append(info,actions);
  head.append(shareFeedback);
  const quickNav=make("nav","ts-brochure-quick-nav");quickNav.setAttribute("aria-label","Przejdź do części broszury");
  for(const [href,label] of [["#broszura-dokumenty","Lista dokumentów"],["#broszura-zasady","Cztery zasady"],["#broszura-kontakt","Dane kontaktowe"],["/plan-dzialania#brochure-library-heading","Wszystkie broszury"]]){
   const a=make("a","",label);a.href=href;quickNav.append(a);
  }
  head.append(quickNav);
+ const returnTools=make("div","ts-brochure-reading-end");
+ const returnPrint=make("button","ts-brochure-print","Drukuj / Zapisz PDF");returnPrint.type="button";
+ returnPrint.addEventListener("click",()=>window.print());
+ const all=make("a","","Wybierz inną broszurę");all.href="/plan-dzialania#brochure-library-heading";
+ returnTools.append(returnPrint,all);
  const note=make("p","ts-brochure-caveat",d.note+" Materiał informacyjny; nie zastępuje indywidualnej analizy. Dalsza współpraca jest dobrowolna i na zasadach przedstawionych przed podpisaniem umowy.");
- root.replaceChildren(head,front,back,note);
+ root.replaceChildren(head,front,back,note,returnTools);
  document.body.classList.add("ts-brochure-ready");
 })();

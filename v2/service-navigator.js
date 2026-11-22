@@ -83,6 +83,20 @@
     const trusted={
       // Google references are a generic source, not proof of Search vs Maps or paid vs organic.
       "google.com":"google","www.google.com":"google","google.pl":"google","www.google.pl":"google","maps.google.com":"google","maps.google.pl":"google",
+      // Recognize only exact social-platform hosts, never a specific post or account.
+      "facebook.com":"facebook",
+      "www.facebook.com":"facebook",
+      "m.facebook.com":"facebook",
+      "l.facebook.com":"facebook",
+      "lm.facebook.com":"facebook",
+      "web.facebook.com":"facebook",
+      "instagram.com":"instagram",
+      "www.instagram.com":"instagram",
+      "l.instagram.com":"instagram",
+      "tiktok.com":"tiktok",
+      "www.tiktok.com":"tiktok",
+      "vm.tiktok.com":"tiktok",
+      "vt.tiktok.com":"tiktok",
       "chatgpt.com":"chatgpt.com","www.chatgpt.com":"chatgpt.com","chat.openai.com":"chatgpt.com",
       "perplexity.ai":"perplexity.ai","www.perplexity.ai":"perplexity.ai",
       "claude.ai":"claude.ai","www.claude.ai":"claude.ai",

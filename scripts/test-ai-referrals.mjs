@@ -142,3 +142,23 @@ assert.equal(explicitMaps.searchParams.get("utm_medium"),"local","Explicit Maps 
 console.log("GOOGLE_REFERRAL_OK: exact allowlist, five client modules, two hops, no query leakage, explicit UTM retained.");
 
 console.log("OK: tagged and untagged ChatGPT referrals preserve safe attribution; no cookies or test submissions.");
+
+// Untagged social referrals: recognize a platform, not a user, campaign or organic/paid distinction.
+for(const [domain,canonical] of Object.entries({"facebook.com":"facebook","www.facebook.com":"facebook","m.facebook.com":"facebook","l.facebook.com":"facebook","lm.facebook.com":"facebook","web.facebook.com":"facebook","instagram.com":"instagram","www.instagram.com":"instagram","l.instagram.com":"instagram","tiktok.com":"tiktok","www.tiktok.com":"tiktok","vm.tiktok.com":"tiktok","vt.tiktok.com":"tiktok"})){
+ for(const [name,code] of [["links",attribution],["form",form],["chatbot",chatbot],["navigator",navigator],["action plan",plan]]){
+  assert.ok(code.includes('"'+domain+'":"'+canonical+'"'),name+" must recognize "+domain);
+ }
+ const entry=new URL(navigate("","/kontakt?usluga=przesyl&etap=dokumenty#formularz","https://"+domain+"/?private=abc"),origin);
+ assert.equal(entry.searchParams.get("utm_source"),canonical);
+ assert.equal(entry.searchParams.get("utm_medium"),"referral");
+ assert.equal(entry.searchParams.get("private"),null);
+ assert.equal(entry.searchParams.get("etap"),"dokumenty");
+ assert.equal(entry.hash,"#formularz");
+ assert.equal(new URL(navigate(entry.search,"/uslugi/sluzebnosc-przesylu"),origin).searchParams.get("utm_source"),canonical);
+}
+for(const domain of ["facebook.com.evil.example","notinstagram.com","fake.tiktok.com","tiktok.com.evil.example"]){
+ assert.equal(navigate("","/kontakt","https://"+domain+"/"),"/kontakt");
+}
+assert.equal(new URL(navigate("?utm_source=google","/kontakt","https://m.facebook.com/"),origin).searchParams.get("utm_source"),"google");
+for(const file of ["v2/poradniki/frankowicze-lista-kontrolna.html","v2/poradniki/sluzebnosc-przesylu-dzialka.html","v2/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html","v2/wiedza/kredyt-pln-dokumenty-skd.html","v2/wiedza/swiadczenie-wspierajace-dokumenty.html"])assert.equal((await readFile(file,"utf8")).split('src="/v2/attribution.js"').length-1,1,"Attribution coverage: "+file);
+console.log("SOCIAL_REFERRAL_OK: 13 exact hosts, five modules, safe stage and anchor, two hops, no private query propagation.");

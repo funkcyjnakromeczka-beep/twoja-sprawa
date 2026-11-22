@@ -13,13 +13,13 @@
  let current="all";
  const normalize=value=>String(value||"").toLowerCase("pl-PL").normalize("NFD").replace(/\p{M}/gu,"").replaceAll("ł","l");
  const refresh=()=>{
-  const query=normalize(search.value.trim());
+  const query=normalize(search.value.trim()).split(/\s+/).filter(Boolean);
   let visible=0;
   for(const card of cards){
    const category=current==="all"||card.dataset.faqCategory===current;
    // Przyciski udostępniania nie mogą wpływać na wyniki wyszukiwarki FAQ.
-   const searchable=(card.querySelector("summary")?.textContent||"")+" "+(card.querySelector(".faq-answer")?.textContent||"");
-   const text=!query||normalize(searchable).includes(query);
+   const searchable=normalize((card.querySelector(".faq-tag")?.textContent||"")+" "+(card.querySelector("summary")?.textContent||"")+" "+(card.querySelector(".faq-answer")?.textContent||""));
+   const text=query.every(term=>searchable.includes(term));
    card.hidden=!(category&&text);
    if(!card.hidden)visible++;
   }
@@ -90,7 +90,7 @@
   if(!/^pytanie-[0-9]+-[a-z0-9-]+$/.test(hash))return;
   const card=cards.find(item=>item.id===hash);
   if(!card)return;
-  if(card.hidden)choose(card.dataset.faqCategory);
+  if(card.hidden){search.value="";choose(card.dataset.faqCategory);}
   const details=card.querySelector?.("details");
   if(details)details.open=true;
  };

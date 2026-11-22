@@ -321,3 +321,9 @@ assert.equal((filmBlock.match(/class="video-poster" data-film=/g)||[]).length,5)
 assert.equal((filmBlock.match(/class="video-poster-number" aria-hidden="true"><svg/g)||[]).length,5);
 assert.equal((filmBlock.match(/class="video-feature-play" aria-hidden="true"/g)||[]).length,5);
 assert.ok(!filmBlock.includes("<iframe")&&!filmBlock.includes("images.unsplash.com"));
+
+const resourceGrid=html.match(/<div class="home-resource-grid">([\s\S]*?)<\/div>/)?.[1]||"";
+assert.equal((resourceGrid.match(/href="\/v2\/poradniki\//g)||[]).length,6);
+assert.equal((resourceGrid.match(/<span aria-hidden="true"><svg/g)||[]).length,6);
+assert.ok(resourceGrid.includes('/v2/poradniki/frankowicze-lista-kontrolna.html'));
+assert.ok(css.includes(".home-resource-grid>a>span svg")&&css.includes("padding-block:36px"));

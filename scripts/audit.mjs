@@ -188,14 +188,14 @@ try {
   if(!service.includes('class="partner-inline"')) errors.push("Premium V2: VOTUM header logo missing "+slug);
  }
 } catch(e){errors.push("Premium V2 audit failed: "+e.message);}
-// Homepage keeps five small preparation links instead of a separate catalogue.
+// Homepage keeps one concise preparation link for each of its six services.
 try {
  const home=await readFile(join(root,"index.html"),"utf8");
  const start=home.indexOf('class="home-resource-grid"');
  const end=home.indexOf('</div>',start); // Count only the compact guide grid, not later editorial links.
  const part=start>=0&&end>start?home.slice(start,end):"";
  const count=(part.match(/href="\/v2\/poradniki\/[^"]+\.html"/g)||[]).length;
- if(count!==5)errors.push("Homepage: expected five concise guide links, got "+count);
+ if(count!==6)errors.push("Homepage: expected six concise guide links, got "+count);
 } catch(e){errors.push("Homepage guides audit failed: "+e.message);}
 // The campaign-link generator must use the same tracking fields as the lead form.
 try {

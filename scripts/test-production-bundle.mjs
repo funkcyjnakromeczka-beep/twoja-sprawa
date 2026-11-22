@@ -2,6 +2,7 @@
 /** Read-only smoke test for a local production candidate. Does NOT deploy. */
 import assert from "node:assert/strict";
 import {readFile,stat,readdir} from "node:fs/promises";
+import {pruneHomepageRules} from "./homepage-css-prune.mjs";
 import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 import {feedArticlePaths} from "./verified-articles-feed.mjs";
 const origin="https://twoja-sprawa.pages.dev";
@@ -654,3 +655,17 @@ assert.ok(urlTags.length>=15,"too few indexed pages");
 assert.deepEqual(urlTags.map(uri=>new URL(uri).pathname).sort(),expectedIndexable,"sitemap does not match approved SEO policy");
 assert.equal(new Set(urlTags).size,urlTags.length,"duplicate sitemap URLs");
 console.log("PRODUCTION_CANDIDATE_OK:",urlTags.length,"indexable URLs; robots, sitemap, canonical, schemas, local portraits, search and exclusions valid. NOT DEPLOYED.");
+
+// Only complete homepage-only selector lists may disappear from standalone CSS.
+const pruneFixture='.premium-v2 .a{color:red}body.premium-v2 .x,.premium-v2 .y{color:blue}.premium-v2 .a,.premium-subpage .a{color:green}@media(max-width:600px){.premium-v2 .b{display:none}.premium-subpage .b{display:block}}@keyframes pulse{from{opacity:0}to{opacity:1}}.generic:has(.premium-v2 .a){color:black}.generic{content:"{;}";background:url("data:image/svg+xml,a,b")}';
+const fixtureResult=pruneHomepageRules(pruneFixture);
+assert.equal(fixtureResult.removed,3);
+assert.ok(fixtureResult.css.includes('.premium-v2 .a,.premium-subpage .a{color:green}'));
+assert.ok(fixtureResult.css.includes('@media(max-width:600px){.premium-subpage .b{display:block}}'));
+assert.ok(fixtureResult.css.includes('@keyframes pulse{from{opacity:0}to{opacity:1}}'));
+assert.ok(fixtureResult.css.includes('.generic:has(.premium-v2 .a){color:black}'));
+assert.ok(fixtureResult.css.includes('.generic{content:"{;}";background:url("data:image/svg+xml,a,b")}'));
+const standalonePremium=await read("premium-v2.css");
+assert.ok(homeBundle.includes(".premium-v2 .hero-glamour")&&homeBundle.includes(".premium-v2 .hero-priority-grid"));
+assert.ok(standalonePremium.includes(".premium-subpage")&&standalonePremium.includes(".chat-assistant .chat-panel"));
+console.log("PREMIUM_SUBPAGE_CSS_BYTES "+Buffer.byteLength(standalonePremium));

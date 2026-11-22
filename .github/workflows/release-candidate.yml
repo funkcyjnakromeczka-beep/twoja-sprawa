@@ -5,6 +5,7 @@ on:
     paths:
       - 'v2/**'
       - 'scripts/build.mjs'
+      - 'scripts/homepage-css-prune.mjs'
       - 'scripts/subpage-css-bundles.mjs'
       - 'scripts/test-subpage-bundles.mjs'
       - 'scripts/page-navigation.mjs'

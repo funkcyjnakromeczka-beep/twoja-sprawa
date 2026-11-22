@@ -16,6 +16,8 @@ import {improveContentLinks} from "./content-anchors.mjs";
 import {addSectionPermalinks} from "./heading-permalinks.mjs";
 import {appendRelatedContent} from "./related-content.mjs";
 import {bundleSubpageCss} from "./subpage-css-bundles.mjs";
+import {pruneHomepageRules} from "./homepage-css-prune.mjs";
+let homepageClassOutsideHome=false;
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
 const release=process.env.RELEASE==="1";
@@ -378,6 +380,7 @@ async function walk(dir){
       const robots=indexable?"index,follow":"noindex,follow";
       html=html.replaceAll("/v2/","/");
       html=reconcilePublishedArticle(html,route,canonical);
+      if(rel!=="index.html"&&[...html.matchAll(/\bclass=["\x27]([^"\x27]*)["\x27]/g)].some(m=>m[1].split(/\s+/).includes("premium-v2")))homepageClassOutsideHome=true;
       if(rel==="index.html")html=await bundleHomepageStyles(html);
       else {
        const layerResult=await bundleSubpageCss(html,
@@ -429,6 +432,15 @@ async function walk(dir){
   }
 }
 await walk(source);
+// Standalone premium CSS is used on subpages; the homepage already has the full bundle.
+// If a future secondary page adopts the homepage class, retain the full sheet.
+if(!homepageClassOutsideHome){
+ const path=join(dest,"premium-v2.css");
+ const original=await readFile(path,"utf8");
+ const trimmed=pruneHomepageRules(original);
+ await writeFile(path,trimmed.css);
+ console.log("SUBPAGE_HOMESTYLES_PRUNED "+JSON.stringify({removedRules:trimmed.removed,beforeBytes:Buffer.byteLength(original),afterBytes:Buffer.byteLength(trimmed.css),savedBytes:Buffer.byteLength(original)-Buffer.byteLength(trimmed.css)}));
+}else console.log("SUBPAGE_HOMESTYLES_PRUNED skipped: homepage class used on another page");
 await fetchPortraits();
 // Google Search Central explicitly allows multiple sitemap directives.
 // Advertise both identical canonical URL lists: XML is primary, TXT is fallback.

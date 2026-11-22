@@ -159,6 +159,13 @@ try{
   javaScriptEnabled:false,viewport:{width:320,height:740}
  });
  try{
+  // This scenario measures first-party layout and static fallback, not third-party image servers.
+  // Never block local images, CSS, or scripts through this route.
+  await noJsContext.route("**/*",route=>{
+   const request=route.request();
+   if(request.resourceType()==="image"&&new URL(request.url()).origin!==new URL(origin).origin)return route.abort("blockedbyclient");
+   return route.continue();
+  });
   const noJsPage=await noJsContext.newPage();
   const routes=[
    ["/","both"],["/kontakt","both"],
@@ -175,7 +182,7 @@ try{
   const noJsOverflow=[];
   for(const [route,advisor] of routes){
    const response=await noJsPage.goto(origin+route,{
-    waitUntil:"domcontentloaded",timeout:40000
+    waitUntil:"load",timeout:40000
    });
    assert.equal(response?.status(),200,"No-JavaScript fallback route unavailable: "+route);
    const host=noJsPage.locator("[data-contact-form]");
@@ -195,8 +202,7 @@ try{
     requirePerson("wojciech.obieglo@votum-ds.pl","+48796441345");
    if(advisor==="both"||advisor==="paulina")
     requirePerson("paulina.chandrala@votum-ds.pl","+48500171531");
-   // Wait for every actual stylesheet, not slow third-party decorative images.
-   await noJsPage.waitForFunction(()=>[...document.querySelectorAll('link[rel="stylesheet"]')].every(link=>link.sheet!==null),null,{timeout:30000});
+   // The load event observes the completed first-party stylesheet before geometry checks.
    const geometry=await noJsPage.evaluate(()=>{
     const overflow=document.documentElement.scrollWidth-window.innerWidth;
     const offenders=[...document.querySelectorAll("body *")].filter(el=>{

@@ -341,3 +341,11 @@ for(const [,id] of aboutJumps.matchAll(/href="#([^"]+)"/g))assert.ok(aboutTeam.i
 const aboutProcess=aboutTeam.match(/<ol class="about-contact-process">[\s\S]*?<\/ol>/)?.[0]||"";
 assert.equal((aboutProcess.match(/<li>/g)||[]).length,3);
 assert.ok(html.includes('/v2/o-nas.html#pierwszy-kontakt'));
+
+// Complete service answers remain static, visually labelled and linked to local films.
+for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","kredyty-pln","renty-powypadkowe","kredyty-frankowe","sluzebnosc-przesylu"]){
+ const page=await readFile("v2/uslugi/"+slug+".html","utf8");
+ assert.equal((page.match(/class="service-answer-topic" aria-hidden="true"/g)||[]).length,3);
+ const film=page.match(/class="service-video-direct" href="#(film-[^"]+)"/);
+ if(slug!=="kredyty-frankowe")assert.ok(film&&page.includes('id="'+film[1]+'"'));
+}

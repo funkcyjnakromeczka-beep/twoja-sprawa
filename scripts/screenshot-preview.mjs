@@ -407,7 +407,8 @@ try{
  const page=await browser.newPage({viewport:{width:390,height:844}});
  await page.goto(origin+"/uslugi/szkody-gornicze.html?utm_source=facebook&utm_medium=grupa&utm_campaign=lokalna",{waitUntil:"domcontentloaded"});
  await page.locator(".chat-toggle").click();
- await page.locator('[data-topic="szkody"]').click();
+ // Mining route already selected the topic; choices remain hidden until "Zmień temat".
+ if(!(await page.locator(".chat-reply-title").innerText()).includes("Szkody górnicze"))throw Error("Mining topic not preselected");
  await page.locator(".chat-stage-choice",{hasText:"Mam propozycję ugody"}).click();
  const href=await page.locator(".chat-reply-contact").getAttribute("href");
  const chosen=new URL(href,origin);
@@ -426,7 +427,8 @@ try{
   const guided=await browser.newPage({viewport:{width:390,height:844}});
   await guided.goto(origin+"/uslugi/szkody-gornicze.html?utm_source=ulotka&utm_medium=qr",{waitUntil:"domcontentloaded"});
   await guided.locator(".chat-toggle").click();
-  await guided.locator('[data-topic="szkody"]').click();
+  // The QR entry opens the same auto-selected mining topic.
+  if(!(await guided.locator(".chat-reply-title").innerText()).includes("Szkody górnicze"))throw Error("Mining QR topic not preselected");
   await guided.locator(".chat-stage-choice",{hasText:label}).click();
   const targetLink=await guided.locator(".chat-reply-contact").getAttribute("href");
   const url=new URL(targetLink,origin);

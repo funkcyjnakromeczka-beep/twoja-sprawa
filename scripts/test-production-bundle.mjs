@@ -773,6 +773,30 @@ for(const [file,area] of [
 const miningPage=await read("uslugi/szkody-gornicze.html");
 assert.ok(!miningPage.includes('"@type":"FAQPage"'),"FAQ schema should not be duplicated on other routes");
 
+// Strong discovery paths to the two distinct, reviewed local mining articles.
+// The reader sees these immediately after the three first steps, without JS.
+const firstSteps=miningPage.split('<section class="wrap service-first-steps"')[1]?.split("</section>")[0]||"";
+const regionLinks=firstSteps.split('<nav class="service-mining-regions"')[1]?.split("</nav>")[0]||"";
+assert.ok(regionLinks,"Local mining entry points must be visible near the start of the service");
+assert.equal((regionLinks.match(/<a\b/g)||[]).length,2,
+ "Keep exactly two genuine regional destinations");
+for(const [path,label] of [
+ ["/lokalnie/szkody-gornicze-lubin","Lubin i gmina Lubin"],
+ ["/lokalnie/szkody-gornicze-polkowice","Polkowice i gmina Polkowice"]
+]){
+ assert.ok(regionLinks.includes('href="'+path+'"')&&regionLinks.includes(label),
+  "First steps must point to the indexed canonical local service: "+path);
+ assert.ok(sitemap.includes("<loc>"+origin+path+"</loc>"),
+  "Local destination must appear in the published sitemap: "+path);
+}
+assert.ok(firstSteps.indexOf("service-mining-regions")>firstSteps.indexOf("</ol>"),
+ "Regional navigation must follow, not interrupt, the three steps");
+const serviceStyles=await read("seo-answers.css");
+assert.ok(serviceStyles.includes(".service-mining-regions")&&
+ serviceStyles.includes(".service-mining-regions>a:focus-visible")&&
+ serviceStyles.includes("min-height:64px"),"Local nav lacks accessible styles");
+console.log("SERVICE_EARLY_REGIONS_OK: two direct local routes below first steps, no JS required.");
+
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");
 const urlTags=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);

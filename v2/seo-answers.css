@@ -174,3 +174,45 @@ body.premium-subpage .subhero:has(>.service-banner-art)>.service-banner-art svg{
  body.premium-subpage .service-stage-grid>.service-stage-card{min-height:72px;padding:11px}
 }
 @media print{.service-stage-grid{break-inside:avoid}.service-stage-card{display:block;margin:6pt 0}.service-stage-copy small::before{content:" — "}}
+
+/* Verified regional entry points beside the first three steps:
+   keep direct, accessible links above long service explanations. */
+body.premium-subpage.theme-mining .service-mining-regions{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;margin-top:18px;padding-top:16px;
+ border-top:1px solid var(--service-edge,#c2ced7);
+}
+body.premium-subpage.theme-mining .service-mining-regions-label{
+ grid-column:1/-1;color:var(--service-ink,#16394b);
+ font:750 .9rem/1.5 system-ui,sans-serif;
+}
+body.premium-subpage.theme-mining .service-mining-regions>a{
+ display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0;
+ min-height:64px;padding:12px 15px;border:1px solid #9dbece;
+ border-radius:11px;background:#fff;color:#173e58!important;
+ text-decoration:none;box-sizing:border-box;
+}
+body.premium-subpage.theme-mining .service-mining-regions>a strong{
+ color:inherit;font:800 .94rem/1.4 system-ui,sans-serif;
+}
+body.premium-subpage.theme-mining .service-mining-regions>a small{
+ color:#3d5d6d;font:550 .82rem/1.45 system-ui,sans-serif;
+}
+body.premium-subpage.theme-mining .service-mining-regions>a:hover{
+ background:#f4f9fa;border-color:#426d81;
+}
+body.premium-subpage.theme-mining .service-mining-regions>a:focus-visible{
+ outline:3px solid #b82f4a;outline-offset:3px;
+}
+@media(max-width:650px){
+ body.premium-subpage.theme-mining .service-mining-regions{
+  grid-template-columns:minmax(0,1fr);gap:8px;
+ }
+ body.premium-subpage.theme-mining .service-mining-regions-label{grid-column:auto}
+ body.premium-subpage.theme-mining .service-mining-regions>a{min-height:58px}
+}
+@media print{
+ body.premium-subpage.theme-mining .service-mining-regions>a{
+  break-inside:avoid;border-color:#bbb;
+ }
+}

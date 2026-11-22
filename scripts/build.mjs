@@ -89,7 +89,8 @@ const publishedArticleRoutes=new Set([
  "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
  "/wiedza/renta-powypadkowa-dokumenty.html",
  "/wiedza/swiadczenie-wspierajace-dokumenty.html",
- "/wiedza/kredyt-pln-dokumenty-skd.html"
+ "/wiedza/kredyt-pln-dokumenty-skd.html",
+ "/wiedza/sluzebnosc-przesylu-slup-na-dzialce.html"
 ]);
 function reconcilePublishedArticle(markup,route,canonical){
  if(!publishedArticleRoutes.has(route))return markup;

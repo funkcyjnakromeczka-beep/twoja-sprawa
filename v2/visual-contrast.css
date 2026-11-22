@@ -398,3 +398,11 @@ body:is(.theme-support,.theme-rents,.campaign-support,.campaign-rents) .contact-
  .contact-form .contact-recovery-actions,.contact-form .contact-ref-panel:not([hidden]){grid-template-columns:minmax(0,1fr)}
  .contact-form .contact-ref-copy{justify-self:start}
 }
+
+
+/* READING-TARGETS-20261122 — native deep-link focus, no extra tab stops. */
+@media screen{
+ :where(main [tabindex="-1"][id]){scroll-margin-top:calc(var(--network-brand-height,84px) + 24px)}
+ :where(main h1[tabindex="-1"],main h2[tabindex="-1"],main h3[tabindex="-1"],main h4[tabindex="-1"],main h5[tabindex="-1"],main h6[tabindex="-1"]):focus-visible{outline:3px solid #a62c46;outline-offset:5px;border-radius:3px}
+}
+@media(forced-colors:active){:where(main [tabindex="-1"]):focus-visible{outline:3px solid Highlight}}

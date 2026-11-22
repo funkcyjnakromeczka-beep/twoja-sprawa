@@ -117,6 +117,14 @@ for(const slug of ["szkody-gornicze-lubin","szkody-gornicze-polkowice"]){
 assert.ok(css.includes(".premium-v2 .hero-local-shortcuts a:focus-visible")&&
  css.includes("min-height:44px")&&css.includes("@media(max-width:650px)"),
  "First-screen local shortcuts must be keyboard visible and mobile-friendly");
+// Support mobile visitors and crawlers who reach the footer directly: the
+// indexed homepage provides regional links in both the hero and footer.
+const footerNav=html.match(/<nav class="footer-links footer-directory"[^>]*>[\s\S]*?<\/nav>/)?.[0]||"";
+assert.ok(footerNav,"Homepage footer navigation is missing");
+for(const slug of ["lubin","polkowice"]){
+ assert.ok(footerNav.includes('href="/v2/lokalnie/szkody-gornicze-'+slug+'.html"'),
+  "Homepage footer does not link to the "+slug+" regional page");
+}
 assert.ok(localBlock.includes("Nie każda rysa oznacza szkodę górniczą"),
  "Local SEO module must retain non-promissory qualification");
 

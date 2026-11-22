@@ -143,6 +143,27 @@ for(const city of ["lubin","polkowice"]){
   content.includes('data-locality="'+(city==="lubin"?"Lubin":"Polkowice")+'"'),
   "Preserve local adviser selection: "+city);
 }
+// The built navigation needs crawlable, JS-free direct locality paths on key
+// informational pages. Do not link a city landing page to itself in the footer.
+for(const file of ["faq.html","uslugi/swiadczenie-wspierajace.html","wiedza/index.html"]){
+ const html=await readFile("dist/"+file,"utf8");
+ const footer=html.match(/<nav class="information-footer-nav"[^>]*>[\s\S]*?<\/nav>/)?.[0]||"";
+ assert.ok(footer,"Information footer missing from "+file);
+ for(const slug of ["lubin","polkowice"]){
+  assert.ok(footer.includes('href="/lokalnie/szkody-gornicze-'+slug+'"'),
+   "SEO city page absent from information footer: "+file+" / "+slug);
+ }
+}
+for(const slug of ["lubin","polkowice"]){
+ const html=await readFile("dist/lokalnie/szkody-gornicze-"+slug+".html","utf8");
+ const footer=html.match(/<nav class="information-footer-nav"[^>]*>[\s\S]*?<\/nav>/)?.[0]||"";
+ const other=slug==="lubin"?"polkowice":"lubin";
+ assert.ok(!footer.includes('href="/lokalnie/szkody-gornicze-'+slug+'"'),
+  "City footer should not link to current page "+slug);
+ assert.ok(footer.includes('href="/lokalnie/szkody-gornicze-'+other+'"'),
+  "City footer should link to neighbouring regional guide "+slug);
+}
+console.log("LOCAL_INFORMATION_FOOTER_OK: discoverable Lubin/Polkowice links from approved information pages; no self-links.");
 console.log("LOCAL_GUIDE_DISCOVERY_OK: two indexed city pages link to one approved guide, the main service and each other.");
 
 console.log("GEO_EDITORIAL_RESULT "+JSON.stringify({servicePages:checked,visibleAnswers:checked*3,verifiedOfficialSourceLinks:checked,aboutContactAligned:true,linkedServiceSchemas:checked,searchBotAllowed:true,zeroRealMail:true}));

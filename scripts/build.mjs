@@ -383,11 +383,12 @@ function addInformationFooter(html,path){
  if(path==="index.html"||path==="404.html"||path==="start.html"||path.startsWith("kampanie/")||path.startsWith("narzedzia/")||path==="polityka-prywatnosci.html")return html;
  if(html.includes('class="information-footer-nav"'))return html;
  const groups=[
-  ["Najważniejsze usługi", [["/v2/uslugi/szkody-gornicze.html","Szkody górnicze"],["/v2/uslugi/swiadczenie-wspierajace.html","Świadczenie wspierające"],["/v2/uslugi/kredyty-pln.html","Sankcja Kredytu Darmowego"],["/v2/#uslugi","Wszystkie usługi"]]],
+  ["Najważniejsze usługi", [["/v2/uslugi/szkody-gornicze.html","Szkody górnicze"],["/v2/lokalnie/szkody-gornicze-lubin.html","Szkody górnicze — Lubin"],["/v2/lokalnie/szkody-gornicze-polkowice.html","Szkody górnicze — Polkowice"],["/v2/uslugi/swiadczenie-wspierajace.html","Świadczenie wspierające"],["/v2/uslugi/kredyty-pln.html","Sankcja Kredytu Darmowego"],["/v2/#uslugi","Wszystkie usługi"]]],
   ["Materiały dla klientów",[["/v2/wiedza/","Poradniki"],["/v2/plan-dzialania.html#brochure-library-heading","Broszury A4"],["/v2/faq.html","Pytania i odpowiedzi"],["/v2/szukaj.html","Szukaj w serwisie"]]],
   ["Kontakt i współpraca",[["/v2/kontakt.html","Kontakt i formularz"],["/v2/o-nas.html","Poznaj przedstawicieli"],["/v2/","Strona główna"]]]
  ];
- const nav='<nav class="information-footer-nav" aria-label="Skróty w stopce">'+groups.map(([title,links])=>'<div class="information-footer-group"><strong>'+title+'</strong>'+links.map(([href,label])=>'<a href="'+href+'">'+label+'</a>').join("")+'</div>').join("")+'</nav>';
+ // Avoid an unhelpful link to the currently open local landing page.
+ const nav='<nav class="information-footer-nav" aria-label="Skróty w stopce">'+groups.map(([title,links])=>'<div class="information-footer-group"><strong>'+title+'</strong>'+links.filter(([href])=>href!=="/v2/"+path).map(([href,label])=>'<a href="'+href+'">'+label+'</a>').join("")+'</div>').join("")+'</nav>';
  return html.replace(/<footer\b[^>]*>/i,tag=>tag+nav);
 }
 

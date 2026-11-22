@@ -55,7 +55,7 @@ filters[0].events.click();
 assert.equal(cards.filter(x=>!x.hidden).length,4);
 assert.ok(html.includes('role="status" aria-live="polite"'));
 assert.ok(html.includes('aria-controls="hub-results"'));
-assert.equal((html.match(/class="hub-card/g)||[]).length,10);
+assert.equal((html.match(/<a class="hub-card(?:\s|")/g)||[]).length,10);
 assert.equal((html.match(/data-hub-full-search/g)||[]).length,2);
 
 // The directory must stay distinct from the client-filterable 10-article hub
@@ -121,6 +121,6 @@ const jumps=html.match(/<nav class="hub-jump-links"[\s\S]*?<\/nav>/)?.[0]||"";
 assert.equal((jumps.match(/<a href="#/g)||[]).length,3);
 for(const [,id] of jumps.matchAll(/href="#([^"]+)"/g))assert.ok(html.includes('id="'+id+'"'));
 assert.equal((directory.match(/class="hub-topic-icon"/g)||[]).length,6);
-assert.equal((html.match(/class="hub-card-top"/g)||[]).length,10);
-assert.ok(pathCss.includes(".hub-jump-links a:focus-visible")&&pathCss.includes(".hub-card-top"));
+assert.equal((html.match(/class="hub-article-top"/g)||[]).length,10);
+assert.ok(pathCss.includes(".hub-jump-links a:focus-visible")&&pathCss.includes(".hub-article-top"));
 console.log("HUB_VISUAL_NAV_OK: 3 jump links, 6 topic icons, 10 article icons.");

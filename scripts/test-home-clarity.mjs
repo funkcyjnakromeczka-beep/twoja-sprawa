@@ -307,3 +307,10 @@ for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","kredyty-pln","re
  assert.ok(page.includes('class="service-banner-art" aria-hidden="true"'));
 }
 assert.ok(navCSS.includes(".subhero:has(>.service-banner-art)::before")&&navCSS.includes("@media(min-width:1100px)"));
+
+// The main dropdown exposes the secondary three services, and footer navigation is grouped.
+for(const slug of ["renty-powypadkowe","kredyty-frankowe","sluzebnosc-przesylu"])assert.ok(headerNav.includes('/v2/uslugi/'+slug+'.html'));
+const footerDirectory=html.match(/<nav class="footer-links footer-directory"[\s\S]*?<\/nav>/)?.[0]||"";
+assert.equal((footerDirectory.match(/class="footer-directory-group"/g)||[]).length,3);
+assert.equal((footerDirectory.match(/<a href="/g)||[]).length,10);
+assert.ok(css.includes(".footer-directory a:focus-visible")&&css.includes("@media(max-width:460px)"));

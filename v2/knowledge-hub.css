@@ -155,11 +155,11 @@
 .knowledge-hub .hub-hero .hub-secondary-links{gap:8px 16px;margin-top:8px}
 .knowledge-hub .hub-secondary-links a,.knowledge-hub .hub-secondary-links a:first-child{border:0;background:transparent;color:#f7e5bb;text-decoration:underline;text-underline-offset:3px;min-height:44px;padding:7px 4px;font-size:.87rem}
 .knowledge-hub :is(#hub-heading,#hub-brochures-heading,#hub-reading-paths-title){scroll-margin-top:calc(var(--network-brand-height,84px) + 22px)}
-.knowledge-hub .hub-card-top{display:flex;align-items:center;gap:10px;min-width:0}
+.knowledge-hub .hub-article-top{display:flex;align-items:center;gap:10px;min-width:0}
 .knowledge-hub .hub-topic-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;border:1px solid #b8cbd5;border-radius:11px;background:#eaf0f5;color:#254e66}
 .knowledge-hub .hub-topic-icon svg{display:block;width:26px;height:26px}
 .knowledge-hub .hub-service-directory>a[data-visual-topic="swiadczenie"] .hub-topic-icon,.knowledge-hub .hub-service-directory>a[data-visual-topic="renty"] .hub-topic-icon{background:#e6f1e9;border-color:#a6c9b3;color:#205941}
 .knowledge-hub .hub-card.featured .hub-topic-icon{background:#e6eef4;color:#17384e}
-.knowledge-hub .hub-card-top .hub-category{align-self:center;min-width:0;overflow-wrap:anywhere}
+.knowledge-hub .hub-article-top .hub-category{align-self:center;min-width:0;overflow-wrap:anywhere}
 @media(max-width:700px){.knowledge-hub .hub-jump-links{grid-template-columns:minmax(0,1fr);gap:8px}.knowledge-hub .hub-jump-links a{min-height:58px;padding:10px 13px}.knowledge-hub .hub-hero .hub-secondary-links{gap:4px 12px}}
 @media print{.knowledge-hub .hub-jump-links{display:none}}

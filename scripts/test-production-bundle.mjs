@@ -339,7 +339,8 @@ for(const target of [
  "wiedza/drobne-pekniecia-szkody-gornicze.html",
  "wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
  "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
- "wiedza/renta-powypadkowa-dokumenty.html"
+ "wiedza/renta-powypadkowa-dokumenty.html",
+ "wiedza/swiadczenie-wspierajace-dokumenty.html"
 ]){
  const html=await read(target);
  assert.ok(html.includes('name="robots" content="index,follow"'),"Approved guide should be indexable: "+target);

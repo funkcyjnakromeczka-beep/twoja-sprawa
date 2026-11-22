@@ -62,7 +62,7 @@ for(const path of PAGE_PATHS){
   assert.equal(cards.length,6,"Expected six featured service cards");
   assert.equal(cards[0],"/v2/uslugi/szkody-gornicze.html");
   assert.equal(cards[1],"/v2/uslugi/swiadczenie-wspierajace.html");
-  assert.equal(cards[2],"/v2/kampanie/skd.html","SKD must be third and lead to the specialist campaign");
+  assert.equal(cards[2],"/v2/uslugi/kredyty-pln.html","SKD must be third and lead to the indexable service description");
   assert.equal(cards[3],"/v2/uslugi/renty-powypadkowe.html");
  }
  for(const [n,c] of changes.entries()){

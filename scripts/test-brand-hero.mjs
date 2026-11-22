@@ -38,4 +38,4 @@ console.log("BRAND_HERO_OK: one optimized, approved banner; no obsolete hidden i
 
 // The mobile homepage keeps real brand assets, not third-party decorative photography.
 assert.ok(src.includes('href="https://images.unsplash.com" crossorigin media="(min-width: 761px)"'),"Restrict the optional stock-photo connection to desktop");
-assert.ok(css.includes(".premium-v2 #filmy:before{background:none}")&&css.includes(".premium-v2 #filmy .video-feature .video-poster:before{background:radial-gradient"),"Mobile decorative posters should use network-free gradients");
+assert.ok(css.includes(".premium-v2 #filmy:before{display:none}")&&css.includes(".video-poster[data-film]{background:radial-gradient")&&!css.includes("--video-poster:url("),"All film posters should use local SVG icons and network-free gradients");

@@ -19,6 +19,9 @@ const TOC_EXCLUDE=new Set(["index.html","faq.html","404.html","start.html","plan
 
 
 const contactRoute=path=>{
+ if(path==="rekrutacja.html")return "#rekrutacja-szkic";
+ if(path==="narzedzia/linki-kampanii.html")return "#ustaw-kampanie";
+ if(path==="kontakt.html")return "#formularz";
  if(path.startsWith("uslugi/")||path.startsWith("lokalnie/"))return "#formularz";
  const v=path.toLowerCase();
  let code="";
@@ -111,20 +114,24 @@ export function improveContentLinks(markup,path){
  if(!TOC_EXCLUDE.has(path)&&h2.length>=3&&!body.includes('class="content-toc"')){
   const entries=h2.slice(0,24);
   const contactHref=contactRoute(path);
+  const actionLabel=path==="rekrutacja.html"?"Zapytaj o współpracę →":path==="narzedzia/linki-kampanii.html"?"Przejdź do ustawień kampanii →":"Zostaw kontakt w swojej sprawie →";
   const toc='<details class="content-toc"><summary>Spis treści — przejdź do sekcji</summary>'+
     '<nav aria-label="Spis treści strony"><ol>'+entries.map(h=>'<li><a href="#'+safe(h.id)+'">'+safe(h.text)+'</a></li>').join("")+
-    '</ol><p class="content-toc-contact"><a href="'+safe(contactHref)+'">Zostaw kontakt w swojej sprawie →</a></p></nav></details>';
-  // On editorial pages the headline must precede secondary navigation.
-  // Keep all original heading IDs and every existing TOC entry.
-  if(path.startsWith("wiedza/")&&path!=="wiedza/index.html"){
-   const hero=/<section\b[^>]*class="[^"]*\bsubhero\b[^"]*"[^>]*>[\s\S]*?<\/section>/i.exec(body);
-   if(hero){const end=hero.index+hero[0].length;body=body.slice(0,end)+toc+body.slice(end);}
-   else body=toc+body;
-  }else if(path.startsWith("poradniki/")){
-   const intro=/<p\b[^>]*class="[^"]*\bguide-lead\b[^"]*"[^>]*>[\s\S]*?<\/p>/i.exec(body);
-   if(intro){const end=intro.index+intro[0].length;body=body.slice(0,end)+toc+body.slice(end);}
-   else body=toc+body;
-  }else body=toc+body;
+    '</ol><p class="content-toc-contact"><a href="'+safe(contactHref)+'">'+safe(actionLabel)+'</a></p></nav></details>';
+  // Put the introduction before secondary navigation on all hero layouts.
+  // For guides retain placement after their lead, inside the article.
+  const insertAfter=pattern=>{
+   const found=pattern.exec(body);
+   if(!found)return false;
+   const end=found.index+found[0].length;
+   body=body.slice(0,end)+toc+body.slice(end);
+   return true;
+  };
+  let inserted=false;
+  if(path.startsWith("poradniki/"))inserted=insertAfter(/<p\b[^>]*class="[^"]*\bguide-lead\b[^"]*"[^>]*>[\s\S]*?<\/p>/i);
+  if(!inserted)inserted=insertAfter(/<section\b[^>]*class="[^"]*\b(?:subhero|local-hero|hub-hero)\b[^"]*"[^>]*>[\s\S]*?<\/section>/i);
+  if(!inserted)inserted=insertAfter(/<\/h1>/i);
+  if(!inserted)body=toc+body;
   for(const [i,h] of entries.entries())changes.push({kind:"content-toc-shortcut",detail:"item "+(i+1)+" #"+h.id});
   changes.push({kind:"content-toc-panel",detail:"section navigation ("+entries.length+" entries)"});
   changes.push({kind:"content-toc-contact",detail:"existing form: "+contactHref});

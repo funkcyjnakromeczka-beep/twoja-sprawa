@@ -341,7 +341,8 @@ for(const target of [
  "wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
  "wiedza/renta-powypadkowa-dokumenty.html",
  "wiedza/swiadczenie-wspierajace-dokumenty.html",
- "wiedza/kredyt-pln-dokumenty-skd.html"
+ "wiedza/kredyt-pln-dokumenty-skd.html",
+ "wiedza/sluzebnosc-przesylu-slup-na-dzialce.html"
 ]){
  const html=await read(target);
  assert.ok(html.includes('name="robots" content="index,follow"'),"Approved guide should be indexable: "+target);

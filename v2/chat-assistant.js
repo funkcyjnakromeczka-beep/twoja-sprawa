@@ -117,7 +117,7 @@
   root.setAttribute("aria-label","Automatyczny przewodnik po usługach Twoja Sprawa");
   const toggle=document.createElement("button");
   toggle.type="button";toggle.className="chat-toggle";
-  toggle.textContent="✦ Pomoc w wyborze";
+  toggle.textContent="Pomoc w wyborze";
   toggle.setAttribute("aria-expanded","false");
   toggle.setAttribute("aria-controls","ts-help-panel");
   const panel=document.createElement("div");
@@ -134,7 +134,7 @@
   const intro=document.createElement("p");intro.className="chat-intro";
   intro.textContent="Automatyczny przewodnik, nie czat na żywo. Wybierz temat i etap sprawy. Bez podawania danych osobowych.";
   const label=document.createElement("strong");label.className="chat-choose-label";label.textContent="1. Czego dotyczy Twoja sprawa?";
-  const buttons=document.createElement("div");buttons.className="chat-choices";
+  const buttons=document.createElement("div");buttons.className="chat-choices";buttons.id="ts-help-topics";buttons.setAttribute("role","group");buttons.setAttribute("aria-label","Kategorie spraw");
   const reply=document.createElement("div");reply.className="chat-reply";reply.setAttribute("aria-live","polite");
   content.append(intro,label,buttons,reply);
   const actions=document.createElement("div");actions.className="chat-actions";
@@ -179,12 +179,14 @@
     for(const b of buttons.querySelectorAll("button"))b.setAttribute("aria-pressed",String(b.dataset.topic===topic.key));
     reply.replaceChildren();
     const heading=mk("h3","chat-reply-title",topic.name);heading.setAttribute("tabindex","-1");
-    const changeTopic=mk("button","chat-change-topic","↑ Zmień temat");changeTopic.type="button";
+    const changeTopic=mk("button","chat-change-topic","Zmień temat");changeTopic.type="button";changeTopic.setAttribute("aria-controls","ts-help-topics");changeTopic.setAttribute("aria-expanded","false");label.hidden=true;buttons.hidden=true;
     changeTopic.addEventListener("click",()=>{
+      label.hidden=false;buttons.hidden=false;changeTopic.setAttribute("aria-expanded","true");
       const selected=[...buttons.querySelectorAll("button")].find(b=>b.dataset.topic===topic.key);
       selected?.focus({preventScroll:true});
       selected?.scrollIntoView({block:"center",behavior:"auto"});
     });
+    const advisor=mk("p","chat-advisor-note",["swiadczenie","renty"].includes(topic.key)?"Kontakt w tej sprawie: Paulina":"Kontakt w tej sprawie: Wojciech");
     const summary=mk("p","chat-topic-intro",topic.intro);
     const prompt=mk("strong","chat-followup-title","2. Na jakim etapie jesteś?");
     const stages=mk("div","chat-stage-choices");
@@ -214,9 +216,11 @@
       mail.href="mailto:wojciech.obieglo@votum-ds.pl?subject="+encodeURIComponent("Umowa kredytowa do analizy SKD")+"&body="+encodeURIComponent("Dzień dobry,\nProszę o wstępną analizę załączonej umowy kredytowej pod kątem SKD.\nMój numer telefonu: [wpisz numer]\nPełną umowę dołączę do wiadomości jako załącznik.");
       links.append(mail);
     }
-    links.append(form,details,checklist);
+    const brochureSlug={szkody:"szkody-gornicze",swiadczenie:"swiadczenie-wspierajace",skd:"skd",renty:"renty-powypadkowe",franki:"kredyty-frankowe",przesyl:"sluzebnosc-przesylu"}[topic.key];
+    const brochure=mk("a","chat-reply-brochure","Broszura A4 do wydruku");brochure.href=releasePath(new URL(base+"plan-dzialania.html",window.location.origin).pathname)+"?broszura="+encodeURIComponent(brochureSlug)+"#broszura";
+    links.append(form,details,checklist,brochure);
     const caution=mk("small","chat-caution",stageTransfer?"Wybrany etap może zostać zaznaczony w formularzu. Sam wybór niczego nie wysyła. Wskazówki nie gwarantują wyniku.":"Otrzymujesz jedynie ogólne wskazówki. Wybór sytuacji nie wysyła zgłoszenia ani dokumentów i nie gwarantuje wyniku.");
-    reply.append(heading,changeTopic,summary,prompt,stages,answer,links,caution);
+    reply.append(heading,changeTopic,advisor,summary,prompt,stages,answer,links,caution);
     phone.href="tel:"+topic.tel;phone.textContent="☎ Zadzwoń: "+topic.phone;
     contact.href=destination(topic);contact.textContent="✉ Zostaw kontakt";
     // Bezpośredni e-mail do właściwej osoby — również gdy formularz Web3Forms nie działa.
@@ -237,6 +241,7 @@
     btn.type="button";btn.dataset.topic=topic.key;
     btn.setAttribute("aria-pressed","false");
     btn.title=topic.short;
+    btn.append(mk("small","chat-choice-caption",topic.short));
     btn.addEventListener("click",()=>choose(topic,true));
     buttons.append(btn);
   }

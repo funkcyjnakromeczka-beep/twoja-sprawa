@@ -337,16 +337,19 @@
    damageArea.value=damageFromLink[requestedDamage];
   }
   const requestedLeadPath=(campaignParams.get("lead_path")||"").toLowerCase().trim();   const leadPath=["chatbot","navigator","plan","broszura"].includes(requestedLeadPath)?requestedLeadPath:"formularz";
-  // Dyskretny komunikat dla osób, które wybrały konkretną sytuację w przewodniku.
+  // Show the current validated stage regardless of the entry route.
+  // Keep the summary adjacent to the service selector, before personal fields.
   const contextNotice=document.createElement("div");contextNotice.className="contact-context-notice";
-  const contextLabel=document.createElement("strong");contextLabel.textContent=leadPath==="plan"?"Twój wybór w planie przygotowań":"Twój wybór w przewodniku";
-  const contextValue=document.createElement("span");
-  const contextChange=document.createElement("button");contextChange.type="button";contextChange.textContent="Zmień etap";
+  contextNotice.hidden=true;
+  const contextLabel=document.createElement("strong");contextLabel.textContent="Wybrana usługa i etap sprawy";
+  const contextValue=document.createElement("span");contextValue.setAttribute("aria-live","polite");
+  const contextChange=document.createElement("button");contextChange.type="button";contextChange.textContent="Zmień etap";contextChange.setAttribute("aria-controls",stage.id);
   contextNotice.append(contextLabel,contextValue,contextChange);
-  form.append(contextNotice);
+  select.insertAdjacentElement("afterend",contextNotice);
   const updateContextNotice=()=>{
-    contextNotice.hidden=!((leadPath==="chatbot"||leadPath==="navigator"||leadPath==="plan")&&stage.value&&!stageWrap.hidden);
-    contextValue.textContent=stage.value;
+    const chosen=Boolean(select.value&&stage.value&&!stageWrap.hidden);
+    contextNotice.hidden=!chosen;
+    contextValue.textContent=chosen?select.value+" — "+stage.value:"";
   };
   stage.addEventListener("change",updateContextNotice);
   select.addEventListener("change",updateContextNotice);

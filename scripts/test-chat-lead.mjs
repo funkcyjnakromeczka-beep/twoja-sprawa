@@ -93,3 +93,11 @@ assert.ok(source.includes('["renty-powypadkowe","renty"]'),"Rent page should aut
 assert.ok(source.includes('["kredyty-pln","skd"]'),"SKD service page should auto-select the agreement path");
 assert.ok(source.includes('["kampanie/skd","skd"]'),"SKD campaign should auto-select its own topic");
 console.log("OK: chatbot links preserve UTM/stage, service pages auto-select the correct adviser and SKD offers the contract mailbox.");
+
+// Changing topics returns to the actual six-button chooser, without losing the contact handoff.
+const change=visit(result,n=>n.className==="chat-change-topic");
+assert.ok(change&&typeof change.events.click==="function");
+change.events.click();
+const replyTitle=visit(result,n=>n.className==="chat-reply-title");
+assert.equal(replyTitle.attrs.tabindex,"-1");
+assert.ok(source.includes("choose(topic,true)")&&source.includes("heading.focus({preventScroll:true})"));

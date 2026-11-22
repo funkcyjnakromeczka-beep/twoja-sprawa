@@ -132,7 +132,7 @@
   header.append(title,close);
   const content=document.createElement("div");content.className="chat-content";
   const intro=document.createElement("p");intro.className="chat-intro";
-  intro.textContent="Automatyczny przewodnik, nie czat na żywo. Nie wpisujesz tu danych osobowych — wybierz temat i etap sprawy.";
+  intro.textContent="Automatyczny przewodnik, nie czat na żywo. Wybierz temat i etap sprawy. Bez podawania danych osobowych.";
   const label=document.createElement("strong");label.className="chat-choose-label";label.textContent="1. Czego dotyczy Twoja sprawa?";
   const buttons=document.createElement("div");buttons.className="chat-choices";
   const reply=document.createElement("div");reply.className="chat-reply";reply.setAttribute("aria-live","polite");
@@ -175,10 +175,16 @@
     if(topic.key==="szkody"&&["sciany","kostka"].includes(damageCode))address.searchParams.set("uszkodzenie",damageCode);
     return releasePath(address.pathname)+address.search+address.hash;
   };
-  const choose=topic=>{
+  const choose=(topic,interactive=false)=>{
     for(const b of buttons.querySelectorAll("button"))b.setAttribute("aria-pressed",String(b.dataset.topic===topic.key));
     reply.replaceChildren();
-    const heading=mk("h3","chat-reply-title",topic.name);
+    const heading=mk("h3","chat-reply-title",topic.name);heading.setAttribute("tabindex","-1");
+    const changeTopic=mk("button","chat-change-topic","↑ Zmień temat");changeTopic.type="button";
+    changeTopic.addEventListener("click",()=>{
+      const selected=[...buttons.querySelectorAll("button")].find(b=>b.dataset.topic===topic.key);
+      selected?.focus({preventScroll:true});
+      selected?.scrollIntoView({block:"center",behavior:"auto"});
+    });
     const summary=mk("p","chat-topic-intro",topic.intro);
     const prompt=mk("strong","chat-followup-title","2. Na jakim etapie jesteś?");
     const stages=mk("div","chat-stage-choices");
@@ -210,7 +216,7 @@
     }
     links.append(form,details,checklist);
     const caution=mk("small","chat-caution",stageTransfer?"Wybrany etap może zostać zaznaczony w formularzu. Sam wybór niczego nie wysyła. Wskazówki nie gwarantują wyniku.":"Otrzymujesz jedynie ogólne wskazówki. Wybór sytuacji nie wysyła zgłoszenia ani dokumentów i nie gwarantuje wyniku.");
-    reply.append(heading,summary,prompt,stages,answer,links,caution);
+    reply.append(heading,changeTopic,summary,prompt,stages,answer,links,caution);
     phone.href="tel:"+topic.tel;phone.textContent="☎ Zadzwoń: "+topic.phone;
     contact.href=destination(topic);contact.textContent="✉ Zostaw kontakt";
     // Bezpośredni e-mail do właściwej osoby — również gdy formularz Web3Forms nie działa.
@@ -222,6 +228,7 @@
     emailAction.href="mailto:"+advisorEmail+"?subject="+encodeURIComponent(emailSubject)
       +(skdEmailBody?"&body="+encodeURIComponent(skdEmailBody):"");
     emailAction.textContent=topic.key==="skd"?"✉ Wyślij umowę e-mailem":"✉ Napisz e-mail";
+    if(interactive){heading.focus({preventScroll:true});heading.scrollIntoView({block:"start",behavior:"auto"});}
     emailAction.setAttribute("aria-label",topic.key==="skd"?"Wyślij umowę e-mailem do Wojciecha — dołącz pełną umowę SKD":("Napisz e-mail do "+(["swiadczenie","renty"].includes(topic.key)?"Pauliny":"Wojciecha")+" w sprawie: "+topic.name));
   };
   for(const topic of topics){
@@ -230,7 +237,7 @@
     btn.type="button";btn.dataset.topic=topic.key;
     btn.setAttribute("aria-pressed","false");
     btn.title=topic.short;
-    btn.addEventListener("click",()=>choose(topic));
+    btn.addEventListener("click",()=>choose(topic,true));
     buttons.append(btn);
   }
   const url=window.location.pathname;

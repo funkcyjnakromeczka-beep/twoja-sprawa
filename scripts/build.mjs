@@ -87,7 +87,8 @@ const publishedArticleRoutes=new Set([
  "/wiedza/drobne-pekniecia-szkody-gornicze.html",
  "/wiedza/ugoda-z-kopalnia-co-sprawdzic.html",
  "/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
- "/wiedza/renta-powypadkowa-dokumenty.html"
+ "/wiedza/renta-powypadkowa-dokumenty.html",
+ "/wiedza/swiadczenie-wspierajace-dokumenty.html"
 ]);
 function reconcilePublishedArticle(markup,route,canonical){
  if(!publishedArticleRoutes.has(route))return markup;
@@ -443,7 +444,7 @@ await writeFile(join(dest,"sitemap.xml"),'<?xml version="1.0" encoding="UTF-8"?>
 // Keep the XML file as the primary sitemap announced in robots.txt, and generate
 // this second advertised format from exactly the same sorted, indexable routes.
 await writeFile(join(dest,"sitemap.txt"),pages.map(path=>origin+path).join("\n")+"\n");
-// Publish a separate RSS feed for the three reviewed articles, never drafts.
+// Publish a separate RSS feed for the approved articles, never drafts.
 await writeFile(join(dest,"feed.xml"),await buildVerifiedArticlesFeed({source,origin}));
 // Production fingerprint: no secrets, personal data, or credentials.
 // A deployed /release-info.json helps distinguish GitHub changes from

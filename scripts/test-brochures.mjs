@@ -39,8 +39,9 @@ const campaignBrochures=[
 for(const [page,topic] of campaignBrochures){
  const campaign=await readFile("v2/kampanie/"+page+".html","utf8");
  const href='/v2/plan-dzialania.html?broszura='+topic+'#broszura';
- assert.equal(campaign.split('href="'+href+'"').length-1,1,
-  "Every campaign must expose exactly one matching graphic brochure: "+page);
+ const expectedLinks=page==="renty-powypadkowe"?2:1;
+ assert.equal(campaign.split('href="'+href+'"').length-1,expectedLinks,
+  "Every campaign must offer its matching graphic brochure without unintended duplicates: "+page);
  assert.ok(campaign.includes("Broszura A4")&&campaign.includes("wydrukuj lub zapisz PDF"),"Descriptive brochure link missing: "+page);
  assert.ok(campaign.includes('data-contact-form'),"Campaign must retain its own contact form: "+page);
  assert.ok(!campaign.includes('href="/v2/plan-dzialania.html?broszura=nieznana'),"Unknown brochure URL: "+page);

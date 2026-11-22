@@ -50,7 +50,7 @@ function verifyAria(html,path){
 function socialLinks(html,path){
  const section=html.match(/<section class="[^"]*social-community[^"]*"[\s\S]*?<\/section>/)?.[0];
  assert.ok(section,path+": social links section missing");
- assert.ok(/<h2 id="social-[^"]+">/.test(section),path+": social section heading missing");
+ assert.ok(/<h2\b[^>]*\bid="social-[^"]+"[^>]*>/.test(section),path+": social section heading missing");
  assert.ok(/aria-labelledby="social-[^"]+"/.test(section),path+": social section landmark label missing");
  assert.ok(!/<(?:script|iframe)\b/i.test(section),path+": external social embed/script not allowed");
  const links=[...section.matchAll(/<a href="([^"]+)" target="_blank" rel="([^"]+)"(?: aria-description="[^"]+")?>([\s\S]*?)<\/a>/g)];

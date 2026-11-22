@@ -929,3 +929,20 @@
  .premium-v2 .site-header .brand-line>.header-contact{display:none}
  .premium-v2 .site-header .brand-line>.partner-logo{display:none}
 }
+
+
+/* FILM-TOPICS-20261122 — easy topic selection before the film cards. */
+.premium-v2 #filmy .film-topic-index{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.premium-v2 #filmy .film-topic-index>a{display:inline-flex;flex:0 1 auto;align-items:center;gap:7px;min-height:44px;padding:9px 13px;box-sizing:border-box;border:1px solid #aebdce;border-radius:8px;background:#f6f8fa;color:#18384e;text-decoration:none;font-size:.88rem;font-weight:750;line-height:1.4}
+.premium-v2 #filmy .film-topic-index>a svg{flex:none}
+.premium-v2 #filmy .film-topic-index>a:hover{background:#deebf4;border-color:#7799b3}
+.premium-v2 #filmy .film-topic-index>a:focus-visible{outline:3px solid #a62c46;outline-offset:3px}
+.premium-v2 #filmy .video-poster[id^="film-home-"]{scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+.premium-v2 #filmy .video-poster:target{outline:3px solid #d5aa66;outline-offset:3px}
+@media(max-width:600px){
+ .premium-v2 #filmy .film-topic-index{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .premium-v2 #filmy .film-topic-index>a{min-width:0;font-size:.81rem;padding:9px}
+ .premium-v2 #filmy .film-topic-index>a:last-child{grid-column:1/-1}
+}
+@media(max-width:335px){.premium-v2 #filmy .film-topic-index{grid-template-columns:1fr}}
+@media print{.premium-v2 #filmy .film-topic-index{display:none}}

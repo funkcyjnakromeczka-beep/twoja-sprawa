@@ -278,3 +278,29 @@ body:is(.theme-support,.theme-rents,.campaign-support,.campaign-rents) .contact-
  .contact-form .contact-advisor{padding:12px 14px}
  .contact-form .contact-ref-panel:not([hidden]){padding:11px;gap:8px}
 }
+
+
+/* READING-RHYTHM-20261122 — keep nested dark profile surfaces independently legible. */
+@media screen{
+ body.premium-subpage:is(.theme-team,.knowledge-article) .article>section:not(.service-cta):not(.focus-detail)>h2{max-width:34ch;line-height:1.25;text-wrap:balance}
+ body.premium-subpage:is(.theme-team,.knowledge-article) .article>section:not(.service-cta):not(.focus-detail){border-radius:12px}
+ body.premium-subpage:is(.theme-team,.knowledge-article) .article>section:not(.service-cta):not(.focus-detail)>p{max-width:78ch;line-height:1.75}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card{align-items:start;background:#18384e;border:1px solid #8fa7ba;border-radius:14px}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card[data-persona="support"]{background:#194b3d;border-color:#92b6a0}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card :is(h3,p,span,small){color:#f2f7fc!important;opacity:1!important}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card a.team-profile-email{color:#e8f1f9!important;text-decoration:underline;text-underline-offset:3px}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card .team-profile-call{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;box-sizing:border-box;background:#fff;border:1px solid #bdcbd6;border-radius:9px;color:#17384e!important;text-decoration:none;font-weight:800;font-variant-numeric:tabular-nums;padding:9px 8px}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card .team-profile-call span{color:#17384e!important}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card[data-persona="support"] .team-profile-call{background:#e5f2e9;border-color:#a9c5b4;color:#204b38!important}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card[data-persona="support"] .team-profile-call span{color:#204b38!important}
+ .theme-team .team-profile-actions{display:grid;gap:7px;min-width:0}
+ .theme-team .team-profile-photo{aspect-ratio:4/5;border-radius:10px}
+ .theme-team .team-profile-photo img{object-position:center 23%}
+ .theme-team .about-profile-role{font-size:.79rem;line-height:1.45}
+}
+@media screen and (max-width:430px){
+ body.premium-subpage:is(.theme-team,.knowledge-article) .article>section:not(.service-cta):not(.focus-detail){padding:16px}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card{grid-template-columns:minmax(0,1fr);gap:12px;padding:15px}
+ .theme-team .team-profile-photo{width:min(38vw,130px);justify-self:start}
+ body.premium-subpage.theme-team:has(.subhero) .article>section .team-profile-card h3{font-size:1.25rem}
+}

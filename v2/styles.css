@@ -716,3 +716,34 @@ h3{line-height:1.25}
  .guide-article .checklist-actions .btn{flex:1 1 135px}
 }
 @media print{.guide-article .checklist-meter{display:none!important}.guide-article .checklist-item{break-inside:avoid}.guide-article .interactive-checklist{background:#fff;border:1px solid #888}}
+
+
+/* CAMPAIGN-WORKFLOW-20261122: readable steps and direct access to finished materials. */
+@media screen{
+ .campaign-builder-hero .campaign-builder-disclosure{color:#243c50;background:#f5f8fb;border-left-color:#a62c46}
+ .campaign-workflow-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;max-width:980px;margin-top:24px}
+ .campaign-workflow-nav a{display:flex;align-items:center;gap:10px;min-width:0;min-height:62px;padding:10px 12px;box-sizing:border-box;border:1px solid #a6b5c4;border-radius:9px;color:#17384e!important;background:#f4f7fb;text-decoration:none;font-weight:700;line-height:1.4}
+ .campaign-workflow-nav a strong{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:7px;background:#19384e;color:#fff;font-size:.83rem}
+ .campaign-workflow-nav a:focus-visible,.campaign-jump-result:focus-visible{outline:3px solid #bd5870;outline-offset:3px}
+ .campaign-workflow-nav a:hover{background:#e1edf4}
+ .campaign-builder-layout :is(.campaign-builder-controls,.campaign-builder-results){border-radius:14px}
+ .campaign-builder-layout :is(input,select,textarea){box-sizing:border-box;min-width:0;max-width:100%;font-size:16px}
+ .campaign-builder-layout input[type="checkbox"]{display:inline-block;width:20px;height:20px;vertical-align:middle;accent-color:#286b50}
+ .campaign-builder-layout :is(select,input:not([type="checkbox"])){min-height:46px}
+ .campaign-builder-layout .campaign-builder-buttons .btn{min-height:44px;white-space:normal;border-radius:9px}
+ .campaign-jump-result{display:flex;align-items:center;justify-content:center;gap:9px;min-height:48px;margin-top:12px;padding:10px 13px;box-sizing:border-box;background:#18384e;color:#fff!important;border-radius:9px;font-weight:750;text-decoration:none;text-align:center}
+ .campaign-page :is(#ustaw-kampanie,#materialy-kampanii,#campaign-qr-title,#wyniki-kampanii){scroll-margin-top:calc(var(--network-brand-height,84px) + 20px)}
+ .campaign-builder-results #builder-post{background:#fff;line-height:1.65}
+ .campaign-builder-results .campaign-builder-status:empty{min-height:0;margin:0}
+ .campaign-builder-results .campaign-link-preview-card{border-radius:10px;overflow:hidden}
+ .campaign-builder-results .campaign-qr-figure{max-width:100%;box-sizing:border-box}
+ .campaign-builder-results .campaign-qr-figure code{overflow-wrap:anywhere;word-break:break-word}
+}
+@media screen and (max-width:740px){
+ .campaign-workflow-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .campaign-workflow-nav a{font-size:.84rem;padding:9px;gap:7px}
+ .campaign-builder-layout .campaign-builder-buttons{gap:8px}
+ .campaign-builder-layout .campaign-builder-buttons .btn{flex:1 1 135px}
+}
+@media screen and (max-width:350px){.campaign-workflow-nav{grid-template-columns:minmax(0,1fr)}}
+@media print{.campaign-workflow-nav,.campaign-jump-result{display:none!important}}

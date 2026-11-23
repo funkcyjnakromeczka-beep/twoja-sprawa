@@ -24,6 +24,7 @@ jobs:
           node --check v2/contact.js
           node --check v2/mobile-service-cta.js
           node --check scripts/test-mobile-service-cta.mjs
+          node --check scripts/test-contact-hero.mjs
           node --check v2/home-mobile-cta.js
           node --check scripts/test-home-mobile-cta.mjs
           node --check scripts/indexnow-routes.mjs
@@ -115,6 +116,8 @@ jobs:
         run: node scripts/test-contact-client.mjs
       - name: Statyczne telefony i e-maile na wszystkich podstronach usług i kampanii
         run: node scripts/test-contact-fallback-static.mjs
+      - name: Sprawdź bezpośrednie telefony i dostępność strony kontaktowej
+        run: node scripts/test-contact-hero.mjs
       - name: Test mobilnej ścieżki kontaktu dwóch usług
         run: node scripts/test-mobile-service-cta.mjs
       - name: Test widoczności mobilnego kontaktu na stronie głównej

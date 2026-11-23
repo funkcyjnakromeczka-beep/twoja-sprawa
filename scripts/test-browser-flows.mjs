@@ -273,8 +273,8 @@ try{
   const noJsDestinations=await noJsSearch.locator(".search-fallback-links a").evaluateAll(nodes=>
    nodes.map(link=>new URL(link.href).pathname));
   assert.deepEqual(noJsDestinations,[
-   "/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace",
-   "/kampanie/skd","/uslugi/renty-powypadkowe",
+   "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
+   "/uslugi/kredyty-pln","/uslugi/renty-powypadkowe",
    "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu"
   ],"Fallback service order and direct public paths must remain stable");
   assert.ok(await noJsPage.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth)<=2,
@@ -766,11 +766,12 @@ try{
  const mobileDestinations=await quickNav.locator("a").evaluateAll(links=>
   links.map(a=>new URL(a.href).pathname));
  assert.deepEqual(mobileDestinations.slice(0,3),[
-  "/kampanie/szkody-gornicze",
-  "/kampanie/swiadczenie-wspierajace",
-  "/kampanie/skd"
+  "/uslugi/szkody-gornicze",
+  "/uslugi/swiadczenie-wspierajace",
+  "/uslugi/kredyty-pln"
  ],"Mobile navigation must keep mining, support and SKD as first three priorities");
- assert.ok(mobileDestinations.includes("/kampanie/renty-powypadkowe"),"Mobile navigation should also expose accident rents");
+ assert.ok(mobileDestinations.includes("/uslugi/renty-powypadkowe"),"Mobile navigation should also expose accident rents on its indexable service page");
+ assert.equal(mobileDestinations.length,4,"Mobile navigation has exactly four priority service routes");
  const partnerLogos=page.locator(".network-brand-bar .network-brand-logos a");
  assert.equal(await partnerLogos.count(),2,
   "Both VOTUM partnership logos should be displayed in the shared header");

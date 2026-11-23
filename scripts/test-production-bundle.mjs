@@ -633,7 +633,30 @@ for(const token of ["mobile-mining-priority","mobile-support-priority","mobile-s
 }
 assert.ok(mobileFourNav.indexOf("mobile-rents-priority")>mobileFourNav.indexOf("mobile-skd-priority"),
  "Rents must follow the three original flagship projects");
-assert.ok(mobileFourNav.includes("kampanie/renty-powypadkowe"),"Rents button must lead to the verified campaign landing");
+// All four primary service routes must be the real, indexable destinations.
+// Do not turn the organic menu into a set of noindex campaign landing pages.
+for(const [cls,path] of [
+ ["mobile-mining-priority","/uslugi/szkody-gornicze"],
+ ["mobile-support-priority","/uslugi/swiadczenie-wspierajace"],
+ ["mobile-skd-priority","/uslugi/kredyty-pln"],
+ ["mobile-rents-priority","/uslugi/renty-powypadkowe"]
+]){
+ assert.ok(mobileFourNav.includes('class="'+cls+'" href="'+path+'"'),
+  "Mobile navigation has noncanonical service URL: "+path);
+ assert.ok(sitemap.includes("<loc>"+origin+path+"</loc>"),
+  "Mobile service destination not listed in indexable XML sitemap: "+path);
+}
+assert.ok(!mobileFourNav.includes('href="/kampanie/'),
+ "The organic homepage must not send its primary mobile visitors to noindex landing pages");
+const safeFallbackSearch=await read("szukaj.html");
+const directFallback=safeFallbackSearch.split('<nav class="search-fallback-links"')[1]?.split("</nav>")[0]||"";
+assert.ok(directFallback,"No-JS search must retain direct service links");
+for(const path of ["/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace","/uslugi/kredyty-pln"]){
+ assert.ok(directFallback.includes('href="'+path+'"'),"Static search must prioritize indexable service: "+path);
+}
+assert.ok(!directFallback.includes('href="/kampanie/'),
+ "No-JS search navigation must not funnel visitors to noindex campaigns");
+console.log("ORGANIC_MOBILE_SERVICE_PATHS_OK: 4 homepage and 6 fallback routes lead to indexable service pages.");
 const homeFlowCss=await read("home-flow.css");
 // Production builder removes comments to reduce CSS bytes. Assert the actual
 // mobile layout rule, never the discarded authoring comment.

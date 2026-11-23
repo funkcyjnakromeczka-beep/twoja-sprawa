@@ -158,7 +158,16 @@ assert.ok(bar.includes('tel:+48796441345')&&bar.includes('tel:+48500171531'),"Bo
 assert.ok(bar.includes('class="mobile-form-link" href="#kontakt"'),"Missing direct form shortcut");
 const mobileTop=html.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0]||"";
 assert.deepEqual([...mobileTop.matchAll(/class="mobile-(support|mining|skd)-priority"/g)].map(m=>m[1]),["mining","support","skd"],"Mobile quick links must expose all three flagship services in order");
-assert.ok(mobileTop.includes('href="/v2/kampanie/skd.html"'),"Mobile SKD quick path should lead to direct agreement and callback actions");
+// Primary mobile shortcuts are navigation to indexable informational service pages.
+// Campaign landings still exist for explicit UTM campaigns, not the main organic menu.
+for(const [service,route] of [
+ ["mining","szkody-gornicze"],["support","swiadczenie-wspierajace"],
+ ["skd","kredyty-pln"],["rents","renty-powypadkowe"]
+]){
+ assert.ok(mobileTop.includes('class="mobile-'+service+'-priority" href="/v2/uslugi/'+route+'.html"'),
+  "Mobile quick menu must lead to indexable canonical service: "+route);
+}
+assert.ok(!mobileTop.includes("/v2/kampanie/"),"Organic mobile menu must not link into noindex campaign landing pages");
 assert.equal((bar.match(/<a\b/g)||[]).length,3,"Mobile contact bar must have exactly three actions");
 assert.ok(css.includes('grid-template-columns:repeat(3,minmax(0,1fr))'),"Three actions are not fitted to a narrow screen");
 assert.ok(css.includes(':focus-within')&&css.includes('.chat-assistant.is-open'),"Sticky contact bar can cover an active form or chat");

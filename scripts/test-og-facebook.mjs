@@ -74,7 +74,9 @@ for(const img of new Set(cases.map(x=>x[1]))){
 }
 const generator=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
 const js=await readFile("v2/campaign-links.js","utf8");
-assert.ok(generator.includes('src="/assets/og-szkody-gornicze.jpg"'),"Generator first preview must reflect selected mining service");
+assert.ok(generator.includes('src="/assets/og-swiadczenie-wspierajace.jpg"'),"Generator first preview must reflect the selected support-benefit campaign");
+assert.ok(generator.includes('<option value="swiadczenie" selected>Świadczenie wspierające</option>'),"Generator should start with support benefit as the first Facebook campaign");
+assert.ok(generator.includes('<option value="facebook_strona" selected>Facebook — własna strona</option>'),"Generator should default to Facebook Page for the first campaign");
 assert.ok(js.includes('return "og-skd-dokumenty.jpg"')&&js.includes('previewImage.src=src'),"Generator must switch visible preview to SKD article");
 for(const key of ["og-szkody-lubin.jpg","og-szkody-polkowice.jpg","og-kredyty-frankowe.jpg","og-renty-powypadkowe.jpg","og-sluzebnosc-przesylu.jpg","og-swiadczenie-wspierajace.jpg"])
  assert.ok(js.includes(key),"Generator should recognize "+key);

@@ -1120,6 +1120,28 @@ const heroPreload=home.match(/<link rel="preload" as="image"[^>]*>/)?.[0]||"";
 assert.ok(heroPreload.includes('media="(min-width: 961px)"')&&heroPreload.includes('fetchpriority="high"'),
  "The hero preloader must respect narrow screens while retaining desktop priority");
 const heroImage=home.match(/<img class="hero-metallic-art"[^>]*>/)?.[0]||"";
+const picture=home.match(/<picture class="hero-picture">([\\s\\S]*?)<\\/picture>/)?.[1]||"";
+assert.ok(picture.includes('<source type="image/webp"')&&
+ picture.includes('src="/assets/og-twoja-sprawa-metallic-v1.jpg"'),
+ "Hero must preserve the approved Facebook JPEG as no-WebP fallback");
+const originalHeroSize=(await stat("dist/assets/og-twoja-sprawa-metallic-v1.jpg")).size;
+for(const width of [640,960,1536]){
+ const asset="assets/hero-twoja-sprawa-"+width+".webp";
+ assert.ok(picture.includes("/"+asset+" "+width+"w")&&heroPreload.includes("/"+asset),
+  "Hero srcset and preload must both advertise the same WebP asset: "+asset);
+ const buffer=await readFile("dist/"+asset);
+ assert.ok(buffer.length>5000&&buffer.length<originalHeroSize,
+  "Responsive WebP must be smaller than the original 175KB JPEG: "+asset);
+ assert.equal(buffer.toString("ascii",0,4),"RIFF","Missing WebP RIFF header: "+asset);
+ assert.equal(buffer.toString("ascii",8,12),"WEBP","Missing WebP signature: "+asset);
+}
+assert.ok(heroPreload.includes('type="image/webp"')&&heroPreload.includes('imagesrcset="')&&
+ heroPreload.includes('imagesizes="')&&heroPreload.includes('media="(min-width: 961px)"'),
+ "Desktop hero must preload the selected responsive WebP only");
+const webpHeaders=await read("_headers");
+assert.ok(webpHeaders.includes("/assets/hero-twoja-sprawa-*.webp\\n  Cache-Control: public, max-age=604800"),
+ "Optimized artwork should have a safe one-week browser cache without changing the Facebook OG URL");
+console.log("RESPONSIVE_HERO_WEBP_OK: three first-party WebP variants with RIFF validation, original OG JPEG preserved.");
 assert.ok(heroImage.includes('loading="lazy"')&&heroImage.includes('width="1536"')&&heroImage.includes('height="803"'),
  "Keep the original hero art and its aspect ratio without unconditional eager loading");
 for(const filename of ["logo_VOTUM_SA_rgb-480x71.png","logo-votum-network-przedstawiciel-400x284-1.jpg","votum-scale-agency-.png"]){

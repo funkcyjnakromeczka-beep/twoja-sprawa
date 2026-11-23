@@ -24,6 +24,10 @@ for (const [name,html,expectedPath] of [
   assert.equal((visual.match(/<img\b/g)||[]).length,1,name+" must contain exactly one meaningful image");
   assert.ok(visual.includes('src="'+expectedPath+'"'),name+" image path mismatch");
   assert.ok(visual.includes('width="1536" height="803"'),name+" missing intrinsic image dimensions");
+  assert.ok(visual.includes('<picture class="hero-picture"><source type="image/webp"'),name+" requires responsive WebP with JPEG fallback");
+  for(const size of [640,960,1536]){
+    assert.ok(visual.includes('hero-twoja-sprawa-'+size+'.webp '+size+'w'),name+" missing responsive WebP width "+size);
+  }
   assert.ok(visual.includes('fetchpriority="high"'),name+" hero lacks fetch priority");
   assert.ok(visual.includes('alt="Twoja Sprawa — VOTUM Odszkodowania.'),name+" missing descriptive alt");
   for(const oldClass of ["hero-themis-figure","hero-art","hero-visual-caption"]){
@@ -34,7 +38,7 @@ assert.ok(css.includes(".premium-v2 .hero-visual .hero-metallic-art"),"Productio
 assert.ok(css.includes("@media(max-width:600px)"),"Mobile media rules missing");
 assert.ok(!css.includes(".premium-v2 .hero-visual .hero-themis-figure,\n"),"Obsolete hidden-image rule returned");
 assert.ok(headers.includes("/assets/og-twoja-sprawa-metallic-v1.jpg\n  Cache-Control: public, max-age=604800"),"Versioned social image should have 7 day public cache");
-console.log("BRAND_HERO_OK: one optimized, approved banner; no obsolete hidden images, responsive CSS and social metadata preserved.");
+console.log("BRAND_HERO_OK: one approved JPEG, responsive WebP sources; no obsolete hidden images, responsive CSS and social metadata preserved.");
 
 // The mobile homepage keeps real brand assets, not third-party decorative photography.
 assert.ok(!src.includes("images.unsplash.com")&&!css.includes("images.unsplash.com"),"Decorative backgrounds must not require a connection to external photography");

@@ -997,6 +997,16 @@ try{
    "Homepage CSS exceeded 320 KB decoded budget: "+perf.cssDecodedBytes);
   assert.equal(perf.largest.filter(x=>/^\/home-bundle-[0-9a-f]{16}\.css$/.test(x.path)).length,1,
    "Versioned homepage CSS must be fetched exactly once");
+  const heroElement=perfPage.locator(".hero-metallic-art");
+  await heroElement.scrollIntoViewIfNeeded();
+  await perfPage.waitForFunction(()=>{
+   const hero=document.querySelector(".hero-metallic-art");
+   return !!hero&&hero.complete&&hero.naturalWidth>0;
+  },null,{timeout:12000});
+  const chosenHero=await heroElement.evaluate(img=>new URL(img.currentSrc).pathname);
+  assert.ok(/^\/assets\/hero-twoja-sprawa-(640|960|1536)\.webp$/.test(chosenHero),
+   "Chromium must render the approved hero via responsive first-party WebP, not full-size JPEG: "+chosenHero);
+  console.log("RESPONSIVE_HERO_BROWSER_OK "+chosenHero);
   assert.ok(perf.initialImages.filter(x=>x.src.startsWith(origin)).every(x=>x.complete&&x.width>0),
    "A critical same-origin image did not load");
  }finally{await perfPage.close();}

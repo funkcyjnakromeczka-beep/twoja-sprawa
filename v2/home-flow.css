@@ -477,6 +477,12 @@
   min-height:0;
   overflow:visible;
 }
+.premium-v2 .hero-visual>.hero-picture {
+  display:block;
+  flex:0 1 760px;
+  width:100%;
+  min-width:0;
+}
 .premium-v2 .hero-visual .hero-metallic-art {
   display:block;
   position:relative;

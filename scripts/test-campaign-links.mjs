@@ -38,6 +38,16 @@ const presetControls={
  renty:makePreset("renty")
 };
 const presetStatus={textContent:""};
+const supportPresetStatus={textContent:""};
+const makeSupportPreset=code=>({
+  events:{},getAttribute:key=>key==="data-support-preset"?code:null,
+  addEventListener(name,fn){this.events[name]=fn;}
+});
+const supportPresetControls={
+ "start-2026":makeSupportPreset("start-2026"),
+ "wzon-zus":makeSupportPreset("wzon-zus"),
+ decyzja:makeSupportPreset("decyzja")
+};
 const makePlatformPreset=code=>({
  events:{},getAttribute:key=>key==="data-platform-preset"?code:null,
  addEventListener(name,fn){this.events[name]=fn;}
@@ -68,12 +78,13 @@ const nodes={
  "[data-preview-host]":previewHost,
  "[data-facebook-debugger]":facebookDebugger,
  "[data-community-preset-status]":presetStatus,
+  "[data-support-preset-status]":supportPresetStatus,
  "[data-platform-note]":platformNote,
  "[data-profile-link-confirmed]":linkConfirmation,
  "[data-profile-confirm-wrap]":linkConfirmationWrap,
  "[data-platform-preset-status]":platformStatus
 };
-const document={querySelector:sel=>nodes[sel],querySelectorAll:sel=>sel==="[data-community-preset]"?Object.values(presetControls):sel==="[data-platform-preset]"?Object.values(platformControls):[]};
+const document={querySelector:sel=>nodes[sel],querySelectorAll:sel=>sel==="[data-community-preset]"?Object.values(presetControls):sel==="[data-support-preset]"?Object.values(supportPresetControls):sel==="[data-platform-preset]"?Object.values(platformControls):[]};
 const window={location:{origin:"https://twoja-sprawa.pages.dev",hostname:"twoja-sprawa.pages.dev"},isSecureContext:true};
 runInNewContext(source,{window,document,URL,console});
 const check=(service,path,phone)=>{
@@ -203,6 +214,26 @@ assert.equal(new URL(link.value).searchParams.get("utm_content"),"hook");
 assert.ok(post.value.includes("Czy na Twojej działce"));
 assert.ok(status.textContent.includes("Darmowa domena Cloudflare Pages"));
 assert.ok(!status.textContent.includes("wersji testowej"),"Cloudflare production must not be called a preview");
+// Support-benefit campaign variants must stay organic, distinct and private.
+for(const [preset,channelName,variant,phrase] of [
+  ["start-2026","facebook_strona","wspierajace_70_77_2026","70–77 punktów"],
+  ["wzon-zus","facebook_grupa","wzon_zus_kolejnosc","Najpierw postępowanie przed WZON"],
+  ["decyzja","facebook_strona","decyzja_wzon_3_miesiace","3 miesięcy"]
+]){
+  assert.ok(generatorGuide.includes('data-support-preset="'+preset+'"'),"Support preset button exists");
+  supportPresetControls[preset].events.click();
+  const linkUrl=new URL(link.value);
+  assert.equal(linkUrl.pathname,"/kampanie/swiadczenie-wspierajace");
+  assert.equal(linkUrl.searchParams.get("utm_source"),"facebook");
+  assert.equal(linkUrl.searchParams.get("utm_medium"),channelName==="facebook_strona"?"post":"grupa");
+  assert.equal(linkUrl.searchParams.get("utm_campaign"),"swiadczenie_wspierajace_2026");
+  assert.equal(linkUrl.searchParams.get("utm_content"),variant);
+  assert.equal(values.service.value,"swiadczenie");
+  assert.ok(post.value.includes(phrase)&&post.value.includes("500 171 531")&&post.value.includes("Bez obietnic wyniku"));
+  assert.ok(post.value.includes(link.value)&&!post.value.includes("796 441 345"));
+  assert.ok(!link.value.includes("PESEL")&&!link.value.includes("email="));
+  assert.ok(supportPresetStatus.textContent.includes("Nic nie zostało wysłane do Facebooka"));
+}
 // Two owned-group presets set category-only UTM, never publish a post.
 assert.ok(generatorGuide.includes('data-community-preset="swiadczenie"'));
 assert.ok(generatorGuide.includes('data-community-preset="renty"'));

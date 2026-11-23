@@ -19,6 +19,8 @@
   const linkAction = document.querySelector("[data-copy-link]");
   const postAction = document.querySelector("[data-copy-post]");
   const openAction = document.querySelector("[data-open-link]");
+  const supportPresetButtons = document.querySelectorAll?.("[data-support-preset]") || [];
+  const supportPresetStatus = document.querySelector("[data-support-preset-status]");
   const communityPresetButtons = document.querySelectorAll?.("[data-community-preset]") || [];
   const communityPresetStatus = document.querySelector("[data-community-preset-status]");
   const platformNote = document.querySelector("[data-platform-note]");
@@ -60,6 +62,11 @@
     if(/kredyty-pln|skd/.test(path))return "og-skd.jpg";
     return "og-twoja-sprawa-metallic-v1.jpg";
   };
+  const supportFbTexts = Object.freeze({
+    wspierajace_70_77_2026: "Świadczenie wspierające 2026: od 1 stycznia prawo do ubiegania się o świadczenie rozszerzono również na osoby z decyzją WZON ustalającą 70–77 punktów, po spełnieniu pozostałych warunków. Sam stopień niepełnosprawności nie zastępuje tej decyzji. Sprawdź, jakie etapy obowiązują i gdzie można uzyskać bezpłatną pomoc w ZUS. Możliwe jest także dobrowolne dodatkowe wsparcie przy uporządkowaniu sprawy. Bez obietnic wyniku.",
+    wzon_zus_kolejnosc: "Świadczenie wspierające — jaka jest kolejność? Najpierw postępowanie przed WZON i ostateczna decyzja o poziomie potrzeby wsparcia. Dopiero potem elektroniczny wniosek do ZUS. Złożenie wniosku w ZUS nie wymaga płatnego pośrednika. Na stronie Twoja Sprawa wyjaśniamy kolejne kroki oraz sposób kontaktu z Pauliną w przypadku potrzeby dodatkowego wsparcia. Bez obietnic wyniku.",
+    decyzja_wzon_3_miesiace: "Świadczenie wspierające — co po otrzymaniu decyzji WZON? Sprawdź, kiedy decyzja stała się ostateczna. Co do zasady wniosek do ZUS złożony w ciągu 3 miesięcy od tej daty ma znaczenie dla ustalenia okresu wypłaty i ewentualnego wyrównania. Jeżeli opiekun pobiera świadczenie opiekuńcze, ważna jest również analiza skutków finansowych. ZUS zapewnia bezpłatną pomoc, a dodatkowe wsparcie jest dobrowolne. Bez obietnic wyniku."
+  });
   const campaigns = {
     szkody: {
       path: "/kampanie/szkody-gornicze.html",
@@ -170,11 +177,12 @@
       if (profileConfirmWrap) profileConfirmWrap.hidden = !isReelChannel;
     }
     const publicationText = chosenRegion?.text || chosen.text;
-    const selectedText = educational ? educational.title + "\n\n" + educational.body : style.value === "short"
+    const supportFbText = !educational && service.value === "swiadczenie" && selectedChannel.startsWith("facebook") ? supportFbTexts[variant] : null;
+    const selectedText = supportFbText || (educational ? educational.title + "\n\n" + educational.body : style.value === "short"
       ? (chosenRegion?.short || shorts[service.value])
       : style.value === "hook"
         ? (chosenRegion?.hook || hooks[service.value]) + "\n\n" + publicationText
-        : publicationText;
+        : publicationText);
     const contactFooter = service.value === "skd" ? "Umowa kredytowa: wojciech.obieglo@votum-ds.pl\nTelefon: 796 441 345" : "Kontakt: " + (["swiadczenie", "renty"].includes(service.value) ? "500 171 531" : "796 441 345");
     // Plain URLs in Instagram/TikTok captions are not reliable clickable links.
     // Keep the tagged URL separately for a profile link or Story link sticker
@@ -301,6 +309,30 @@
   if (flyerPrint) {
     flyerPrint.addEventListener("click", () => {
       if (flyer && !flyer.hidden && !flyerPrint.disabled && typeof window.print === "function") window.print();
+    });
+  }
+  // Three organic Facebook campaign variations, distinguished solely by UTM
+  // identifiers. No personal health details, browser storage or posting APIs.
+  const supportPresets = Object.freeze({
+    "start-2026": {channel:"facebook_strona",variant:"wspierajace_70_77_2026"},
+    "wzon-zus": {channel:"facebook_grupa",variant:"wzon_zus_kolejnosc"},
+    decyzja: {channel:"facebook_strona",variant:"decyzja_wzon_3_miesiace"}
+  });
+  for (const button of supportPresetButtons) {
+    button.addEventListener("click", () => {
+      const preset = supportPresets[button.getAttribute("data-support-preset")];
+      if (!preset) return;
+      service.value = "swiadczenie";
+      region.value = "ogolnie";
+      if (destinationControl) destinationControl.value = "formularz";
+      channel.value = preset.channel;
+      name.value = "swiadczenie_wspierajace_2026";
+      content.value = preset.variant;
+      style.value = "educational";
+      generate();
+      if (supportPresetStatus)
+        supportPresetStatus.textContent =
+          "Przygotowano wybrany post i link z UTM do formularza Pauliny. Skopiuj treść poniżej. Nic nie zostało wysłane do Facebooka.";
     });
   }
   // Editorial presets for the user's own FB group. They only prepare a

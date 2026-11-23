@@ -27,12 +27,3 @@ body:has(.subhero) .article .band a.btn.secondary{
  border:1px solid #9b743a!important;text-decoration:none
 }
 body:has(.subhero) .article .band a.btn:focus-visible{outline:3px solid #7b4d18;outline-offset:3px}
-
-/* Accessible navigational breadcrumbs. Underlying JSON-LD mirrors real, indexable destinations. */
-.article-breadcrumb{max-width:100%;margin:0 0 18px;font:650 .86rem/1.5 system-ui,sans-serif}
-.article-breadcrumb ol{display:flex;align-items:center;flex-wrap:wrap;gap:7px;list-style:none;padding:0;margin:0}
-.article-breadcrumb li{display:flex;align-items:center;gap:7px;min-width:0}
-.article-breadcrumb li+li::before{content:"/";color:#73868d;flex-shrink:0}
-.article-breadcrumb a{color:#194d60;text-decoration:underline;text-underline-offset:3px}
-.article-breadcrumb a:focus-visible{outline:3px solid #aa7d35;outline-offset:3px}
-.article-breadcrumb [aria-current="page"]{color:#405b66;font-weight:700;overflow-wrap:anywhere}

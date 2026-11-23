@@ -972,25 +972,27 @@ assert.ok(wzHub.includes('href="/wiedza/swiadczenie-wspierajace-dokumenty#przygo
  wzHub.includes('href="/wiedza/swiadczenie-wspierajace-2026-wzon-zus#sciezka-po-decyzji-wzon"'),
  "Indexable knowledge hub must clearly surface both WZON guides");
 console.log("SUPPORT_GUIDE_CLUSTER_OK: current Article dates, contextual links and safe stage contacts.");
-// Visible, keyboard-accessible breadcrumbs and structured data must agree
-// on canonical, indexable hierarchy. Avoid source /v2/.html paths.
+// One source of truth: scripts/page-navigation.mjs provides visible breadcrumbs
+// and scripts/build.mjs generates the canonical BreadcrumbList within @graph.
 for(const [page,slug,title] of [
  [wzDecisionGuide,"swiadczenie-wspierajace-2026-wzon-zus","Świadczenie wspierające — WZON i ZUS"],
  [wzPreparatoryGuide,"swiadczenie-wspierajace-dokumenty","Przygotowanie do oceny WZON"]
 ]){
- assert.ok(page.includes('class="article-breadcrumb"')&&page.includes('aria-label="Ścieżka nawigacji"')&&
+ assert.ok(page.includes('class="site-breadcrumbs"')&&
+  page.includes('aria-label="Ścieżka nawigacji"')&&
   page.includes('aria-current="page">'+title+'</span>'),
-  "Visible article breadcrumbs missing or wrong: "+slug);
- const schemas=[...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m=>JSON.parse(m[1]));
- const crumbs=schemas.find(schema=>schema["@type"]==="BreadcrumbList");
- assert.ok(crumbs, "Article BreadcrumbList schema missing: "+slug);
- assert.deepEqual(crumbs.itemListElement.map(x=>({position:x.position,name:x.name,item:x.item})),[
-  {position:1,name:"Strona główna",item:origin+"/"},
+  "Production breadcrumb nav must show the updated WZON topic: "+slug);
+ const schemas=[...page.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)]
+  .flatMap(m=>{const schema=JSON.parse(m[1]);return schema["@graph"]||[schema]});
+ const crumbs=schemas.filter(schema=>schema["@type"]==="BreadcrumbList");
+ assert.equal(crumbs.length,1,"Only one canonical BreadcrumbList in built guide: "+slug);
+ assert.deepEqual(crumbs[0].itemListElement.map(x=>({position:x.position,name:x.name,item:x.item})),[
+  {position:1,name:"Start",item:origin+"/"},
   {position:2,name:"Poradniki",item:origin+"/wiedza/"},
   {position:3,name:title,item:origin+"/wiedza/"+slug}
- ],"BreadcrumbList hierarchy must use actual canonical URLs: "+slug);
+ ],"Published breadcrumb structured data must match visible, clean-URL hierarchy: "+slug);
 }
-console.log("ARTICLE_BREADCRUMBS_OK: two guides with matching visible 3-level navigation and canonical BreadcrumbList.");
+console.log("ARTICLE_BREADCRUMBS_OK: no duplicates, 2 verified central navigation paths with matching schema.");
 
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");

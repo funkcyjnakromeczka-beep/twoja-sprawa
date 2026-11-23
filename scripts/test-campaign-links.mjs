@@ -46,7 +46,8 @@ const makeSupportPreset=code=>({
 const supportPresetControls={
  "start-2026":makeSupportPreset("start-2026"),
  "wzon-zus":makeSupportPreset("wzon-zus"),
- decyzja:makeSupportPreset("decyzja")
+ decyzja:makeSupportPreset("decyzja"),
+ "niskie-punkty":makeSupportPreset("niskie-punkty")
 };
 const makePlatformPreset=code=>({
  events:{},getAttribute:key=>key==="data-platform-preset"?code:null,
@@ -218,7 +219,8 @@ assert.ok(!status.textContent.includes("wersji testowej"),"Cloudflare production
 for(const [preset,channelName,variant,phrase] of [
   ["start-2026","facebook_strona","wspierajace_70_77_2026","70–77 punktów"],
   ["wzon-zus","facebook_grupa","wzon_zus_kolejnosc","Najpierw postępowanie przed WZON"],
-  ["decyzja","facebook_strona","decyzja_wzon_3_miesiace","3 miesięcy"]
+  ["decyzja","facebook_strona","decyzja_wzon_3_miesiace","3 miesięcy"],
+  ["niskie-punkty","facebook_strona","analiza_decyzji_wzon_14dni","14 dni"]
 ]){
   assert.ok(generatorGuide.includes('data-support-preset="'+preset+'"'),"Support preset button exists");
   supportPresetControls[preset].events.click();

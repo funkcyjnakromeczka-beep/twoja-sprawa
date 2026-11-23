@@ -229,7 +229,7 @@ const structured = (route,canonical,title,markup) => {
   }
   return JSON.stringify({"@context":"https://schema.org","@graph":graph}).replaceAll("<","\\u003c");
 };
-// Same-origin social previews for every public route; existing project photos only.
+// First-party Open Graph previews, with a subject-matched approved image per link.
 function upsertSocialMetadata(markup,route,origin){
   const metaTag=(field,key)=>new RegExp('<meta\\b(?=[^>]*\\b'+field+'="'+key+'")[^>]*>','i');
   const getContent=(field,key)=>{
@@ -243,8 +243,6 @@ function upsertSocialMetadata(markup,route,origin){
   };
   const title=(markup.match(/<title>([^<]+)<\/title>/i)?.[1]||"Twoja Sprawa").trim();
   const description=getContent("name","description");
-  const usePaulina=/swiadczenie-wspierajace|renty-powypadkowe/.test(route);
-  const person=usePaulina?"Paulina Chandrała":"Wojciech Obiegło";
   // Facebook/WhatsApp read server-rendered Open Graph metadata, not JavaScript.
   // Every main topic and campaign gets the same corresponding first-party
   // 1200x630 JPEG. Home and neutral pages keep the existing brand graphic.

@@ -691,15 +691,35 @@ try{
  // Support campaign: one tap must preselect the WZON stage without sending a lead.
  const supportStagePage=await browser.newPage({viewport:{width:390,height:844}});
  await supportStagePage.goto(origin+"/kampanie/swiadczenie-wspierajace.html?utm_source=facebook&utm_medium=grupa",{waitUntil:"domcontentloaded"});
- const supportStageButtons=supportStagePage.locator(".campaign-stage-pick");
- if(await supportStageButtons.count()!==3)throw Error("Three WZON stage buttons must be visible");
+ const supportStageButtons=supportStagePage.locator("#campaign-topics .campaign-stage-pick");
+ const postDecisionButtons=supportStagePage.locator("#wybierz-sytuacje-po-decyzji .campaign-stage-pick");
+ if(await supportStageButtons.count()!==3)throw Error("Three initial WZON stage buttons must remain visible");
+ if(await postDecisionButtons.count()!==3)throw Error("Three post-decision WZON/ZUS cards must be visible");
  await supportStageButtons.nth(2).click();
  const supportStage=await supportStagePage.locator('.contact-form select[id^="cf-stage-"]').inputValue();
  if(supportStage!=="Mam decyzję WZON")throw Error("Support campaign did not preselect WZON decision stage: "+supportStage);
  if(new URL(supportStagePage.url()).hash!=="#formularz")throw Error("WZON stage picker must scroll to the form");
  if(!await supportStagePage.locator(".contact-stage").isVisible())throw Error("WZON stage field should be visible on campaign form");
  await supportStagePage.screenshot({path:"screenshots/swiadczenie-wybierz-etap-telefon.png",fullPage:false,animations:"disabled"});
- console.log("SUPPORT_STAGE_UI_OK",JSON.stringify({stage:supportStage,atForm:true}));
+ console.log("SUPPORT_STAGE_UI_OK",JSON.stringify({stage:supportStage,atForm:true,initialChoices:3,decisionChoices:3}));
+ // Check the second group of choices in the live mobile form, without sending leads.
+ for(const [position,code,expected] of [
+  [0,"pierwsza-decyzja","Pierwsza decyzja WZON — chcę sprawdzić możliwość ponownego rozpatrzenia"],
+  [1,"po-ponownym","Decyzja po ponownym rozpatrzeniu WZON — chcę omówić drogę sądową"],
+  [2,"zus","Mam sprawę w ZUS"]
+ ]){
+  await supportStagePage.goto(origin+"/kampanie/swiadczenie-wspierajace.html",{waitUntil:"domcontentloaded"});
+  await supportStagePage.locator("#wybierz-sytuacje-po-decyzji .campaign-stage-pick").nth(position).click();
+  const afterClick=new URL(supportStagePage.url());
+  const chosen=await supportStagePage.locator('.contact-form select[id^="cf-stage-"]').inputValue();
+  if(afterClick.searchParams.get("etap")!==code||afterClick.hash!=="#formularz")
+   throw Error("WZON post-decision deep link lost selected stage: "+afterClick.href);
+  if(chosen!==expected)throw Error("Wrong WZON stage prefilled: "+JSON.stringify({expected,chosen}));
+  if(!await supportStagePage.locator(".contact-stage").isVisible())
+   throw Error("WZON selected stage must be visible on phone");
+ }
+ await supportStagePage.screenshot({path:"screenshots/swiadczenie-decyzja-wzon-telefon.png",fullPage:false,animations:"disabled"});
+ console.log("SUPPORT_DECISION_STAGE_UI_OK",JSON.stringify({verified:["pierwsza-decyzja","po-ponownym","zus"],leadSubmissions:0}));
  await supportStagePage.close();
 
  // Homepage flagship shortcuts must work by keyboard/touch on a small phone.

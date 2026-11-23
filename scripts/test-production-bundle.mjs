@@ -936,6 +936,16 @@ assert.ok(supportCampaignDecision.includes('id="swiadczenie-opiekun"')&&
   supportCampaignDecision.includes('href="#formularz"'),
   "Caregiver campaign must explain potentially overlapping benefits and offer direct contact");
 console.log("SUPPORT_CAREGIVER_EDUCATION_OK: relevant ZUS guidance is available at a stable FAQ anchor.");
+const caregiverGuide=await read("wiedza/swiadczenie-wspierajace-2026-wzon-zus.html");
+assert.ok(caregiverGuide.includes('id="opiekun-wyrownanie"')&&
+ caregiverGuide.includes("bez wyrównania za wcześniejszy okres")&&
+ caregiverGuide.includes("utratę części możliwych wypłat")&&
+ caregiverGuide.includes('https://www.gov.pl/web/rodzina/pytania-i-odpowiedzi---swiadczenie-wspierajace'),
+ "Indexable support guide must present official ZUS no-backpay choice with financial tradeoffs");
+assert.ok(supportCampaignDecision.includes('href="/wiedza/swiadczenie-wspierajace-2026-wzon-zus#opiekun-wyrownanie"')||
+ supportCampaignDecision.includes('href="/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html#opiekun-wyrownanie"'),
+ "Caregiver campaign must link to the source-backed indexable support guide");
+console.log("SUPPORT_CAREGIVER_OPTIONS_OK: official no-backpay choice, tradeoffs and organic route tested.");
 
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");

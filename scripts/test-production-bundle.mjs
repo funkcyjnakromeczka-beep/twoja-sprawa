@@ -1120,7 +1120,9 @@ const heroPreload=home.match(/<link rel="preload" as="image"[^>]*>/)?.[0]||"";
 assert.ok(heroPreload.includes('media="(min-width: 961px)"')&&heroPreload.includes('fetchpriority="high"'),
  "The hero preloader must respect narrow screens while retaining desktop priority");
 const heroImage=home.match(/<img class="hero-metallic-art"[^>]*>/)?.[0]||"";
-const picture=home.match(/<picture class="hero-picture">([\\s\\S]*?)<\\/picture>/)?.[1]||"";
+const pictureStart=home.indexOf('<picture class="hero-picture">');
+const pictureEnd=home.indexOf("</picture>",pictureStart);
+const picture=pictureStart>=0&&pictureEnd>pictureStart?home.slice(pictureStart,pictureEnd+10):"";
 assert.ok(picture.includes('<source type="image/webp"')&&
  picture.includes('src="/assets/og-twoja-sprawa-metallic-v1.jpg"'),
  "Hero must preserve the approved Facebook JPEG as no-WebP fallback");

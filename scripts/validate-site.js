@@ -187,7 +187,8 @@ const contact = read("v2/contact.js");
 
 const productionBuilder=read("scripts/build.mjs");
 if(!productionBuilder.includes("async function bundleHomepageStyles(html)")||
-   !productionBuilder.includes('await writeFile(join(dest,"home-bundle.css")')||
+   !productionBuilder.includes('writeFile(join(dest,"home-bundle.css"),content)')||
+   !productionBuilder.includes('const filename="home-bundle-"+fingerprint+".css"')||
    !productionBuilder.includes('if(rel==="index.html")html=await bundleHomepageStyles(html);'))
  warn("Wydanie: nie laczy siedmiu arkuszy strony glownej z zachowaniem ich kolejnosci");
 

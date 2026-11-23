@@ -93,3 +93,12 @@
  .knowledge-article .knowledge-body :is(p,li){line-height:1.7}
 }
 @media print{.knowledge-article .knowledge-body>section{box-shadow:none;border:1px solid #bbb}.knowledge-article .subhero:before{display:none}}
+
+/* Accessible, crawlable topic routes between the two verified WZON guides. */
+.knowledge-article .knowledge-topic-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 24px}
+.knowledge-article .knowledge-topic-nav a{display:flex;flex-direction:column;gap:7px;min-width:0;min-height:98px;padding:17px;border:1px solid #b8cfcf;border-radius:13px;background:#f2f7f6;color:#173c4d;text-decoration:none;box-sizing:border-box}
+.knowledge-article .knowledge-topic-nav a strong{color:#173c4d;font-size:.98rem;line-height:1.35}
+.knowledge-article .knowledge-topic-nav a span{color:#365963;font-size:.88rem;line-height:1.45}
+.knowledge-article .knowledge-topic-nav a:focus-visible{outline:3px solid #8a6329;outline-offset:3px}
+.knowledge-article .knowledge-topic-nav a:hover{background:#e5eeee;border-color:#789da0}
+@media(max-width:720px){.knowledge-article .knowledge-topic-nav{grid-template-columns:1fr}.knowledge-article .knowledge-topic-nav a{min-height:72px;padding:14px}}

@@ -946,6 +946,26 @@ assert.ok(supportCampaignDecision.includes('href="/wiedza/swiadczenie-wspierajac
  supportCampaignDecision.includes('href="/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html#opiekun-wyrownanie"'),
  "Caregiver campaign must link to the source-backed indexable support guide");
 console.log("SUPPORT_CAREGIVER_OPTIONS_OK: official no-backpay choice, tradeoffs and organic route tested.");
+// The actively maintained WZON guides must form a navigable topic cluster.
+// Their source Article dates drive RSS order; keep dates aligned with actual edits.
+const wzPreparatoryGuide=await read("wiedza/swiadczenie-wspierajace-dokumenty.html");
+const wzHub=await read("wiedza/index.html");
+const supportDateSource=await readFile("v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","utf8");
+const preparationDateSource=await readFile("v2/wiedza/swiadczenie-wspierajace-dokumenty.html","utf8");
+for(const [source,label] of [[supportDateSource,"decision"],[preparationDateSource,"preparation"]]){
+ assert.ok(source.includes('"dateModified":"2026-11-23"'),"Outdated Article.dateModified on "+label);
+}
+assert.ok(wzDecisionGuide.includes('class="knowledge-topic-nav"')&&
+ wzDecisionGuide.includes('href="/wiedza/swiadczenie-wspierajace-dokumenty#przygotowanie-przed-ocena"'),
+ "Decision guide must prominently link to related WZON preparation");
+assert.ok(wzPreparatoryGuide.includes('href="/wiedza/swiadczenie-wspierajace-2026-wzon-zus"')&&
+ wzPreparatoryGuide.includes('?etap=pierwsza-decyzja#formularz')&&
+ wzPreparatoryGuide.includes('?etap=po-ponownym#formularz'),
+ "Preparation guide must route both decision stages to their own contact choices");
+assert.ok(wzHub.includes('href="/wiedza/swiadczenie-wspierajace-dokumenty#przygotowanie-przed-ocena"')&&
+ wzHub.includes('href="/wiedza/swiadczenie-wspierajace-2026-wzon-zus#sciezka-po-decyzji-wzon"'),
+ "Indexable knowledge hub must clearly surface both WZON guides");
+console.log("SUPPORT_GUIDE_CLUSTER_OK: current Article dates, contextual links and safe stage contacts.");
 
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");

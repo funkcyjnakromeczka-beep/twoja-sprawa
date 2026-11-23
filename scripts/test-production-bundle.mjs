@@ -552,7 +552,7 @@ for(const [page,file,width,height] of previewCases){
 }
 const campaignPage=await read("narzedzia/linki-kampanii.html");
 const campaignScript=await read("campaign-links.js");
-assert.ok(campaignPage.includes('src="/assets/og-szkody-gornicze.jpg"'),"Generator preview needs mining image");
+assert.ok(campaignPage.includes('src="/assets/og-swiadczenie-wspierajace.jpg"'),"Generator preview needs first Facebook campaign support-benefit image");
 assert.ok(campaignScript.includes('return "og-skd-dokumenty.jpg"')&&
  campaignScript.includes('previewImage.src=src'),"Generator must choose article SKD image");
 assert.ok(campaignPage.includes('data-facebook-debugger')&&

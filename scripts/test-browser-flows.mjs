@@ -995,7 +995,8 @@ try{
   assert.equal(perf.styleSheets,1,"Homepage should download a single combined CSS file");
   assert.ok(perf.cssDecodedBytes>0&&perf.cssDecodedBytes<320000,
    "Homepage CSS exceeded 320 KB decoded budget: "+perf.cssDecodedBytes);
-  assert.equal(perf.largest.filter(x=>x.path==="/home-bundle.css").length,1,"Homepage bundle missing");
+  assert.equal(perf.largest.filter(x=>/^\/home-bundle-[0-9a-f]{16}\.css$/.test(x.path)).length,1,
+   "Versioned homepage CSS must be fetched exactly once");
   assert.ok(perf.initialImages.filter(x=>x.src.startsWith(origin)).every(x=>x.complete&&x.width>0),
    "A critical same-origin image did not load");
  }finally{await perfPage.close();}

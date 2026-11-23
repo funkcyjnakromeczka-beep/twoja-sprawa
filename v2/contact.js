@@ -212,6 +212,9 @@
   const guideText=document.createElement("span");
   const guideLink=document.createElement("a");guideLink.href="/v2/plan-dzialania.html";guideLink.textContent="Otwórz listę kontrolną (nowa karta)";guideLink.target="_blank";guideLink.rel="noopener noreferrer";
   const guidePlanLink=document.createElement("a");guidePlanLink.className="contact-guide-plan-link";
+  // Even before a service is selected (and while visually hidden), keep a
+  // real, crawlable destination. updateGuidePlan() adds only safe categories.
+  guidePlanLink.href="/v2/plan-dzialania.html";
   guidePlanLink.textContent="Ułóż plan pierwszych kroków (nowa karta)";
   guidePlanLink.target="_blank";guidePlanLink.rel="noopener noreferrer";
   guidePlanLink.hidden=true;

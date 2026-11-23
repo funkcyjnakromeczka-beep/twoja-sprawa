@@ -25,6 +25,7 @@ class Node {
  reset(){}
 }
 const visit=(node,pred)=>{if(!node)return null;if(pred(node))return node;for(const child of node.children||[]){const found=visit(child,pred);if(found)return found;}return null;};
+const descendants=node=>[node,...(node.children||[]).flatMap(descendants)];
 const source=await readFile("v2/contact.js","utf8");
 const mobileCss=await readFile("v2/styles.css","utf8");
 assert.ok(mobileCss.includes(".contact-form>button[type=submit]{justify-self:stretch;width:100%;min-height:52px"),
@@ -63,6 +64,13 @@ const run=async(error=false)=>{
  runInNewContext(source,{document,window,navigator,fetch,URLSearchParams,AbortController,Math});
  const form=host.children[0];
  assert.equal(form.tag,"form");
+ const anchors=descendants(form).filter(node=>node.tag==="a");
+ assert.ok(anchors.length>=2,"The contact form needs real navigation links");
+ assert.ok(anchors.every(node=>typeof node.href==="string"&&node.href.trim()),
+   "Every initial dynamic form anchor needs a crawlable href, including hidden guide links");
+ const preparedPlan=visit(form,node=>node.className==="contact-guide-plan-link");
+ assert.equal(preparedPlan.href,"/v2/plan-dzialania.html",
+   "Optional plan link needs a safe default before service preselection");
  const firstName=visit(form,n=>n.autocomplete==="given-name");
  const location=visit(form,n=>n.autocomplete==="address-level2");
  const phone=visit(form,n=>n.autocomplete==="tel");

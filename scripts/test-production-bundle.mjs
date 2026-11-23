@@ -1126,6 +1126,8 @@ assert.ok(measuredContactScript.includes('document.body.classList.contains("camp
  "Campaign form must use a sequential h2, preserving h3 on other pages");
 assert.ok(/guideLink\.href="\/(?:v2\/)?plan-dzialania(?:\.html)?"/.test(measuredContactScript),
  "Default guide anchor must have a valid href before topic selection");
+assert.ok(/guidePlanLink\.href="\/(?:v2\/)?plan-dzialania(?:\.html)?"/.test(measuredContactScript),
+ "Even a collapsed optional plan anchor must have a crawlable URL on initialization");
 for(const slug of ["szkody-gornicze","swiadczenie-wspierajace","skd","renty-powypadkowe"]){
  const markup=await read("kampanie/"+slug+".html");
  assert.ok(/<script\b[^>]*src="\/contact\.js"[^>]*><\/script>/.test(markup),

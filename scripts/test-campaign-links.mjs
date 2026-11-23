@@ -47,7 +47,8 @@ const supportPresetControls={
  "start-2026":makeSupportPreset("start-2026"),
  "wzon-zus":makeSupportPreset("wzon-zus"),
  decyzja:makeSupportPreset("decyzja"),
- "niskie-punkty":makeSupportPreset("niskie-punkty")
+ "niskie-punkty":makeSupportPreset("niskie-punkty"),
+ "przygotowanie-wzon":makeSupportPreset("przygotowanie-wzon")
 };
 const makePlatformPreset=code=>({
  events:{},getAttribute:key=>key==="data-platform-preset"?code:null,
@@ -220,7 +221,8 @@ for(const [preset,channelName,variant,phrase] of [
   ["start-2026","facebook_strona","wspierajace_70_77_2026","70–77 punktów"],
   ["wzon-zus","facebook_grupa","wzon_zus_kolejnosc","Najpierw postępowanie przed WZON"],
   ["decyzja","facebook_strona","decyzja_wzon_3_miesiace","3 miesięcy"],
-  ["niskie-punkty","facebook_strona","analiza_decyzji_wzon_14dni","14 dni"]
+  ["niskie-punkty","facebook_strona","analiza_decyzji_wzon_14dni","14 dni"],
+  ["przygotowanie-wzon","facebook_grupa","przygotowanie_wzon_7_pytan","siedem pytań"]
 ]){
   assert.ok(generatorGuide.includes('data-support-preset="'+preset+'"'),"Support preset button exists");
   supportPresetControls[preset].events.click();

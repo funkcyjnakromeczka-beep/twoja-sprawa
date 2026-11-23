@@ -49,6 +49,7 @@ jobs:
           node --check scripts/test-service-navigator.mjs
           node --check scripts/test-browser-flows.mjs
           node --check scripts/test-home-clarity.mjs
+          node --check scripts/test-gentle-motion.mjs
           node --check scripts/test-leaflet-start.mjs
           node --check scripts/test-1000-regressions.mjs
           node --check v2/knowledge-hub.js
@@ -143,6 +144,8 @@ jobs:
         run: node scripts/test-service-navigator.mjs
       - name: Sprawdź hierarchię strony głównej i siatkę 2+4 usług
         run: node scripts/test-home-clarity.mjs
+      - name: Subtelne animacje — kontrast, szybkość i ograniczony ruch
+        run: node scripts/test-gentle-motion.mjs
       - name: Testuj wejście z drukowanej ulotki i bezpieczne źródło kontaktu
         run: node scripts/test-leaflet-start.mjs
       - name: Seria V — 1000 sekwencyjnych kontroli 62 materiałów i ścieżek

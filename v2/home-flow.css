@@ -1108,3 +1108,35 @@
  .premium-v2 .hero-action-row>a{width:100%;min-height:48px}
 }
 @media print{.premium-v2 .hero-resource-brochure{display:none!important}}
+
+
+/* GENTLE-MOTION-20261123 — smaller, faster scroll reveal and calm CTA feedback.
+   Transform/opacity only: no layout shifts, timers, image requests or third-party JS. */
+@media screen and (prefers-reduced-motion:no-preference){
+ .premium-v2 .motion-section.motion-ready{
+  transform:translate3d(0,10px,0);
+  transition:opacity .44s ease-out,transform .44s cubic-bezier(.22,.72,.26,1);
+ }
+ .premium-v2 .motion-section.motion-ready.motion-visible{
+  transform:translate3d(0,0,0);
+ }
+ .premium-v2 :is(.hero-priority-grid>a,.hero-direct-contacts>a,.hero-action-row>a,.mobile-quick-nav>a){
+  transition:transform .18s ease-out,box-shadow .18s ease-out,border-color .18s ease-out,background-color .18s ease-out;
+ }
+ @media (hover:hover) and (pointer:fine){
+  .premium-v2 :is(.hero-priority-grid>a,.hero-direct-contacts>a,.hero-action-row>a,.mobile-quick-nav>a):hover{
+   transform:translate3d(0,-2px,0);
+  }
+ }
+ .premium-v2 :is(.hero-priority-grid>a,.hero-direct-contacts>a,.hero-action-row>a,.mobile-quick-nav>a):active{
+  transform:translate3d(0,1px,0);
+ }
+}
+@media screen and (prefers-reduced-motion:reduce){
+ .premium-v2 .motion-section.motion-ready{
+  opacity:1!important;transform:none!important;transition:none!important;
+ }
+ .premium-v2 :is(.hero-priority-grid>a,.hero-direct-contacts>a,.hero-action-row>a,.mobile-quick-nav>a){
+  transition:none!important;
+ }
+}

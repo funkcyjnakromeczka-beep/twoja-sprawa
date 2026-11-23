@@ -270,3 +270,44 @@
   .premium-campaign:has(.campaign-form :is(input,textarea,select):focus) .campaign-mobile-actions{display:none!important}
  }
 }
+
+
+/* GENTLE-MOTION-20261123 — one-time 6px entrance and restrained responses
+   for the first Facebook support-benefit campaign. Never animate user input. */
+@keyframes support-gentle-enter{
+ from{transform:translate3d(0,6px,0)}
+ to{transform:translate3d(0,0,0)}
+}
+@media screen and (prefers-reduced-motion:no-preference){
+ .premium-campaign.campaign-support .campaign-hero>.campaign-copy{
+  animation:support-gentle-enter .42s cubic-bezier(.22,.72,.26,1) both;
+ }
+ .premium-campaign.campaign-support .campaign-hero>.campaign-form{
+  animation:support-gentle-enter .46s .07s cubic-bezier(.22,.72,.26,1) both;
+ }
+ .premium-campaign.campaign-support :is(.campaign-steps article,.campaign-reader-path>a,.campaign-resource-cards nav>a){
+  transition:transform .18s ease-out,box-shadow .18s ease-out,border-color .18s ease-out;
+ }
+ @media (hover:hover) and (pointer:fine){
+  .premium-campaign.campaign-support :is(.campaign-steps article,.campaign-reader-path>a,.campaign-resource-cards nav>a):hover{
+   transform:translate3d(0,-2px,0);
+   box-shadow:0 8px 20px rgba(11,48,39,.1);
+  }
+ }
+ .premium-campaign.campaign-support :is(.campaign-stage-pick,.campaign-copy>.btn):active{
+  transform:scale(.99);
+ }
+}
+@media screen and (prefers-reduced-motion:reduce){
+ .premium-campaign.campaign-support :is(.campaign-hero>.campaign-copy,.campaign-hero>.campaign-form){
+  animation:none!important;transform:none!important;
+ }
+ .premium-campaign.campaign-support :is(.campaign-steps article,.campaign-reader-path>a,.campaign-resource-cards nav>a){
+  transition:none!important;transform:none!important;
+ }
+}
+@media print{
+ .premium-campaign.campaign-support :is(.campaign-hero>.campaign-copy,.campaign-hero>.campaign-form){
+  animation:none!important;transform:none!important;
+ }
+}

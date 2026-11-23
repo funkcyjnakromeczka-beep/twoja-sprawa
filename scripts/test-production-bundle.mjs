@@ -972,6 +972,25 @@ assert.ok(wzHub.includes('href="/wiedza/swiadczenie-wspierajace-dokumenty#przygo
  wzHub.includes('href="/wiedza/swiadczenie-wspierajace-2026-wzon-zus#sciezka-po-decyzji-wzon"'),
  "Indexable knowledge hub must clearly surface both WZON guides");
 console.log("SUPPORT_GUIDE_CLUSTER_OK: current Article dates, contextual links and safe stage contacts.");
+// Visible, keyboard-accessible breadcrumbs and structured data must agree
+// on canonical, indexable hierarchy. Avoid source /v2/.html paths.
+for(const [page,slug,title] of [
+ [wzDecisionGuide,"swiadczenie-wspierajace-2026-wzon-zus","Świadczenie wspierające — WZON i ZUS"],
+ [wzPreparatoryGuide,"swiadczenie-wspierajace-dokumenty","Przygotowanie do oceny WZON"]
+]){
+ assert.ok(page.includes('class="article-breadcrumb"')&&page.includes('aria-label="Ścieżka nawigacji"')&&
+  page.includes('aria-current="page">'+title+'</span>'),
+  "Visible article breadcrumbs missing or wrong: "+slug);
+ const schemas=[...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m=>JSON.parse(m[1]));
+ const crumbs=schemas.find(schema=>schema["@type"]==="BreadcrumbList");
+ assert.ok(crumbs, "Article BreadcrumbList schema missing: "+slug);
+ assert.deepEqual(crumbs.itemListElement.map(x=>({position:x.position,name:x.name,item:x.item})),[
+  {position:1,name:"Strona główna",item:origin+"/"},
+  {position:2,name:"Poradniki",item:origin+"/wiedza/"},
+  {position:3,name:title,item:origin+"/wiedza/"+slug}
+ ],"BreadcrumbList hierarchy must use actual canonical URLs: "+slug);
+}
+console.log("ARTICLE_BREADCRUMBS_OK: two guides with matching visible 3-level navigation and canonical BreadcrumbList.");
 
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");

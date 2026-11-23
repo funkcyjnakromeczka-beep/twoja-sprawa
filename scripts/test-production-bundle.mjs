@@ -555,6 +555,9 @@ const campaignScript=await read("campaign-links.js");
 assert.ok(campaignPage.includes('src="/assets/og-szkody-gornicze.jpg"'),"Generator preview needs mining image");
 assert.ok(campaignScript.includes('return "og-skd-dokumenty.jpg"')&&
  campaignScript.includes('previewImage.src=src'),"Generator must choose article SKD image");
+assert.ok(campaignPage.includes('data-facebook-debugger')&&
+ campaignScript.includes('facebookDebugger.href="https://developers.facebook.com/tools/debug/?q="+encodeURIComponent(canonical)'),
+ "Generator must prefill Meta Sharing Debugger with the selected canonical page");
 console.log("THEMATIC_OG_IMAGES_OK: 17 routes, 9 optimized thematic assets, aligned previews.");
 
 // The search page must degrade gracefully if scripts or its local index fail.

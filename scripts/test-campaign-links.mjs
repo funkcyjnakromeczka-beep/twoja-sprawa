@@ -27,6 +27,7 @@ const open={href:""};
 const previewTitle={textContent:""};
 const previewDescription={textContent:""};
 const previewHost={textContent:""};
+const facebookDebugger={href:""};
 const noOpControl={addEventListener:()=>{}};
 const makePreset=code=>({
  events:{},getAttribute:key=>key==="data-community-preset"?code:null,
@@ -65,6 +66,7 @@ const nodes={
  "[data-preview-title]":previewTitle,
  "[data-preview-description]":previewDescription,
  "[data-preview-host]":previewHost,
+ "[data-facebook-debugger]":facebookDebugger,
  "[data-community-preset-status]":presetStatus,
  "[data-platform-note]":platformNote,
  "[data-profile-link-confirmed]":linkConfirmation,
@@ -86,6 +88,11 @@ const check=(service,path,phone)=>{
  assert.ok(post.value.includes(phone));
  assert.ok(post.value.includes(link.value));
  assert.equal(open.href,link.value);
+ const debuggerURL=new URL(facebookDebugger.href);
+ assert.equal(debuggerURL.origin,"https://developers.facebook.com");
+ assert.equal(debuggerURL.pathname,"/tools/debug/");
+ assert.equal(debuggerURL.searchParams.get("q"),url.origin+url.pathname,
+  "Facebook debugger must open canonical URL of selected campaign without UTM or fragment");
 };
 check("szkody","/kampanie/szkody-gornicze","796 441 345");
 assert.equal(regionControl.hidden,false,"Mining regional selector should be visible");
@@ -101,6 +108,8 @@ assert.equal(cityLink.searchParams.get("utm_source"),"facebook");
 assert.equal(cityLink.searchParams.get("utm_medium"),"grupa");
 assert.equal(cityLink.searchParams.get("utm_campaign"),"lubin_polkowice_2026");
 assert.equal(cityLink.searchParams.get("utm_content"),"grupa_osiedle");
+assert.equal(new URL(facebookDebugger.href).searchParams.get("q"),
+ cityLink.origin+cityLink.pathname,"Local Meta debugger must point to Lubin without tracking");
 assert.ok(post.value.includes("Lubin i gmina Lubin")&&post.value.includes("796 441 345"));
 assert.ok(!post.value.includes("Polkowice i gmina Polkowice"),"City-specific message must not name the other city");
 assert.equal(open.href,link.value);
@@ -288,7 +297,8 @@ console.log("LOCAL_CAMPAIGN_LINKS_OK: 6 services, 2 city campaigns, group UTMs, 
 values.destination.value="poradnik";values.channel.value="facebook_grupa";values.region.value="ogolnie";values.content.value="";
 for(const [key,path,hash,variant,phone] of [["szkody","/wiedza/drobne-pekniecia-szkody-gornicze","zabezpieczony-dom","pekniecia_po_remoncie","796 441 345"],["swiadczenie","/wiedza/swiadczenie-wspierajace-2026-wzon-zus","po-decyzji-wzon","decyzja_wzon","500 171 531"],["skd","/wiedza/kredyt-pln-dokumenty-skd","wczesniejsza-splata-skd","splata_i_skd","796 441 345"],["renty","/wiedza/renta-powypadkowa-dokumenty","renta-od-lat","renta_od_lat","500 171 531"],["franki","/uslugi/kredyty-frankowe","ugoda-chf","ugoda_chf","796 441 345"],["przesyl","/wiedza/sluzebnosc-przesylu-slup-na-dzialce","","slup_na_dzialce","796 441 345"]]){
  values.service.value=key;listeners.change();const target=new URL(link.value);
- assert.equal(target.pathname,path);assert.equal(target.hash,hash?"#"+hash:"");assert.equal(target.searchParams.get("utm_content"),variant);assert.equal(target.searchParams.get("utm_source"),"facebook");assert.ok(post.value.includes(phone)&&post.value.includes(link.value));assert.ok(previewTitle.textContent&&previewDescription.textContent);
+ assert.equal(target.pathname,path);assert.equal(target.hash,hash?"#"+hash:"");assert.equal(target.searchParams.get("utm_content"),variant);assert.equal(target.searchParams.get("utm_source"),"facebook");assert.ok(post.value.includes(phone)&&post.value.includes(link.value));
+ assert.equal(new URL(facebookDebugger.href).searchParams.get("q"),target.origin+target.pathname,"Article debugger must point to current canonical topic");assert.ok(previewTitle.textContent&&previewDescription.textContent);
 }
 values.service.value="szkody";values.region.value="lubin";listeners.change();assert.equal(new URL(link.value).pathname,"/lokalnie/szkody-gornicze-lubin");
 values.region.value="ogolnie";values.channel.value="ulotka";listeners.change();assert.equal(new URL(link.value).pathname,"/kampanie/szkody-gornicze");assert.equal(new URL(link.value).hash,"");

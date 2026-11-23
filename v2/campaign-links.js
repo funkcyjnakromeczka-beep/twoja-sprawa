@@ -46,6 +46,7 @@
   const previewTitle=document.querySelector("[data-preview-title]");
   const previewDescription=document.querySelector("[data-preview-description]");
   const previewHost=document.querySelector("[data-preview-host]");
+  const facebookDebugger=document.querySelector("[data-facebook-debugger]");
   const previewImage=document.querySelector(".campaign-link-preview-card img");
   const previewGraphic=path=>{
     if(path==="/lokalnie/szkody-gornicze-lubin")return "og-szkody-lubin.jpg";
@@ -259,6 +260,13 @@
     if(previewTitle)previewTitle.textContent=preview.title;
     if(previewDescription)previewDescription.textContent=preview.description;
     if(previewHost)previewHost.textContent=target.hostname;
+    // Facebook caches previews by the page's canonical URL, not by an
+    // individual UTM campaign or an in-page fragment. Open Meta's debugger
+    // for exactly the page represented by the currently generated post.
+    if(facebookDebugger){
+      const canonical=target.origin+target.pathname;
+      facebookDebugger.href="https://developers.facebook.com/tools/debug/?q="+encodeURIComponent(canonical);
+    }
     message.textContent = isBusinessProfile
       ? "W Profilu Firmy w Google wklej do pola „Witryna” wyłącznie link z pierwszego pola (nie tekst posta). Link prowadzi na stronę główną, a wybór tematu trafia do formularza. Oznaczenia UTM mogą pomóc rozpoznać źródło przesłanego zgłoszenia, ale Google może usuwać parametry z linku wizytówki. Po zapisaniu sprawdź opublikowany odnośnik; jeśli są problemy, użyj zwykłego adresu strony głównej. Sam link nie liczy wejść ani nie gwarantuje indeksacji."
       : /(?:^|\.)pages\.dev$/i.test(window.location.hostname || "") ? "Darmowa domena Cloudflare Pages (pages.dev) nadaje się do publikacji. Przed udostępnieniem sprawdź działanie strony i odbiór formularzy." : "Link przygotowany. Możesz go skopiować lub sprawdzić stronę docelową.";

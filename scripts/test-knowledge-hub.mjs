@@ -119,11 +119,13 @@ assert.ok(readingPaths.includes('aria-labelledby="hub-reading-paths-title"'),"Re
 assert.equal((readingPaths.match(/class="hub-reading-card"/g)||[]).length,6,"Six thematic reading paths required");
 assert.equal((readingPaths.match(/<ol>/g)||[]).length,6,"Each path needs an ordered, practical checklist");
 const readingHrefs=[...readingPaths.matchAll(/href="([^"]+)"/g)].map(([,url])=>url.replaceAll("&amp;","&"));
-assert.equal(readingHrefs.length,12,"Each path should offer two working destinations");
+assert.equal(readingHrefs.length,13,"Five reading paths offer two links; the WZON path adds a source-backed preparation guide");
+assert.ok(readingHrefs.includes("/v2/wiedza/swiadczenie-wspierajace-dokumenty.html#przygotowanie-przed-ocena"),
+ "WZON reading path must link directly to the preparation guide");
 for(const dest of [
 "/v2/wiedza/drobne-pekniecia-szkody-gornicze.html",
 "/v2/uslugi/szkody-gornicze.html",
-"/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html",
+"/v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html#sciezka-po-decyzji-wzon",
 "/v2/uslugi/swiadczenie-wspierajace.html",
 "/v2/uslugi/kredyty-pln.html",
 "/v2/plan-dzialania.html?usluga=skd",

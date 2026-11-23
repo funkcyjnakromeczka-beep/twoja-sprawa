@@ -953,7 +953,13 @@ const wzHub=await read("wiedza/index.html");
 const supportDateSource=await readFile("v2/wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","utf8");
 const preparationDateSource=await readFile("v2/wiedza/swiadczenie-wspierajace-dokumenty.html","utf8");
 for(const [source,label] of [[supportDateSource,"decision"],[preparationDateSource,"preparation"]]){
- assert.ok(source.includes('"dateModified":"2026-11-23"'),"Outdated Article.dateModified on "+label);
+ const modified=source.match(/"dateModified":"(\d{4}-\d{2}-\d{2})"/)?.[1];
+ assert.ok(modified&&/^20\d{2}-\d{2}-\d{2}$/.test(modified),
+  "Article.dateModified must exist with a valid ISO date: "+label);
+ const humanDate=source.match(/WZON i ZUS • stan informacji: (\d{2})\.(\d{2})\.(\d{4})/)||
+  source.match(/<time datetime="(\d{4}-\d{2}-\d{2})"/);
+ assert.ok(humanDate&&modified===(humanDate.length===4?humanDate[3]+"-"+humanDate[2]+"-"+humanDate[1]:humanDate[1]),
+  "Structured Article date must agree with the visible editorial update: "+label);
 }
 assert.ok(wzDecisionGuide.includes('class="knowledge-topic-nav"')&&
  wzDecisionGuide.includes('href="/wiedza/swiadczenie-wspierajace-dokumenty#przygotowanie-przed-ocena"'),

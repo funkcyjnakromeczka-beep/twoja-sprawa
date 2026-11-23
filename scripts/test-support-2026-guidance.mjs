@@ -25,7 +25,12 @@ const assertions=[
  ["No guaranteed award",()=>assert.ok(!/gwarantujemy (?:świadczenie|przyznanie)/i.test(article+" "+offer))],
  ["Preserve Paulina direct call",()=>assert.ok(service.includes('href="tel:+48500171531"')&&guide.includes('href="tel:+48500171531"'))],
  ["Preserve privacy caveat",()=>assert.ok(offer.includes("PESEL")&&article.includes("dokumentacji medycznej"))],
- ["Article modification date matches audit",()=>assert.ok(guide.includes('"dateModified":"2026-11-16"'))],
+ ["Article modification date matches visible review date",()=>{
+ const modified=guide.match(/"dateModified":"(\d{4}-\d{2}-\d{2})"/)?.[1];
+ const reviewed=guide.match(/WZON i ZUS • stan informacji: (\d{2})\.(\d{2})\.(\d{4})/);
+ assert.ok(modified&&reviewed&&modified===reviewed[3]+"-"+reviewed[2]+"-"+reviewed[1],
+  "Article dateModified must match the published review date in the header");
+}],
  ["Campaign discloses free ZUS help",()=>assert.ok(ad.includes("Wniosek do ZUS jest bezpłatny")&&ad.includes("nie wymaga płatnego pośrednika")&&ad.includes("dobrowolna"))],
  ["Campaign offers public ZUS source",()=>assert.ok(campaign.includes("https://www.zus.pl/o-zus/o-nas/kampanie/")&&campaign.includes("Oficjalna informacja ZUS"))]
 ];

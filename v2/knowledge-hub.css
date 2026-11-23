@@ -186,3 +186,12 @@
 @media(min-width:861px) and (max-width:1050px){.knowledge-hub .hub-brochure-topics a{grid-template-columns:74px minmax(0,1fr) auto;gap:8px}}
 @media(max-width:560px){.knowledge-hub .hub-brochure-topics a{grid-template-columns:clamp(76px,26vw,116px) minmax(0,1fr) auto;gap:9px;min-height:82px}.knowledge-hub .hub-card{padding:18px;gap:9px}.knowledge-hub .hub-filters button{font-size:.82rem;padding:9px 10px}.knowledge-hub .hub-card .hub-read{min-height:44px}}
 @media(max-width:350px){.knowledge-hub .hub-brochure-topics a{grid-template-columns:65px minmax(0,1fr) auto;gap:6px}.knowledge-hub .hub-brochure-topic-label strong{font-size:.85rem}}
+
+/* Popularne tematy — proste wejścia do artykułów, działają także bez JavaScript. */
+.knowledge-hub .hub-quick-topics{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:8px 0 17px}
+.knowledge-hub .hub-quick-label{margin-right:4px;color:#34505d;font-size:.88rem;font-weight:750}
+.knowledge-hub .hub-quick-topics a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;padding:9px 13px;border:1px solid #b9cbd3;border-radius:22px;background:#f7fafb;color:#214757;text-decoration:none;font-size:.87rem;font-weight:700;line-height:1.3}
+.knowledge-hub .hub-quick-topics a:hover{background:#e9f2f5;border-color:#668fa0}
+.knowledge-hub .hub-quick-topics a[data-active="true"]{background:#173c50;border-color:#173c50;color:#fff}
+.knowledge-hub .hub-quick-topics a:focus-visible{outline:3px solid #a52a45;outline-offset:3px}
+@media(max-width:560px){.knowledge-hub .hub-quick-topics{gap:7px}.knowledge-hub .hub-quick-label{flex-basis:100%}.knowledge-hub .hub-quick-topics a{font-size:.83rem;padding:9px 11px}}

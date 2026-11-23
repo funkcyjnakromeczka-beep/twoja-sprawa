@@ -20,13 +20,26 @@ const cards=[
 const input=new Node(),status=new Node(),empty=new Node(),reset=new Node();
 const fullSearch=[new Node(),new Node()];
 const filters=["all","szkody","swiadczenie","skd","renty"].map(k=>new Node(k,{hubFilter:k}));
+const quickTopics=["pęknięcia","ugoda","decyzja WZON","renta","dokumenty SKD","słup"].map(q=>new Node(q,{hubQuickQuery:q}));
 const hub={
  querySelector:selector=>({"#hub-search":input,"[data-hub-count]":status,"#hub-empty":empty,"[data-hub-reset]":reset})[selector]||null,
- querySelectorAll:selector=>selector==="[data-hub-filter]"?filters:selector==="[data-hub-category]"?cards:selector==="[data-hub-full-search]"?fullSearch:[]
+ querySelectorAll:selector=>selector==="[data-hub-filter]"?filters:selector==="[data-hub-category]"?cards:selector==="[data-hub-full-search]"?fullSearch:selector==="[data-hub-quick-query]"?quickTopics:[]
 };
 runInNewContext(js,{document:{querySelector:sel=>sel==="[data-knowledge-hub]"?hub:null},String,URLSearchParams});
 assert.equal(status.textContent,"Widoczne: 4 artykuły");
 assert.equal(cards.filter(x=>!x.hidden).length,4);
+// Suggested topics narrow the article list, without routing users to a form.
+let prevented=false;
+quickTopics[0].events.click({button:0,preventDefault(){prevented=true;}});
+assert.equal(prevented,true);
+assert.equal(input.value,"pęknięcia");
+assert.equal(input.focused,true);
+assert.equal(status.textContent,"Widoczne: 1 artykuł");
+assert.equal(quickTopics[0].attrs["data-active"],"true");
+assert.equal(filters[0].attrs["aria-pressed"],"true");
+quickTopics[1].events.click({button:0,ctrlKey:true,preventDefault(){throw Error("Modified click intercepted");}});
+reset.events.click();
+assert.equal(status.textContent,"Widoczne: 4 artykuły");
 filters.find(x=>x.dataset.hubFilter==="szkody").events.click();
 assert.equal(status.textContent,"Widoczne: 1 artykuł");
 assert.equal(cards[0].hidden,false);
@@ -57,6 +70,12 @@ assert.ok(html.includes('role="status" aria-live="polite"'));
 assert.ok(html.includes('aria-controls="hub-results"'));
 assert.equal((html.match(/<a class="hub-card(?:\s|")/g)||[]).length,10);
 assert.equal((html.match(/data-hub-full-search/g)||[]).length,2);
+const quickMarkup=html.match(/<div class="hub-quick-topics"[\s\S]*?<\/div>/)?.[0]||"";
+assert.equal((quickMarkup.match(/data-hub-quick-query=/g)||[]).length,6,"Six popular-topic links must exist");
+assert.equal((quickMarkup.match(/href="\/v2\/wiedza\//g)||[]).length,6,"Each suggested topic must work without JS");
+assert.ok(quickMarkup.includes('aria-label="Wyszukaj popularny temat w poradnikach"'));
+assert.ok((await readFile("v2/knowledge-hub.css","utf8")).includes(".hub-quick-topics a:focus-visible"),
+ "Quick links need visible keyboard focus");
 
 // The directory must stay distinct from the client-filterable 10-article hub
 // and use real, indexable service and local mining URLs.

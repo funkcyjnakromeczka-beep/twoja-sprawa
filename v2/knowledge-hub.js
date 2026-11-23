@@ -9,6 +9,7 @@
  const clear=hub.querySelector("[data-hub-reset]");
  const fullSearch=[...hub.querySelectorAll("[data-hub-full-search]")];
  const buttons=[...hub.querySelectorAll("[data-hub-filter]")];
+ const quickTopics=[...hub.querySelectorAll("[data-hub-quick-query]")];
  const cards=[...hub.querySelectorAll("[data-hub-category]")];
  if(!input||!count||!empty||!cards.length)return;
  let category="all";
@@ -34,11 +35,26 @@
    link.href="/v2/szukaj.html"+(params.size?"?"+params.toString():"");
   }
   if(clear)clear.hidden=!input.value.trim()&&category==="all";
+  for(const link of quickTopics){
+   const active=category==="all"&&normalize(link.dataset.hubQuickQuery)===normalize(input.value.trim());
+   link.setAttribute("data-active",String(active));
+  }
  };
  buttons.forEach(button=>button.addEventListener("click",()=>{
   category=button.dataset.hubFilter||"all";
   for(const other of buttons)other.setAttribute("aria-pressed",String(other===button));
   update();
+ }));
+ // The links also work without scripts: their href opens the reviewed article.
+ // Intercept only an ordinary click; modified clicks still open the source.
+ quickTopics.forEach(link=>link.addEventListener("click",event=>{
+  if(event.defaultPrevented||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||(event.button!==undefined&&event.button!==0))return;
+  event.preventDefault();
+  category="all";
+  for(const button of buttons)button.setAttribute("aria-pressed",String(button.dataset.hubFilter==="all"));
+  input.value=link.dataset.hubQuickQuery||"";
+  update();
+  input.focus();
  }));
  input.addEventListener("input",update);
  if(clear)clear.addEventListener("click",()=>{

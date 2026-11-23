@@ -929,6 +929,13 @@ for(const [code,label] of [["pierwsza-decyzja","Pierwsza decyzja WZON — chcę 
 assert.ok(supportCampaignDecision.includes("Art. 26 ust. 2")&&supportCampaignDecision.includes("dzień wydania decyzji WZON"),
  "Support campaign must disclose statutory/ZUS discrepancy in 3-month deadline");
 console.log("SUPPORT_DECISION_INTAKE_OK: categorical WZON decision and review states, safe preselected contact, cautioned ZUS deadline.");
+assert.ok(supportCampaignDecision.includes('id="swiadczenie-opiekun"')&&
+  supportCampaignDecision.includes("świadczenie pielęgnacyjne")&&
+  supportCampaignDecision.includes("specjalny zasiłek opiekuńczy")&&
+  supportCampaignDecision.includes("zasiłek dla opiekuna")&&
+  supportCampaignDecision.includes('href="#formularz"'),
+  "Caregiver campaign must explain potentially overlapping benefits and offer direct contact");
+console.log("SUPPORT_CAREGIVER_EDUCATION_OK: relevant ZUS guidance is available at a stable FAQ anchor.");
 
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");

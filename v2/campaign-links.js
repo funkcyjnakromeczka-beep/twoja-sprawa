@@ -189,6 +189,14 @@
     }
     if (isBusinessProfile) target.searchParams.set("usluga", service.value);
     if (educational?.hash) target.hash = educational.hash;
+    // Caregiver information is educational and relevant at multiple stages,
+    // so do not preselect a WZON status. Link to the dedicated public FAQ.
+    if (!educational && service.value === "swiadczenie"
+        && selectedChannel.startsWith("facebook")
+        && target.pathname === "/kampanie/swiadczenie-wspierajace"
+        && variant === "swiadczenie_opiekun_swiadczenia") {
+      target.hash = "swiadczenie-opiekun";
+    }
     urlOutput.value = target.href;
     const isReelChannel = selectedChannel === "instagram" || selectedChannel === "tiktok";
     if (profileConfirmed) {

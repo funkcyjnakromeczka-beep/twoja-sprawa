@@ -237,6 +237,8 @@ for(const [preset,channelName,variant,phrase,leadStage] of [
   assert.equal(linkUrl.searchParams.get("utm_campaign"),"swiadczenie_wspierajace_2026");
   assert.equal(linkUrl.searchParams.get("utm_content"),variant);
   assert.equal(linkUrl.searchParams.get("etap"),leadStage,"Only the applicable WZON/ZUS stage is auto-filled for this post");
+  assert.equal(linkUrl.hash, preset === "opiekun" ? "#swiadczenie-opiekun" : "",
+    "Caregiver post should link straight to accessible public guidance, without guessing a WZON stage");
   assert.equal(values.service.value,"swiadczenie");
   assert.ok(post.value.includes(phrase)&&post.value.includes("500 171 531")&&post.value.includes("Bez obietnic wyniku"));
   assert.ok(post.value.includes(link.value)&&!post.value.includes("796 441 345"));

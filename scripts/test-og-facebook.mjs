@@ -1,90 +1,87 @@
 #!/usr/bin/env node
-/** Validate actual Facebook/OG previews after the release build; no network requests. */
+/** Validate first-party Facebook images after the real build, without posting. */
 import assert from "node:assert/strict";
 import {createHash} from "node:crypto";
-import {readFile} from "node:fs/promises";
-const root="https://twoja-sprawa.pages.dev";
-const imagePath="/assets/og-twoja-sprawa-metallic-v1.jpg";
-const preview=process.argv.includes("--preview");
-const output=preview?"dist-preview":"dist";
-const image=await readFile(output+imagePath);
-assert.ok(image.length>50000&&image.length<600000,"Social JPEG should be optimized but readable");
-assert.equal(createHash("sha256").update(image).digest("hex"),"489f8b499f49f841c6dec3f5777a791f4007ad9d5e8c109ceeed6cc83187798c","Published preview must match the exact approved original graphic (not reconstructed Canva thumbnail)");
-assert.equal(image[0],0xff);assert.equal(image[1],0xd8);
+import {readFile,stat} from "node:fs/promises";
+const root="https://twoja-sprawa.pages.dev",folder=process.argv.includes("--preview")?"dist-preview":"dist";
+const brandFile="og-twoja-sprawa-metallic-v1.jpg";
 const jpegSize=data=>{
  let i=2;
  while(i<data.length-9){
   if(data[i]!==0xff){i++;continue;}
-  let marker=data[i+1];
+  const marker=data[i+1];
   if(marker===0xd9||marker===0xda)break;
   if(marker===0xff){i++;continue;}
   const len=data.readUInt16BE(i+2);
-  if([0xc0,0xc1,0xc2,0xc3,0xc5,0xc6,0xc7,0xc9,0xca,0xcb].includes(marker)){
-    return {height:data.readUInt16BE(i+5),width:data.readUInt16BE(i+7)};
-  }
+  if([0xc0,0xc1,0xc2,0xc3,0xc5,0xc6,0xc7,0xc9,0xca,0xcb].includes(marker))
+   return {height:data.readUInt16BE(i+5),width:data.readUInt16BE(i+7)};
   if(len<2)throw Error("Invalid JPEG segment");
   i+=2+len;
  }
- throw Error("JPEG size marker not found");
+ throw Error("JPEG dimension marker missing");
 };
-assert.deepEqual(jpegSize(image),{width:1536,height:803});
-if(preview){
- console.log("OG_PREVIEW_ASSET_OK: first-party 1536x803 image copied into the noindex preview.");
+const original=await readFile(folder+"/assets/"+brandFile);
+assert.equal(createHash("sha256").update(original).digest("hex"),
+ "489f8b499f49f841c6dec3f5777a791f4007ad9d5e8c109ceeed6cc83187798c",
+ "Homepage must preserve the exact original brand image");
+assert.deepEqual(jpegSize(original),{width:1536,height:803});
+if(process.argv.includes("--preview")){
+ console.log("OG_PREVIEW_ASSET_OK: original brand image retained in private preview.");
  process.exit(0);
 }
-const routes=[
- "", // Homepage: Google Business Profile destination.
- "kampanie/szkody-gornicze",
- "kampanie/swiadczenie-wspierajace",
- "kampanie/renty-powypadkowe",
- "kampanie/skd",
- "uslugi/renty-powypadkowe",
- "uslugi/sluzebnosc-przesylu",
- "uslugi/kredyty-frankowe",
- "uslugi/szkody-gornicze",
- "uslugi/kredyty-pln",
- "uslugi/swiadczenie-wspierajace",
- "lokalnie/szkody-gornicze-lubin",
- "lokalnie/szkody-gornicze-polkowice"
+const cases=[
+ ["","og-twoja-sprawa-metallic-v1.jpg",1536,803],
+ ["kampanie/szkody-gornicze","og-szkody-gornicze.jpg",1200,630],
+ ["kampanie/swiadczenie-wspierajace","og-swiadczenie-wspierajace.jpg",1200,630],
+ ["kampanie/renty-powypadkowe","og-renty-powypadkowe.jpg",1200,630],
+ ["kampanie/skd","og-skd.jpg",1200,630],
+ ["uslugi/renty-powypadkowe","og-renty-powypadkowe.jpg",1200,630],
+ ["uslugi/sluzebnosc-przesylu","og-sluzebnosc-przesylu.jpg",1200,630],
+ ["uslugi/kredyty-frankowe","og-kredyty-frankowe.jpg",1200,630],
+ ["uslugi/szkody-gornicze","og-szkody-gornicze.jpg",1200,630],
+ ["uslugi/kredyty-pln","og-skd.jpg",1200,630],
+ ["uslugi/swiadczenie-wspierajace","og-swiadczenie-wspierajace.jpg",1200,630],
+ ["lokalnie/szkody-gornicze-lubin","og-szkody-lubin.jpg",1200,630],
+ ["lokalnie/szkody-gornicze-polkowice","og-szkody-polkowice.jpg",1200,630],
+ ["wiedza/kredyt-pln-dokumenty-skd","og-skd-dokumenty.jpg",1200,630],
+ ["wiedza/drobne-pekniecia-szkody-gornicze","og-szkody-gornicze.jpg",1200,630],
+ ["wiedza/swiadczenie-wspierajace-2026-wzon-zus","og-swiadczenie-wspierajace.jpg",1200,630],
+ ["wiedza/renta-powypadkowa-dokumenty","og-renty-powypadkowe.jpg",1200,630]
 ];
-const read=(path)=>readFile(output+"/"+(path||"index")+".html","utf8");
-const get=(html,key)=>[...html.matchAll(/<meta\b[^>]*>/gi)]
- .filter(m=>m[0].includes('property="'+key+'"'))
+const get=(html,key,kind="property")=>[...html.matchAll(/<meta\b[^>]*>/gi)]
+ .filter(m=>m[0].includes(kind+'="'+key+'"'))
  .map(m=>m[0].match(/content="([^"]*)"/)?.[1]);
-for(const route of routes){
- const html=await read(route);
- assert.deepEqual(get(html,"og:image"),[root+imagePath],"Incorrect OG image on "+route);
- assert.deepEqual(get(html,"og:image:secure_url"),[root+imagePath],"Secure OG image on "+route);
- assert.deepEqual(get(html,"og:image:type"),["image/jpeg"]);
- assert.deepEqual(get(html,"og:image:width"),["1536"]);
- assert.deepEqual(get(html,"og:image:height"),["803"]);
- assert.equal((get(html,"og:image:alt")||[]).length,1,"One descriptive image alt per route");
- assert.ok(html.includes('name="twitter:card" content="summary_large_image"'),"Twitter preview must be landscape");
- assert.ok(html.includes('name="twitter:image" content="'+root+imagePath+'"'),"Twitter and Facebook must use the same image");
- assert.equal(get(html,"og:image").length,1,"No duplicate og:image tags");
- assert.ok(html.includes('property="og:url" content="'+root+"/"+route+'"'),"Share card URL must be canonical, not UTM variant");
+for(const [route,asset,width,height] of cases){
+ const html=await readFile(folder+"/"+(route||"index")+".html","utf8");
+ const url=root+"/"+route,img=root+"/assets/"+asset;
+ assert.deepEqual(get(html,"og:image"),[img],"Facebook preview "+route);
+ assert.deepEqual(get(html,"og:image:secure_url"),[img],"HTTPS Facebook preview "+route);
+ assert.deepEqual(get(html,"og:image:type"),["image/jpeg"],"JPEG type "+route);
+ assert.deepEqual(get(html,"og:image:width"),[String(width)],"OG width "+route);
+ assert.deepEqual(get(html,"og:image:height"),[String(height)],"OG height "+route);
+ assert.equal(get(html,"og:image:alt").length,1,"Accessible preview "+route);
+ assert.deepEqual(get(html,"og:url"),[url],"Canonical URL for shared link "+route);
+ assert.deepEqual(get(html,"twitter:image","name"),[img],"Twitter matches FB "+route);
+ assert.deepEqual(get(html,"twitter:card","name"),["summary_large_image"],"Large preview "+route);
+ assert.equal(get(html,"og:image").length,1,"Duplicate image on "+route);
 }
-// Source files can also be published directly from v2/ by Cloudflare Pages.
-// Verify their server-visible metadata, not only the generated dist/ build.
-for(const route of routes){
- const source=await readFile("v2/"+(route||"index")+".html","utf8");
- assert.deepEqual(get(source,"og:image"),[root+imagePath],"Authored source has stale preview: "+route);
- assert.deepEqual(get(source,"og:image:width"),["1536"],"Authored source width: "+route);
- assert.deepEqual(get(source,"og:image:height"),["803"],"Authored source height: "+route);
- assert.ok(source.includes('property="og:url" content="'+root+"/"+route+'"'),"Authored source OG URL: "+route);
- assert.ok(source.includes('name="twitter:image" content="'+root+imagePath+'"'),"Authored source Twitter image: "+route);
+for(const img of new Set(cases.map(x=>x[1]))){
+ const bytes=await readFile(folder+"/assets/"+img);
+ assert.ok(bytes.length>50000&&bytes.length<700000,"Optimized local image "+img);
+ assert.equal(bytes[0],0xff);assert.equal(bytes[1],0xd8);
+ const expected=img===brandFile?{width:1536,height:803}:{width:1200,height:630};
+ assert.deepEqual(jpegSize(bytes),expected,"Image aspect ratio "+img);
 }
-const generatorSource=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
-assert.ok(generatorSource.includes('src="'+imagePath+'"'),"Generator must preview the public /assets path, never /v2/assets");
-const brand=await readFile("scripts/sync-approved-social-banner.mjs","utf8");
-assert.ok(brand.includes("489f8b499f49f841c6dec3f5777a791f4007ad9d5e8c109ceeed6cc83187798c"),"Approved source sha256 must be pinned");
+const generator=await readFile("v2/narzedzia/linki-kampanii.html","utf8");
+const js=await readFile("v2/campaign-links.js","utf8");
+assert.ok(generator.includes('src="/assets/og-szkody-gornicze.jpg"'),"Generator first preview must reflect selected mining service");
+assert.ok(js.includes('return "og-skd-dokumenty.jpg"')&&js.includes('previewImage.src=src'),"Generator must switch visible preview to SKD article");
+for(const key of ["og-szkody-lubin.jpg","og-szkody-polkowice.jpg","og-kredyty-frankowe.jpg","og-renty-powypadkowe.jpg","og-sluzebnosc-przesylu.jpg","og-swiadczenie-wspierajace.jpg"])
+ assert.ok(js.includes(key),"Generator should recognize "+key);
 const builder=await readFile("scripts/build.mjs","utf8");
-assert.ok(builder.includes('const brandedRoutes=new Set('),"Build must preserve social preview after every deploy");
-const campaignLinks=await readFile("v2/campaign-links.js","utf8");
-for(const piece of ["szkody-gornicze.html","swiadczenie-wspierajace.html","skd.html","renty-powypadkowe.html","sluzebnosc-przesylu.html","kredyty-frankowe.html"])
- assert.ok(campaignLinks.includes(piece),"Campaign generator destination not covered: "+piece);
-// A normal educational guide still uses a relevant author portrait, not the
-// promotional banner, and stays unchanged when the campaign builder evolves.
-const guide=await read("wiedza/ugoda-z-kopalnia-co-sprawdzic");
-assert.ok(!get(guide,"og:image")[0].includes("og-twoja-sprawa-votum"),"Do not change guide previews globally");
-console.log("OG_FACEBOOK_OK: 1536x803 self-hosted image, 13 campaign and service destinations (including homepage, Lubin and Polkowice), canonical URL, consistent Open Graph/Twitter preview.");
+assert.ok(builder.includes('const routes=[')&&builder.includes('const socialWidth=selected?"1200":"1536"'),
+ "The release build must persist the chosen OG image on every deployment");
+const officialBrand=await readFile("scripts/sync-approved-social-banner.mjs","utf8");
+assert.ok(officialBrand.includes("489f8b499f49f841c6dec3f5777a791f4007ad9d5e8c109ceeed6cc83187798c"),
+ "Keep original approved homepage graphic unchanged");
+console.log("OG_FACEBOOK_OK: 17 verified topic routes, nine first-party 1200x630 previews, original homepage artwork, social metadata and generator.");

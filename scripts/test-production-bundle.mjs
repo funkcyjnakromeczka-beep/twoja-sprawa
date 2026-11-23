@@ -926,7 +926,7 @@ for(const [code,label] of [["pierwsza-decyzja","Pierwsza decyzja WZON — chcę 
  assert.ok(supportServicePage.includes('?etap='+code+'#formularz'),"Service stage route missing: "+code);
  assert.ok(wzDecisionGuide.includes('?etap='+code+'#formularz'),"WZON decision guide route missing: "+code);
 }
-assert.ok(supportCampaignDecision.includes("Art. 26 ust. 2")&&supportCampaignDecision.includes("datę wydania decyzji WZON"),
+assert.ok(supportCampaignDecision.includes("Art. 26 ust. 2")&&supportCampaignDecision.includes("dzień wydania decyzji WZON"),
  "Support campaign must disclose statutory/ZUS discrepancy in 3-month deadline");
 console.log("SUPPORT_DECISION_INTAKE_OK: categorical WZON decision and review states, safe preselected contact, cautioned ZUS deadline.");
 

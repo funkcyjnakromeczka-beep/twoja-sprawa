@@ -121,7 +121,7 @@
   };
   const shorts = {
     szkody: "Lubin, Polkowice i okolice: pęknięcia ścian, elewacji lub uszkodzenia kostki? Warto udokumentować szkody i sprawdzić możliwości działania. Pierwszy kontakt bez zobowiązania do umowy.",
-    swiadczenie: "Świadczenie wspierające 2026: sprawdź etap WZON, zasady wniosku do ZUS i ważne terminy. Możesz zapytać Paulinę o dodatkowe wsparcie. Bez gwarancji wyniku.",
+    swiadczenie: "Świadczenie wspierające 2026: sprawdź etap WZON, zasady wniosku do ZUS i ważne terminy. Możesz zapytać Paulinę o dodatkowe wsparcie. Bez obietnic wyniku.",
     renty: "Otrzymujesz rentę powypadkową od ubezpieczyciela lub zastanawiasz się, czy możesz o nią wystąpić? Zapytaj o indywidualną analizę świadczenia i możliwych dalszych kroków. Bez gwarancji podwyższenia.",
     skd: "Kredyt konsumencki w PLN? Wyślij pełną umowę na wojciech.obieglo@votum-ds.pl, zostaw numer telefonu i zapytaj o indywidualną analizę SKD. Bez gwarancji wyniku.",
     przesyl: "Słupy lub linie na działce? Warto ustalić dokumentację i stan prawny urządzeń przesyłowych przed podjęciem dalszych działań.",

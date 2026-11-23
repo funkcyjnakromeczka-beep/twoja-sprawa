@@ -49,7 +49,8 @@ const supportPresetControls={
  decyzja:makeSupportPreset("decyzja"),
  "niskie-punkty":makeSupportPreset("niskie-punkty"),
  "przygotowanie-wzon":makeSupportPreset("przygotowanie-wzon"),
- "po-ponownym":makeSupportPreset("po-ponownym")
+ "po-ponownym":makeSupportPreset("po-ponownym"),
+  opiekun:makeSupportPreset("opiekun")
 };
 const makePlatformPreset=code=>({
  events:{},getAttribute:key=>key==="data-platform-preset"?code:null,
@@ -218,13 +219,14 @@ assert.ok(post.value.includes("Czy na Twojej działce"));
 assert.ok(status.textContent.includes("Darmowa domena Cloudflare Pages"));
 assert.ok(!status.textContent.includes("wersji testowej"),"Cloudflare production must not be called a preview");
 // Support-benefit campaign variants must stay organic, distinct and private.
-for(const [preset,channelName,variant,phrase] of [
-  ["start-2026","facebook_strona","wspierajace_70_77_2026","70–77 punktów"],
-  ["wzon-zus","facebook_grupa","wzon_zus_kolejnosc","Najpierw postępowanie przed WZON"],
-  ["decyzja","facebook_strona","decyzja_wzon_3_miesiace","3 miesięcy"],
-  ["niskie-punkty","facebook_strona","analiza_decyzji_wzon_14dni","14 dni"],
-  ["przygotowanie-wzon","facebook_grupa","przygotowanie_wzon_7_pytan","siedem pytań"],
-  ["po-ponownym","facebook_strona","wzon_po_ponownym_sad","termin miesiąca"]
+for(const [preset,channelName,variant,phrase,leadStage] of [
+  ["start-2026","facebook_strona","wspierajace_70_77_2026","70–77 punktów",null],
+  ["wzon-zus","facebook_grupa","wzon_zus_kolejnosc","Najpierw postępowanie przed WZON",null],
+  ["decyzja","facebook_strona","decyzja_wzon_3_miesiace","3 miesięcy","zus"],
+  ["niskie-punkty","facebook_strona","analiza_decyzji_wzon_14dni","14 dni","pierwsza-decyzja"],
+  ["przygotowanie-wzon","facebook_grupa","przygotowanie_wzon_7_pytan","siedem pytań","wniosek"],
+  ["po-ponownym","facebook_strona","wzon_po_ponownym_sad","termin miesiąca","po-ponownym"],
+  ["opiekun","facebook_grupa","swiadczenie_opiekun_swiadczenia","obowiązek ich zwrotu",null]
 ]){
   assert.ok(generatorGuide.includes('data-support-preset="'+preset+'"'),"Support preset button exists");
   supportPresetControls[preset].events.click();
@@ -234,10 +236,13 @@ for(const [preset,channelName,variant,phrase] of [
   assert.equal(linkUrl.searchParams.get("utm_medium"),channelName==="facebook_strona"?"post":"grupa");
   assert.equal(linkUrl.searchParams.get("utm_campaign"),"swiadczenie_wspierajace_2026");
   assert.equal(linkUrl.searchParams.get("utm_content"),variant);
+  assert.equal(linkUrl.searchParams.get("etap"),leadStage,"Only the applicable WZON/ZUS stage is auto-filled for this post");
   assert.equal(values.service.value,"swiadczenie");
   assert.ok(post.value.includes(phrase)&&post.value.includes("500 171 531")&&post.value.includes("Bez obietnic wyniku"));
   assert.ok(post.value.includes(link.value)&&!post.value.includes("796 441 345"));
-  assert.ok(!link.value.includes("PESEL")&&!link.value.includes("email="));
+  assert.ok(!link.value.includes("PESEL")&&!link.value.includes("email=")
+    &&!link.value.includes("punktacja=")&&!link.value.includes("zdrowie="),
+    "No PII, diagnosis or points may appear in share URLs");
   assert.ok(supportPresetStatus.textContent.includes("Nic nie zostało wysłane do Facebooka"));
 }
 // Two owned-group presets set category-only UTM, never publish a post.

@@ -63,6 +63,8 @@
     return "og-twoja-sprawa-metallic-v1.jpg";
   };
   const supportFbTexts = Object.freeze({
+    swiadczenie_opiekun_swiadczenia: "Świadczenie wspierające a świadczenie pielęgnacyjne opiekuna — warto sprawdzić zasady rozliczenia! Jeżeli okres, za który ZUS przyzna świadczenie wspierające, pokrywa się z okresem niektórych świadczeń opiekuńczych wypłaconych przez gminę, może powstać obowiązek ich zwrotu. Ważne są daty, rodzaj świadczenia i indywidualna sytuacja. O pomoc przy formalnościach w ZUS można poprosić bezpłatnie, a dodatkowe wsparcie jest dobrowolne. Na stronie Twoja Sprawa opisujemy kolejne etapy i kontakt do Pauliny. Nie obiecujemy przyznania ani wyrównania świadczenia. Bez obietnic wyniku.",
+
     wzon_po_ponownym_sad: "Świadczenie wspierające — WZON utrzymał decyzję po ponownym rozpatrzeniu? To inny etap niż pierwsza decyzja: po ponownym rozpatrzeniu można sprawdzić możliwość odwołania do sądu pracy i ubezpieczeń społecznych za pośrednictwem WZON. Urzędy wskazują co do zasady termin miesiąca od doręczenia nowej decyzji. Warto sprawdzić pouczenie i datę odbioru pisma. Na stronie pokazujemy różnicę między 14-dniowym wnioskiem o ponowne rozpatrzenie a dalszą drogą sądową. Pierwszy kontakt z Pauliną nie oznacza wniesienia pisma ani zawarcia umowy. Bez obietnic wyniku.",
 
     przygotowanie_wzon_7_pytan: "Świadczenie wspierające: przed oceną WZON warto uporządkować informacje o codziennych czynnościach. Przy których działaniach rzeczywiście potrzebna jest pomoc drugiej osoby? Czy używany sprzęt umożliwia samodzielne działanie? Jak często występują trudności, także w lepsze i trudniejsze dni? Na naszej stronie znajdziesz siedem pytań do samodzielnego przygotowania przed oceną WZON. Opis musi być zgodny z rzeczywistością; nie ma sposobu na zagwarantowanie punktacji. W razie potrzeby możesz omówić kolejne kroki z Pauliną. Dodatkowe wsparcie jest dobrowolne. Bez obietnic wyniku.",
@@ -169,6 +171,22 @@
     // utm_content, but do not insert the unrelated social-post writing style.
     const variant = slug(content.value) || (isBusinessProfile ? "" : educational?.variant || slug(style.value));
     if (variant) target.searchParams.set("utm_content", variant);
+    // Choose only a categorical, pre-approved WZON/ZUS stage for dedicated
+    // Facebook copy. Never append the reader's identity, medical history,
+    // points, decision dates, or any other user-entered information to URLs.
+    // All other channels/variants retain their previous canonical URLs.
+    const supportLeadStages = Object.freeze({
+      decyzja_wzon_3_miesiace: "zus",
+      analiza_decyzji_wzon_14dni: "pierwsza-decyzja",
+      przygotowanie_wzon_7_pytan: "wniosek",
+      wzon_po_ponownym_sad: "po-ponownym"
+    });
+    if (!educational && service.value === "swiadczenie"
+        && selectedChannel.startsWith("facebook")
+        && target.pathname === "/kampanie/swiadczenie-wspierajace"
+        && Object.prototype.hasOwnProperty.call(supportLeadStages, variant)) {
+      target.searchParams.set("etap", supportLeadStages[variant]);
+    }
     if (isBusinessProfile) target.searchParams.set("usluga", service.value);
     if (educational?.hash) target.hash = educational.hash;
     urlOutput.value = target.href;
@@ -315,7 +333,7 @@
       if (flyer && !flyer.hidden && !flyerPrint.disabled && typeof window.print === "function") window.print();
     });
   }
-  // Six organic Facebook campaign variations, distinguished solely by UTM
+  // Seven organic Facebook campaign variations, attributed by UTM
   // identifiers. No personal health details, browser storage or posting APIs.
   const supportPresets = Object.freeze({
     "start-2026": {channel:"facebook_strona",variant:"wspierajace_70_77_2026"},
@@ -323,7 +341,8 @@
     decyzja: {channel:"facebook_strona",variant:"decyzja_wzon_3_miesiace"},
     "niskie-punkty": {channel:"facebook_strona",variant:"analiza_decyzji_wzon_14dni"},
     "przygotowanie-wzon": {channel:"facebook_grupa",variant:"przygotowanie_wzon_7_pytan"},
-    "po-ponownym": {channel:"facebook_strona",variant:"wzon_po_ponownym_sad"}
+    "po-ponownym": {channel:"facebook_strona",variant:"wzon_po_ponownym_sad"},
+    opiekun: {channel:"facebook_grupa",variant:"swiadczenie_opiekun_swiadczenia"}
   });
   for (const button of supportPresetButtons) {
     button.addEventListener("click", () => {
@@ -339,7 +358,7 @@
       generate();
       if (supportPresetStatus)
         supportPresetStatus.textContent =
-          "Przygotowano wybrany post i link z UTM do formularza Pauliny. Skopiuj treść poniżej. Nic nie zostało wysłane do Facebooka.";
+          "Przygotowano post i link UTM do formularza Pauliny. Wybrane tematy ustawiają również etap WZON/ZUS. Skopiuj treść poniżej. Nic nie zostało wysłane do Facebooka.";
     });
   }
   // Editorial presets for the user's own FB group. They only prepare a

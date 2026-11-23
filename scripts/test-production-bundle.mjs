@@ -503,29 +503,59 @@ for(const target of ["index.html","uslugi/szkody-gornicze.html","uslugi/swiadcze
  assert.ok(desc.length>=70&&desc.length<=160,"Unexpected SEO description length: "+target);
 }
 
-// Every shared URL should have a specific title, accessible same-origin photo,
-// and a description sourced from its own page rather than a generic homepage.
-for(const [page,photo] of [
-  ["index.html","wojciech-obieglo.jpg"],
-  ["uslugi/swiadczenie-wspierajace.html","paulina-chandrala.jpg"],
-  ["uslugi/szkody-gornicze.html","wojciech-obieglo.jpg"],
-  ["uslugi/renty-powypadkowe.html","paulina-chandrala.jpg"],
-  ["uslugi/kredyty-frankowe.html","wojciech-obieglo.jpg"]
-]){
-  const html=await read(page);
-  const title=html.match(/<title>([^<]+)<\/title>/)?.[1];
-  const description=html.match(/<meta name="description" content="([^"]+)"/)?.[1];
-  assert.ok(title&&description,"missing social metadata source: "+page);
-  assert.ok(html.includes('<meta property="og:title" content="'+title+'">'),"social title not page-specific: "+page);
-  assert.ok(html.includes('<meta name="twitter:title" content="'+title+'">'),"Twitter title not page-specific: "+page);
-  assert.ok(html.includes('<meta property="og:description" content="'+description+'">'),"social description not page-specific: "+page);
-  const socialPreview=["index.html","uslugi/szkody-gornicze.html","uslugi/swiadczenie-wspierajace.html","uslugi/renty-powypadkowe.html","uslugi/kredyty-frankowe.html"].includes(page)
-    ? "og-twoja-sprawa-metallic-v1.jpg" : photo;
-  assert.ok(html.includes('<meta property="og:image" content="'+origin+'/assets/'+socialPreview+'">'),"social preview incorrect: "+page);
-  assert.ok(html.includes('<meta name="twitter:image" content="'+origin+'/assets/'+socialPreview+'">'),"Twitter preview incorrect: "+page);
-  assert.ok(html.includes('<meta property="og:image:alt" content="'),"missing accessible preview label: "+page);
+// Images exposed in generated Facebook links must be topic-specific,
+ // local to the Cloudflare domain, and the same for Open Graph and X.
+const previewCases=[
+ ["index.html","og-twoja-sprawa-metallic-v1.jpg",1536,803],
+ ["kampanie/szkody-gornicze.html","og-szkody-gornicze.jpg",1200,630],
+ ["kampanie/swiadczenie-wspierajace.html","og-swiadczenie-wspierajace.jpg",1200,630],
+ ["kampanie/skd.html","og-skd.jpg",1200,630],
+ ["kampanie/renty-powypadkowe.html","og-renty-powypadkowe.jpg",1200,630],
+ ["uslugi/szkody-gornicze.html","og-szkody-gornicze.jpg",1200,630],
+ ["uslugi/swiadczenie-wspierajace.html","og-swiadczenie-wspierajace.jpg",1200,630],
+ ["uslugi/kredyty-pln.html","og-skd.jpg",1200,630],
+ ["uslugi/renty-powypadkowe.html","og-renty-powypadkowe.jpg",1200,630],
+ ["uslugi/kredyty-frankowe.html","og-kredyty-frankowe.jpg",1200,630],
+ ["uslugi/sluzebnosc-przesylu.html","og-sluzebnosc-przesylu.jpg",1200,630],
+ ["wiedza/kredyt-pln-dokumenty-skd.html","og-skd-dokumenty.jpg",1200,630],
+ ["wiedza/drobne-pekniecia-szkody-gornicze.html","og-szkody-gornicze.jpg",1200,630],
+ ["wiedza/swiadczenie-wspierajace-2026-wzon-zus.html","og-swiadczenie-wspierajace.jpg",1200,630],
+ ["wiedza/renta-powypadkowa-dokumenty.html","og-renty-powypadkowe.jpg",1200,630],
+ ["lokalnie/szkody-gornicze-lubin.html","og-szkody-lubin.jpg",1200,630],
+ ["lokalnie/szkody-gornicze-polkowice.html","og-szkody-polkowice.jpg",1200,630]
+];
+for(const [page,file,width,height] of previewCases){
+ const markup=await read(page),head=markup.slice(0,markup.indexOf("</head>"));
+ const title=markup.match(/<title>([^<]+)<\/title>/)?.[1];
+ const desc=head.match(/<meta name="description" content="([^"]+)"/)?.[1];
+ assert.ok(title&&desc,"Missing social source content "+page);
+ for(const [field,key,val] of [
+  ["property","og:title",title],["property","og:description",desc],
+  ["property","og:image",origin+"/assets/"+file],
+  ["property","og:image:secure_url",origin+"/assets/"+file],
+  ["property","og:image:type","image/jpeg"],
+  ["property","og:image:width",String(width)],
+  ["property","og:image:height",String(height)],
+  ["name","twitter:image",origin+"/assets/"+file],
+  ["name","twitter:card","summary_large_image"]
+ ]){
+  assert.ok(head.includes('<meta '+field+'="'+key+'" content="'+val+'">'),
+   "Unexpected "+key+" on "+page);
+ }
+ assert.equal((head.match(/<meta property="og:image" /g)||[]).length,1,
+  "Facebook OG images must be unique: "+page);
+ assert.ok(head.includes('<meta property="og:image:alt" content="'),"Missing image description "+page);
+ if(file!=="og-twoja-sprawa-metallic-v1.jpg"){
+  const size=(await stat("dist/assets/"+file)).size;
+  assert.ok(size>50000&&size<700000,"Preview missing or oversized: "+file);
+ }
 }
-
+const campaignPage=await read("narzedzia/linki-kampanii.html");
+const campaignScript=await read("campaign-links.js");
+assert.ok(campaignPage.includes('src="/assets/og-szkody-gornicze.jpg"'),"Generator preview needs mining image");
+assert.ok(campaignScript.includes('return "og-skd-dokumenty.jpg"')&&
+ campaignScript.includes('previewImage.src=src'),"Generator must choose article SKD image");
+console.log("THEMATIC_OG_IMAGES_OK: 17 routes, 9 optimized thematic assets, aligned previews.");
 
 // The search page must degrade gracefully if scripts or its local index fail.
 // No-JavaScript users should see real service links instead of inert controls.

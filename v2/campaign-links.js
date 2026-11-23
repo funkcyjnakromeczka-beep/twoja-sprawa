@@ -46,6 +46,19 @@
   const previewTitle=document.querySelector("[data-preview-title]");
   const previewDescription=document.querySelector("[data-preview-description]");
   const previewHost=document.querySelector("[data-preview-host]");
+  const previewImage=document.querySelector(".campaign-link-preview-card img");
+  const previewGraphic=path=>{
+    if(path==="/lokalnie/szkody-gornicze-lubin")return "og-szkody-lubin.jpg";
+    if(path==="/lokalnie/szkody-gornicze-polkowice")return "og-szkody-polkowice.jpg";
+    if(path==="/wiedza/kredyt-pln-dokumenty-skd")return "og-skd-dokumenty.jpg";
+    if(/szkody-gornicze|drobne-pekniecia|ugoda-z-kopalnia/.test(path))return "og-szkody-gornicze.jpg";
+    if(/swiadczenie-wspierajace|wzon-zus/.test(path))return "og-swiadczenie-wspierajace.jpg";
+    if(/renty-powypadkowe|renta-powypadkowa/.test(path))return "og-renty-powypadkowe.jpg";
+    if(/kredyty-frankowe/.test(path))return "og-kredyty-frankowe.jpg";
+    if(/sluzebnosc-przesylu/.test(path))return "og-sluzebnosc-przesylu.jpg";
+    if(/kredyty-pln|skd/.test(path))return "og-skd.jpg";
+    return "og-twoja-sprawa-metallic-v1.jpg";
+  };
   const campaigns = {
     szkody: {
       path: "/kampanie/szkody-gornicze.html",
@@ -234,6 +247,15 @@
     }
     const preview=educational ? educationalPreviews[target.pathname] : Object.prototype.hasOwnProperty.call(previewCards,target.pathname)
       ? previewCards[target.pathname] : {title:chosen.title,description:publicationText};
+    if(previewImage){
+      const file=previewGraphic(target.pathname.replace(/\.html$/,""));
+      const src="/assets/"+file;
+      if(previewImage.getAttribute("src")!==src)previewImage.src=src;
+      previewImage.alt=preview.title+" — grafika udostępnianego linku";
+      const brand=file==="og-twoja-sprawa-metallic-v1.jpg";
+      previewImage.width=brand?1536:1200;
+      previewImage.height=brand?803:630;
+    }
     if(previewTitle)previewTitle.textContent=preview.title;
     if(previewDescription)previewDescription.textContent=preview.description;
     if(previewHost)previewHost.textContent=target.hostname;

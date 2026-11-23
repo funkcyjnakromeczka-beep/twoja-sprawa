@@ -245,37 +245,33 @@ function upsertSocialMetadata(markup,route,origin){
   const description=getContent("name","description");
   const usePaulina=/swiadczenie-wspierajace|renty-powypadkowe/.test(route);
   const person=usePaulina?"Paulina Chandrała":"Wojciech Obiegło";
-  // Facebook link previews are extracted server-side, without running JavaScript.
-  // Use the first-party 1200x630 brand card for every destination provided by the
-  // campaign-link generator, and for the corresponding mining service landing.
-  // Otherwise keep the authentic adviser portrait (never a broken CDN reference).
-  const brandedRoutes=new Set([
-    "/", // Homepage is the destination of Google Business Profile links.
-    "/kampanie/szkody-gornicze.html",
-    "/kampanie/swiadczenie-wspierajace.html",
-    "/kampanie/renty-powypadkowe.html",
-    "/kampanie/skd.html",
-    "/uslugi/renty-powypadkowe.html",
-    "/uslugi/sluzebnosc-przesylu.html",
-    "/uslugi/kredyty-frankowe.html",
-    "/uslugi/szkody-gornicze.html",
-    "/uslugi/kredyty-pln.html",
-    "/uslugi/swiadczenie-wspierajace.html",
-    "/lokalnie/szkody-gornicze-lubin.html",
-    "/lokalnie/szkody-gornicze-polkowice.html"
-  ]);
-  const branded=brandedRoutes.has(route);
-  const image=origin+"/assets/"+(branded?"og-twoja-sprawa-metallic-v1.jpg":(usePaulina?"paulina-chandrala.jpg":"wojciech-obieglo.jpg"));
-  const imageAlt=branded?"Twoja Sprawa — VOTUM Odszkodowania; SuccessTree — współpraca agencyjna z VOTUM":person+" — osoba do pierwszego kontaktu, Twoja Sprawa";
+  // Facebook/WhatsApp read server-rendered Open Graph metadata, not JavaScript.
+  // Every main topic and campaign gets the same corresponding first-party
+  // 1200x630 JPEG. Home and neutral pages keep the existing brand graphic.
+  const routes=[
+    [/^\/lokalnie\/szkody-gornicze-lubin(?:\.html)?$/,"og-szkody-lubin.jpg","Szkody górnicze w Lubinie — Twoja Sprawa"],
+    [/^\/lokalnie\/szkody-gornicze-polkowice(?:\.html)?$/,"og-szkody-polkowice.jpg","Szkody górnicze w Polkowicach — Twoja Sprawa"],
+    [/^\/wiedza\/kredyt-pln-dokumenty-skd(?:\.html)?$/,"og-skd-dokumenty.jpg","SKD — lista dokumentów do analizy kredytu — Twoja Sprawa"],
+    [/szkody-gornicze|drobne-pekniecia|ugoda-z-kopalnia|szkody-na-nieruchomosci/,"og-szkody-gornicze.jpg","Szkody górnicze — dokumentacja uszkodzeń — Twoja Sprawa"],
+    [/swiadczenie-wspierajace|wzon-zus/,"og-swiadczenie-wspierajace.jpg","Świadczenie wspierające — WZON i ZUS — Twoja Sprawa"],
+    [/renty-powypadkowe|renta-powypadkowa|wypadki-|wypadek-przy-pracy/,"og-renty-powypadkowe.jpg","Renty powypadkowe — dokumentacja i analiza — Twoja Sprawa"],
+    [/kredyty-frankowe|frankow/,"og-kredyty-frankowe.jpg","Kredyty frankowe — analiza umowy — Twoja Sprawa"],
+    [/sluzebnosc-przesylu/,"og-sluzebnosc-przesylu.jpg","Służebność przesyłu — dokumentacja działki — Twoja Sprawa"],
+    [/kredyty-pln|skd/,"og-skd.jpg","SKD — sankcja kredytu darmowego — Twoja Sprawa"]
+  ];
+  const selected=route==="/"||route==="/index.html"?null:routes.find(([regex])=>regex.test(route));
+  const file=selected?.[1]||"og-twoja-sprawa-metallic-v1.jpg";
+  const image=origin+"/assets/"+file;
+  const imageAlt=selected?.[2]||"Twoja Sprawa — SuccessTree, współpraca agencyjna z VOTUM";
+  const socialWidth=selected?"1200":"1536";
+  const socialHeight=selected?"630":"803";
   setContent("property","og:title",title);
   if(description)setContent("property","og:description",description);
   setContent("property","og:image",image);
   setContent("property","og:image:secure_url",image);
   setContent("property","og:image:type","image/jpeg");
-  if(branded){
-    setContent("property","og:image:width","1536");
-    setContent("property","og:image:height","803");
-  }
+  setContent("property","og:image:width",socialWidth);
+  setContent("property","og:image:height",socialHeight);
   setContent("property","og:image:alt",imageAlt);
   setContent("name","twitter:card","summary_large_image");
   setContent("name","twitter:title",title);

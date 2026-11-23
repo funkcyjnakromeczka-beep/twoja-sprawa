@@ -68,8 +68,8 @@
     },
     swiadczenie: {
       path: "/kampanie/swiadczenie-wspierajace.html",
-      title: "Świadczenie wspierające — WZON i ZUS",
-      text: "Masz pytania o świadczenie wspierające, ocenę potrzeby wsparcia lub otrzymaną decyzję? Możemy pomóc uporządkować etap sprawy i ustalić możliwe dalsze kroki. Nie trzeba wysyłać dokumentacji medycznej przez formularz. Samo zgłoszenie nie gwarantuje przyznania świadczenia."
+      title: "Świadczenie wspierające 2026 — WZON i ZUS",
+      text: "Świadczenie wspierające w 2026 r.: na czym polega ocena WZON, co oznacza próg od 70 punktów i kiedy składa się wniosek do ZUS? Poznaj etapy i ważne terminy. Osoby potrzebujące dodatkowej pomocy mogą zostawić kontakt do Pauliny. Samo zgłoszenie jest niezobowiązujące i nie gwarantuje świadczenia."
     },
     renty: {
       path: "/kampanie/renty-powypadkowe.html",
@@ -113,7 +113,7 @@
   });
   const hooks = {
     szkody: "Zauważyłeś rysę na elewacji i zastanawiasz się, czy może mieć związek z działalnością górniczą?",
-    swiadczenie: "Masz decyzję WZON albo dopiero planujesz wniosek o świadczenie wspierające?",
+    swiadczenie: "Świadczenie wspierające 2026: najpierw decyzja WZON, a kiedy wniosek do ZUS?",
     renty: "Czy skutki wypadku nadal wpływają na Twoje wydatki lub możliwości zarobkowania?",
     skd: "Czy dokładnie wiesz, jakie koszty przewiduje Twoja umowa kredytu konsumenckiego?",
     przesyl: "Czy na Twojej działce znajdują się urządzenia przesyłowe?",
@@ -121,7 +121,7 @@
   };
   const shorts = {
     szkody: "Lubin, Polkowice i okolice: pęknięcia ścian, elewacji lub uszkodzenia kostki? Warto udokumentować szkody i sprawdzić możliwości działania. Pierwszy kontakt bez zobowiązania do umowy.",
-    swiadczenie: "Świadczenie wspierające: jesteś przed oceną WZON, czekasz na decyzję czy składasz wniosek do ZUS? Zapytaj o możliwe dalsze kroki i przygotowanie sprawy. Bez obietnic wyniku.",
+    swiadczenie: "Świadczenie wspierające 2026: sprawdź etap WZON, zasady wniosku do ZUS i ważne terminy. Możesz zapytać Paulinę o dodatkowe wsparcie. Bez gwarancji wyniku.",
     renty: "Otrzymujesz rentę powypadkową od ubezpieczyciela lub zastanawiasz się, czy możesz o nią wystąpić? Zapytaj o indywidualną analizę świadczenia i możliwych dalszych kroków. Bez gwarancji podwyższenia.",
     skd: "Kredyt konsumencki w PLN? Wyślij pełną umowę na wojciech.obieglo@votum-ds.pl, zostaw numer telefonu i zapytaj o indywidualną analizę SKD. Bez gwarancji wyniku.",
     przesyl: "Słupy lub linie na działce? Warto ustalić dokumentację i stan prawny urządzeń przesyłowych przed podjęciem dalszych działań.",

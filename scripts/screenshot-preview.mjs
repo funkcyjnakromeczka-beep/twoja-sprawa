@@ -1123,6 +1123,12 @@ try{
  await generatorPage.goto(origin+"/narzedzia/linki-kampanii.html",{waitUntil:"domcontentloaded"});
  const campaignSelector=generatorPage.locator('[data-campaign-builder] select[name="service"]');
  const resultLink=generatorPage.locator('[data-campaign-url]');
+ // The first Facebook campaign targets support benefits; the title is an
+ // editable form value, not a fixed test fixture from the former mining preset.
+ // Validate that all generated links retain its normalized UTM label.
+ const rawCampaign=await generatorPage.locator('[data-campaign-builder] input[name="campaign"]').inputValue();
+ const expectedCampaign=String(rawCampaign).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()
+  .replace(/ł/g,"l").replace(/[^a-z0-9_-]+/g,"_").replace(/^_+|_+$/g,"").slice(0,40)||"kampania_bezplatna";
  for(const [service,expected] of [
   ["szkody","/kampanie/szkody-gornicze"],
   ["swiadczenie","/kampanie/swiadczenie-wspierajace"],
@@ -1133,7 +1139,7 @@ try{
   await campaignSelector.selectOption(service);
   const selected=new URL(await resultLink.inputValue());
   if(selected.pathname!==expected||selected.pathname.endsWith(".html"))throw Error("Generator canonical marketing destination is incorrect: "+service+" "+selected.href);
-  if(selected.searchParams.get("utm_campaign")!=="lokalna_pomoc")throw Error("Generator dropped campaign tracking label");
+  if(selected.searchParams.get("utm_campaign")!==expectedCampaign)throw Error("Generator dropped configured campaign tracking label: "+service);
   if(service==="skd"){
    const postText=await generatorPage.locator("[data-campaign-post]").inputValue();
    if(!postText.includes("wojciech.obieglo@votum-ds.pl")||!postText.includes("796 441 345")||postText.includes("500 171 531"))throw Error("SKD marketing post contacts wrong advisor");

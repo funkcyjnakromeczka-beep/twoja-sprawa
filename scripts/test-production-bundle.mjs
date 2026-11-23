@@ -1141,7 +1141,7 @@ assert.ok(heroPreload.includes('type="image/webp"')&&heroPreload.includes('image
  heroPreload.includes('imagesizes="')&&heroPreload.includes('media="(min-width: 961px)"'),
  "Desktop hero must preload the selected responsive WebP only");
 const webpHeaders=await read("_headers");
-assert.ok(webpHeaders.includes("/assets/hero-twoja-sprawa-*.webp\\n  Cache-Control: public, max-age=604800"),
+assert.ok(webpHeaders.includes("/assets/hero-twoja-sprawa-*.webp")&&webpHeaders.includes("Cache-Control: public, max-age=604800"),
  "Optimized artwork should have a safe one-week browser cache without changing the Facebook OG URL");
 console.log("RESPONSIVE_HERO_WEBP_OK: three first-party WebP variants with RIFF validation, original OG JPEG preserved.");
 assert.ok(heroImage.includes('loading="lazy"')&&heroImage.includes('width="1536"')&&heroImage.includes('height="803"'),

@@ -95,8 +95,10 @@ for(const page of critical){
 const home = read("v2/index.html");
 
 const mobileNavLabels=[
- 'aria-label="Szkody górnicze — zgłoś uszkodzenia do wstępnej analizy"',
- 'aria-label="Świadczenie wspierające — sprawy WZON i ZUS, przejdź do zgłoszenia"',
+ 'aria-label="Szkody górnicze — objawy szkód, poradnik i formularz kontaktu"',
+ 'aria-label="Świadczenie wspierające — WZON i ZUS, poradnik i kontakt z Pauliną"',
+ 'aria-label="SKD — analiza kredytu PLN, e-mail do Wojciecha lub formularz kontaktowy"',
+ 'aria-label="Renty powypadkowe — wybierz etap sprawy i skontaktuj się z Pauliną"',
  'Świadczenie wspierające</a>'
 ];
 for(const label of mobileNavLabels){

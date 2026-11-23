@@ -539,12 +539,12 @@ assert.ok(searchHtml.includes("data-search-fallback")&&
  searchCss.includes('[data-site-search]:not([data-search-ready="true"]) [data-search-interactive]'),
  "Search must show static destinations until local results initialize");
 for(const href of [
- "/kampanie/szkody-gornicze","/kampanie/swiadczenie-wspierajace",
- "/kampanie/skd","/uslugi/renty-powypadkowe",
+ "/uslugi/szkody-gornicze","/uslugi/swiadczenie-wspierajace",
+ "/uslugi/kredyty-pln","/uslugi/renty-powypadkowe",
  "/uslugi/kredyty-frankowe","/uslugi/sluzebnosc-przesylu"
 ]){
  assert.ok(searchHtml.includes('href="'+href+'"'),
-  "Missing safe direct link in fallback search: "+href);
+  "Missing indexable service link in fallback search: "+href);
 }
 
 const contactFormJS=await read("contact.js");

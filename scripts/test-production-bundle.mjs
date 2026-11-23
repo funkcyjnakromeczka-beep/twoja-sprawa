@@ -982,7 +982,7 @@ for(const [page,slug,title] of [
   page.includes('aria-label="Ścieżka nawigacji"')&&
   page.includes('aria-current="page">'+title+'</span>'),
   "Production breadcrumb nav must show the updated WZON topic: "+slug);
- const schemas=[...page.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)]
+ const schemas=[...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
   .flatMap(m=>{const schema=JSON.parse(m[1]);return schema["@graph"]||[schema]});
  const crumbs=schemas.filter(schema=>schema["@type"]==="BreadcrumbList");
  assert.equal(crumbs.length,1,"Only one canonical BreadcrumbList in built guide: "+slug);

@@ -19,7 +19,8 @@
   let shown=0;
   for(const card of cards){
    const matchCategory=category==="all"||card.dataset.hubCategory===category;
-   const searchable=normalize(card.textContent);
+   // Curated aliases help with everyday language without changing visible titles or sending queries to a server.
+   const searchable=normalize(card.textContent+" "+(card.dataset.hubKeywords||""));
    const matchText=terms.every(term=>searchable.includes(term));
    card.hidden=!(matchCategory&&matchText);
    if(!card.hidden)shown++;

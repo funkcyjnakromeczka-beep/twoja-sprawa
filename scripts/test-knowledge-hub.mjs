@@ -12,10 +12,10 @@ class Node{
  focus(){this.focused=true;}
 }
 const cards=[
- new Node("Szkody górnicze — Pęknięcia elewacji", {hubCategory:"szkody"}),
- new Node("Świadczenie wspierające WZON decyzja", {hubCategory:"swiadczenie"}),
+ new Node("Szkody górnicze — Pęknięcia elewacji", {hubCategory:"szkody",hubKeywords:"kostka brukowa"}),
+ new Node("Świadczenie wspierające WZON decyzja", {hubCategory:"swiadczenie",hubKeywords:"kwestionariusz WZON"}),
  new Node("Kredyty PLN SKD umowa", {hubCategory:"skd"}),
- new Node("Renta powypadkowa", {hubCategory:"renty"})
+ new Node("Renta powypadkowa", {hubCategory:"renty",hubKeywords:"waloryzacja renty"})
 ];
 const input=new Node(),status=new Node(),empty=new Node(),reset=new Node();
 const fullSearch=[new Node(),new Node()];
@@ -40,6 +40,13 @@ assert.equal(filters[0].attrs["aria-pressed"],"true");
 quickTopics[1].events.click({button:0,ctrlKey:true,preventDefault(){throw Error("Modified click intercepted");}});
 reset.events.click();
 assert.equal(status.textContent,"Widoczne: 4 artykuły");
+// Everyday-language aliases map to the right reviewed guide, not to random pages.
+for(const [query,index] of [["kostka brukowa",0],["kwestionariusz WZON",1],["waloryzacja renty",3]]){
+ input.value=query;input.events.input();
+ assert.equal(cards.filter(x=>!x.hidden).length,1,"Alias should return one guide: "+query);
+ assert.equal(cards[index].hidden,false,"Alias routed to wrong guide: "+query);
+}
+reset.events.click();
 filters.find(x=>x.dataset.hubFilter==="szkody").events.click();
 assert.equal(status.textContent,"Widoczne: 1 artykuł");
 assert.equal(cards[0].hidden,false);
@@ -70,6 +77,10 @@ assert.ok(html.includes('role="status" aria-live="polite"'));
 assert.ok(html.includes('aria-controls="hub-results"'));
 assert.equal((html.match(/<a class="hub-card(?:\s|")/g)||[]).length,10);
 assert.equal((html.match(/data-hub-full-search/g)||[]).length,2);
+const allAliases=[...html.matchAll(/<a class="hub-card[^>]*data-hub-keywords="([^"]+)"/g)].map(x=>x[1]);
+assert.equal(allAliases.length,10,"All article cards need curated plain-language synonyms");
+assert.ok(allAliases.every(x=>x.length<170),"Search aliases should stay concise");
+assert.ok(html.includes('class="hub-search-hint"'),"Guide search aliases must be discoverable");
 const quickMarkup=html.match(/<div class="hub-quick-topics"[\s\S]*?<\/div>/)?.[0]||"";
 assert.equal((quickMarkup.match(/data-hub-quick-query=/g)||[]).length,6,"Six popular-topic links must exist");
 assert.equal((quickMarkup.match(/href="\/v2\/wiedza\//g)||[]).length,6,"Each suggested topic must work without JS");

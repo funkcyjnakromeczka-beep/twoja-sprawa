@@ -76,6 +76,11 @@ for(const [key,attr] of [["og:description","property"],["twitter:description","n
 }
 assert.ok(homeTitle.length<=60&&homeDescription.length>=100&&homeDescription.length<=160,"Homepage SEO snippet length unexpectedly changed");
 
+// The SKD homepage teaser must not imply uploading a full bank agreement to a basic contact form.
+assert.ok(html.includes("Kredyt konsumencki w PLN? Sprawdź dokumenty do analizy i zostaw kontakt."),
+ "SKD teaser should describe the actual contact path");
+assert.ok(!html.includes("Prześlij umowę i zostaw numer telefonu."),
+ "Do not promise contract upload in the first-contact form");
 const beg=html.indexOf('class="grid primary-services"');
 const end=html.indexOf('<details class="service-extra"',beg);
 assert.ok(beg>=0&&end>beg,"Homepage services area missing");

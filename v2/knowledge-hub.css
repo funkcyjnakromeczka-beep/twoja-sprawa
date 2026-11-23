@@ -195,3 +195,7 @@
 .knowledge-hub .hub-quick-topics a[data-active="true"]{background:#173c50;border-color:#173c50;color:#fff}
 .knowledge-hub .hub-quick-topics a:focus-visible{outline:3px solid #a52a45;outline-offset:3px}
 @media(max-width:560px){.knowledge-hub .hub-quick-topics{gap:7px}.knowledge-hub .hub-quick-label{flex-basis:100%}.knowledge-hub .hub-quick-topics a{font-size:.83rem;padding:9px 11px}}
+
+/* Natural-language guide search — explain curated aliases without extra controls. */
+.knowledge-hub .hub-search-hint{margin:-4px 0 14px;color:#435b67;font-size:.84rem;line-height:1.5;max-width:78ch}
+@media(max-width:560px){.knowledge-hub .hub-search-hint{font-size:.81rem;line-height:1.55}}

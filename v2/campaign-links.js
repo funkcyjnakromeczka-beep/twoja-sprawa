@@ -63,6 +63,7 @@
     return "og-twoja-sprawa-metallic-v1.jpg";
   };
   const supportFbTexts = Object.freeze({
+    przygotowanie_wzon_7_pytan: "Świadczenie wspierające: przed oceną WZON warto uporządkować informacje o codziennych czynnościach. Przy których działaniach rzeczywiście potrzebna jest pomoc drugiej osoby? Czy używany sprzęt umożliwia samodzielne działanie? Jak często występują trudności, także w lepsze i trudniejsze dni? Na naszej stronie znajdziesz siedem pytań do samodzielnego przygotowania przed oceną WZON. Opis musi być zgodny z rzeczywistością; nie ma sposobu na zagwarantowanie punktacji. W razie potrzeby możesz omówić kolejne kroki z Pauliną. Dodatkowe wsparcie jest dobrowolne. Bez obietnic wyniku.",
     analiza_decyzji_wzon_14dni: "Świadczenie wspierające: przyznana punktacja WZON nie zawsze oddaje rzeczywistą potrzebę pomocy. Jeśli masz wątpliwości, sprawdź uzasadnienie i pouczenie. Co do zasady na wniosek o ponowne rozpatrzenie decyzji jest 14 dni od doręczenia. W sprawie można rozważyć indywidualną analizę i ewentualne dalsze działania. Pomoc zewnętrzna jest dobrowolna i zależy od umowy. Nie ma gwarancji podwyższenia punktacji. Bez obietnic wyniku.",
     wspierajace_70_77_2026: "Świadczenie wspierające 2026: od 1 stycznia prawo do ubiegania się o świadczenie rozszerzono również na osoby z decyzją WZON ustalającą 70–77 punktów, po spełnieniu pozostałych warunków. Sam stopień niepełnosprawności nie zastępuje tej decyzji. Sprawdź, jakie etapy obowiązują i gdzie można uzyskać bezpłatną pomoc w ZUS. Możliwe jest także dobrowolne dodatkowe wsparcie przy uporządkowaniu sprawy. Bez obietnic wyniku.",
     wzon_zus_kolejnosc: "Świadczenie wspierające — jaka jest kolejność? Najpierw postępowanie przed WZON i ostateczna decyzja o poziomie potrzeby wsparcia. Dopiero potem elektroniczny wniosek do ZUS. Złożenie wniosku w ZUS nie wymaga płatnego pośrednika. Na stronie Twoja Sprawa wyjaśniamy kolejne kroki oraz sposób kontaktu z Pauliną w przypadku potrzeby dodatkowego wsparcia. Bez obietnic wyniku.",
@@ -312,13 +313,14 @@
       if (flyer && !flyer.hidden && !flyerPrint.disabled && typeof window.print === "function") window.print();
     });
   }
-  // Three organic Facebook campaign variations, distinguished solely by UTM
+  // Five organic Facebook campaign variations, distinguished solely by UTM
   // identifiers. No personal health details, browser storage or posting APIs.
   const supportPresets = Object.freeze({
     "start-2026": {channel:"facebook_strona",variant:"wspierajace_70_77_2026"},
     "wzon-zus": {channel:"facebook_grupa",variant:"wzon_zus_kolejnosc"},
     decyzja: {channel:"facebook_strona",variant:"decyzja_wzon_3_miesiace"},
-    "niskie-punkty": {channel:"facebook_strona",variant:"analiza_decyzji_wzon_14dni"}
+    "niskie-punkty": {channel:"facebook_strona",variant:"analiza_decyzji_wzon_14dni"},
+    "przygotowanie-wzon": {channel:"facebook_grupa",variant:"przygotowanie_wzon_7_pytan"}
   });
   for (const button of supportPresetButtons) {
     button.addEventListener("click", () => {

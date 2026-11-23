@@ -709,7 +709,8 @@ assert.ok(homeFlowCss.includes(".premium-v2 .hero-skd-third{display:none}"),
 
 const campaignQuickBar=await read("campaign-mobile-actions.js");
 assert.ok(campaignQuickBar.includes('const formHasFocus=formRegion.contains(document.activeElement);')&&
- campaignQuickBar.includes('bar.hidden=overlapsForm||formHasFocus;'),
+ campaignQuickBar.includes('bar.hidden=overlapsForm||formHasFocus||keyboardOpen();')&&
+ campaignQuickBar.includes('window.visualViewport?.addEventListener("resize"'),
  "Campaign bottom CTA must hide when the contact form is visible or focused");
 const campaignStyles=await read("styles.css");
 // Shared contact form must remain usable on narrow 320px phones without

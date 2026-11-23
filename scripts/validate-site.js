@@ -97,7 +97,7 @@ const home = read("v2/index.html");
 const mobileNavLabels=[
  'aria-label="Szkody górnicze — objawy szkód, poradnik i formularz kontaktu"',
  'aria-label="Świadczenie wspierające — WZON i ZUS, poradnik i kontakt z Pauliną"',
- 'aria-label="SKD — wyślij umowę; analiza kredytu PLN, e-mail do Wojciecha lub formularz kontaktowy"',
+ 'aria-label="SKD — analiza umowy, dokumenty do przygotowania i kontakt z Wojciechem"',
  'aria-label="Renty powypadkowe — wybierz etap sprawy i skontaktuj się z Pauliną"',
  'Świadczenie wspierające</a>'
 ];
@@ -155,7 +155,8 @@ if(!diagnostic.includes('["SKD — walidacja numeru","/kampanie/skd",true,"","",
 
 const campaignQuickBar=read("v2/campaign-mobile-actions.js");
 if(!campaignQuickBar.includes('const formHasFocus=formRegion.contains(document.activeElement);')||
-   !campaignQuickBar.includes('bar.hidden=overlapsForm||formHasFocus;'))
+   (!campaignQuickBar.includes('bar.hidden=overlapsForm||formHasFocus||keyboardOpen();')||
+    !campaignQuickBar.includes('window.visualViewport?.addEventListener("resize"')))
  warn("Kampanie: dolny pasek kontaktu może zasłaniać aktywny formularz");
 const campaignStyles=read("v2/styles.css");
 if(!campaignStyles.includes(".campaign-mobile-actions[hidden]{display:none!important}")||

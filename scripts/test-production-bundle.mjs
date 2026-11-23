@@ -3,7 +3,7 @@
 import assert from "node:assert/strict";
 import {createHash} from "node:crypto";
 import {readFile,stat,readdir} from "node:fs/promises";
-import {pruneHomepageRules,pruneSubpageRules} from "./homepage-css-prune.mjs";
+import {pruneHomepageRules,pruneSubpageRules,compactStylesheetWhitespace} from "./homepage-css-prune.mjs";
 import {collectIndexableRoutes} from "./indexnow-routes.mjs";
 import {feedArticlePaths} from "./verified-articles-feed.mjs";
 import {PAGE_PATHS} from "./page-navigation.mjs";
@@ -225,6 +225,28 @@ const pruningSample=pruneSubpageRules(
  ".premium-subpage .a,.premium-v2 .a{padding:2px}"
 );
 assert.equal(pruningSample.removed,2,"Only guaranteed subpage-only rules may be discarded");
+const foreignTemplateSample=pruneSubpageRules(
+ ".premium-campaign .headline{font-weight:700}"+
+ ".general-service-page .subhero{padding:20px}"+
+ ".guide-article .steps{margin:12px}"+
+ "@media(max-width:800px){.campaign-builder-layout .grid{display:grid}.premium-v2 .hero{display:block}}"+
+ ".premium-campaign .x,.premium-v2 .x{color:blue}"
+);
+assert.equal(foreignTemplateSample.removed,4,
+ "Only pure foreign-template rules should be removed from the homepage CSS");
+assert.ok(!foreignTemplateSample.css.includes("font-weight:700")&&
+ !foreignTemplateSample.css.includes("padding:20px")&&
+ !foreignTemplateSample.css.includes("display:grid")&&
+ foreignTemplateSample.css.includes(".premium-campaign .x,.premium-v2 .x")&&
+ foreignTemplateSample.css.includes(".premium-v2 .hero{display:block}"),
+ "Template pruning must preserve mixed selectors and shared mobile rules");
+const whitespaceSample='.a :hover { color: red; content: "A, B; C"; margin: calc(2px + 1px); } .b, .c { color: blue; }';
+const compactedSample=compactStylesheetWhitespace(whitespaceSample);
+assert.ok(compactedSample.includes(".a :hover")&&compactedSample.includes('"A, B; C"')&&
+ compactedSample.includes("calc(2px + 1px)")&&compactedSample.includes(".b,.c"),
+ "CSS compaction must preserve descendant pseudo-class meaning, strings and calc whitespace");
+assert.ok(compactedSample.length<whitespaceSample.length,
+ "CSS punctuation compaction should reduce whitespace");
 assert.ok(!pruningSample.css.includes("color:red")&&!pruningSample.css.includes("display:block"),
  "Homepage must exclude rules that cannot match its body class");
 assert.ok(pruningSample.css.includes("color:blue")&&pruningSample.css.includes("display:grid")&&
@@ -277,6 +299,8 @@ assert.ok(!home.includes('href="/home-bundle.css"'),
 const homeCssHashed=await read(homeCssFilename);
 assert.equal(homeCssHashed,homeBundle,
  "Versioned home CSS must be byte-for-byte identical to the tested CSS bundle");
+assert.ok(Buffer.byteLength(homeCssHashed,"utf8")<318000,
+ "Home CSS should be smaller after pruning foreign-page templates and safe compaction");
 const expectedHomeCssHash=createHash("sha256").update(homeCssHashed,"utf8").digest("hex").slice(0,16);
 assert.equal(homeCssFilename,"home-bundle-"+expectedHomeCssHash+".css",
  "Home CSS content hash must track the actual deployed bytes");

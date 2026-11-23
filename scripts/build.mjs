@@ -19,7 +19,7 @@ import {improveContentLinks} from "./content-anchors.mjs";
 import {addSectionPermalinks} from "./heading-permalinks.mjs";
 import {appendRelatedContent} from "./related-content.mjs";
 import {bundleSubpageCss} from "./subpage-css-bundles.mjs";
-import {pruneHomepageRules,pruneSubpageRules} from "./homepage-css-prune.mjs";
+import {pruneHomepageRules,pruneSubpageRules,compactStylesheetWhitespace} from "./homepage-css-prune.mjs";
 let homepageClassOutsideHome=false;
 const source="v2", dest="dist";
 const url=process.env.SITE_URL;
@@ -362,7 +362,13 @@ async function bundleHomepageStyles(html){
   subpageRulesRemoved+=optimized.removed;
   chunks.push(optimized.css);
  }
- const content=chunks.join("\n");
+ const beforeCompaction=chunks.join("\n");
+ const content=compactStylesheetWhitespace(beforeCompaction);
+ console.log("HOME_CSS_COMPACTED "+JSON.stringify({
+  beforeBytes:Buffer.byteLength(beforeCompaction,"utf8"),
+  afterBytes:Buffer.byteLength(content,"utf8"),
+  savedBytes:Buffer.byteLength(beforeCompaction,"utf8")-Buffer.byteLength(content,"utf8")
+ }));
  // Cache the identical stylesheet across repeat visits and deployments.
  // The filename changes with its content; keep the old, unreferenced alias
  // for existing diagnostics and links, without adding a second CSS request.

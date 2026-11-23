@@ -73,9 +73,22 @@ export function pruneSubpageRules(css){
   }
   return parts;
  };
+ // These are top-level page/template classes absent from the homepage;
+ // pruning only selectors that REQUIRE one of them is conservative.
+ // A mixed selector list must be kept in its entirety.
+ const foreignPageRoots=new Set([
+  "premium-subpage","premium-campaign","general-service-page",
+  "guide-article","knowledge-article","knowledge-hub",
+  "campaign-builder-layout","campaign-builder-results",
+  "campaign-page","campaign-copy","campaign-process-list",
+  "theme-support","theme-rents","theme-team","skd-guide"
+ ]);
  const onlySubpage=heading=>{
   const parts=splitSelectors(heading);
-  return parts.length>0&&parts.every(p=>/^(?:body)?\.premium-subpage(?=$|[\s.#:[>+~])/.test(p)&&!p.includes(":not("));
+  return parts.length>0&&parts.every(p=>{
+   const match=p.match(/^(?:body)?\.([a-z][a-z0-9-]*)(?=$|[\s.#:[>+~])/i);
+   return !!match&&foreignPageRoots.has(match[1])&&!p.includes(":not(");
+  });
  };
  let removed=0;
  const visit=s=>{
@@ -102,4 +115,41 @@ export function pruneSubpageRules(css){
   return out;
  };
  return {css:visit(css),removed};
+}
+
+/**
+ * Release-only whitespace compaction: preserve selectors, values, escapes and
+ * strings. Spaces before a pseudo class can indicate a descendant selector,
+ * so colons are deliberately NOT compacted.
+ */
+export function compactStylesheetWhitespace(css){
+ let result="",quote="",escaped=false;
+ const punctuation="{};,";
+ for(let i=0;i<css.length;i++){
+  const char=css[i];
+  if(quote){
+   result+=char;
+   if(escaped)escaped=false;
+   else if(char==="\\")escaped=true;
+   else if(char===quote)quote="";
+   continue;
+  }
+  if(char==="\\"){
+   result+=char;
+   if(i+1<css.length)result+=css[++i];
+   continue;
+  }
+  if(char==='"'||char==="'"){quote=char;result+=char;continue;}
+  if(/\s/.test(char)){
+   let end=i;
+   while(end+1<css.length&&/\s/.test(css[end+1]))end++;
+   const prev=result.at(-1)||"",next=css[end+1]||"";
+   if(prev&&next&&!punctuation.includes(prev)&&!punctuation.includes(next))result+=" ";
+   i=end;
+   continue;
+  }
+  result+=char;
+ }
+ if(quote)throw Error("Unterminated CSS string during homepage compaction");
+ return result;
 }

@@ -6,6 +6,7 @@
 import { readdir, readFile, writeFile, mkdir, cp, rm } from "node:fs/promises";
 import { join, relative, dirname } from "node:path";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {withNetworkBrand} from "./network-brand.mjs";
 import {toPublicRoute} from "./public-routes.mjs";
 import { shouldIndexRoute } from "./seo-policy.mjs";
@@ -361,13 +362,22 @@ async function bundleHomepageStyles(html){
   subpageRulesRemoved+=optimized.removed;
   chunks.push(optimized.css);
  }
- await writeFile(join(dest,"home-bundle.css"),chunks.join("\n"));
- console.log("HOME_SUBPAGE_CSS_PRUNED "+JSON.stringify({rules:subpageRulesRemoved}));
+ const content=chunks.join("\n");
+ // Cache the identical stylesheet across repeat visits and deployments.
+ // The filename changes with its content; keep the old, unreferenced alias
+ // for existing diagnostics and links, without adding a second CSS request.
+ const fingerprint=createHash("sha256").update(content,"utf8").digest("hex").slice(0,16);
+ const filename="home-bundle-"+fingerprint+".css";
+ await Promise.all([
+  writeFile(join(dest,filename),content),
+  writeFile(join(dest,"home-bundle.css"),content)
+ ]);
+ console.log("HOME_SUBPAGE_CSS_PRUNED "+JSON.stringify({rules:subpageRulesRemoved,bytes:Buffer.byteLength(content,"utf8"),fingerprint}));
  let inserted=false;
  return html.replace(linkPattern,()=>{
   if(inserted)return "";
   inserted=true;
-  return '<link rel="stylesheet" href="/home-bundle.css">';
+  return '<link rel="stylesheet" href="/'+filename+'">';
  });
 }
 
@@ -514,7 +524,7 @@ const releaseInfo={
  builtAt:new Date().toISOString()
 };
 await writeFile(join(dest,"release-info.json"),JSON.stringify(releaseInfo,null,2)+"\n");
-await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n\n/feed.xml\n  Content-Type: application/rss+xml; charset=utf-8\n  Cache-Control: public, max-age=1800\n\n/kontakty/wojciech-obieglo.vcf\n  Content-Type: text/vcard; charset=utf-8\n  Cache-Control: public, max-age=3600\n\n/kontakty/paulina-chandrala.vcf\n  Content-Type: text/vcard; charset=utf-8\n  Cache-Control: public, max-age=3600\n\n/assets/og-twoja-sprawa-metallic-v1.jpg\n  Cache-Control: public, max-age=604800\n\n/assets/wojciech-obieglo.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/paulina-chandrala.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-szkody-gornicze.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-swiadczenie-wspierajace.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-renty-powypadkowe.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-skd.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-kredyty-frankowe.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-sluzebnosc-przesylu.jpg\n  Cache-Control: public, max-age=86400\n\n/layers-*.css\n  Cache-Control: public, max-age=31536000, immutable\n");
+await writeFile(join(dest,"_headers"),"/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/release-info.json\n  Cache-Control: no-cache, no-store, must-revalidate\n\n/feed.xml\n  Content-Type: application/rss+xml; charset=utf-8\n  Cache-Control: public, max-age=1800\n\n/kontakty/wojciech-obieglo.vcf\n  Content-Type: text/vcard; charset=utf-8\n  Cache-Control: public, max-age=3600\n\n/kontakty/paulina-chandrala.vcf\n  Content-Type: text/vcard; charset=utf-8\n  Cache-Control: public, max-age=3600\n\n/assets/og-twoja-sprawa-metallic-v1.jpg\n  Cache-Control: public, max-age=604800\n\n/assets/wojciech-obieglo.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/paulina-chandrala.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-szkody-gornicze.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-swiadczenie-wspierajace.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-renty-powypadkowe.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-skd.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-kredyty-frankowe.jpg\n  Cache-Control: public, max-age=86400\n\n/assets/og-broszura-sluzebnosc-przesylu.jpg\n  Cache-Control: public, max-age=86400\n\n/layers-*.css\n  Cache-Control: public, max-age=31536000, immutable\n\n/home-bundle-*.css\n  Cache-Control: public, max-age=31536000, immutable\n");
 const newRedirects=legacyPageRedirects(actualSourcePages);
 const navigationKinds=Object.create(null);
 for(const change of navigationChanges)navigationKinds[change.kind]=(navigationKinds[change.kind]||0)+1;

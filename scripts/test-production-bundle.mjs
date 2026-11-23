@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /** Read-only smoke test for a local production candidate. Does NOT deploy. */
 import assert from "node:assert/strict";
+import {createHash} from "node:crypto";
 import {readFile,stat,readdir} from "node:fs/promises";
 import {pruneHomepageRules,pruneSubpageRules} from "./homepage-css-prune.mjs";
 import {collectIndexableRoutes} from "./indexnow-routes.mjs";
@@ -264,9 +265,24 @@ assert.ok(independentStylesSaved>12000,
 console.log("SERVICE_CSS_BUDGET "+JSON.stringify({sourceStyles:homeSourceSheets.length,independentStylesSaved}));
 
 
-assert.ok(home.includes('href="/home-bundle.css"')&&
- (home.match(/<link rel="stylesheet"/g)||[]).length===1,
- "Production homepage should load one combined stylesheet");
+// Content-addressed home CSS is safe to cache immutably, and avoids a
+// second request on the first visit. The unversioned alias is not linked.
+const homeCssFilename=home.match(/<link rel="stylesheet" href="\/(home-bundle-[a-f0-9]{16}\.css)">/)?.[1];
+assert.ok(homeCssFilename,
+ "Production homepage must request one content-hashed stylesheet");
+assert.equal((home.match(/<link rel="stylesheet"/g)||[]).length,1,
+ "Homepage still needs exactly one stylesheet request");
+assert.ok(!home.includes('href="/home-bundle.css"'),
+ "The old mutable alias must not be loaded by the homepage");
+const homeCssHashed=await read(homeCssFilename);
+assert.equal(homeCssHashed,homeBundle,
+ "Versioned home CSS must be byte-for-byte identical to the tested CSS bundle");
+const expectedHomeCssHash=createHash("sha256").update(homeCssHashed,"utf8").digest("hex").slice(0,16);
+assert.equal(homeCssFilename,"home-bundle-"+expectedHomeCssHash+".css",
+ "Home CSS content hash must track the actual deployed bytes");
+assert.ok(vCardHeaders.includes("/home-bundle-*.css\n  Cache-Control: public, max-age=31536000, immutable"),
+ "Only fingerprinted home CSS may receive immutable browser caching");
+console.log("HOME_CSS_CACHE_OK:",homeCssFilename,"size:",Buffer.byteLength(homeCssHashed,"utf8"));
 for(const selector of [".mobile-quick-nav",".network-brand-bar",".contact-advisor",
  ".hero-priority-grid",".primary-services"]){
  assert.ok(homeBundle.includes(selector),

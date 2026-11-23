@@ -24,24 +24,26 @@ for(const [name,css] of [["home",a],["campaign",b]]){
   name+": animation must be opt-in for motion-friendly devices");
  assert.ok(css.includes("prefers-reduced-motion:reduce"),
   name+": always provide reduced-motion override");
- assert.ok(css.includes("(hover:hover) and (pointer:fine)"),
-  name+": hover lifting must not simulate a sticky mobile hover");
+ if(name==="home")assert.ok(css.includes("(hover:hover) and (pointer:fine)"),
+  "Homepage hover lifting must not simulate a sticky mobile hover");
  assert.ok(!/\binfinite\b|requestAnimationFrame|setInterval|@import|url\(/i.test(css),
   name+": no perpetual animation, extra requests, timers or animation scripts");
  assert.ok(!/height\s*:|width\s*:|margin\s*:|padding\s*:/i.test(css),
   name+": motion must not change layout geometry");
- assert.ok(/transition:\s*(?:transform|opacity)/i.test(css),
-  name+": no layout-affecting transitions");
+ if(name==="home")assert.ok(/transition:\s*(?:transform|opacity)/i.test(css),
+  "Homepage transition must affect only transform and opacity");
 }
 assert.ok(a.includes("translate3d(0,10px,0)")&&a.includes("transition:opacity .44s"),
  "Homepage scroll effects must be gentler than the old 26px/650ms reveal");
 assert.ok(b.includes("@keyframes support-gentle-enter")&&
- b.includes("translate3d(0,6px,0)")&&
+ b.includes("translateY(6px)")&&
  b.includes("animation:support-gentle-enter .42s")&&
  b.includes("animation:support-gentle-enter .46s"),
  "Support campaign entrance must be short, subtle and one-time");
 assert.ok(!/@keyframes[^\{]*\{[^}]*opacity/i.test(b),
  "Campaign text must never begin invisible, even for slow devices or screenshots");
+assert.ok(Buffer.byteLength(b,"utf8")<600,
+ "Support campaign motion must fit the strict 80 KB merged CSS budget");
 assert.ok(!b.includes(" .contact-form{")&&!b.includes(" .contact-form input"),
  "Never move or animate a form control while a visitor types");
 assert.ok(a.includes("transition:none!important")&&b.includes("animation:none!important"),

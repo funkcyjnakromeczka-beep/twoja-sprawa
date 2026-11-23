@@ -519,9 +519,19 @@ for(const [code,expected] of [
 console.log("RENT_CAMPAIGN_CONTACT_OK: four explicit stages, contact Paulina, no duplicate test leads.");
 
 const supportLanding=await readFile("v2/kampanie/swiadczenie-wspierajace.html","utf8");
-assert.equal((supportLanding.match(/data-stage-option="/g)||[]).length,3,"Support landing must have three stage shortcuts");
+const supportStageAnchors=[...supportLanding.matchAll(/<a\b[^>]*data-stage-option="([^"]+)"[^>]*>/g)];
+const stageValues=supportStageAnchors.map(([,code])=>code);
+assert.ok(stageValues.length>=3,"Support landing must retain the three initial contact stages");
+assert.equal(new Set(stageValues).size,stageValues.length,"No duplicate support stage shortcut");
 for(const value of ["wniosek","oczekiwanie","decyzja"]){
- assert.ok(supportLanding.includes('data-stage-option="'+value+'"'),"Missing support stage shortcut: "+value);
+ assert.ok(stageValues.includes(value),"Missing original support stage shortcut: "+value);
+}
+const supportStageCodeBlock=source.match(/"Świadczenie wspierające":\{([\s\S]*?)\n    \},/)?.[1]||"";
+assert.ok(supportStageCodeBlock,"Support form code allowlist missing");
+for(const [markup,code] of supportStageAnchors){
+ assert.ok(markup.includes('href="#formularz"'),"Stage shortcut must lead to the contact form: "+code);
+ assert.ok(new RegExp("\\b"+code+':"').test(supportStageCodeBlock),
+  "Stage shortcut is not supported by contact.js: "+code);
 }
 
 // A chatbot may pass only an enumerated type of visible property damage.

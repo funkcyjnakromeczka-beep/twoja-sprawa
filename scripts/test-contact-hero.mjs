@@ -18,8 +18,10 @@ assert.ok(nav.includes("Szkody górnicze")&&nav.includes("Świadczenie wspieraj�
   "Both contact areas must be visible");
 assert.ok(nav.includes("SKD")&&nav.includes("renty powypadkowe"),
   "Advisor roles must be clear without reading the entire contact page");
-assert.ok(nav.includes('aria-label="Zadzwoń do Wojciecha')&&
- nav.includes('aria-label="Zadzwoń do Pauliny'),"Each call requires descriptive accessible name");
+assert.ok(nav.includes("Zadzwoń: Wojciech Obiegło")&&
+ nav.includes("Zadzwoń: Paulina Chandrała"),"Visible call content must identify each adviser");
+assert.ok(!/<a[^>]+aria-label=/.test(nav),
+ "Do not override visible call text with different accessible labels (WCAG label-content-name-mismatch)");
 assert.ok(html.indexOf('class="contact-direct-call"')>html.indexOf("<h1>")&&
  html.indexOf('class="contact-direct-call"')<html.indexOf('class="contact-route-links"')&&
  html.indexOf('class="contact-route-links"')<html.indexOf('id="formularz"'),

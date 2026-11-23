@@ -229,7 +229,7 @@
   const stageWrap=document.createElement("div");stageWrap.className="contact-stage";const stageLabel=document.createElement("label");const stage=document.createElement("select");stage.id="cf-stage-"+Math.random().toString(36).slice(2,8);stageLabel.htmlFor=stage.id;stageWrap.append(stageLabel,stage);form.append(stageWrap);
   const stageOptions={
    "Szkody górnicze":["Wybierz etap sprawy","Zauważyłem/am uszkodzenia","Pojawiły się szkody mimo wcześniejszych zabezpieczeń lub napraw","Zgłosiłem/am szkodę do kopalni","Otrzymałem/am propozycję ugody","Kopalnia odmówiła","Inna sytuacja"],
-   "Świadczenie wspierające":["Wybierz etap sprawy","Dopiero planuję wniosek do WZON","Czekam na decyzję WZON","Mam decyzję WZON","Chcę przeanalizować decyzję lub odwołanie","Mam sprawę w ZUS","Inna sytuacja"],
+   "Świadczenie wspierające":["Wybierz etap sprawy","Dopiero planuję wniosek do WZON","Czekam na decyzję WZON","Mam decyzję WZON","Pierwsza decyzja WZON — chcę sprawdzić możliwość ponownego rozpatrzenia","Decyzja po ponownym rozpatrzeniu WZON — chcę omówić drogę sądową","Chcę przeanalizować decyzję lub odwołanie","Mam sprawę w ZUS","Inna sytuacja"],
    "Kredyt w PLN / SKD":["Wybierz etap sprawy","Nadal spłacam kredyt konsumencki w PLN","Kredyt konsumencki został już spłacony","Spłaciłem/am kredyt przed terminem","Kredytodawca odmówił uznania SKD","Inna sytuacja"],
     "Kredyty frankowe CHF":["Wybierz etap sprawy","Nadal spłacam kredyt CHF","Kredyt CHF został spłacony","Bank proponuje ugodę dotyczącą kredytu CHF","Sprawa kredytu CHF jest już prowadzona","Inna sytuacja"],
    "Służebność przesyłu":["Wybierz etap sprawy","Mam urządzenia przesyłowe na działce","Chcę sprawdzić dokumenty lub tytuł prawny operatora","Operator przedstawił propozycję umowy","Operator odmówił lub kwestionuje moje roszczenia","Inna sytuacja"],
@@ -248,6 +248,8 @@
       wniosek:"Dopiero planuję wniosek do WZON",
       oczekiwanie:"Czekam na decyzję WZON",
       decyzja:"Mam decyzję WZON",
+      "pierwsza-decyzja":"Pierwsza decyzja WZON — chcę sprawdzić możliwość ponownego rozpatrzenia",
+      "po-ponownym":"Decyzja po ponownym rozpatrzeniu WZON — chcę omówić drogę sądową",
       zus:"Mam sprawę w ZUS",
       odwolanie:"Chcę przeanalizować decyzję lub odwołanie"
     },

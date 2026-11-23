@@ -916,6 +916,19 @@ const wzStyles=await read("seo-answers.css");
 assert.ok(wzStyles.includes(".support-stage-paths>a:focus-visible")&&
  wzStyles.includes("min-height:72px"),"WZON pathways must support keyboard and touch");
 console.log("SUPPORT_EARLY_PATHS_OK: two verified WZON routes, including decision anchor.");
+// Decision-intake routes remain categorical. URL never carries health history, case number or PII.
+const supportCampaignDecision=await read("kampanie/swiadczenie-wspierajace.html");
+assert.ok(supportCampaignDecision.includes('id="wybierz-sytuacje-po-decyzji"'),"Support campaign must have a clear post-decision chooser");
+for(const [code,label] of [["pierwsza-decyzja","Pierwsza decyzja WZON — chcę sprawdzić możliwość ponownego rozpatrzenia"],["po-ponownym","Decyzja po ponownym rozpatrzeniu WZON — chcę omówić drogę sądową"]]){
+ assert.ok(contactFormJS.includes(code+':"'+label+'"')||contactFormJS.includes('"'+code+'":"'+label+'"'),"Missing strict stage-code mapping: "+code);
+ assert.ok(contactFormJS.includes(label),"Missing selectable contact form option: "+code);
+ assert.ok(supportCampaignDecision.includes('?etap='+code+'#formularz'),"Support landing stage route missing: "+code);
+ assert.ok(supportServicePage.includes('?etap='+code+'#formularz'),"Service stage route missing: "+code);
+ assert.ok(wzDecisionGuide.includes('?etap='+code+'#formularz'),"WZON decision guide route missing: "+code);
+}
+assert.ok(supportCampaignDecision.includes("Art. 26 ust. 2")&&supportCampaignDecision.includes("datę wydania decyzji WZON"),
+ "Support campaign must disclose statutory/ZUS discrepancy in 3-month deadline");
+console.log("SUPPORT_DECISION_INTAKE_OK: categorical WZON decision and review states, safe preselected contact, cautioned ZUS deadline.");
 
 const searchPage=await read("szukaj.html");
 assert.ok(searchPage.includes('name="robots" content="noindex,follow"')&&searchPage.includes('src="/search-core.js"'),"search release unexpected");

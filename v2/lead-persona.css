@@ -270,14 +270,3 @@
   .premium-campaign:has(.campaign-form :is(input,textarea,select):focus) .campaign-mobile-actions{display:none!important}
  }
 }
-
-
-/* GENTLE-MOTION-20261123 — finite, transform-only. */
-@keyframes support-gentle-enter{from{transform:translateY(6px)}}
-@media(prefers-reduced-motion:no-preference){
-.campaign-support .campaign-hero>.campaign-copy{animation:support-gentle-enter .42s ease-out both}
-.campaign-support .campaign-hero>.campaign-form{animation:support-gentle-enter .46s .07s ease-out both}
-}
-@media(prefers-reduced-motion:reduce),print{
-.campaign-support .campaign-hero>:is(.campaign-copy,.campaign-form){animation:none!important;transform:none!important}
-}

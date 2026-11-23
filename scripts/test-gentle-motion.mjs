@@ -3,7 +3,10 @@
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 const home=await readFile("v2/home-flow.css","utf8");
-const campaign=await readFile("v2/lead-persona.css","utf8");
+const campaign=await readFile("v2/styles.css","utf8");
+const campaignLayer=await readFile("v2/lead-persona.css","utf8");
+assert.ok(!campaignLayer.includes("GENTLE-MOTION-20261123"),
+ "Sitewide base CSS must own the 537-byte animation, not the 80 KB service layer");
 const homeHtml=await readFile("v2/index.html","utf8");
 const benefit=await readFile("v2/kampanie/swiadczenie-wspierajace.html","utf8");
 const segment=(css)=>css.slice(css.lastIndexOf("/* GENTLE-MOTION-20261123"));
